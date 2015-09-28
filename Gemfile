@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'activeadmin', github: 'activeadmin'
-gem 'devise'
+gem 'devise' 
 gem 'dbf'
 gem 'odf-report'
 gem 'lisbn'
@@ -51,5 +51,9 @@ group :development, :test do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+
+  gem 'cancan'
+
+  gem 'cancancan'
 end
 

@@ -11,7 +11,9 @@ ActiveAdmin.register Lf, as:"LF" do
 #   permitted << :other if resource.something?
 #   permitted
 # end
-  actions :index, :show, :update, :edit
+ 
+
+  actions :index, :show, :update #if authorized? :update, Lf
 
   filter :lf_status
   filter :name
