@@ -1,0 +1,2 @@
+class Bi < Gprod
+end

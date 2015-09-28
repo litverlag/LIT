@@ -1,0 +1,2 @@
+class Preps < Gprod
+end

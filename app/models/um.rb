@@ -1,0 +1,2 @@
+class Um < Gprod
+end

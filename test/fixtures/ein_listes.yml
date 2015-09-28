@@ -1,0 +1,45 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ISBN: MyString
+  Auflage: MyString
+  Prio: MyString
+  Druck: MyString
+  MsEin: MyString
+  SollF: MyString
+  Lek: MyString
+  Korr: MyString
+  Format: MyString
+  Date: MyString
+  Seiten: MyString
+  Reihe: MyString
+  Titelei: MyString
+  Form: MyString
+  Papier: MyString
+  Umschlag: MyString
+  Satz: MyString
+  vf: MyString
+  email: MyString
+  Sonder: MyString
+
+two:
+  ISBN: MyString
+  Auflage: MyString
+  Prio: MyString
+  Druck: MyString
+  MsEin: MyString
+  SollF: MyString
+  Lek: MyString
+  Korr: MyString
+  Format: MyString
+  Date: MyString
+  Seiten: MyString
+  Reihe: MyString
+  Titelei: MyString
+  Form: MyString
+  Papier: MyString
+  Umschlag: MyString
+  Satz: MyString
+  vf: MyString
+  email: MyString
+  Sonder: MyString

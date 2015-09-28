@@ -1,0 +1,2 @@
+class Offsch < Gprod
+end

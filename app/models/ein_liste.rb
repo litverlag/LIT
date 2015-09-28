@@ -1,0 +1,2 @@
+class EinListe < Gprod
+end

@@ -1,0 +1,31 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyText
+  isbn: MyString
+  issn: MyString
+  titel1: MyText
+  titel2: MyText
+  titel3: MyText
+  utitel1: MyText
+  utitel2: MyText
+  utitel3: MyText
+  seiten: 1
+  preis: 9.99
+  spreis: 9.99
+  sammelband: false
+
+two:
+  name: MyText
+  isbn: MyString
+  issn: MyString
+  titel1: MyText
+  titel2: MyText
+  titel3: MyText
+  utitel1: MyText
+  utitel2: MyText
+  utitel3: MyText
+  seiten: 1
+  preis: 9.99
+  spreis: 9.99
+  sammelband: false

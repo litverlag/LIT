@@ -1,0 +1,2 @@
+class Tit < Gprod
+end
