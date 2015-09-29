@@ -3,6 +3,7 @@ The Project for the LIT-Verlag
 The Password for ALL test users is supposed to be password
 
 TODO
+- die .json Tabellen ür den Autofill nicht über die URL zugänglich machen
 
 
 
