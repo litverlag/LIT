@@ -1,11 +1,14 @@
   ActiveAdmin.register AdminUser do
     menu priority:2
 
-    permit_params :email, :password, :password_confirmation, :user_role, :lektor
+    controller do
+    def permitted_params
+      params.permit!
+    end
+  end
 
 
     index do
-     
       selectable_column
       id_column
       column :email
@@ -13,7 +16,7 @@
       column :sign_in_count
       column :created_at
       column :user_role
-      actions
+      actions 
     end
 
     show do
@@ -25,21 +28,18 @@
         row :user_role
       end
 
-      panel "User kann folgende Lektoren sehen" do
-        table_for admin_user.lektoren do
-           column "Name" do |b|
-          b.name
-          column "Kürzel" do |b|
-          b.fox_name
+        panel "" do
+          table_for admin_user.lektoren do
+            column "Name"  do |b|
+              b.name
+            end
+            column "Name"  do |b|
+              b.fox_name
+            end
           end
-        end
-      end
+       end
     end
 
-
-
-
-    end
 
 
     filter :email
@@ -58,7 +58,7 @@
 
         f.inputs 'Die Werke dieses Lektors soll der User sehen' do
            f.has_many :admin_users_lektoren, heading: nil, allow_destroy: true, new_record: 'Lektor hinzufügen' do |lek|
-             lek.input :lektor_id , :label => 'Name',:input_html => { :class => 'lektor-input'}
+             lek.input :lektor , :label => 'Name',:input_html => { :class => 'lektor-input'}
             end
         end 
       end
