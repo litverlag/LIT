@@ -13,7 +13,7 @@ ActiveAdmin.register Lf, as:"LF" do
 # end
  
 
-  actions :index, :show, :update #if authorized? :update, Lf
+  actions :index, :show, :update 
 
   filter :lf_status
   filter :name

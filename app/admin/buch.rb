@@ -7,8 +7,7 @@ ActiveAdmin.register Buch do
   filter :format
   
   
-  #menu priority:99
-   menu false
+  #menu priority:1
 
   index title: 'Bücher' do
     selectable_column

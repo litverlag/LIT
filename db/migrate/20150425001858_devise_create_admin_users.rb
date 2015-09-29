@@ -6,6 +6,8 @@ class DeviseCreateAdminUsers < ActiveRecord::Migration
   end
 
   def change
+
+
     create_table(:admin_users) do |t|
       ## Database authenticatable
       t.string :email,              null: false, default: ""
@@ -36,6 +38,7 @@ class DeviseCreateAdminUsers < ActiveRecord::Migration
       # t.string   :unlock_token # Only if unlock strategy is :email or :both
       # t.datetime :locked_at
 
+      #Adding the Lektor
 
       t.timestamps
     end

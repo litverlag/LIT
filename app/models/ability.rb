@@ -12,6 +12,7 @@ class Ability
       can :read, ActiveAdmin::Page, :name => "Access_denied"
       can :manage, Lf
     elsif user.user_role.eql?'Lektor'
+      can
 
       
     
