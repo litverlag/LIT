@@ -22,6 +22,28 @@ autor =
 	}
 
 
+lektor = 
+	{
+		placeholder: "Suchen"
+		allowClear: false
+		minimumInputLength: 3
+		initSelection: (element, callback) -> 
+			id = $(element).val()
+			if id != ''
+				$.ajax('/admin/lektoren.json?q[id_equals]=' + id, dataType: 'json').done (data) ->
+					callback {text: "#{data[0].name} #{data[0].fox_name}"}
+					return
+
+		ajax: {
+			url: '/admin/lektoren.json'
+			dataType: 'json'
+			data: (term, page) -> { 'q[fullname_contains]':  term }
+			results: (data, page) -> { results: data.map (i) -> {id: i.id ,text: "#{i.name} #{i.fox_name}"}}
+			cache: true
+		}
+	}
+
+
 buch = 
 	{
 		placeholder: "Suchen"

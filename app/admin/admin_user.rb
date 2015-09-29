@@ -57,8 +57,8 @@
         f.input :user_role, as: :select, collection: ["Admin","Druck","Lektor"] 
 
         f.inputs 'Die Werke dieses Lektors soll der User sehen' do
-           f.has_many :admin_users_lektoren do |a|
-             a.input :lektor_id , :label => 'Name'
+           f.has_many :admin_users_lektoren, heading: nil, allow_destroy: true, new_record: 'Lektor hinzufügen' do |lek|
+             lek.input :lektor_id , :label => 'Name',:input_html => { :class => 'lektor-input'}
             end
         end 
       end
