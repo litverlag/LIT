@@ -9,7 +9,6 @@ class ApplicationController < ActionController::Base
   # have permission to access to a resource they have permission to access
   # (organizations in this case), and also displays the error message in the browser:
   def access_denied(exception)
-
-    redirect_to main_app.root_path
+    redirect_to "/admin/access_denied"
   end
 end

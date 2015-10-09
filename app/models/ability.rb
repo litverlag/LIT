@@ -5,18 +5,26 @@ class Ability
     #abort("Message goes here")
     user ||= User.new # guest user
     #abort('some user')
-    if user.user_role.eql?'Admin'
+
+    @departName = []
+    #depart = user.departments.to_a
+    user.departments.to_a.each do |a|
+        @departName.append a.name
+    end
+
+
+    #TODO Rechte für alle Benutzergruppen eintragen
+    if true #@departName.include?'superadmin'
       can :manage, :all
-    elsif user.user_role.eql?'Druck'
+    end
+    if @departName.include?'Umschlag'
+      can :read, Buch
+    end
+    if @departName.include?'Titelei'
+      can :read, :lves
+    end
+
       can :read, ActiveAdmin::Page, :name => "Dashboard"
       can :read, ActiveAdmin::Page, :name => "Access_denied"
-      can :manage, Lf
-    elsif user.user_role.eql?'Lektor'
-      can
-
-      
-    
-     
-    end
   end
 end

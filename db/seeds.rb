@@ -9,3 +9,4 @@
 Format.destroy_all
 Format.create([{name:'15,3x9,3 (KleinBl)'}, {name:'16x11,5 (Pocket)'}, {name:'A5'}, {name:'22x16'}, {name:'23,5x16,2'}, {name:'22x21'}, {name:'24x17'}, {name:'A4'}])
 Lektor.create(name:'Peter Schmidt',fox_name:'PS')
+Department.create([{name:'superadmin'},{name:'Umschlag'},{name:'Satz'},{name:'Titelei'},{name:'PrePs'},{name:'Rechnung'},{name:'Bildprüfung'},{name:'Lektor'},{name:'Pod '},{name:'Binderei'}])

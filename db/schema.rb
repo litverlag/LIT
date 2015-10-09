@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150929090927) do
+ActiveRecord::Schema.define(version: 20151009091749) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -42,11 +42,15 @@ ActiveRecord::Schema.define(version: 20150929090927) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "group_id",               default: 0
-    t.string   "user_role"
   end
 
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+
+  create_table "admin_users_departments", id: false, force: :cascade do |t|
+    t.integer "admin_user_id", null: false
+    t.integer "department_id", null: false
+  end
 
   create_table "admin_users_lektoren", id: false, force: :cascade do |t|
     t.integer "admin_user_id", null: false
@@ -103,6 +107,12 @@ ActiveRecord::Schema.define(version: 20150929090927) do
     t.integer  "umschlag_id"
     t.integer  "papier_id"
     t.integer  "lektor_id"
+  end
+
+  create_table "departments", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "ein_listes", force: :cascade do |t|

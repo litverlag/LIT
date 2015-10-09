@@ -2,10 +2,13 @@
     menu priority:2
 
     controller do
-    def permitted_params
-      params.permit!
+      def permitted_params
+        puts "/n/n/n/n/n"
+        puts params
+        puts "/n/n/n/n/n"
+        params.permit!
+      end
     end
-  end
 
 
     index do
@@ -15,7 +18,7 @@
       column :current_sign_in_at
       column :sign_in_count
       column :created_at
-      column :user_role
+
       actions 
     end
 
@@ -25,7 +28,7 @@
         row :current_sign_in_at
         row :sign_in_count
         row :created_at
-        row :user_role
+
       end
 
         panel "" do
@@ -37,7 +40,14 @@
               b.fox_name
             end
           end
-       end
+        end
+      panel "" do
+        table_for admin_user.departments do
+          column "Name"  do |b|
+            b.name
+          end
+        end
+      end
     end
 
 
@@ -53,9 +63,15 @@
         f.input :email
         f.input :password
         f.input :password_confirmation
-        #To add a new User Role you have to add it in the collection and give them the abilities in the /model/ability.rb file
-        f.input :user_role, as: :select, collection: ["Admin","Druck","Lektor"] 
 
+
+=begin
+       f.inputs 'Der User hat folgende Benutzergruppen' do
+          f.has_many :admin_users_departments, heading: nil, allow_destroy: true, new_record: 'Abteilung hinzufügen' do |dep|
+            dep.input :department
+          end
+       end
+=end
         f.inputs 'Die Werke dieses Lektors soll der User sehen' do
            f.has_many :admin_users_lektoren, heading: nil, allow_destroy: true, new_record: 'Lektor hinzufügen' do |lek|
              lek.input :lektor , :label => 'Name',:input_html => { :class => 'lektor-input'}
