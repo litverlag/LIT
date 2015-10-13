@@ -31,17 +31,17 @@
 
       end
 
-        panel "" do
+        panel "Zugewiesene Lektoren" do
           table_for admin_user.lektoren do
             column "Name"  do |b|
               b.name
             end
-            column "Name"  do |b|
+            column "Kürzel"  do |b|
               b.fox_name
             end
           end
         end
-      panel "" do
+      panel "Zugewiesene Abteilungen" do
         table_for admin_user.departments do
           column "Name"  do |b|
             b.name
@@ -65,18 +65,19 @@
         f.input :password_confirmation
 
 
-=begin
+        #TODO Error if user want to insert empty cell Rouven Glauert
        f.inputs 'Der User hat folgende Benutzergruppen' do
           f.has_many :admin_users_departments, heading: nil, allow_destroy: true, new_record: 'Abteilung hinzufügen' do |dep|
             dep.input :department
           end
        end
-=end
+=begin
         f.inputs 'Die Werke dieses Lektors soll der User sehen' do
-           f.has_many :admin_users_lektoren, heading: nil, allow_destroy: true, new_record: 'Lektor hinzufügen' do |lek|
+           f.has_many :admin_users_lektoren, heading: nil, new_record: 'Lektor hinzufügen' do |lek|
              lek.input :lektor , :label => 'Name',:input_html => { :class => 'lektor-input'}
             end
-        end 
+        end
+=end
       end
       f.actions
     end

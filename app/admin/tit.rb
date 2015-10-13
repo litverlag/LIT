@@ -12,7 +12,11 @@ ActiveAdmin.register Tit do
 #   permitted << :other if resource.something?
 #   permitted
 # end
+
+
   actions :index, :show, :update, :edit
+
+  permit_params :name, :msein
 
   filter :name
   filter :isbn
@@ -30,8 +34,14 @@ ActiveAdmin.register Tit do
   filter :bemerkungen_2
   filter :email
 
+  scope :alle
+  scope :neu
+  scope :bearbeitung
+  scope :fertig
+
   menu label: 'Tit', priority: 6
   index title: 'Titelei' do
+    column("Status") {|tit| status_tag(tit.status)}
     column :name
     column 'ISBN', :isbn
     column :Lek
@@ -50,6 +60,5 @@ ActiveAdmin.register Tit do
 
     actions
   end
-
 
 end

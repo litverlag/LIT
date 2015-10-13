@@ -12,7 +12,7 @@
 #
 # To use a different locale, set it with `I18n.locale`:
 #
-#     I18n.locale = :es
+#     I18n.locale = :de
 #
 # This would use the information in config/locales/es.yml.
 #
@@ -21,3 +21,14 @@
 
 en:
   hello: "Hello world"
+
+#Fusch!! Für eine richtige Internationalisierung bräuchte man ein eigens Verzeichnis z.B. config/locales/de.yml
+
+  number:
+    currency:
+      format:
+        unit: '€'
+        delimiter: ','
+        separator: '.'
+        precision: 2
+        format: '%u%n'

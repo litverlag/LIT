@@ -14,7 +14,7 @@ ActiveAdmin.register Buch do
     column 'ISBN', :short_isbn
     column 'Titel', :titel1
     column :seiten
-    column :preis
+    column("Preis") {|buch| number_to_currency buch.preis, locale: :de}
     column :sammelband
     actions
   end

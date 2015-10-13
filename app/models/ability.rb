@@ -14,17 +14,39 @@ class Ability
 
 
     #TODO Rechte für alle Benutzergruppen eintragen
-    if true #@departName.include?'superadmin'
+    if @departName.include?'superadmin'
       can :manage, :all
     end
     if @departName.include?'Umschlag'
-      can :read, Buch
+      can :read, :ums
+    end
+    if @departName.include?'Satz'
+      can :read, :s_reifs
     end
     if @departName.include?'Titelei'
       can :read, :lves
     end
+    if @departName.include?'PrePs'
+      can :read, :preps
+    end
+    if @departName.include?'Rechnung'
+      can
+    end
+    if @departName.include?'Bildprüfung'
+      can
+    end
+    if @departName.include?'Lektor'
+      can
+    end
+    if @departName.include?'Pod'
+      can
+    end
+    if @departName.include?'Binderei'
+      can :read, :bis
+    end
 
-      can :read, ActiveAdmin::Page, :name => "Dashboard"
+
+    can :read, ActiveAdmin::Page, :name => "Dashboard"
       can :read, ActiveAdmin::Page, :name => "Access_denied"
   end
 end
