@@ -1,8 +1,13 @@
 class CreateGprods < ActiveRecord::Migration
   def change
     create_table :gprods do |t|
-      t.string :name
-      t.string :isbn, limit: 17
+
+      #gejointe Attribute
+      t.belongs_to :buch
+      t.belongs_to :autor
+      t.belongs_to :lektor
+
+      #Nicht joined Attribute
       t.integer :auflage
       t.string :prio
       t.string :druck
@@ -21,11 +26,7 @@ class CreateGprods < ActiveRecord::Migration
       t.boolean :rg_bezahlt
       t.boolean :rg_vf
       t.string :datei
-      t.string :reihe
       t.string :titelei
-      t.string :papier
-      t.float :gewicht
-      t.float :volumen
       t.string :satz
       t.string :sonder
       t.date :datum
@@ -35,13 +36,8 @@ class CreateGprods < ActiveRecord::Migration
       t.date :korrektur
       t.string :freigabe
       t.date :zum_druck
-      t.date :erscheinungsjahr
       t.string :tit_bemerkungen_1
       t.string :tit_bemerkungen_2
-      t.string :lek
-      t.integer :seiten
-      t.string :format
-      t.string :umschlag
       t.string :bi
       t.string :vf
       t.string :preps_betreuer
@@ -77,7 +73,13 @@ class CreateGprods < ActiveRecord::Migration
       t.string :ebook_status
       t.string :korr_status
       t.string :pod_status
-
+      t.date :um_sollf
+      t.date :um_verschickt
+      t.text :klapptext
+      t.string :um_frei
+      t.string :um_warten
+      t.string  :rueckenfrei
+      t.integer :gprod_id
       t.timestamps null: false
     end
   end

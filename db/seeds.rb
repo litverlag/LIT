@@ -8,14 +8,19 @@
 
 Format.destroy_all
 Format.create([{name:'15,3x9,3 (KleinBl)'}, {name:'16x11,5 (Pocket)'}, {name:'A5'}, {name:'22x16'}, {name:'23,5x16,2'}, {name:'22x21'}, {name:'24x17'}, {name:'A4'}])
+
 Lektor.create(name:'Peter Schmidt',fox_name:'PS')
+Lektor.create(name:'Annelise Muster',fox_name:'AM')
+Lektor.create(name:'Fritz Hans',fox_name:'FH')
+Lektor.create(name:'Thomas Gottschalk',fox_name:'TG')
+
+#Wichtig für das erstellen der Abteilungen
 Department.create([{name:'superadmin'},{name:'Umschlag'},{name:'Satz'},{name:'Titelei'},{name:'PrePs'},{name:'Rechnung'},{name:'Bildprüfung'},{name:'Lektor'},{name:'Pod '},{name:'Binderei'}])
 
 
 
-# Test-Gprods
-
 =begin
+Test-Gprods
 
 Schema: CREATE TABLE "gprods" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "isbn" varchar(17), "auflage" integer, "prio" varchar, "druck" varchar, "msein" date,
 "muster" varchar, "offsch_sollf" date, "einliste_sollf" date, "sreif_sollf" date, "lf_sollf" date, "preps_sollf" date, "tit_sollf" date, "rg_sollf" date, "rg_rg_mail" varchar, "rg_versand_1" date,
@@ -27,12 +32,12 @@ Schema: CREATE TABLE "gprods" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
 "lf_status" varchar, "sreif_status" varchar, "um_status" varchar, "tit_status" varchar, "preps_status" varchar, "bi_status" varchar, "rg_status" varchar, "ebook_status" varchar, "korr_status" varchar,
 "pod_status" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "um_sollf" date, "um_verschickt" date, "klapptext" text, "um_frei" varchar, "um_warten" varchar, "rueckenfrei" varchar);
 
-
-
 (1..10).each do |a|
-  Gprod.create({name: "Test#{a}Buch", msein: (Time.now + (15 + a).days),tit_sollf: (Time.now + (10 + a).days), um_sollf: (Time.now + (5 + a).days)})
-end
+    Gprod.create({name: "Test#{a}Buch", msein: (Time.now + (15 + a).days),tit_sollf: (Time.now + (10 + a).days), um_sollf: (Time.now + (5 + a).days)})
+  end
 
 =end
 
-Gprod.create({name: "Foo"})
+for a in 1..5
+  Gprod.create({name: "Test #{a} Buch", msein: DateTime.new(2001,a,3),tit_sollf: DateTime.new(2001,a,3)})
+end

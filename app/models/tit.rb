@@ -19,6 +19,7 @@ class Tit < Gprod
   end
 
   def change_status
-
+    index = STATUS.index(self.tit_status)
+    update_attribute(:tit_status, STATUS[index+1])
   end
 end

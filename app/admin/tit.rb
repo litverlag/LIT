@@ -16,7 +16,11 @@ ActiveAdmin.register Tit do
 
   actions :index, :show, :update, :edit
 
-  permit_params :name, :msein
+  permitted_params = [:name, :isbn]
+
+  permit_params do
+    permitted_params
+  end
 
   filter :name
   filter :isbn
@@ -40,6 +44,7 @@ ActiveAdmin.register Tit do
   scope :fertig
 
   menu label: 'Tit', priority: 6
+
   index title: 'Titelei' do
     column("Status") {|tit| status_tag(tit.status)}
     column :name
@@ -60,5 +65,20 @@ ActiveAdmin.register Tit do
 
     actions
   end
+
+  show do
+
+  end
+
+
+  form do |f|
+    f.inputs "Titelei-Eintrag bearbeiten" do
+      permitted_params.each do |p|
+        f.input p
+      end
+    end
+    f.actions
+    end
+
 
 end

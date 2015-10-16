@@ -3,9 +3,7 @@
 
     controller do
       def permitted_params
-        puts "/n/n/n/n/n"
-        puts params
-        puts "/n/n/n/n/n"
+
         params.permit!
       end
     end
@@ -68,16 +66,18 @@
         #TODO Error if user want to insert empty cell Rouven Glauert
        f.inputs 'Der User hat folgende Benutzergruppen' do
           f.has_many :admin_users_departments, heading: nil, allow_destroy: true, new_record: 'Abteilung hinzufügen' do |dep|
-            dep.input :department
+            dep.input :department, :include_blank => false
           end
        end
-=begin
+
+        #TODO add the ID column to the join table for the Lektoren belongin to the admin_users
+
         f.inputs 'Die Werke dieses Lektors soll der User sehen' do
            f.has_many :admin_users_lektoren, heading: nil, new_record: 'Lektor hinzufügen' do |lek|
-             lek.input :lektor , :label => 'Name',:input_html => { :class => 'lektor-input'}
+             lek.input :lektor ,:include_blank => false, :label => 'Name',:input_html => { :class => 'lektor-input'}
             end
         end
-=end
+
       end
       f.actions
     end

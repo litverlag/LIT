@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151009134622) do
+ActiveRecord::Schema.define(version: 20151016102923) do
+
+  create_table "Autoren_Buecher", id: false, force: :cascade do |t|
+    t.integer "autor_id", null: false
+    t.integer "buch_id",  null: false
+  end
+
+  add_index "Autoren_Buecher", ["autor_id", "buch_id"], name: "index_Autoren_Buecher_on_autor_id_and_buch_id"
+  add_index "Autoren_Buecher", ["buch_id", "autor_id"], name: "index_Autoren_Buecher_on_buch_id_and_autor_id"
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -41,7 +49,6 @@ ActiveRecord::Schema.define(version: 20151009134622) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "group_id",               default: 0
   end
 
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true
@@ -52,7 +59,7 @@ ActiveRecord::Schema.define(version: 20151009134622) do
     t.integer "department_id", null: false
   end
 
-  create_table "admin_users_lektoren", id: false, force: :cascade do |t|
+  create_table "admin_users_lektoren", force: :cascade do |t|
     t.integer "admin_user_id", null: false
     t.integer "lektor_id",     null: false
   end
@@ -76,6 +83,7 @@ ActiveRecord::Schema.define(version: 20151009134622) do
     t.string   "dort"
     t.string   "dtel"
     t.string   "dfax"
+    t.integer  "gprod_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
   end
@@ -87,7 +95,7 @@ ActiveRecord::Schema.define(version: 20151009134622) do
   end
 
   create_table "buecher", force: :cascade do |t|
-    t.text     "name"
+    t.string   "name"
     t.string   "isbn"
     t.string   "issn"
     t.text     "titel1"
@@ -97,16 +105,21 @@ ActiveRecord::Schema.define(version: 20151009134622) do
     t.text     "utitel2"
     t.text     "utitel3"
     t.integer  "seiten"
-    t.decimal  "preis",       precision: 4, scale: 2
-    t.decimal  "spreis",      precision: 4, scale: 2
+    t.decimal  "preis",            precision: 4, scale: 2
+    t.decimal  "spreis",           precision: 4, scale: 2
     t.boolean  "sammelband"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.date     "erscheinungsjahr"
+    t.float    "gewicht"
+    t.float    "volumen"
     t.integer  "format_id"
     t.integer  "bindung_id"
-    t.integer  "umschlag_id"
     t.integer  "papier_id"
+    t.integer  "umschlag_id"
+    t.integer  "autor_id"
     t.integer  "lektor_id"
+    t.integer  "gprod_id"
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
   end
 
   create_table "departments", force: :cascade do |t|
@@ -173,8 +186,9 @@ ActiveRecord::Schema.define(version: 20151009134622) do
   end
 
   create_table "gprods", force: :cascade do |t|
-    t.string   "name"
-    t.string   "isbn",                limit: 17
+    t.integer  "buch_id"
+    t.integer  "autor_id"
+    t.integer  "lektor_id"
     t.integer  "auflage"
     t.string   "prio"
     t.string   "druck"
@@ -193,11 +207,7 @@ ActiveRecord::Schema.define(version: 20151009134622) do
     t.boolean  "rg_bezahlt"
     t.boolean  "rg_vf"
     t.string   "datei"
-    t.string   "reihe"
     t.string   "titelei"
-    t.string   "papier"
-    t.float    "gewicht"
-    t.float    "volumen"
     t.string   "satz"
     t.string   "sonder"
     t.date     "datum"
@@ -207,13 +217,8 @@ ActiveRecord::Schema.define(version: 20151009134622) do
     t.date     "korrektur"
     t.string   "freigabe"
     t.date     "zum_druck"
-    t.date     "erscheinungsjahr"
     t.string   "tit_bemerkungen_1"
     t.string   "tit_bemerkungen_2"
-    t.string   "lek"
-    t.integer  "seiten"
-    t.string   "format"
-    t.string   "umschlag"
     t.string   "bi"
     t.string   "vf"
     t.string   "preps_betreuer"
@@ -249,210 +254,29 @@ ActiveRecord::Schema.define(version: 20151009134622) do
     t.string   "ebook_status"
     t.string   "korr_status"
     t.string   "pod_status"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.date     "um_sollf"
+    t.date     "um_verschickt"
+    t.text     "klapptext"
+    t.string   "um_frei"
+    t.string   "um_warten"
+    t.string   "rueckenfrei"
+    t.integer  "gprod_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
   end
 
   create_table "lektoren", force: :cascade do |t|
     t.string   "name"
     t.string   "fox_name"
+    t.integer  "gprod_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "nutzerrechte", force: :cascade do |t|
-    t.string  "abteilung"
-    t.integer "name"
-    t.integer "isbn"
-    t.integer "auflage"
-    t.integer "prio"
-    t.integer "druck"
-    t.integer "msein"
-    t.integer "muster"
-    t.integer "offsch_sollf"
-    t.integer "einliste_sollf"
-    t.integer "sreif_sollf"
-    t.integer "lf_sollf"
-    t.integer "preps_sollf"
-    t.integer "tit_sollf"
-    t.integer "rg_sollf"
-    t.integer "rg_rg_mail"
-    t.integer "rg_versand_1"
-    t.integer "rg_versand_2"
-    t.integer "rg_bezahlt"
-    t.integer "rg_vf"
-    t.integer "datei"
-    t.integer "reihe"
-    t.integer "titelei"
-    t.integer "papier"
-    t.integer "gewicht"
-    t.integer "volumen"
-    t.integer "satz"
-    t.integer "sonder"
-    t.integer "datum"
-    t.integer "eintrag"
-    t.integer "versand"
-    t.integer "tit_an"
-    t.integer "korrektur"
-    t.integer "freigabe"
-    t.integer "zum_druck"
-    t.integer "erscheinungsjahr"
-    t.integer "tit_bemerkungen_1"
-    t.integer "tit_bemerkungen_2"
-    t.integer "lek"
-    t.integer "seiten"
-    t.integer "format"
-    t.integer "umschlag"
-    t.integer "bi"
-    t.integer "vf"
-    t.integer "preps_betreuer"
-    t.integer "korr_betreuer"
-    t.integer "preps_kommentar"
-    t.integer "tagesleistung"
-    t.integer "email"
-    t.integer "offsch_an_autor"
-    t.integer "offsch_an_sch_mit_u"
-    t.integer "is_archiv"
-    t.integer "cover"
-    t.integer "ebook_bemerkungen"
-    t.integer "ftp"
-    t.integer "webshop"
-    t.integer "google"
-    t.integer "afs"
-    t.integer "luecken"
-    t.integer "a1_dat"
-    t.integer "a2_dat"
-    t.integer "korr"
-    t.integer "anmerkung"
-    t.integer "pod_verschickt"
-    t.integer "pod_meldung"
-    t.integer "off"
-    t.integer "ein_liste_status"
-    t.integer "lf_status"
-    t.integer "sreif_status"
-    t.integer "um_status"
-    t.integer "tit_status"
-    t.integer "preps_status"
-    t.integer "bi_status"
-    t.integer "rg_status"
-    t.integer "ebook_status"
-    t.integer "korr_status"
-    t.integer "pod_status"
-    t.integer "tbl_ein_liste"
-    t.integer "tbl_lf"
-    t.integer "tbl_sreif"
-    t.integer "tbl_um"
-    t.integer "tbl_tit"
-    t.integer "tbl_preps"
-    t.integer "tbl_bi"
-    t.integer "tbl_rg"
-    t.integer "tbl_ebook"
-    t.integer "tbl_korr"
-    t.integer "tbl_pod"
   end
 
   create_table "papiere", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "publications", force: :cascade do |t|
-    t.integer  "autor_id"
-    t.integer  "buch_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "rechte", force: :cascade do |t|
-    t.string  "group_name"
-    t.integer "name"
-    t.integer "isbn"
-    t.integer "auflage"
-    t.integer "prio"
-    t.integer "druck"
-    t.integer "msein"
-    t.integer "muster"
-    t.integer "offsch_sollf"
-    t.integer "einliste_sollf"
-    t.integer "sreif_sollf"
-    t.integer "lf_sollf"
-    t.integer "preps_sollf"
-    t.integer "tit_sollf"
-    t.integer "rg_sollf"
-    t.integer "rg_rg_mail"
-    t.integer "rg_versand_1"
-    t.integer "rg_versand_2"
-    t.integer "rg_bezahlt"
-    t.integer "rg_vf"
-    t.integer "datei"
-    t.integer "reihe"
-    t.integer "titelei"
-    t.integer "papier"
-    t.integer "gewicht"
-    t.integer "volumen"
-    t.integer "satz"
-    t.integer "sonder"
-    t.integer "datum"
-    t.integer "eintrag"
-    t.integer "versand"
-    t.integer "tit_an"
-    t.integer "korrektur"
-    t.integer "freigabe"
-    t.integer "zum_druck"
-    t.integer "erscheinungsjahr"
-    t.integer "tit_bemerkungen_1"
-    t.integer "tit_bemerkungen_2"
-    t.integer "lek"
-    t.integer "seiten"
-    t.integer "format"
-    t.integer "umschlag"
-    t.integer "bi"
-    t.integer "vf"
-    t.integer "preps_betreuer"
-    t.integer "korr_betreuer"
-    t.integer "preps_kommentar"
-    t.integer "tagesleistung"
-    t.integer "email"
-    t.integer "offsch_an_autor"
-    t.integer "offsch_an_sch_mit_u"
-    t.integer "is_archiv"
-    t.integer "cover"
-    t.integer "ebook_bemerkungen"
-    t.integer "ftp"
-    t.integer "webshop"
-    t.integer "google"
-    t.integer "afs"
-    t.integer "luecken"
-    t.integer "a1_dat"
-    t.integer "a2_dat"
-    t.integer "korr"
-    t.integer "anmerkung"
-    t.integer "pod_verschickt"
-    t.integer "pod_meldung"
-    t.integer "off"
-    t.integer "ein_liste_status"
-    t.integer "lf_status"
-    t.integer "sreif_status"
-    t.integer "um_status"
-    t.integer "tit_status"
-    t.integer "preps_status"
-    t.integer "bi_status"
-    t.integer "rg_status"
-    t.integer "ebook_status"
-    t.integer "korr_status"
-    t.integer "pod_status"
-    t.integer "tbl_ein_liste",       default: 0
-    t.integer "tbl_lf",              default: 0
-    t.integer "tbl_sreif",           default: 0
-    t.integer "tbl_um",              default: 0
-    t.integer "tbl_tit",             default: 0
-    t.integer "tbl_preps",           default: 0
-    t.integer "tbl_bi",              default: 0
-    t.integer "tbl_rg",              default: 0
-    t.integer "tbl_ebook",           default: 0
-    t.integer "tbl_korr",            default: 0
-    t.integer "tbl_pod",             default: 0
   end
 
   create_table "reihen", force: :cascade do |t|

@@ -18,16 +18,16 @@ class Ability
       can :manage, :all
     end
     if @departName.include?'Umschlag'
-      can :read, :ums
+      can
     end
     if @departName.include?'Satz'
-      can :read, :s_reifs
+      can
     end
     if @departName.include?'Titelei'
-      can :read, :lves
+      can
     end
     if @departName.include?'PrePs'
-      can :read, :preps
+      can
     end
     if @departName.include?'Rechnung'
       can
@@ -36,7 +36,7 @@ class Ability
       can
     end
     if @departName.include?'Lektor'
-      can
+      can :manage, Projekt
     end
     if @departName.include?'Pod'
       can
@@ -47,6 +47,6 @@ class Ability
 
 
     can :read, ActiveAdmin::Page, :name => "Dashboard"
-      can :read, ActiveAdmin::Page, :name => "Access_denied"
+    can :read, ActiveAdmin::Page, :name => "Access_denied"
   end
 end

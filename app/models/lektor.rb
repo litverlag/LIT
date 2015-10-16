@@ -4,6 +4,12 @@ class Lektor < ActiveRecord::Base
   accepts_nested_attributes_for :admin_users, :allow_destroy => true
   accepts_nested_attributes_for :admin_users_lektoren, :allow_destroy => true
 
+  belongs_to :gprods
+  accepts_nested_attributes_for :gprods
+
+
+
+
  ransacker :nameAndFoxName do |parent|
     Arel::Nodes::InfixOperation.new('||', Arel::Nodes::InfixOperation.new('||', parent.table[:name], Arel::Nodes.build_quoted(' ')),parent.table[:fox_name])
   end

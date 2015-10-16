@@ -19,7 +19,7 @@ class CreateAutoren < ActiveRecord::Migration
       t.string :dort
       t.string :dtel
       t.string :dfax
-
+      t.integer :gprod_id
       t.timestamps null: false
     end
   end

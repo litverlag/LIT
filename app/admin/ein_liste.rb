@@ -1,4 +1,5 @@
 ActiveAdmin.register EinListe do
+
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #
@@ -12,7 +13,32 @@ ActiveAdmin.register EinListe do
 #   permitted
 # end
 
-  actions :index, :show, :update, :edit
+  controller do
+    def permitted_params
+
+      params.permit!
+    end
+  end
+
+
+ #actions :index, :show, :update, :edit
+
+=begin
+I tried to make a dynamic scope for each Lektor in belonging to a Project
+  scope "Published", :if => proc {  @lekt = []
+                     current_admin_user.projekts.to_a.each do |a|
+                       @lekt.append a.name
+                     end
+                   lektor.to_a
+
+                   } do |gprod|
+                     gprod
+                   end
+=end
+ # scope_to :projekts, association_method: :projekts
+  #filter :lektor, as: :select, collection: @lektoren_arr.all.map{ |u| ["#{u.name}"] }
+
+
 
   filter :name
   filter :isbn
@@ -38,9 +64,15 @@ ActiveAdmin.register EinListe do
   filter :sonder
 
   menu label: 'EinListe', priority: 2
-  index title: 'EinListe' do
+
+
+
+  index do
     column 'Status', :ein_liste_status
     column :name
+    puts "___________________________________________"
+     puts current_admin_user.lektoren.to_a
+    puts "___________________________________________"
     column 'ISBN', :isbn
     column :auflage
     column :prio
@@ -63,12 +95,6 @@ ActiveAdmin.register EinListe do
     column 'E-Mail', :email
     column :sonder
     actions
-  end
-
-controller do
-    def permitted_params
-      params.permit!
-    end
   end
 
 
@@ -97,6 +123,7 @@ controller do
       row :vf
       row :email
       row :sonder
+      row :lektor
     end
   end
 
@@ -105,6 +132,7 @@ controller do
     f.inputs "Ein Liste bearbeiten" do
       f.input :name 
     end
+    f.input :lektor, as: :select, :include_blank => false
     f.actions
   end
 

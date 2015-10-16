@@ -1,0 +1,25 @@
+TODO:
+
+-->Status-Tags
+	-wie soll der Status geändert werden(Button? Combobox?)
+
+-->Abteilungs-Transfer(wann sieht welche Abteilung einen Eintrag)
+	-nötige Logik implemetieren
+
+-->Scope: muss in x Tagen fertig sein
+	-time.now von welchem Rechner
+
+-->Einträge bearbeiten
+	-nicht alle Attribute dürfen bearbeitet werden -> permit_params
+	-edit form muss angepasst werden(nur die Attribute anzeigen, die man ändern darf)
+
+-->Open Office Output
+	-Export von Tabellen
+	-Export von Detailansichten von Records
+
+-->Offsch als Eigenschaft
+	-vielleicht als Link in normale Tabelle
+
+-->Welche Spalten müssen sichtbar sein? Welche Filter sind wichtig?
+
+-->

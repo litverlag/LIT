@@ -14,4 +14,7 @@ class AdminUser < ActiveRecord::Base
   accepts_nested_attributes_for :departments, :allow_destroy => true
   accepts_nested_attributes_for :admin_users_departments, :allow_destroy => true
 
+
+
+
 end
