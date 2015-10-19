@@ -18,28 +18,28 @@ class Ability
       can :manage, :all
     end
     if @departName.include?'Umschlag'
-      can
+
     end
     if @departName.include?'Satz'
-      can
+
     end
     if @departName.include?'Titelei'
-      can
+
     end
     if @departName.include?'PrePs'
-      can
+
     end
     if @departName.include?'Rechnung'
-      can
+
     end
     if @departName.include?'Bildprüfung'
-      can
+
     end
     if @departName.include?'Lektor'
       can :manage, Projekt
     end
     if @departName.include?'Pod'
-      can
+
     end
     if @departName.include?'Binderei'
       can :read, :bis
