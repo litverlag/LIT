@@ -22,7 +22,7 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'faecher_zuordnung', 'faecher_zuordnungen'
   inflect.irregular 'autor', 'autoren'
   inflect.irregular 'buch', 'buecher'
-  inflect.irregular 'lektor', 'projekts'
+  inflect.irregular 'lektor', 'lektoren'
   inflect.irregular 'fach', 'faecher'
   inflect.irregular 'land', 'laender'
   inflect.irregular 'format', 'formate'
