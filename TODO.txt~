@@ -22,4 +22,10 @@ TODO:
 
 -->Welche Spalten müssen sichtbar sein? Welche Filter sind wichtig?
 
--->
+-->die .json Tabellen ür den Autofill nicht über die URL zugänglich machen
+
+-->neue View erstellen um Bucheigenschaften zu bearbeiten
+
+-->manche GProd-Attribute als bool oder date deklarieren
+
+-->Internationalisierung (alles auf deutsch)

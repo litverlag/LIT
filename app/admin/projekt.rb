@@ -35,7 +35,7 @@ ActiveAdmin.register Projekt do
   index title: "Meine Projekte" do
     column :druck
     column('Name') {|p| p.buch }
-    
+
 
   end
 
