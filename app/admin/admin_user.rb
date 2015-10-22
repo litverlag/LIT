@@ -28,7 +28,7 @@
         row :created_at
 
       end
-
+=begin
         panel "Zugewiesene Lektoren" do
           table_for admin_user.lektoren do
             column "Name"  do |b|
@@ -39,6 +39,7 @@
             end
           end
         end
+=end
       panel "Zugewiesene Abteilungen" do
         table_for admin_user.departments do
           column "Name"  do |b|
@@ -69,7 +70,7 @@
             dep.input :department, :include_blank => false
           end
        end
-
+=begin
         #TODO add the ID column to the join table for the Lektoren belongin to the admin_users
 
         f.inputs 'Die Werke dieses Lektors soll der User sehen' do
@@ -80,6 +81,11 @@
 
       end
       f.actions
+    end
+  end
+
+=end
+      end
     end
   end
 
