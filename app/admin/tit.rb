@@ -13,8 +13,11 @@ ActiveAdmin.register Tit do
 #   permitted
 # end
 
+  member_action :status, :method => :post do
+    resource.change_status('tit_status')
+    redirect_to collection_path, notice: "Bestätigt"
+  end
 
-  actions :index, :show, :update, :edit
 
   permitted_params = [:name, :isbn]
 
@@ -46,7 +49,7 @@ ActiveAdmin.register Tit do
   menu label: 'Tit', priority: 6
 
   index title: 'Titelei' do
-    column("Status") {|tit| status_tag(tit.status)}
+    column("Status") {|model| status_tag(model.status('tit_status'))}
     column :name
     column 'ISBN', :isbn
     column :Lek
@@ -66,15 +69,18 @@ ActiveAdmin.register Tit do
     actions
   end
 
-  show do
+  action_item only: :show do
+
+    link_to 'Nächster Status', status_admin_tit_path, method: :post
 
   end
+
 
 
   form do |f|
     f.inputs "Titelei-Eintrag bearbeiten" do
       permitted_params.each do |p|
-        f.input p
+       # f.input p
       end
     end
     f.actions

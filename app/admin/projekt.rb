@@ -17,16 +17,7 @@ ActiveAdmin.register Projekt do
      def permitted_params
        params.permit!
      end
-=begin
-     def new
-       super
-       @projekt = Gprod.new
-     end
 
-     def create
-       @projekt.save
-     end
-=end
     end
 
 
@@ -39,19 +30,10 @@ ActiveAdmin.register Projekt do
 
   end
 
-   form do |f|
+
+   form partial: 'projectInput'
 
 
-    f.inputs do
-
-      f.has_many :buch do |y|
-        y.input :name
-      end
-
-
-      f.actions
-    end
-   end
 
 
 

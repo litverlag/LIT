@@ -41,7 +41,7 @@
   &.yes { background: #6090DB }
   &.no  { background: grey }
 
-  &.fertig { background: green }
-  &.bearbeitung { background: yellow }
-  &.neu { background: red }
+  &.fertig { background: green; }
+  &.bearbeitung { background: yellow; color: #2E2F30 }
+  &.neu { background: red; }
 }
