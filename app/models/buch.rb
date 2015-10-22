@@ -14,8 +14,8 @@ class Buch < ActiveRecord::Base
   accepts_nested_attributes_for :autoren, :allow_destroy => true
   accepts_nested_attributes_for :autoren_buecher, :allow_destroy => true
 
-  belongs_to :gprods
-  accepts_nested_attributes_for :gprods
+  belongs_to :gprod
+  accepts_nested_attributes_for :gprod
 
 
 

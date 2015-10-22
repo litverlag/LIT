@@ -4,8 +4,8 @@ class Lektor < ActiveRecord::Base
   accepts_nested_attributes_for :admin_users, :allow_destroy => true
   accepts_nested_attributes_for :admin_users_lektoren, :allow_destroy => true
 
-  belongs_to :gprods
-  accepts_nested_attributes_for :gprods
+  belongs_to :gprod
+  accepts_nested_attributes_for :gprod
 
 
 
