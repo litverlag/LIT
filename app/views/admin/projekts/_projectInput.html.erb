@@ -1,6 +1,4 @@
-<h1>Ein neues Projekt erstellen</h1>
-
-
+<% if false %>
 
 <%= form_for @projekt, url: "/admin/projekts/#{params[:id]}#update"  do |f| %>
     <%= f.label :first_name %>:
@@ -8,8 +6,31 @@
     <%= f.submit %>
 <% end %>
 
+<% end %>
 
 
-<% @projekt.methods.each do |m| %>
-    <%= m  %></br>
-<%end%>
+
+<% if not @projekt.id %>    <!-- neues Projekt erstellen -->
+
+    <%= form_for @projekt, url: admin_projekts_path do |projekt_form| %>
+        <%= projekt_form.label :druck %>
+        <%= projekt_form.text_field :druck %></br>
+
+        <%= fields_for :buch, @projekt.buch do |buch_fields| %>
+            <%= buch_fields.label :name %>
+            <%= buch_fields.text_field :name %>
+        <% end %>
+
+        <%= projekt_form.submit %>
+    <% end %>
+
+<% elsif @projekt.id %>     <!-- bestehendes Projekt bearbeiten -->
+
+    <%= form_for @projekt, url: admin_projekt_path(@projekt.id) do |f| %>
+        <%= f.label :druck %>:
+        <%= f.text_field :druck %><br />
+
+        <%= f.submit %>
+    <% end %>
+
+<% end %>

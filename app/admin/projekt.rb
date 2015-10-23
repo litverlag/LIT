@@ -19,30 +19,33 @@ ActiveAdmin.register Projekt do
      end
 
      def new
-       @projekt = Gprod.new
+       @projekt = Projekt.new
+       @projekt.buch = Buch.new
      end
 
 
      def create
-       permitted_params
-       @projekt = Gprod.new(params[:gprod])
-       @projekt.save
-       redirect_to collection_path
+       if @projekt = Projekt.create(permitted_params[:projekt])
+          @projekt.buch = Buch.create(permitted_params[:buch])
+          redirect_to collection_path, notice: "Projekt erfolgreich erstellt"
+       else
+         render 'new'
+       end
+     end
+
+     def edit
+       @projekt = Projekt.find(params[:id])
      end
 
      def update
-       permitted_params
-       @projekt = Gprod.find(params[:id])
-       if @projekt.update(params[:gprod])
-         redirect_to collection_path
+       @projekt = Projekt.find(params[:id])
+       if @projekt.update(permitted_params[:projekt])
+         redirect_to collection_path, notice: "Projekt erfolgreich überarbeitet"
        else
          render 'edit'
        end
      end
 
-     def edit
-      @projekt = Gprod.find(params[:id])
-     end
    end
 
 
@@ -50,7 +53,7 @@ ActiveAdmin.register Projekt do
 
   index title: "Meine Projekte" do
     column :druck
-    #column('Name') {|p| p.buch.name }
+    column('Name') {|p| p.buch.name }
 
     actions
 
