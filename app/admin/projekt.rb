@@ -19,17 +19,18 @@ ActiveAdmin.register Projekt do
      end
 
      def new
-       @projekt = Projekt.new
-       @projekt.buch = Buch.new
+       @projekt = Projekt.new :buch => Buch.new
+       #@projekt.buch = Buch.new
      end
 
 
      def create
        if @projekt = Projekt.create(permitted_params[:projekt])
-          @projekt.buch = Buch.create(permitted_params[:buch])
-          redirect_to collection_path, notice: "Projekt erfolgreich erstellt"
-       else
-         render 'new'
+         if @projekt.buch = Buch.create(permitted_params[:buch])
+           redirect_to collection_path, notice: "Projekt erfolgreich erstellt"
+         else
+           render 'new'
+         end
        end
      end
 
@@ -40,10 +41,20 @@ ActiveAdmin.register Projekt do
      def update
        @projekt = Projekt.find(params[:id])
        if @projekt.update(permitted_params[:projekt])
-         redirect_to collection_path, notice: "Projekt erfolgreich überarbeitet"
+          if @projekt.buch.update(permitted_params[:buch])
+            redirect_to collection_path, notice: "Projekt erfolgreich überarbeitet"
        else
          render 'edit'
        end
+       end
+     end
+
+     def destroy
+       @projekt = Projekt.find(params[:id])
+       @projekt.buch.destroy
+       @projekt.destroy
+       redirect_to collection_path, notice: "Projekt erfolgreich gelöscht"
+
      end
 
    end

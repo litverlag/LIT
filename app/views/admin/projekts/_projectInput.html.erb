@@ -14,23 +14,28 @@
 
     <%= form_for @projekt, url: admin_projekts_path do |projekt_form| %>
         <%= projekt_form.label :druck %>
-        <%= projekt_form.text_field :druck %></br>
+        <%= projekt_form.text_field :druck %></br></br>
 
         <%= fields_for :buch, @projekt.buch do |buch_fields| %>
             <%= buch_fields.label :name %>
             <%= buch_fields.text_field :name %>
-        <% end %>
+        <% end %></br></br>
 
         <%= projekt_form.submit %>
     <% end %>
 
 <% elsif @projekt.id %>     <!-- bestehendes Projekt bearbeiten -->
 
-    <%= form_for @projekt, url: admin_projekt_path(@projekt.id) do |f| %>
-        <%= f.label :druck %>:
-        <%= f.text_field :druck %><br />
+    <%= form_for @projekt, url: admin_projekt_path(@projekt.id) do |projekt_form| %>
+        <%= projekt_form.label :druck %>
+        <%= projekt_form.text_field :druck %></br></br>
 
-        <%= f.submit %>
+        <%= fields_for :buch, @projekt.buch do |buch_fields| %>
+            <%= buch_fields.label :name %>
+            <%= buch_fields.text_field :name %>
+        <% end %></br></br>
+
+        <%= projekt_form.submit %>
     <% end %>
 
 <% end %>
