@@ -18,21 +18,47 @@ ActiveAdmin.register Projekt do
        params.permit!
      end
 
-    end
+     def new
+       @projekt = Gprod.new
+     end
+
+
+     def create
+       permitted_params
+       @projekt = Gprod.new(params[:gprod])
+       @projekt.save
+       redirect_to collection_path
+     end
+
+     def update
+       permitted_params
+       @projekt = Gprod.find(params[:id])
+       if @projekt.update(params[:gprod])
+         redirect_to collection_path
+       else
+         render 'edit'
+       end
+     end
+
+     def edit
+      @projekt = Gprod.find(params[:id])
+     end
+   end
 
 
   menu label: "Meine Projekte"
 
   index title: "Meine Projekte" do
     column :druck
-    column('Name') {|p| p.buch }
+    #column('Name') {|p| p.buch.name }
 
+    actions
 
   end
 
 
-   form partial: 'projectInput'
 
+   form partial: 'projectInput'
 
 
 

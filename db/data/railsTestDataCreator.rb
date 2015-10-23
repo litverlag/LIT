@@ -4,6 +4,9 @@ class RailsTestDataCreator
     def initialize
         ActiveRecord::Base.connection
         Rails.application.eager_load!
+	(1..105).each do 
+ 		ActiveRecord::Base.descendants[1].create()
+	end
     end
 
     def create_database_entry()
@@ -11,9 +14,10 @@ class RailsTestDataCreator
         ActiveRecord::Base.connection.tables.each do |table_name| 
             ActiveRecord::Base.connection.columns(table_name).each do|column_name|                
                 ActiveRecord::Base.descendants.each do |model|
+		model.create(get_data_array(table_name.to_s,column_name.name,column_name.type.to_s))
                     if (/#{model}/i.match(table_name) != nil)
-                        puts "#{model} #{column_name.name}  "
-                        model.create(get_data_array(table_name.to_s,column_name.name,column_name.type.to_s))
+                        puts "#{model} #{column_name.name}  "                     
+			model.update(get_data_array(table_name.to_s,column_name.name,column_name.type.to_s))
                     end
                 end
             end
@@ -31,7 +35,7 @@ class RailsTestDataCreator
         elsif (/__[\w]+/.match(filename).to_s == "__boolean") 
             p = Proc.new{|line| true if line=="true"; false if false=="false"}
         elsif (/__[\w]+/.match(filename).to_s == "__date") 
-             p = Proc.new{|line| Date.strptime(line, '%d-%m-%Y')}
+             p = Proc.new{|line| Date.rfc2822(line)}
         elsif (/__[\w]+/.match(filename).to_s == "__datetime") 
              p = Proc.new{|line|  DateTime.rfc2822(line)}
         elsif (/__[\w]+/.match(filename).to_s == "__decimal")

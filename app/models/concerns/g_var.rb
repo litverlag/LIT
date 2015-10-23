@@ -1,4 +1,4 @@
-class GVar
+module GVar
 
 #Mögliche Stati eines Projektes
   $STATUS = ["neu", "bearbeitung", "fertig"]

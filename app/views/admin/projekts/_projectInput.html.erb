@@ -1,12 +1,15 @@
 <h1>Ein neues Projekt erstellen</h1>
 
-<%= form_for :gprod, url: " " do |f| %>
-    <p>
-      <%= f.label :druck %><br>
-      <%= f.text_field :druck %>
-    </p>
 
-    <p>
-      <%= f.submit %>
-    </p>
+
+<%= form_for @projekt, url: "/admin/projekts/#{params[:id]}#update"  do |f| %>
+    <%= f.label :first_name %>:
+    <%= f.text_field :druck %><br />
+    <%= f.submit %>
 <% end %>
+
+
+
+<% @projekt.methods.each do |m| %>
+    <%= m  %></br>
+<%end%>
