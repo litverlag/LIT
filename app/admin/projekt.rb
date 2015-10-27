@@ -62,13 +62,6 @@ ActiveAdmin.register Projekt do
 
   menu label: "Meine Projekte"
 
-  index title: "Meine Projekte" do
-    column :druck
-   #  column('Name') {|p| p.buch.name }
-
-    actions
-
-  end
 
 
 

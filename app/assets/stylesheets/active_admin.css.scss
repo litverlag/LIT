@@ -7,10 +7,15 @@
 // For example, to change the sidebar width:
 // $sidebar-width: 242px;
 
+
 // Active Admin's got SASS!
 @import "active_admin/mixins";
 @import "active_admin/base";
 @import "active_admin/select2/base";
+@import 'input_form/input_form';
+@import 'input_form/nav_bar';
+
+
 
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:
@@ -24,6 +29,10 @@
 	padding-left:2pt !important;
 	padding-right:2pt !important;
 }
+
+
+
+
 
 
 .status_tag {
@@ -44,4 +53,10 @@
   &.fertig { background: green; }
   &.bearbeitung { background: yellow; color: #2E2F30 }
   &.neu { background: red; }
+
 }
+
+//Adding styles for the costum input view
+
+
+

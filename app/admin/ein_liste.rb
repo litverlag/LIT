@@ -128,13 +128,7 @@ I tried to make a dynamic scope for each Lektor in belonging to a Project
   end
 
   # TODO anpassen 
-  form do |f|
-    f.inputs "Ein Liste bearbeiten" do
-      f.input :name 
-    end
-    f.input :lektor, as: :select, :include_blank => false
-    f.actions
-  end
+
 
 
 end

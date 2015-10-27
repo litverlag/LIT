@@ -1,41 +1,89 @@
-<% if false %>
 
-<%= form_for @projekt, url: "/admin/projekts/#{params[:id]}#update"  do |f| %>
-    <%= f.label :first_name %>:
-    <%= f.text_field :druck %><br />
-    <%= f.submit %>
+<nav>
+  <ul>
+    <li onclick='$(".buch").hide();$(".autor").hide();$(".projekt").show'>Projekt</li>
+    <li onclick='$(".buch").hide();$(".autor").show();$(".projekt").hide'>Autor</li>
+    <li onclick='$(".buch").show();$(".autor").hide();$(".projekt").hide'>Buch</li>
+  </ul>
+</nav>
+
+
+
+<% if not @projekt.id%>
+    <% used_url = admin_projekts_path%>
+<% elsif @projekt.id %>
+    <% used_url = admin_projekt_path(@projekt.id)%>
 <% end %>
 
-<% end %>
 
+<fieldset class="buch"><legend><span>Buch</span></legend>
+<ul>
 
+  <%= form_for @projekt, url: used_url do |projekt_form| %>
+        <li>
+            <%= projekt_form.label :druck %>
+            <%= projekt_form.text_field :druck %>
+        </li>
 
-<% if not @projekt.id %>    <!-- neues Projekt erstellen -->
-
-    <%= form_for @projekt, url: admin_projekts_path do |projekt_form| %>
-        <%= projekt_form.label :druck %>
-        <%= projekt_form.text_field :druck %></br></br>
-
-        <%= fields_for :buch, @projekt.buch do |buch_fields| %>
+ <%= fields_for :buch, @projekt.buch do |buch_fields| %>
+          <li>
             <%= buch_fields.label :name %>
             <%= buch_fields.text_field :name %>
-        <% end %></br></br>
+          </li>
+        <% end %>
 
         <%= projekt_form.submit %>
+
     <% end %>
 
-<% elsif @projekt.id %>     <!-- bestehendes Projekt bearbeiten -->
+</ul>
 
-    <%= form_for @projekt, url: admin_projekt_path(@projekt.id) do |projekt_form| %>
-        <%= projekt_form.label :druck %>
-        <%= projekt_form.text_field :druck %></br></br>
+</fieldset>
 
-        <%= fields_for :buch, @projekt.buch do |buch_fields| %>
+  <fieldset class="autor"><legend><span>Autor</span></legend>
+<ul>
+
+  <%= form_for @projekt, url: used_url do |projekt_form| %>
+        <li>
+            <%= projekt_form.label :druck %>
+            <%= projekt_form.text_field :druck %>
+        </li>
+
+ <%= fields_for :buch, @projekt.buch do |buch_fields| %>
+          <li>
             <%= buch_fields.label :name %>
             <%= buch_fields.text_field :name %>
-        <% end %></br></br>
+          </li>
+        <% end %>
 
         <%= projekt_form.submit %>
+
     <% end %>
 
-<% end %>
+</ul>
+
+</fieldset>
+
+<fieldset class="projekt"><legend><span>Projekt</span></legend>
+<ul>
+
+  <%= form_for @projekt, url: used_url do |projekt_form| %>
+        <li>
+            <%= projekt_form.label :druck %>
+            <%= projekt_form.text_field :druck %>
+        </li>
+
+ <%= fields_for :buch, @projekt.buch do |buch_fields| %>
+          <li>
+            <%= buch_fields.label :name %>
+            <%= buch_fields.text_field :name %>
+          </li>
+        <% end %>
+
+        <%= projekt_form.submit %>
+
+    <% end %>
+
+</ul>
+
+</fieldset>
