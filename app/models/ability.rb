@@ -12,7 +12,6 @@ class Ability
         @departName.append a.name
     end
 
-
     #TODO Rechte für alle Benutzergruppen eintragen
     if @departName.include?'superadmin'
       can :manage, :all
@@ -48,5 +47,6 @@ class Ability
 
     can :read, ActiveAdmin::Page, :name => "Dashboard"
     can :read, ActiveAdmin::Page, :name => "Access_denied"
+
   end
 end
