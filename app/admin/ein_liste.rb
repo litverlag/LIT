@@ -70,9 +70,6 @@ I tried to make a dynamic scope for each Lektor in belonging to a Project
   index do
     column 'Status', :ein_liste_status
     column :name
-    puts "___________________________________________"
-     puts current_admin_user.lektoren.to_a
-    puts "___________________________________________"
     column 'ISBN', :isbn
     column :auflage
     column :prio
@@ -126,8 +123,6 @@ I tried to make a dynamic scope for each Lektor in belonging to a Project
       row :lektor
     end
   end
-
-  # TODO anpassen 
 
 
 

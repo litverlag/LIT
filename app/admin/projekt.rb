@@ -13,6 +13,7 @@ ActiveAdmin.register Projekt do
 #   permitted
 # end
 
+
    controller do
      def permitted_params
        params.permit!
@@ -25,6 +26,7 @@ ActiveAdmin.register Projekt do
 
 
      def create
+       #TODO We have to add the id of the current Lektor automatically to the Project
        if @projekt = Projekt.create(permitted_params[:projekt])
          if @projekt.buch = Buch.create(permitted_params[:buch])
            redirect_to collection_path, notice: "Projekt erfolgreich erstellt"
@@ -57,11 +59,20 @@ ActiveAdmin.register Projekt do
 
      end
 
+     def scoped_collection
+       #This method scoped all shown db entries by the following condition. We use it here so that each Lektor can see only his own projects
+
+       super.where(druck: 'abc')
+     end
+
    end
 
 
   menu label: "Meine Projekte"
 
+   index row_class: ->projekt { 'active' if true }  do
+     column :druck
+   end
 
 
 

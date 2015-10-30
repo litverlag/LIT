@@ -1,9 +1,10 @@
 
 <nav>
   <ul>
-    <li onclick='$(".buch").hide();$(".autor").hide();$(".projekt").show'>Projekt</li>
-    <li onclick='$(".buch").hide();$(".autor").show();$(".projekt").hide'>Autor</li>
-    <li onclick='$(".buch").show();$(".autor").hide();$(".projekt").hide'>Buch</li>
+    <li onclick='$(".buch").hide();$(".autor").hide();$(".projekt").show()'>Projekt</li>
+    <li onclick='$(".buch").show();$(".autor").hide();$(".projekt").hide()'>Buch</li>
+    <li onclick='$(".buch").hide();$(".autor").show();$(".projekt").hide()'>Autor</li>
+
   </ul>
 </nav>
 
@@ -24,6 +25,11 @@
             <%= projekt_form.label :druck %>
             <%= projekt_form.text_field :druck %>
         </li>
+      <li>
+        <%= projekt_form.label :afs %>
+        <%= projekt_form.text_field :afs %>
+
+      </li>
 
  <%= fields_for :buch, @projekt.buch do |buch_fields| %>
           <li>

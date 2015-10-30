@@ -1,6 +1,4 @@
 class Gprod < ActiveRecord::Base
-  #Mögliche Stati, die an childclasses von Gprod vererbt werden
-
   has_one :lektor
   accepts_nested_attributes_for :lektor
 
@@ -9,7 +7,6 @@ class Gprod < ActiveRecord::Base
 
   has_one :buch
   accepts_nested_attributes_for :buch
-
 
 
 end
