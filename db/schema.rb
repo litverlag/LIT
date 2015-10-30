@@ -75,7 +75,6 @@ ActiveRecord::Schema.define(version: 20151028175323) do
     t.string   "dort"
     t.string   "dtel"
     t.string   "dfax"
-    t.integer  "gprod_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
   end
@@ -83,11 +82,6 @@ ActiveRecord::Schema.define(version: 20151028175323) do
   create_table "autoren_buecher", id: false, force: :cascade do |t|
     t.integer "autor_id", null: false
     t.integer "buch_id",  null: false
-  end
-
-  create_table "autoren_gprods", id: false, force: :cascade do |t|
-    t.integer "autor_id", null: false
-    t.integer "gprod_id", null: false
   end
 
   create_table "autoren_reihen", id: false, force: :cascade do |t|
@@ -102,6 +96,13 @@ ActiveRecord::Schema.define(version: 20151028175323) do
   end
 
   create_table "buecher", force: :cascade do |t|
+    t.integer  "format_id"
+    t.integer  "bindung_id"
+    t.integer  "papier_id"
+    t.integer  "umschlag_id"
+    t.integer  "autor_id"
+    t.integer  "lektor_id"
+    t.integer  "gprod_id"
     t.string   "name"
     t.string   "isbn"
     t.string   "issn"
@@ -118,13 +119,6 @@ ActiveRecord::Schema.define(version: 20151028175323) do
     t.date     "erscheinungsjahr"
     t.float    "gewicht"
     t.float    "volumen"
-    t.integer  "format_id"
-    t.integer  "bindung_id"
-    t.integer  "papier_id"
-    t.integer  "umschlag_id"
-    t.integer  "autor_id"
-    t.integer  "lektor_id"
-    t.integer  "gprod_id"
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
   end
@@ -154,9 +148,8 @@ ActiveRecord::Schema.define(version: 20151028175323) do
   end
 
   create_table "gprods", force: :cascade do |t|
-    t.integer  "buch_id"
-    t.integer  "autor_id"
     t.integer  "lektor_id"
+    t.integer  "autor_id"
     t.integer  "auflage"
     t.string   "prio"
     t.string   "druck"
@@ -228,7 +221,6 @@ ActiveRecord::Schema.define(version: 20151028175323) do
     t.string   "um_frei"
     t.string   "um_warten"
     t.string   "rueckenfrei"
-    t.integer  "gprod_id"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
   end
@@ -236,7 +228,6 @@ ActiveRecord::Schema.define(version: 20151028175323) do
   create_table "lektoren", force: :cascade do |t|
     t.string   "name"
     t.string   "fox_name"
-    t.integer  "gprod_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

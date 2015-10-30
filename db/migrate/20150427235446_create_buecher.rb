@@ -1,6 +1,17 @@
 class CreateBuecher < ActiveRecord::Migration
   def change
     create_table :buecher do |t|
+
+      #Association Attribute
+      t.belongs_to :format
+      t.belongs_to :bindung
+      t.belongs_to :papier
+      t.belongs_to :umschlag
+      t.belongs_to :autor
+      t.belongs_to :lektor
+      t.belongs_to :gprod
+
+      #Normale Attribute
       t.string :name
       t.string :isbn
       t.string :issn
@@ -17,16 +28,6 @@ class CreateBuecher < ActiveRecord::Migration
       t.date :erscheinungsjahr
       t.float :gewicht
       t.float :volumen
-
-
-      t.belongs_to :format
-      t.belongs_to :bindung
-      t.belongs_to :papier
-      t.belongs_to :umschlag
-      t.belongs_to :autor
-      t.belongs_to :lektor
-      t.belongs_to :gprod
-
 
       t.timestamps null: false
     end

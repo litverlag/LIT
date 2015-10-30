@@ -2,12 +2,11 @@ class CreateGprods < ActiveRecord::Migration
   def change
     create_table :gprods do |t|
 
-      #gejointe Attribute
-      t.belongs_to :buch
-      t.belongs_to :autor
+      #Association Attribute
       t.belongs_to :lektor
+      t.belongs_to :autor
 
-      #Nicht joined Attribute
+      #Normale Attribute
       t.integer :auflage
       t.string :prio
       t.string :druck
@@ -79,7 +78,6 @@ class CreateGprods < ActiveRecord::Migration
       t.string :um_frei
       t.string :um_warten
       t.string  :rueckenfrei
-      t.integer :gprod_id
       t.timestamps null: false
     end
   end
