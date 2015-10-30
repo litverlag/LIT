@@ -1,14 +1,12 @@
 class Autor < ActiveRecord::Base
 
-  has_many :reihen_hg_zuordnungen
-  has_many :reihen, through: :reihen_hg_zuordnungen
+  has_and_belongs_to_many :reihen
+  accepts_nested_attributes_for :reihen, :allow_destroy => true
 
-  has_many :autoren_buecher
-  has_many :buecher, through: :autoren_buecher
+  has_and_belongs_to_many :buecher
   accepts_nested_attributes_for :buecher, :allow_destroy => true
-  accepts_nested_attributes_for :autoren_buecher, :allow_destroy => true
 
-  belongs_to :gprods
+  has_and_belongs_to_many :gprods
   accepts_nested_attributes_for :gprods
 
 

@@ -11,15 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151016102923) do
-
-  create_table "Autoren_Buecher", id: false, force: :cascade do |t|
-    t.integer "autor_id", null: false
-    t.integer "buch_id",  null: false
-  end
-
-  add_index "Autoren_Buecher", ["autor_id", "buch_id"], name: "index_Autoren_Buecher_on_autor_id_and_buch_id"
-  add_index "Autoren_Buecher", ["buch_id", "autor_id"], name: "index_Autoren_Buecher_on_buch_id_and_autor_id"
+ActiveRecord::Schema.define(version: 20151028175323) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -54,12 +46,12 @@ ActiveRecord::Schema.define(version: 20151016102923) do
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
 
-  create_table "admin_users_departments", force: :cascade do |t|
+  create_table "admin_users_departments", id: false, force: :cascade do |t|
     t.integer "admin_user_id", null: false
     t.integer "department_id", null: false
   end
 
-  create_table "admin_users_lektoren", force: :cascade do |t|
+  create_table "admin_users_lektoren", id: false, force: :cascade do |t|
     t.integer "admin_user_id", null: false
     t.integer "lektor_id",     null: false
   end
@@ -86,6 +78,21 @@ ActiveRecord::Schema.define(version: 20151016102923) do
     t.integer  "gprod_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+  end
+
+  create_table "autoren_buecher", id: false, force: :cascade do |t|
+    t.integer "autor_id", null: false
+    t.integer "buch_id",  null: false
+  end
+
+  create_table "autoren_gprods", id: false, force: :cascade do |t|
+    t.integer "autor_id", null: false
+    t.integer "gprod_id", null: false
+  end
+
+  create_table "autoren_reihen", id: false, force: :cascade do |t|
+    t.integer "autor_id", null: false
+    t.integer "reihe_id", null: false
   end
 
   create_table "bindungen", force: :cascade do |t|
@@ -122,54 +129,15 @@ ActiveRecord::Schema.define(version: 20151016102923) do
     t.datetime "updated_at",                               null: false
   end
 
+  create_table "buecher_reihen", id: false, force: :cascade do |t|
+    t.integer "buch_id",  null: false
+    t.integer "reihe_id", null: false
+  end
+
   create_table "departments", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "ein_listes", force: :cascade do |t|
-    t.string   "ISBN"
-    t.string   "Auflage"
-    t.string   "Prio"
-    t.string   "Druck"
-    t.string   "MsEin"
-    t.string   "SollF"
-    t.string   "Lek"
-    t.string   "Korr"
-    t.string   "Format"
-    t.string   "Date"
-    t.string   "Seiten"
-    t.string   "Reihe"
-    t.string   "Titelei"
-    t.string   "Form"
-    t.string   "Papier"
-    t.string   "Umschlag"
-    t.string   "Satz"
-    t.string   "vf"
-    t.string   "email"
-    t.string   "Sonder"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-    t.string   "Name"
-    t.string   "SollF_Tit"
-    t.string   "Eintrag"
-    t.string   "Versand"
-    t.string   "Verschickt"
-    t.string   "Ruecken"
-    t.string   "Warten"
-    t.string   "Besonderheit"
-    t.string   "Frei"
-    t.string   "Klapptext"
-    t.string   "Bild"
-    t.string   "Korrektur"
-    t.string   "Freigabe"
-    t.string   "Erscheinungsjahr"
-    t.string   "Bemerkungen"
-    t.string   "Bemerkungen_2"
-    t.string   "stand"
-    t.string   "Rueckenfrei"
-    t.string   "SollF_Um"
   end
 
   create_table "faecher", force: :cascade do |t|
@@ -281,9 +249,9 @@ ActiveRecord::Schema.define(version: 20151016102923) do
 
   create_table "reihen", force: :cascade do |t|
     t.string   "name"
+    t.string   "r_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string   "r_code"
   end
 
   create_table "reihen_hg_zuordnungen", force: :cascade do |t|

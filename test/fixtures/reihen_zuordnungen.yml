@@ -1,9 +1,0 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  buch_id: 1
-  reihe_id: 1
-
-two:
-  buch_id: 1
-  reihe_id: 1
