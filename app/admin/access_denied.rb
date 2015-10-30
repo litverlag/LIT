@@ -1,4 +1,4 @@
-ActiveAdmin.register_page "Access_denied" do
+ActiveAdmin.register_page "Access denied" do
 
 	menu false
   content do

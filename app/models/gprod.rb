@@ -8,4 +8,5 @@ class Gprod < ActiveRecord::Base
 
   belongs_to :autor
   accepts_nested_attributes_for :autor
+
 end
