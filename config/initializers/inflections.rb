@@ -31,5 +31,6 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'papier', 'papiere'
   inflect.irregular 'land', 'laender'
   inflect.irregular 'rechte', 'rechte'
+  inflect.irregular 'projekt', 'projekte'
   inflect.uncountable 'cip'
 end

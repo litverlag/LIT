@@ -63,20 +63,16 @@
         f.input :password
         f.input :password_confirmation
 
+      f.inputs 'Der User hat folgende Benutzergruppen' do
+        f.input :departments, as: :select
+      end
 
 
-       f.inputs 'Der User hat folgende Benutzergruppen' do
-          f.has_many :admin_users_departments, heading: nil, allow_destroy: true, new_record: 'Abteilung hinzufügen' do |dep|
-            dep.input :department, :include_blank => false
-          end
-       end
+      f.inputs 'Die Werke dieses Lektors soll der User sehen' do
+        f.input :lektoren, as: :select
+      end
 
 
-        f.inputs 'Die Werke dieses Lektors soll der User sehen' do
-           f.has_many :admin_users_lektoren, heading: nil, new_record: 'Lektor hinzufügen' do |lek|
-             lek.input :lektor ,:include_blank => false, :label => 'Name',:input_html => { :class => 'lektor-input'}
-            end
-        end
       f.actions
 
       end
