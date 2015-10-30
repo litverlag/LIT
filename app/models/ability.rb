@@ -17,31 +17,31 @@ class Ability
       can :manage, :all
     end
     if @departName.include?'Umschlag'
-
+      can :manage, :all
     end
     if @departName.include?'Satz'
-
+      can :manage, :all
     end
     if @departName.include?'Titelei'
-
+      can :manage, :all
     end
     if @departName.include?'PrePs'
-
+      can :manage, :all
     end
     if @departName.include?'Rechnung'
-
+      can :manage, :all
     end
     if @departName.include?'Bildprüfung'
-
+      can :manage, :all
     end
     if @departName.include?'Lektor'
       can :manage, Projekt
     end
     if @departName.include?'Pod'
-
+      can :manage, :all
     end
     if @departName.include?'Binderei'
-      can :read, :bis
+      can :manage, :all
     end
 
 

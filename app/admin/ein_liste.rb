@@ -26,7 +26,7 @@ ActiveAdmin.register EinListe do
 =begin
 I tried to make a dynamic scope for each Lektor in belonging to a Project
   scope "Published", :if => proc {  @lekt = []
-                     current_admin_user.projekts.to_a.each do |a|
+                     current_admin_user.projekte.to_a.each do |a|
                        @lekt.append a.name
                      end
                    lektor.to_a
@@ -35,7 +35,7 @@ I tried to make a dynamic scope for each Lektor in belonging to a Project
                      gprod
                    end
 =end
- # scope_to :projekts, association_method: :projekts
+ # scope_to :projekte, association_method: :projekte
   #filter :lektor, as: :select, collection: @lektoren_arr.all.map{ |u| ["#{u.name}"] }
 
 

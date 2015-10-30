@@ -7,6 +7,4 @@ class Gprod < ActiveRecord::Base
 
   has_one :buch
   accepts_nested_attributes_for :buch
-
-
 end

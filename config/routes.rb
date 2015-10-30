@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
 
   ActiveAdmin.routes(self)
-  #get 'admin/projekts/new', :to => 'projekts#new'
+  #get 'admin/projekte/new', :to => 'projekte#new'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

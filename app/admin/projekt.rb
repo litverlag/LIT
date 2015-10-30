@@ -20,19 +20,21 @@ ActiveAdmin.register Projekt do
      end
 
      def new
-       @projekt = Projekt.new :buch => Buch.new
-       #@projekt.buch = Buch.new
+       @projekt = Projekt.new
+       @projekt.buch = Buch.new
      end
 
 
      def create
-       #TODO We have to add the id of the current Lektor automatically to the Project
-       if @projekt = Projekt.create(permitted_params[:projekt])
-         if @projekt.buch = Buch.create(permitted_params[:buch])
-           redirect_to collection_path, notice: "Projekt erfolgreich erstellt"
-         else
-           render 'new'
-         end
+       if not @projekt = Projekt.create(permitted_params[:projekt])
+         render 'new'
+       elsif not @projekt.buch = Buch.create(permitted_params[:buch])
+         render 'new'
+       #elsif not @projekt.autor = Autor.create(permitted_params[:autor])
+       #  render 'new'
+       else
+         @projekt.lektor = current_admin_user.lektoren.first
+         redirect_to collection_path, notice: "Projekt erfolgreich erstellt"
        end
      end
 
@@ -68,10 +70,16 @@ ActiveAdmin.register Projekt do
    end
 
 
+
+
+
+
+
   menu label: "Meine Projekte"
 
    index row_class: ->projekt { 'active' if true }  do
      column :druck
+     actions
    end
 
 

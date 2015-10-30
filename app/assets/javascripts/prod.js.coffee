@@ -30,12 +30,12 @@ lektor =
 		initSelection: (element, callback) -> 
 			id = $(element).val()
 			if id != ''
-				$.ajax('/admin/projekts.json?q[id_equals]=' + id, dataType: 'json').done (data) ->
+				$.ajax('/admin/projekte.json?q[id_equals]=' + id, dataType: 'json').done (data) ->
 					callback {text: "#{data[0].name} #{data[0].fox_name}"}
 					return
 
 		ajax: {
-			url: '/admin/projekts.json'
+			url: '/admin/projekte.json'
 			dataType: 'json'
 			data: (term, page) -> { 'q[fullname_contains]':  term }
 			results: (data, page) -> { results: data.map (i) -> {id: i.id ,text: "#{i.name} #{i.fox_name}"}}
