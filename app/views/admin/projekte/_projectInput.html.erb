@@ -22,8 +22,8 @@
 
   <%= form_for @projekt, url: used_url do |projekt_form| %>
         <li>
-            <%= projekt_form.label :druck %>
-            <%= projekt_form.text_field :druck %>
+            <%= projekt_form.label :projektname %>
+            <%= projekt_form.text_field :projektname %>
         </li>
       <li>
         <%= projekt_form.label :afs %>
@@ -51,8 +51,12 @@
 
   <%= form_for @projekt, url: used_url do |projekt_form| %>
         <li>
-            <%= projekt_form.label :druck %>
-            <%= projekt_form.text_field :druck %>
+            <%= projekt_form.label :projektname %>
+            <%= projekt_form.text_field :projektname %>
+        </li>
+      <li>
+            <%= projekt_form.label :kommentar_public %>
+            <%= projekt_form.text_field :kommentar_public  %>
         </li>
 
  <%= fields_for :buch, @projekt.buch do |buch_fields| %>
@@ -75,8 +79,8 @@
 
   <%= form_for @projekt, url: used_url do |projekt_form| %>
         <li>
-            <%= projekt_form.label :druck %>
-            <%= projekt_form.text_field :druck %>
+            <%= projekt_form.label :projektname %>
+            <%= projekt_form.text_field :projektname %>
         </li>
 
  <%= fields_for :buch, @projekt.buch do |buch_fields| %>

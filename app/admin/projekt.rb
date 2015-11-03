@@ -75,6 +75,7 @@ ActiveAdmin.register Projekt do
      def scoped_collection
        #This method scoped all shown db entries by the following condition. We use it here so that each Lektor can see only his own projects
        super.where(lektor: current_admin_user.lektoren.first)
+
      end
 
 
@@ -97,7 +98,9 @@ ActiveAdmin.register Projekt do
   menu label: "Meine Projekte"
 
    index do
+     column :projektname
      column :kommentar_public
+
      actions
    end
 
