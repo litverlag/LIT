@@ -98,8 +98,8 @@ ActiveAdmin.register Projekt do
 
   menu label: "Meine Projekte"
 
-   index row_class: ->projekt { 'active' if true }  do
-     column :druck
+   index do
+     column :kommentar_public
      actions
    end
 

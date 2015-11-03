@@ -1,6 +1,6 @@
 module Status_changeable
-  #TODO Bezeichnungen überarbeiten
-  #TODO wie sollen die Status veränders werden (Button? Auswahl?)
+  #TODO User und Datum loggen
+
   include GVar
 
     def status(status_tag)
