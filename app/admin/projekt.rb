@@ -24,8 +24,6 @@ ActiveAdmin.register Projekt do
        @projekt.buch = Buch.new
      end
 
-
-
      def create
        if not @projekt = Projekt.create(permitted_params[:projekt])
          render 'new'
