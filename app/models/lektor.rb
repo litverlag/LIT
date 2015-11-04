@@ -7,8 +7,6 @@ class Lektor < ActiveRecord::Base
   accepts_nested_attributes_for :gprod
 
 
-
-
  ransacker :nameAndFoxName do |parent|
     Arel::Nodes::InfixOperation.new('||', Arel::Nodes::InfixOperation.new('||', parent.table[:name], Arel::Nodes.build_quoted(' ')),parent.table[:fox_name])
   end
