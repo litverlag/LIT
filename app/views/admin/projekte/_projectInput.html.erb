@@ -1,99 +1,70 @@
 
-<nav>
-  <ul>
-    <li onclick='$(".buch").hide();$(".autor").hide();$(".projekt").show()'>Projekt</li>
-    <li onclick='$(".buch").show();$(".autor").hide();$(".projekt").hide()'>Buch</li>
-    <li onclick='$(".buch").hide();$(".autor").show();$(".projekt").hide()'>Autor</li>
-
-  </ul>
-</nav>
 
 
 
+<!-- If abfrage um zwischen der create und update View zu unterscheiden -->
 <% if not @projekt.id%>
     <% used_url = admin_projekte_path%>
+    <fieldset class="projekt"><legend><span>Ein neues Projekt erstellen</span></legend>
+      <p>In diesem Bereich können Sie Projekte erstellen, dazu geben Sie dem Projekt vorerst nur einen die folgenden </p>
+      <ul>
+
+        <%= form_for @projekt, url: used_url do |projekt_form| %>
+            <li>
+              <%= projekt_form.label :projektname, "Name des Projektes" %>
+              <%= projekt_form.text_field :projektname %>
+            </li>
+            <li>
+              <%= projekt_form.label :projekt_email_adresse, "Email des Projektes" %>
+              <%= projekt_form.text_field :projekt_email_adresse %>
+            </li>
+            <li>
+              <%= projekt_form.label :lektor_bemerkungen_private, "Private Bemerkungen zu diesem Projekt" %>
+              <%= projekt_form.text_area :lektor_bemerkungen_private, size: "10x10" %>
+            </li>
+            <%= projekt_form.submit %>
+        <% end %>
+
+      </ul>
+    </fieldset>
+
 <% elsif @projekt.id %>
     <% used_url = admin_projekt_path(@projekt.id)%>
+    <nav>
+      <ul>
+        <li onclick='$(".buch").hide();$(".autor").hide();$(".projekt").show()'>Projekt</li>
+        <li onclick='$(".buch").show();$(".autor").hide();$(".projekt").hide()'>Buch</li>
+        <li onclick='$(".buch").hide();$(".autor").show();$(".projekt").hide()'>Autor</li>
+      </ul>
+    </nav>
+
+    <fieldset class="projekt"><legend><span><%= "#{@projekt.projektname} bearbeiten"%></span></legend>
+      <ul>
+        <%= form_for @projekt, url: used_url do |projekt_form| %>
+            <li>
+              <%= projekt_form.label :projektname, "Projektname" %>
+              <%= "#{@projekt.projektname}" %>
+            </li>
+            <li>
+              <%= projekt_form.label :projekt_email_adresse, "Email des Projektes" %>
+              <%= projekt_form.text_field :projekt_email_adresse %>
+            </li>
+            <li>
+              <%= projekt_form.label :lektor_bemerkungen_private, "Private Bemerkungen zu diesem Projekt" %>
+              <%= projekt_form.text_area :lektor_bemerkungen_private, size: "10x10" %>
+            </li>
+            <li>
+              <%= projekt_form.label :final_deadline, "Finale Deadline für das gesamte Projekt" %>
+              <%= projekt_form.date_select :final_deadline, :class => 'datepicker' %>
+            </li>
+
+
+            <%= projekt_form.submit %>
+        <% end %>
+
+      </ul>
+    </fieldset>
+
+
 <% end %>
 
-
-<fieldset class="buch"><legend><span>Buch</span></legend>
-<ul>
-
-  <%= form_for @projekt, url: used_url do |projekt_form| %>
-        <li>
-            <%= projekt_form.label :projektname %>
-            <%= projekt_form.text_field :projektname %>
-        </li>
-      <li>
-        <%= projekt_form.label :afs %>
-        <%= projekt_form.text_field :afs %>
-
-      </li>
-
- <%= fields_for :buch, @projekt.buch do |buch_fields| %>
-          <li>
-            <%= buch_fields.label :name %>
-            <%= buch_fields.text_field :name %>
-          </li>
-        <% end %>
-
-        <%= projekt_form.submit %>
-
-    <% end %>
-
-</ul>
-
-</fieldset>
-
-  <fieldset class="autor"><legend><span>Autor</span></legend>
-<ul>
-
-  <%= form_for @projekt, url: used_url do |projekt_form| %>
-        <li>
-            <%= projekt_form.label :projektname %>
-            <%= projekt_form.text_field :projektname %>
-        </li>
-      <li>
-            <%= projekt_form.label :kommentar_public %>
-            <%= projekt_form.text_field :kommentar_public  %>
-        </li>
-
- <%= fields_for :buch, @projekt.buch do |buch_fields| %>
-          <li>
-            <%= buch_fields.label :name %>
-            <%= buch_fields.text_field :name %>
-          </li>
-        <% end %>
-
-        <%= projekt_form.submit %>
-
-    <% end %>
-
-</ul>
-
-</fieldset>
-
-<fieldset class="projekt"><legend><span>Projekt</span></legend>
-<ul>
-
-  <%= form_for @projekt, url: used_url do |projekt_form| %>
-        <li>
-            <%= projekt_form.label :projektname %>
-            <%= projekt_form.text_field :projektname %>
-        </li>
-
- <%= fields_for :buch, @projekt.buch do |buch_fields| %>
-          <li>
-            <%= buch_fields.label :name %>
-            <%= buch_fields.text_field :name %>
-          </li>
-        <% end %>
-
-        <%= projekt_form.submit %>
-
-    <% end %>
-
-</ul>
-
-</fieldset>

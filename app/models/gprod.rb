@@ -9,4 +9,8 @@ class Gprod < ActiveRecord::Base
   belongs_to :autor
   accepts_nested_attributes_for :autor
 
+
+  #TODO Fehlermeldung falls projektname oder email leer
+  validates :projektname, :projekt_email_adresse,presence: true
+
 end

@@ -15,6 +15,12 @@ ActiveAdmin.register Projekt do
 
 
    controller do
+     before_action :set_locale
+
+     def set_locale
+       I18n.locale = :de
+     end
+
      def permitted_params
        params.permit!
      end
@@ -99,7 +105,7 @@ ActiveAdmin.register Projekt do
 
    index do
      column :projektname
-     column :kommentar_public
+     column  "Emailadresse des Projektes", :projekt_email_adresse
 
      actions
    end
