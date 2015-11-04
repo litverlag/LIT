@@ -5,6 +5,7 @@ class CreateGprods < ActiveRecord::Migration
       #Association Attribute
       t.belongs_to :lektor
       t.belongs_to :autor
+=begin
       #Stati (Statuts, Datum, Nutzer)
         #Final
         t.string   "final_status"
@@ -46,6 +47,7 @@ class CreateGprods < ActiveRecord::Migration
         t.string   "binderei_status"
         t.date "binderei_last_update"
         t.integer  "binderei_updated_by"
+=end
 
       #Deadlines (Datum)
         #Finale Daten

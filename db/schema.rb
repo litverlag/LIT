@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151028175323) do
+ActiveRecord::Schema.define(version: 20151104134100) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -150,36 +150,6 @@ ActiveRecord::Schema.define(version: 20151028175323) do
   create_table "gprods", force: :cascade do |t|
     t.integer  "lektor_id"
     t.integer  "autor_id"
-    t.string   "final_status"
-    t.date     "final_last_update"
-    t.integer  "final_updated_by"
-    t.string   "druck_status"
-    t.date     "druck_last_update"
-    t.integer  "druck_updated_by"
-    t.string   "titelei_status"
-    t.date     "titelei_last_update"
-    t.integer  "titelei_updated_by"
-    t.string   "satz_status"
-    t.date     "satz_last_update"
-    t.integer  "satz_updated_by"
-    t.string   "preps_status"
-    t.date     "preps_last_update"
-    t.integer  "preps_updated_by"
-    t.string   "offsch_status"
-    t.date     "offsch_last_update"
-    t.integer  "offsch_updated_by"
-    t.string   "bildpr_status"
-    t.date     "bildpr_last_update"
-    t.integer  "bildpr_updated_by"
-    t.string   "umschlag_status"
-    t.date     "umschlag_last_update"
-    t.integer  "umschlag_updated_by"
-    t.string   "rg_status"
-    t.date     "rg_last_update"
-    t.integer  "rg_updated_by"
-    t.string   "binderei_status"
-    t.date     "binderei_last_update"
-    t.integer  "binderei_updated_by"
     t.date     "final_deadline"
     t.date     "zum_druck"
     t.date     "druck_deadline"
@@ -293,6 +263,76 @@ ActiveRecord::Schema.define(version: 20151028175323) do
     t.integer  "reihe_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "status_bildpr", id: false, force: :cascade do |t|
+    t.integer "gprod_id"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updatet_at"
+  end
+
+  create_table "status_binderei", id: false, force: :cascade do |t|
+    t.integer "gprod_id"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updatet_at"
+  end
+
+  create_table "status_druck", id: false, force: :cascade do |t|
+    t.integer "gprod_id"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updatet_at"
+  end
+
+  create_table "status_final", id: false, force: :cascade do |t|
+    t.integer "gprod_id"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updatet_at"
+  end
+
+  create_table "status_offsch", id: false, force: :cascade do |t|
+    t.integer "gprod_id"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updatet_at"
+  end
+
+  create_table "status_preps", id: false, force: :cascade do |t|
+    t.integer "gprod_id"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updatet_at"
+  end
+
+  create_table "status_rg", id: false, force: :cascade do |t|
+    t.integer "gprod_id"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updatet_at"
+  end
+
+  create_table "status_satz", id: false, force: :cascade do |t|
+    t.integer "gprod_id"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updatet_at"
+  end
+
+  create_table "status_titelei", id: false, force: :cascade do |t|
+    t.integer "gprod_id"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updatet_at"
+  end
+
+  create_table "status_umschlag", id: false, force: :cascade do |t|
+    t.integer "gprod_id"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updatet_at"
   end
 
   create_table "umschlaege", force: :cascade do |t|

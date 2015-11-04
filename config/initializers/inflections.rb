@@ -32,5 +32,16 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'land', 'laender'
   inflect.irregular 'rechte', 'rechte'
   inflect.irregular 'projekt', 'projekte'
+  #Plural für Status-Tabellen
+  inflect.irregular 'final', 'final'
+  inflect.irregular 'druck', 'druck'
+  inflect.irregular 'titelei', 'titelei'
+  inflect.irregular 'satz', 'satz'
+  inflect.irregular 'preps', 'preps'
+  inflect.irregular 'offsch', 'offsch'
+  inflect.irregular 'bildpr', 'bildpr'
+  inflect.irregular 'umschlag', 'umschlag'
+  inflect.irregular 'rg', 'rg'
+  inflect.irregular 'binderei', 'binderei'
   inflect.uncountable 'cip'
 end

@@ -1,7 +1,7 @@
-module Status_changeable
+module StatusLogic
   #TODO User und Datum loggen
 
-  include GVar
+  include GlobalVariables
 
     def status(status_tag)
       if self.public_send(status_tag).nil?
