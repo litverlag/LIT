@@ -2,8 +2,8 @@ module GlobalVariables
 
 	#Statusbezeichnungen
 
-		#Final
-			$FINAL_STATUS = ["neu", "bearbeitung", "fertig", "problem"]
+	#Final
+		$FINAL_STATUS = ["neu", "bearbeitung", "fertig", "problem"]
     #Druck
     	$DRUCK_STATUS = ["neu", "bearbeitung", "fertig", "problem"]
     #Titelei

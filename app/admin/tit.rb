@@ -19,11 +19,14 @@ ActiveAdmin.register Tit do
   #end
 
 
-  permitted_params = [:name, :isbn]
+  controller do
 
-  permit_params do
-    permitted_params
+    def permitted_params
+         params.permit!
+       end
+
   end
+
 
 
 
