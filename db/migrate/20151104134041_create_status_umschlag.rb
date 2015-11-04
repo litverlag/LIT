@@ -1,6 +1,6 @@
 class CreateStatusUmschlag < ActiveRecord::Migration
   def change
-    create_table :status_umschlag, id: false do |t|
+    create_table :status_umschlag do |t|
     	t.belongs_to :gprod
 
     	t.string :status

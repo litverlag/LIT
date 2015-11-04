@@ -265,70 +265,70 @@ ActiveRecord::Schema.define(version: 20151104134100) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "status_bildpr", id: false, force: :cascade do |t|
+  create_table "status_bildpr", force: :cascade do |t|
     t.integer "gprod_id"
     t.string  "status"
     t.string  "updated_by"
     t.date    "updatet_at"
   end
 
-  create_table "status_binderei", id: false, force: :cascade do |t|
+  create_table "status_binderei", force: :cascade do |t|
     t.integer "gprod_id"
     t.string  "status"
     t.string  "updated_by"
     t.date    "updatet_at"
   end
 
-  create_table "status_druck", id: false, force: :cascade do |t|
+  create_table "status_druck", force: :cascade do |t|
     t.integer "gprod_id"
     t.string  "status"
     t.string  "updated_by"
     t.date    "updatet_at"
   end
 
-  create_table "status_final", id: false, force: :cascade do |t|
+  create_table "status_final", force: :cascade do |t|
     t.integer "gprod_id"
     t.string  "status"
     t.string  "updated_by"
     t.date    "updatet_at"
   end
 
-  create_table "status_offsch", id: false, force: :cascade do |t|
+  create_table "status_offsch", force: :cascade do |t|
     t.integer "gprod_id"
     t.string  "status"
     t.string  "updated_by"
     t.date    "updatet_at"
   end
 
-  create_table "status_preps", id: false, force: :cascade do |t|
+  create_table "status_preps", force: :cascade do |t|
     t.integer "gprod_id"
     t.string  "status"
     t.string  "updated_by"
     t.date    "updatet_at"
   end
 
-  create_table "status_rg", id: false, force: :cascade do |t|
+  create_table "status_rg", force: :cascade do |t|
     t.integer "gprod_id"
     t.string  "status"
     t.string  "updated_by"
     t.date    "updatet_at"
   end
 
-  create_table "status_satz", id: false, force: :cascade do |t|
+  create_table "status_satz", force: :cascade do |t|
     t.integer "gprod_id"
     t.string  "status"
     t.string  "updated_by"
     t.date    "updatet_at"
   end
 
-  create_table "status_titelei", id: false, force: :cascade do |t|
+  create_table "status_titelei", force: :cascade do |t|
     t.integer "gprod_id"
     t.string  "status"
     t.string  "updated_by"
     t.date    "updatet_at"
   end
 
-  create_table "status_umschlag", id: false, force: :cascade do |t|
+  create_table "status_umschlag", force: :cascade do |t|
     t.integer "gprod_id"
     t.string  "status"
     t.string  "updated_by"

@@ -1,6 +1,6 @@
 class CreateStatusFinal < ActiveRecord::Migration
   def change
-    create_table :status_final, id: false do |t|
+    create_table :status_final do |t|
     	t.belongs_to :gprod
 
     	t.string :status

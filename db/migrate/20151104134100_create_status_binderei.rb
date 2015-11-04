@@ -1,6 +1,6 @@
 class CreateStatusBinderei < ActiveRecord::Migration
   def change
-    create_table :status_binderei, id: false do |t|
+    create_table :status_binderei do |t|
     	t.belongs_to :gprod
 
     	t.string :status

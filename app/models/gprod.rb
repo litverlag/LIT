@@ -9,25 +9,27 @@ class Gprod < ActiveRecord::Base
   belongs_to :autor
   accepts_nested_attributes_for :autor
 
-  has_one :statusfinal
+
+  has_one :statusfinal, class_name: StatusFinal
   accepts_nested_attributes_for :statusfinal
-  has_one :statusdruck
+  has_one :statusdruck, class_name: StatusDruck
   accepts_nested_attributes_for :statusdruck
-  has_one :statustitelei
+  has_one :statustitelei, class_name: StatusTitelei
   accepts_nested_attributes_for :statustitelei
-  has_one :statussatz
+  has_one :statussatz, class_name: StatusSatz
   accepts_nested_attributes_for :statussatz
-  has_one :statuspreps
+  has_one :statuspreps, class_name: StatusPreps
   accepts_nested_attributes_for :statuspreps
-  has_one :statusoffsch
+  has_one :statusoffsch, class_name: StatusOffsch
   accepts_nested_attributes_for :statusoffsch
-  has_one :statusbildpr
+  has_one :statusbildpr, class_name: StatusBildpr
   accepts_nested_attributes_for :statusbildpr
-  has_one :statusumschlag
+  has_one :statusumschlag, class_name: StatusUmschlag
   accepts_nested_attributes_for :statusumschlag
-  has_one :statusrg
+  has_one :statusrg, class_name: StatusRg
   accepts_nested_attributes_for :statusrg
-  has_one :statusbinderei
+  has_one :statusbinderei, class_name: StatusBinderei
   accepts_nested_attributes_for :statusbinderei
+
 
 end

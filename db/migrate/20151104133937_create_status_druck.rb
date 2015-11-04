@@ -1,6 +1,6 @@
 class CreateStatusDruck < ActiveRecord::Migration
   def change
-    create_table :status_druck, id: false do |t|
+    create_table :status_druck do |t|
     	t.belongs_to :gprod
 
     	t.string :status

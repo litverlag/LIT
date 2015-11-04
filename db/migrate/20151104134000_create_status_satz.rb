@@ -1,6 +1,6 @@
 class CreateStatusSatz < ActiveRecord::Migration
   def change
-    create_table :status_satz, id: false do |t|
+    create_table :status_satz do |t|
     	t.belongs_to :gprod
 
     	t.string :status

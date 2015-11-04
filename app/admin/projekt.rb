@@ -15,6 +15,9 @@ ActiveAdmin.register Projekt do
 
 
    controller do
+
+    include StatusLogic
+    
      def permitted_params
        params.permit!
      end
@@ -32,6 +35,8 @@ ActiveAdmin.register Projekt do
        #Autor kann erst  initialisiert werden, wenn die View passend erweitert wurde
        #elsif not @projekt.autor = Autor.create(permitted_params[:autor])
        #  render 'new'
+       elsif not createStatus(@projekt)
+        render 'new'
        else
          @projekt.lektor = current_admin_user.lektoren.first    # .first wird genutzt, da ein Lektor_User immer nur einen Lektor besitzen soll
          @projekt.save

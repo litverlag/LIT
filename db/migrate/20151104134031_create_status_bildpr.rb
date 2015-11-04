@@ -1,6 +1,6 @@
 class CreateStatusBildpr < ActiveRecord::Migration
   def change
-    create_table :status_bildpr, id: false do |t|
+    create_table :status_bildpr do |t|
     	t.belongs_to :gprod
 
     	t.string :status
