@@ -1,8 +1,5 @@
 
-
-
-
-<!-- If abfrage um zwischen der create und update View zu unterscheiden -->
+<% #If abfrage um zwischen der create und update View zu unterscheiden %>
 <% if not @projekt.id%>
     <% used_url = admin_projekte_path%>
     <fieldset class="projekt"><legend><span>Ein neues Projekt erstellen</span></legend>
@@ -30,6 +27,8 @@
 
 <% elsif @projekt.id %>
     <% used_url = admin_projekt_path(@projekt.id)%>
+
+
     <nav>
       <ul>
         <li onclick='$(".buch").hide();$(".autor").hide();$(".projekt").show()'>Projekt</li>
@@ -55,16 +54,74 @@
             </li>
             <li>
               <%= projekt_form.label :final_deadline, "Finale Deadline für das gesamte Projekt" %>
-              <%= projekt_form.date_select :final_deadline, :class => 'datepicker' %>
+              <input class="datepicker" data-date-format="mm/dd/yyyy" name="projekt[final_deadline]" value="<%="#{@projekt.final_deadline}" %>">
             </li>
-
-
-            <%= projekt_form.submit %>
+            <%= projekt_form.submit "#{@projekt.projektname} bearbeiten" %>
         <% end %>
-
       </ul>
     </fieldset>
 
+    <fieldset class="buch"><legend><span><%= "Buch zu #{@projekt.projektname} bearbeiten"%></span></legend>
+      <ul>
+        <%= form_for @projekt, url: used_url do |projekt_form| %>
+            <%= fields_for :buch, @projekt.buch do |buch_fields| %>
+                <li>
+                  <%= buch_fields.label :name, "Name"%>
+                  <%= buch_fields.text_field :name %>
+                </li><li>
+                    <%= buch_fields.label :titel1, "Titel 1 "%>
+                    <%= buch_fields.text_field :titel1 %>
+                </li> <li>
+                    <%= buch_fields.label :titel2, "Titel 2 "%>
+                    <%= buch_fields.text_field :titel2 %>
+                </li><li>
+                   <%= buch_fields.label :titel3, "Titel 3"%>
+                    <%= buch_fields.text_field :titel3 %>
+                 </li><li>
+                  <%= buch_fields.label :isbn, "ISBN "%>
+                  <%= buch_fields.text_field :isbn %>
+                </li><li>
+                  <%= buch_fields.label :issn, "ISSN"%>
+                  <%= buch_fields.text_field :issn%>
+                </li><li>
+                  <%= buch_fields.label :utitel1, "Untertitel 1"%>
+                  <%= buch_fields.text_field :utitel1 %>
+                </li>  <li>
+                  <%= buch_fields.label :utitel2, "Untertitel 2"%>
+                  <%= buch_fields.text_field :utitel2 %>
+                </li><li>
+                  <%= buch_fields.label :utitel3, "Untertitel 3"%>
+                  <%= buch_fields.text_field :utitel3 %>
+                </li><li>
+                  <%= buch_fields.label :seiten, "Seitenanzahl"%>
+                  <%= buch_fields.text_field :seiten %>
+                </li><li>
+                  <%= buch_fields.label :preis, "Preis in €"%>
+                  <%= buch_fields.text_field :preis %>
+                </li><li>
+                  <%= buch_fields.label :spreis, "Sparpreis in €"%>
+                  <%= buch_fields.text_field :spreis %>
+                </li>  <li>
+                  <%= buch_fields.label :gewicht, "Gewicht in g"%>
+                  <%= buch_fields.text_field :gewicht %>
+                </li><li>
+                  <%= buch_fields.label :volumen, "Volumen in l"%>
+                  <%= buch_fields.text_field :volumen%>
+                </li><li class="one_size_42px">
+                  <%= buch_fields.label :sammelband, "Ist Sammelband"%>
+                    <%= buch_fields.check_box :sammelband%>
+                </li><li>
+                  <%= buch_fields.label :erscheinungsjahr, "Erscheinungsjahr"%>
+                  <input class="datepicker" data-date-format="mm/dd/yyyy" name="buch[erscheinungsjahr]" value="<%="#{@projekt.buch.erscheinungsjahr}" %>">
+                </li>
+            <% end %>
 
+            <%= projekt_form.submit "Buchinformationen bearbeiten" %>
+
+        <% end %>
+      </ul>
+    </fieldset>
 <% end %>
+
+
 

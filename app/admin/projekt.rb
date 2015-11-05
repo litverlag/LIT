@@ -50,17 +50,21 @@ ActiveAdmin.register Projekt do
      end
 
      def update
-       if lektorAccess(Projekt.find(params[:id]))
-         @projekt = Projekt.find(params[:id])
-         if not @projekt.update(permitted_params[:projekt])
+
+       @projekt = Projekt.find(params[:id])
+
+       updateProc = Proc.new{|modelinstance ,data|
+       if data != nil
+         if not modelinstance.update(data)
            render 'edit'
-         elsif not @projekt.buch.update(permitted_params[:buch])
-           render 'edit'
-         #elsif not @projekt.autor.update(permitted_params[:buch])
-         #  render 'edit'
-         else
-           redirect_to collection_path, notice: "Projekt erfolgreich überarbeitet"
          end
+       end}
+
+       if lektorAccess(Projekt.find(params[:id]))
+         updateProc.call(@projekt,permitted_params[:projekt] )
+         updateProc.call(@projekt.buch,permitted_params[:buch] )
+         updateProc.call(@projekt.autor,permitted_params[:autor] )
+         redirect_to collection_path, notice: 'Projekt erfolgreich überarbeitet'
        else
          redirect_to admin_access_denied_path
        end

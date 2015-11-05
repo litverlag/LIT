@@ -68,9 +68,9 @@
       end
 
 
-      f.inputs 'Die Werke dieses Lektors soll der User sehen' do
-        f.input :lektoren, as: :select
-      end
+    f.inputs 'Die Werke dieses Lektors soll der User sehen' do
+      f.input :lektoren, as: :select
+    end
 
 
       f.actions

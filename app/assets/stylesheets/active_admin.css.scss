@@ -9,12 +9,12 @@
 
 
 // Active Admin's got SASS!
+//@import '_bootstrap.scss';
 @import "active_admin/mixins";
 @import "active_admin/base";
 @import "active_admin/select2/base";
 @import 'input_form/input_form';
 @import 'input_form/nav_bar';
-
 
 
 // Overriding any non-variable SASS must be done after the fact.

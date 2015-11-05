@@ -11,6 +11,7 @@ fieldset {
   font-weight: bold;
   color: #5E6469;
 
+
   p{
     padding-left: 1.5em;
     font-weight: 100;
@@ -51,9 +52,11 @@ fieldset {
   ul{
 
     li{
-    list-style: none;
-    padding-top: 5px;
-    vertical-align: middle;
+      list-style: none;
+      padding-top: 5px;
+      vertical-align: middle;
+
+
 
       input{
         width: calc(80% - 22px);
@@ -62,6 +65,10 @@ fieldset {
         outline: none;
         padding: 8px 10px 7px;
         margin-bottom: 8px;
+      }
+
+      .datepicker{
+        width: 10%;
       }
     }
 
@@ -81,3 +88,19 @@ form input[type="submit"] {
   margin-top: 10px;
 }
 
+form input[type="checkbox"] {
+  width: initial;
+}
+
+
+.one_size_42px{
+  height: 40px;
+}
+
+.buch{
+  display: none;
+}
+
+.autor{
+  display: none;
+}

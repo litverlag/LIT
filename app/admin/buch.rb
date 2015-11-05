@@ -38,6 +38,7 @@ ActiveAdmin.register Buch do
       row :seiten
       row :preis
       row :sammelband
+      row :erscheinungsjahr
     end
     
     panel "Autoren" do
