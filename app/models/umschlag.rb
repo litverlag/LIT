@@ -1,3 +1,3 @@
 class Umschlag < ActiveRecord::Base
-  has_many :buecher
+  belongs_to :buch
 end

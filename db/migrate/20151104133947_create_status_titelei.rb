@@ -5,7 +5,7 @@ class CreateStatusTitelei < ActiveRecord::Migration
 
     	t.string :status
     	t.string :updated_by
-    	t.date :updatet_at
+    	t.date :updated_at
 
     end
   end

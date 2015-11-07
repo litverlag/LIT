@@ -40,7 +40,8 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'preps', 'preps'
   inflect.irregular 'offsch', 'offsch'
   inflect.irregular 'bildpr', 'bildpr'
-  inflect.irregular 'umschlag', 'umschlag'
+  #inflect.irregular 'umschlag', 'umschlag' #Ueberschneidung!!!
+  inflect.irregular 'umschl', 'umschl'
   inflect.irregular 'rg', 'rg'
   inflect.irregular 'binderei', 'binderei'
   inflect.uncountable 'cip'

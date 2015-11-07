@@ -30,14 +30,14 @@
       end
 
         panel "Zugewiesene Lektoren" do
-          table_for admin_user.lektoren do
-            column "Name"  do |b|
-              b.name
-            end
-            column "Kürzel"  do |b|
-              b.fox_name
-            end
-          end
+          #table_for admin_user.lektoren do
+          #  column "Name"  do |b|
+          #    b.name
+          #  end
+          #  column "Kürzel"  do |b|
+          #    b.fox_name
+          #  end
+          #end
         end
 
       panel "Zugewiesene Abteilungen" do
@@ -69,7 +69,7 @@
 
 
       f.inputs 'Die Werke dieses Lektors soll der User sehen' do
-        f.input :lektoren, as: :select
+        #f.input :lektoren, as: :select
       end
 
 

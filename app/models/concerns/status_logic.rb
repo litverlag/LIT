@@ -27,7 +27,7 @@ module StatusLogic
         return false
       elsif not projekt.statusoffsch = StatusOffsch.create()
         return false
-      elsif not projekt.statusumschlag = StatusUmschlag.create()
+      elsif not projekt.statusumschl = StatusUmschl.create()
         return false
       elsif not projekt.statusrg = StatusRg.create()
         return false
@@ -45,13 +45,13 @@ module StatusLogic
   def changeStatusByUser(statusRecord, newStatus) 
     statusRecord.status = newStatus
     statusRecord.updated_by = current_admin_user.email #hier entweder der volle name oder id aus der Datenbank
-    statusRecord.updated.at = Time.now()
+    statusRecord.updated_at = Time.now()
   end
 
   def changeStatusByLogic(statusRecord, newStatus)
     statusRecord.status = newStatus
     statusRecord.updated_by = 'automatisch_generierter_status'
-    statusRecord.updated.at = Time.now()
+    statusRecord.updated_at = Time.now()
   end
 
   def statusLogic(projekt)
@@ -59,7 +59,7 @@ module StatusLogic
       and projekt.statusfinal.status.nil? \
       and projekt.statustitelei.status.nil? \
       and projekt.statussatz.status.nil? \
-      and projekt.statusumschlag.status.nil?
+      and projekt.statusumschl.status.nil?
 
       #Finalen Status setzen
       changeStatusByLogic(projekt.statusfinal, $FINAL_STATUS[0])
@@ -68,13 +68,13 @@ module StatusLogic
       #Satz Status setzen
       changeStatusByLogic(projekt.statussatz, $SATZ_STATUS[0])
       #Umschlag Status setzen
-      changeStatusByLogic(projekt.statusumschlag, $UMSCHLAG_STATUS[0])
+      changeStatusByLogic(projekt.statusumschl, $UMSCHL_STATUS[0])
 
 
 
     elsif projekt.statustitelei.status == $TITELEI_STATUS[1] \
       or projekt.statussatz.status == $SATZ_STATUS[1] \
-      or projekt.statusumschlag.status == $UMSCHLAG_STATUS[1]]
+      or projekt.statusumschl.status == $UMSCHL_STATUS[1]
 
       #Final Status setzen
       changeStatusByLogic(projekt.statusfinal, $FINAL_STATUS[1])
@@ -83,7 +83,7 @@ module StatusLogic
 
     elsif projekt.statustitelei.status == $TITELEI_STATUS[2] \
       and projekt.statussatz.status == $SATZ_STATUS[2] \
-      and projekt.statusumschlag.status == $UMSCHLAG_STATUS[2]
+      and projekt.statusumschl.status == $UMSCHL_STATUS[2]
 
       #Preps Status setzen
       changeStatusByLogic(projekt.statuspreps, $PREPS_STATUS[0])

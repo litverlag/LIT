@@ -17,7 +17,7 @@ module GlobalVariables
     #Bildprüfung
     	$BILDPR_STATUS = ["neu", "bearbeitung", "fertig", "problem"]
     #Umschlag
-    	$UMSCHLAG_STATUS = ["neu", "bearbeitung", "fertig", "problem","verschickt", "freiohnerücken"]
+    	$UMSCHL_STATUS = ["neu", "bearbeitung", "fertig", "problem","verschickt", "freiohnerücken"]
     #Buchhaltung
     	$RG_STATUS = ["neu", "bearbeitung", "fertig", "problem"]
     #Binderei

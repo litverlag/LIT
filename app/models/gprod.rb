@@ -24,8 +24,8 @@ class Gprod < ActiveRecord::Base
   accepts_nested_attributes_for :statusoffsch
   has_one :statusbildpr, class_name: StatusBildpr
   accepts_nested_attributes_for :statusbildpr
-  has_one :statusumschlag, class_name: StatusUmschlag
-  accepts_nested_attributes_for :statusumschlag
+  has_one :statusumschl, class_name: StatusUmschl
+  accepts_nested_attributes_for :statusumschl
   has_one :statusrg, class_name: StatusRg
   accepts_nested_attributes_for :statusrg
   has_one :statusbinderei, class_name: StatusBinderei

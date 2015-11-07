@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class StatusUmschlagTest < ActiveSupport::TestCase
+class StatusUmschlTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
