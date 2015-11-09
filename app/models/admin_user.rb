@@ -5,10 +5,10 @@ class AdminUser < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
 
-  has_and_belongs_to_many :lektoren
-  accepts_nested_attributes_for :lektoren, :allow_destroy => true
+  has_one :lektor
+  accepts_nested_attributes_for :lektor
 
   has_and_belongs_to_many :departments
-  accepts_nested_attributes_for :departments, :allow_destroy => true
+  accepts_nested_attributes_for :departments
 
 end

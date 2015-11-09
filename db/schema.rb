@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151028175323) do
+ActiveRecord::Schema.define(version: 20151107183205) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20151028175323) do
   create_table "admin_users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
+    t.string   "name",                   default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -90,16 +91,13 @@ ActiveRecord::Schema.define(version: 20151028175323) do
   end
 
   create_table "bindungen", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "buch_id"
+    t.string   "bezeichnung"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "buecher", force: :cascade do |t|
-    t.integer  "format_id"
-    t.integer  "bindung_id"
-    t.integer  "papier_id"
-    t.integer  "umschlag_id"
     t.integer  "autor_id"
     t.integer  "lektor_id"
     t.integer  "gprod_id"
@@ -115,12 +113,12 @@ ActiveRecord::Schema.define(version: 20151028175323) do
     t.integer  "seiten"
     t.decimal  "preis",            precision: 4, scale: 2
     t.decimal  "spreis",           precision: 4, scale: 2
-    t.boolean  "sammelband"
+    t.boolean  "sammelband",                               default: false
     t.date     "erscheinungsjahr"
     t.float    "gewicht"
     t.float    "volumen"
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
+    t.datetime "created_at",                                               null: false
+    t.datetime "updated_at",                                               null: false
   end
 
   create_table "buecher_reihen", id: false, force: :cascade do |t|
@@ -142,44 +140,15 @@ ActiveRecord::Schema.define(version: 20151028175323) do
   end
 
   create_table "formate", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "buch_id"
+    t.string   "bezeichnung"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "gprods", force: :cascade do |t|
     t.integer  "lektor_id"
     t.integer  "autor_id"
-    t.string   "final_status"
-    t.date     "final_last_update"
-    t.integer  "final_updated_by"
-    t.string   "druck_status"
-    t.date     "druck_last_update"
-    t.integer  "druck_updated_by"
-    t.string   "titelei_status"
-    t.date     "titelei_last_update"
-    t.integer  "titelei_updated_by"
-    t.string   "satz_status"
-    t.date     "satz_last_update"
-    t.integer  "satz_updated_by"
-    t.string   "preps_status"
-    t.date     "preps_last_update"
-    t.integer  "preps_updated_by"
-    t.string   "offsch_status"
-    t.date     "offsch_last_update"
-    t.integer  "offsch_updated_by"
-    t.string   "bildpr_status"
-    t.date     "bildpr_last_update"
-    t.integer  "bildpr_updated_by"
-    t.string   "umschlag_status"
-    t.date     "umschlag_last_update"
-    t.integer  "umschlag_updated_by"
-    t.string   "rg_status"
-    t.date     "rg_last_update"
-    t.integer  "rg_updated_by"
-    t.string   "binderei_status"
-    t.date     "binderei_last_update"
-    t.integer  "binderei_updated_by"
     t.date     "final_deadline"
     t.date     "zum_druck"
     t.date     "druck_deadline"
@@ -197,8 +166,9 @@ ActiveRecord::Schema.define(version: 20151028175323) do
     t.integer  "auflage"
     t.date     "erscheinungsjahr"
     t.text     "kommentar_public"
-    t.boolean  "freigegeben"
+    t.boolean  "freigegeben",                   default: false
     t.date     "freigabe_date"
+    t.boolean  "buchistfertig",                 default: false
     t.boolean  "externer_druck",                default: false
     t.integer  "externer_druck_verschickt_von"
     t.date     "externer_druck_verschickt"
@@ -207,7 +177,7 @@ ActiveRecord::Schema.define(version: 20151028175323) do
     t.string   "pod_meldung"
     t.text     "titelei_bemerkungen"
     t.string   "titelei_zusaetze"
-    t.boolean  "titelei_extern"
+    t.boolean  "titelei_extern",                default: false
     t.date     "titlei_letzte_korrektur"
     t.text     "satz_bemerkungen"
     t.text     "preps_bemerkungen"
@@ -227,8 +197,8 @@ ActiveRecord::Schema.define(version: 20151028175323) do
     t.string   "rg_rg_mail"
     t.date     "rg_versand_1"
     t.date     "rg_versand_2"
-    t.boolean  "rg_bezahlt"
-    t.boolean  "rg_vf"
+    t.boolean  "rg_bezahlt",                    default: false
+    t.boolean  "rg_vf",                         default: false
     t.text     "binderei_bemerkungen"
     t.text     "lektor_bemerkungen_public"
     t.text     "lektor_bemerkungen_private"
@@ -239,7 +209,7 @@ ActiveRecord::Schema.define(version: 20151028175323) do
     t.date     "versand"
     t.date     "korrektur"
     t.string   "freigabe"
-    t.boolean  "is_archiv"
+    t.boolean  "is_archiv",                     default: false
     t.string   "cover"
     t.string   "ebook_bemerkungen"
     t.string   "ftp"
@@ -262,15 +232,20 @@ ActiveRecord::Schema.define(version: 20151028175323) do
 
   create_table "lektoren", force: :cascade do |t|
     t.string   "name"
+    t.string   "titel"
+    t.string   "position"
+    t.string   "emailkuerzel"
     t.string   "fox_name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "admin_user_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "papiere", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "buch_id"
+    t.string   "bezeichnung"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "reihen", force: :cascade do |t|
@@ -295,10 +270,90 @@ ActiveRecord::Schema.define(version: 20151028175323) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "status_bildpr", force: :cascade do |t|
+    t.integer "gprod_id"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updated_at"
+  end
+
+  create_table "status_binderei", force: :cascade do |t|
+    t.integer "gprod_id"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updated_at"
+  end
+
+  create_table "status_druck", force: :cascade do |t|
+    t.integer "gprod_id"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updated_at"
+  end
+
+  create_table "status_final", force: :cascade do |t|
+    t.integer "gprod_id"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updated_at"
+  end
+
+  create_table "status_offsch", force: :cascade do |t|
+    t.integer "gprod_id"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updated_at"
+  end
+
+  create_table "status_preps", force: :cascade do |t|
+    t.integer "gprod_id"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updated_at"
+  end
+
+  create_table "status_rg", force: :cascade do |t|
+    t.integer "gprod_id"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updated_at"
+  end
+
+  create_table "status_satz", force: :cascade do |t|
+    t.integer "gprod_id"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updated_at"
+  end
+
+  create_table "status_titelei", force: :cascade do |t|
+    t.integer "gprod_id"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updated_at"
+  end
+
+  create_table "status_umschl", force: :cascade do |t|
+    t.integer "gprod_id"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updated_at"
+  end
+
+  create_table "status_umschlag", force: :cascade do |t|
+    t.integer "gprod_id"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updated_at"
+  end
+
   create_table "umschlaege", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "buch_id"
+    t.string   "bezeichnung"
+    t.string   "kaschierung"
+    t.boolean  "leinenumschlag"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
 end

@@ -1,3 +1,2 @@
 class Offsch < Gprod
-
 end

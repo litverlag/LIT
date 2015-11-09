@@ -3,10 +3,6 @@ class CreateBuecher < ActiveRecord::Migration
     create_table :buecher do |t|
 
       #Association Attribute
-      t.belongs_to :format
-      t.belongs_to :bindung
-      t.belongs_to :papier
-      t.belongs_to :umschlag
       t.belongs_to :autor
       t.belongs_to :lektor
       t.belongs_to :gprod
@@ -24,7 +20,7 @@ class CreateBuecher < ActiveRecord::Migration
       t.integer :seiten
       t.decimal :preis, precision: 4, scale: 2
       t.decimal :spreis, precision: 4, scale: 2
-      t.boolean :sammelband
+      t.boolean :sammelband, default: false
       t.date :erscheinungsjahr
       t.float :gewicht
       t.float :volumen

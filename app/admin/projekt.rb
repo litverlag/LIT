@@ -15,13 +15,15 @@ ActiveAdmin.register Projekt do
 
 
    controller do
+
      before_action :set_locale
 
      def set_locale
        I18n.locale = :de
      end
 
-     def permitted_params
+    include StatusLogic
+         def permitted_params
        params.permit!
      end
 
@@ -38,8 +40,10 @@ ActiveAdmin.register Projekt do
        #Autor kann erst  initialisiert werden, wenn die View passend erweitert wurde
        #elsif not @projekt.autor = Autor.create(permitted_params[:autor])
        #  render 'new'
+       elsif not createStatus(@projekt)
+        render 'new'
        else
-         @projekt.lektor = current_admin_user.lektoren.first    # .first wird genutzt, da ein Lektor_User immer nur einen Lektor besitzen soll
+         @projekt.lektor = current_admin_user.lektor    # .first wird genutzt, da ein Lektor_User immer nur einen Lektor besitzen soll
          @projekt.save
          redirect_to collection_path, notice: "Projekt erfolgreich erstellt"
        end
@@ -84,13 +88,13 @@ ActiveAdmin.register Projekt do
 
      def scoped_collection
        #This method scoped all shown db entries by the following condition. We use it here so that each Lektor can see only his own projects
-       super.where(lektor: current_admin_user.lektoren.first)
+       super.where(lektor: current_admin_user.lektor)
 
      end
 
 
      def lektorAccess(projekt)
-       if projekt.lektor == current_admin_user.lektoren.first
+       if projekt.lektor == current_admin_user.lektor
          return true
        else
          return false

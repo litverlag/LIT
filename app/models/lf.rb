@@ -1,3 +1,2 @@
 class Lf < Gprod
-
 end

@@ -2,7 +2,10 @@ class DeviseCreateAdminUsers < ActiveRecord::Migration
   def migrate(direction)
     super
     # Create a default user
-    AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if direction == :up
+    if direction == :up
+      @superadmin = AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
+      @superadmin.departments = Department.where("name = 'Superadmin'")
+    end
   end
 
   def change
@@ -12,6 +15,8 @@ class DeviseCreateAdminUsers < ActiveRecord::Migration
       ## Database authenticatable
       t.string :email,              null: false, default: ""
       t.string :encrypted_password, null: false, default: ""
+      t.string :name, null: false, default: ""
+
 
       ## Recoverable
       t.string   :reset_password_token

@@ -1,7 +1,11 @@
 class CreateFormate < ActiveRecord::Migration
   def change
     create_table :formate do |t|
-      t.string :name
+    	#Association Attribute
+    	t.belongs_to :buch
+
+    	#Allgemeine Attribute
+      t.string :bezeichnung
 
       t.timestamps null: false
     end

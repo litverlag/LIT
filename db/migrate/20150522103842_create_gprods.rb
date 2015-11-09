@@ -5,47 +5,7 @@ class CreateGprods < ActiveRecord::Migration
       #Association Attribute
       t.belongs_to :lektor
       t.belongs_to :autor
-      #Stati (Statuts, Datum, Nutzer)
-        #Final
-        t.string   "final_status"
-        t.date "final_last_update"
-        t.integer  "final_updated_by"
-        #Druck
-        t.string   "druck_status"
-        t.date "druck_last_update"
-        t.integer  "druck_updated_by"
-        #Titelei
-        t.string   "titelei_status"
-        t.date "titelei_last_update"
-        t.integer  "titelei_updated_by"
-        #Satz
-        t.string   "satz_status"
-        t.date "satz_last_update"
-        t.integer  "satz_updated_by"
-        #Pre press
-        t.string   "preps_status"
-        t.date "preps_last_update"
-        t.integer  "preps_updated_by"
-        #Offset /Schirm
-        t.string   "offsch_status"
-        t.date "offsch_last_update"
-        t.integer  "offsch_updated_by"
-        #Bildprüfung
-        t.string   "bildpr_status"
-        t.date "bildpr_last_update"
-        t.integer  "bildpr_updated_by"
-        #Umschlag
-        t.string   "umschlag_status"
-        t.date "umschlag_last_update"
-        t.integer  "umschlag_updated_by"
-        #Buchhaltung
-        t.string   "rg_status"
-        t.date "rg_last_update"
-        t.integer  "rg_updated_by"
-        #Binderei
-        t.string   "binderei_status"
-        t.date "binderei_last_update"
-        t.integer  "binderei_updated_by"
+
 
       #Deadlines (Datum)
         #Finale Daten
@@ -79,8 +39,10 @@ class CreateGprods < ActiveRecord::Migration
         t.date     "erscheinungsjahr"
         t.text     "kommentar_public"
         #Das Buch wird zur Produktion  freigegeben
-        t.boolean "freigegeben"
+        t.boolean "freigegeben", default: false
         t.date "freigabe_date"
+        #Das Buch ist fertig
+        t.boolean "buchistfertig", default: false
         #Geht das Buch in den externen Druck
         t.boolean  "externer_druck", default: false
         t.integer      "externer_druck_verschickt_von"
@@ -93,7 +55,7 @@ class CreateGprods < ActiveRecord::Migration
         #Titelei
         t.text   "titelei_bemerkungen"
         t.string "titelei_zusaetze"
-        t.boolean "titelei_extern"
+        t.boolean "titelei_extern", default: false
         t.date "titlei_letzte_korrektur"
         #Satz
         t.text   "satz_bemerkungen"
@@ -120,8 +82,8 @@ class CreateGprods < ActiveRecord::Migration
         t.string   "rg_rg_mail"
         t.date     "rg_versand_1"
         t.date     "rg_versand_2"
-        t.boolean  "rg_bezahlt"
-        t.boolean  "rg_vf"
+        t.boolean  "rg_bezahlt", default: false
+        t.boolean  "rg_vf", default: false
         #Binderei
         t.text   "binderei_bemerkungen"
         #Lektor
@@ -136,7 +98,7 @@ class CreateGprods < ActiveRecord::Migration
         t.date     "versand"
         t.date     "korrektur"
         t.string   "freigabe"
-        t.boolean  "is_archiv"
+        t.boolean  "is_archiv", default: false
         t.string   "cover"
         t.string   "ebook_bemerkungen"
         t.string   "ftp"

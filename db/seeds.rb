@@ -6,8 +6,6 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-#AdminUser.create([{id: 1},{email: 'admin@example.com'},{encrypted_password: '$2a$10$2u0t4aRB0zAoPMNZWGhnC.zJENSSoo2BLOW08gmKXwcNiXL2nL6oq'}])
-
 
 
 #Format.destroy_all
@@ -20,7 +18,5 @@ Lektor.create(name:'Annelise Muster',fox_name:'AM')
 Lektor.create(name:'Fritz Hans',fox_name:'FH')
 Lektor.create(name:'Thomas Gottschalk',fox_name:'TG')
 
-#Wichtig für das erstellen der Abteilungen
-#Department.create([{name:'superadmin'},{name:'Umschlag'},{name:'Satz'},{name:'Titelei'},{name:'PrePs'},{name:'Rechnung'},{name:'Bildprüfung'},{name:'Lektor'},{name:'Pod '},{name:'Binderei'}])
-
-
+AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
+Department.create!([{name:'Superadmin'},{name:'Umschlag'},{name:'Satz'},{name:'Titelei'},{name:'PrePs'},{name:'Rechnung'},{name:'Bildprüfung'},{name:'Pod'},{name:'Binderei'},{name:'Lektor'}])
