@@ -1,9 +1,6 @@
 class Tit < Gprod
-  #include Status_changeable
-
-  #scope :alle, -> {}
-  #scope :neu, -> { where(tit_status: $STATUS[0])}
-  #scope :bearbeitung, -> { where(tit_status: $STATUS[1])}
-  #scope :fertig, -> { where(tit_status: $STATUS[2])}
-
+	def self.default_scope
+		Tit.joins("INNER JOIN status_titelei on status_titelei.gprod_id = gprods.id")\
+		.where("status_titelei.status IS NOT NULL")
+	end
 end

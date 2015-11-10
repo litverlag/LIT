@@ -86,11 +86,11 @@ ActiveAdmin.register Projekt do
      end
 
 
-     def scoped_collection
-       #This method scoped all shown db entries by the following condition. We use it here so that each Lektor can see only his own projects
-       super.where(lektor: current_admin_user.lektor)
-
-     end
+     #def scoped_collection
+     #  #This method scoped all shown db entries by the following condition. We use it here so that each Lektor can see only his own projects
+     #  super.where(lektor: current_admin_user.lektor)
+     #
+     #end
 
 
      def lektorAccess(projekt)

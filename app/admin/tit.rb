@@ -30,15 +30,10 @@ ActiveAdmin.register Tit do
 
 
 
-  #scope :alle
-  #scope :neu
-  #scope :bearbeitung
-  #scope :fertig
-
   menu label: 'Tit', priority: 6
 
   index title: 'Titelei' do
-    #column("Status") {|model| status_tag(model.status('titelei_status'))}
+    column :projektname
 
 
     actions
@@ -52,14 +47,14 @@ ActiveAdmin.register Tit do
 
 
 
-  form do |f|
-    f.inputs "Titelei-Eintrag bearbeiten" do
-      permitted_params.each do |p|
-       # f.input p
-      end
-    end
-    f.actions
-    end
+  #form do |f|
+  #  f.inputs "Titelei-Eintrag bearbeiten" do
+  #    permitted_params.each do |p|
+  #     # f.input p
+  #    end
+  #  end
+  #  f.actions
+  #  end
 
 
 end
