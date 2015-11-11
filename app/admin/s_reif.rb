@@ -1,25 +1,22 @@
 ActiveAdmin.register SReif do
+  menu label: 'SReif'
+  menu priority: 4
+  config.filters = false
+  actions :index, :show, :edit, :update
 
-# See permitted parameters documentation:
-# https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-#
-# permit_params :list, :of, :attributes, :on, :model
-#
-# or
-#
-# permit_params do
-#   permitted = [:permitted, :attributes]
-#   permitted << :other if resource.something?
-#   permitted
-# end
-  actions :index, :show, :update, :edit
+  controller do
 
+    include StatusLogic
 
+    def permitted_params
+         params.permit!
+       end
 
+  end
 
-  menu label: 'SReif', priority: 4
-  index title: 'Satz Reif' do
-
+  index title: 'Satz' do
+    column('Status') {|satz| satz.statussatz.status}
+    column :projektname
     actions
   end
 

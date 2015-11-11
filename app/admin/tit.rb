@@ -1,25 +1,12 @@
 ActiveAdmin.register Tit do
-
-# See permitted parameters documentation:
-# https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-#
-# permit_params :list, :of, :attributes, :on, :model
-#
-# or
-#
-# permit_params do
-#   permitted = [:permitted, :attributes]
-#   permitted << :other if resource.something?
-#   permitted
-# end
-
-  #member_action :status, :method => :post do
-  #  resource.change_status('tit_status')
-  #  redirect_to collection_path, notice: "Bestätigt"
-  #end
-
+  menu label: 'Tit'
+  menu priority: 6
+  config.filters = false
+  actions :index, :show, :edit, :update
 
   controller do
+
+    include StatusLogic
 
     def permitted_params
          params.permit!
@@ -28,22 +15,14 @@ ActiveAdmin.register Tit do
   end
 
 
-
-
-  menu label: 'Tit', priority: 6
-
   index title: 'Titelei' do
+    column('Status') {|tit| tit.statustitelei.status}
     column :projektname
 
 
     actions
   end
 
-  #action_item only: :show do
-  #
-  #  link_to 'Nächster Status', status_admin_tit_path, method: :post
-  #
-  #end
 
 
 

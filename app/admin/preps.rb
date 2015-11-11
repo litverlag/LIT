@@ -1,23 +1,22 @@
 ActiveAdmin.register Preps do
+  menu label: 'Preps'
+  menu priority: 13
+  config.filters = false
+  actions :index, :show, :edit, :update
 
-# See permitted parameters documentation:
-# https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-#
-# permit_params :list, :of, :attributes, :on, :model
-#
-# or
-#
-# permit_params do
-#   permitted = [:permitted, :attributes]
-#   permitted << :other if resource.something?
-#   permitted
-# end
-  actions :index, :show, :update, :edit
+  controller do
 
+    include StatusLogic
 
-  menu label: 'Preps', priority: 13
+    def permitted_params
+         params.permit!
+       end
+
+  end
+
   index title: 'Preps' do
-
+    column('Status') {|preps| preps.statuspreps.status}
+    column :projektname
     actions
   end
 

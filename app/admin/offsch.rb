@@ -1,25 +1,22 @@
 ActiveAdmin.register Offsch do
+  menu label: 'Offsch'
+  menu priority: 14
+  config.filters = false
+  actions :index, :show, :edit, :update
 
-# See permitted parameters documentation:
-# https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-#
-# permit_params :list, :of, :attributes, :on, :model
-#
-# or
+  controller do
 
-# permit_params do
-#   permitted = [:permitted, :attributes]
-#   permitted << :other if resource.something?
-#   permitted
-# end
-  actions :index, :show, :update, :edit
+    include StatusLogic
 
+    def permitted_params
+         params.permit!
+       end
 
+  end
 
-  menu label: 'Off/Sch', priority: 19
-
-  index title: 'Off/Sch' do
-
+  index title: 'Offsch' do
+    column('Status') {|offsch| offsch.statusoffsch.status}
+    column :projektname
     actions
   end
 
