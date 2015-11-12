@@ -1,2 +1,0 @@
-class Lf < Gprod
-end
