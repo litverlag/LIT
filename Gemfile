@@ -55,5 +55,8 @@ group :development, :test do
   gem 'cancan'
 
   gem 'cancancan'
+
+  gem 'jquery-turbolinks'
+
 end
 

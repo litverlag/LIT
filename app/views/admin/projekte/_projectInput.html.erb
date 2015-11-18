@@ -29,6 +29,7 @@
     <% used_url = admin_projekt_path(@projekt.id)%>
 
 
+
     <nav>
       <ul>
         <li onclick='$(".buch").hide();$(".autor").hide();$(".projekt").show()'>Projekt</li>
@@ -115,12 +116,40 @@
                   <input class="datepicker" data-date-format="mm/dd/yyyy" name="buch[erscheinungsjahr]" value="<%="#{@projekt.buch.erscheinungsjahr}" %>">
                 </li>
             <% end %>
-
             <%= projekt_form.submit "Buchinformationen bearbeiten" %>
-
         <% end %>
       </ul>
     </fieldset>
+
+
+    <%if not @projekt.autor %>
+        <fieldset class="autor"><legend><span><%= "Autor zu #{@projekt.projektname} bearbeiten"%></span></legend>
+          <nav>
+            <ul>
+              <li id="new_autor" >Neuen Autor erstellen</li>
+            </ul>
+          </nav>
+          <ul>
+            <%= form_for @projekt, url: used_url do |projekt_form| %>
+                <%= fields_for :autor, @projekt.autor do |buch_fields| %>
+                    <li>
+                      <%= buch_fields.label :name, "Name"%>
+                      <%= buch_fields.text_field :name, id: 'name_autocomplete' %>
+                    </li>
+                <% end %>
+                <%= projekt_form.submit "Autor hinzufügen" %>
+            <% end %>
+          </ul>
+
+
+
+
+
+        </fieldset>
+    <%end%>
+
+
+
 <% end %>
 
 

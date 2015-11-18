@@ -4,7 +4,7 @@ ActiveAdmin.register Autor do
   filter :institut
 
   #menu priority:99
-  menu false
+  menu
 
   index do
     selectable_column

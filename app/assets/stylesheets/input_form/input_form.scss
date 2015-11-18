@@ -72,7 +72,7 @@ fieldset {
       }
     }
 
-    form > li label {
+     label{
       display: block;
       width: 10%;
       float: left;
@@ -80,6 +80,8 @@ fieldset {
       font-weight: bold;
       color: #5E6469;
     }
+
+
   }
 
 }
@@ -103,4 +105,26 @@ form input[type="checkbox"] {
 
 .autor{
   display: none;
+}
+
+.ui-helper-hidden-accessible{
+  display: none;
+
+}
+
+.ui-autocomplete{
+  background-color: white;
+  width: 300px;
+  border: solid 1px;
+  list-style:none;
+  padding-left: 0px;
+}
+
+.ui-menu-item{
+  padding-left: 5px;
+}
+
+.ui-state-focus{
+  background-color: #e6e6e6;
+  padding-left: 5px;
 }

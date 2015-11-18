@@ -65,6 +65,8 @@
 
       f.inputs 'Der User hat folgende Benutzergruppen' do
         f.input :departments, as: :select
+
+        f.input :lektor
       end
 
 

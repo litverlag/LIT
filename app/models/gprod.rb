@@ -9,7 +9,13 @@ class Gprod < ActiveRecord::Base
   belongs_to :autor
   accepts_nested_attributes_for :autor
 
+  def autor_name
+    autor.name if autor
+  end
 
+  def autor_name=(name)
+    self.autor = Autor.find_or_create_by_name(name) unless name.blank?
+  end
 
   validates :projektname, :projekt_email_adresse,presence: true
 

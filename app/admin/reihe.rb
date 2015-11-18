@@ -3,7 +3,7 @@ ActiveAdmin.register Reihe do
   filter :r_code
 
   #menu priority:99
-  menu false
+  menu
   
   index download_links: [:csv,:xml,:json,:odt] do
     selectable_column
