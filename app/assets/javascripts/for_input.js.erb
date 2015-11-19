@@ -7,12 +7,12 @@ $(document).on('ready page:load',
         function () {
 
 
-    $( "#name_autocomplete" ).autocomplete({
-        <% @autor_name_list = []%>
-        <% Autor.all.each do |autor| %>
-            <% @autor_name_list.append autor.name %>
-         <%end%>
-        source: <%= raw @autor_name_list.as_json %>
+   $( "#name_autocomplete" ).autocomplete({
+      <% @autor_name_list = []%>
+       <% Autor.all.each do |autor| %>
+           <% @autor_name_list.append autor.name %>
+       <%end%>
+       source: <%= raw @autor_name_list.as_json %>
     });
 
 
@@ -37,9 +37,18 @@ $(document).on('ready page:load',
     }
 );
 
+<% default_values = []%>
+<% puts "_____________JS________"%>
+<% autor = Autor.where({name: "Autor 1"}).to_a %>
+<%  %>
+<%   %>
+<% %>
+
+
+
 var input_fields = '<div class="additional_fields"><li>\
         <label for="vorname">Vorname</label>\
-        <input type="text" name="autor[vorname]" id="autor_vorname" />\
+        <input type="text" name="autor[vorname]" id="autor_vorname" value="<%=autor.first[:vorname]%>" />\
         </li>\
         <li>\
         <label for="autor_fox_id">Fox ID </label>\
@@ -47,7 +56,7 @@ var input_fields = '<div class="additional_fields"><li>\
        </li>\
         <li>\
         <label for="autor_anrede">Anrede</label>\
-        <input type="text" name="autor[andrede]" id="autor_anrede" />\
+        <input type="text" name="autor[anrede]" id="autor_anrede" />\
         </li>\
         <li>\
         <label for="autor_email">Email</label>\

@@ -18,10 +18,10 @@
 # Lektor.create(name:'Fritz Hans',fox_name:'FH')
 # Lektor.create(name:'Thomas Gottschalk',fox_name:'TG')
 
-# (1..10).each do |num|
-# Autor.create(name:"Autor #{num}")
-# end
+ (1..10).each do |num|
+ Autor.create(name:"Autor #{num}")
+ end
 
-Lektor.create([{name: 'Thomas', admin_user_id: 1}])
+#Lektor.create([{name: 'Thomas', admin_user_id: 1}])
 #AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
 #Department.create!([{name:'Superadmin'},{name:'Umschlag'},{name:'Satz'},{name:'Titelei'},{name:'PrePs'},{name:'Rechnung'},{name:'Bildprüfung'},{name:'Pod'},{name:'Binderei'},{name:'Lektor'}])

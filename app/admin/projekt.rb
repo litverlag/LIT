@@ -53,23 +53,22 @@ ActiveAdmin.register Projekt do
 
      def update
        puts "____________________________UPDATE___________________________"
-       @projekt = current_admin_user.lektor.gprod.find(params[:id])
+       #Proc for the updating if there is already an Author
        updateProc = Proc.new{|modelinstance ,data|
-       if data != nil
-         if not modelinstance.update(data)
-           render 'edit'
-         end
-       end}
+         if data != nil
+           if not modelinstance.update(data)
+             render 'edit'
+           end
+         end}
+
+       @projekt = current_admin_user.lektor.gprod.find(params[:id])
 
        updateProc.call(@projekt,permitted_params[:projekt] )
        updateProc.call(@projekt.buch,permitted_params[:buch] )
-       if not @projekt.autor
-         Autor.autor_name(permitted_params[:autor])
-         @projekt.autor = Autor.create(permitted_params[:autor])
-         @projekt.save
-       else
-         updateProc.call(@projekt.autor,permitted_params[:autor])
-       end
+       Autor.update_or_create_or_change(@projekt,permitted_params[:autor])
+
+
+
        # Diese Methode muss noch angepasst werden, dass ggf Bücher und Autren erstellt wrden
        redirect_to collection_path, notice: 'Projekt erfolgreich überarbeitet'
      end

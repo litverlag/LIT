@@ -122,18 +122,24 @@
     </fieldset>
 
 
-    <%if not @projekt.autor %>
-        <fieldset class="autor"><legend><span><%= "Autor zu #{@projekt.projektname} bearbeiten"%></span></legend>
+
+
+
+
+
+
+    <fieldset class="autor"><legend><span><%= "Autor zu #{@projekt.projektname} bearbeiten"%></span></legend>
+          <p>Erstellen sie einen neuen Autor oder fügen sie einen schon bestehenden Autor zu der Datenbank hinzu.</p>
           <nav>
             <ul>
-              <li id="new_autor" >Neuen Autor erstellen</li>
+              <li id="new_autor" >Alle Attribute</li>
             </ul>
           </nav>
           <ul>
             <%= form_for @projekt, url: used_url do |projekt_form| %>
                 <%= fields_for :autor, @projekt.autor do |buch_fields| %>
                     <li>
-                      <%= buch_fields.label :name, "Name"%>
+                      <%= buch_fields.label :name, "Nachname"%>
                       <%= buch_fields.text_field :name, id: 'name_autocomplete' %>
                     </li>
                 <% end %>
@@ -146,7 +152,12 @@
 
 
         </fieldset>
-    <%end%>
+
+
+
+
+
+
 
 
 
