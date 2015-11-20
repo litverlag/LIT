@@ -6,7 +6,7 @@ class Autor < ActiveRecord::Base
   has_and_belongs_to_many :buecher
   accepts_nested_attributes_for :buecher
 
-  has_and_belongs_to_many :gprods
+  has_one :gprods
   accepts_nested_attributes_for :gprods
 
 
@@ -33,9 +33,8 @@ class Autor < ActiveRecord::Base
       modelinstance.save
     else
       #Autor.where(relevant_attr).to_a.first über das Array kann man auf das Model zugreifen welches in der DBRelation steht welche die .where() methode ausgibt
-      if Autor.where(relevant_attr) == nil?
+      if Autor.where(relevant_attr).nil?
         modelinstance.autor = Autor.where(relevant_attr).first_or_create
-        modelinstance.save
       else
         modelinstance.autor = Autor.where(relevant_attr).to_a.first
         modelinstance.save

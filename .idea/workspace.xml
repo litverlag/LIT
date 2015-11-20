@@ -6,16 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="df1ab1dd-396a-43dc-b61e-bab3f75624d4" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/development.sqlite3" afterPath="$PROJECT_DIR$/db/development.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gemfile.lock" afterPath="$PROJECT_DIR$/Gemfile.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gemfile" afterPath="$PROJECT_DIR$/Gemfile" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/admin/projekte/_projectInput.html.erb" afterPath="$PROJECT_DIR$/app/views/admin/projekte/_projectInput.html.erb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/admin/autor.rb" afterPath="$PROJECT_DIR$/app/admin/autor.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/autor.rb" afterPath="$PROJECT_DIR$/app/models/autor.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/for_input.js.erb" afterPath="$PROJECT_DIR$/app/assets/javascripts/for_input.js.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/gprod.rb" afterPath="$PROJECT_DIR$/app/models/gprod.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/admin/projekt.rb" afterPath="$PROJECT_DIR$/app/admin/projekt.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/seeds.rb" afterPath="$PROJECT_DIR$/db/seeds.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="LIT.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -43,98 +38,118 @@
       <file leaf-file-name="_projectInput.html.erb" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/admin/projekte/_projectInput.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-53.875">
-              <caret line="158" column="0" selection-start-line="158" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
+            <state vertical-scroll-proportion="-90.625">
+              <caret line="148" column="68" selection-start-line="148" selection-start-column="68" selection-end-line="148" selection-end-column="68" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="lektor.rb" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/admin/lektor.rb">
+      <file leaf-file-name="tit.rb" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/admin/tit.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+              <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="reihe.rb" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/admin/reihe.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="83" column="87" selection-start-line="83" selection-start-column="74" selection-end-line="83" selection-end-column="87" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_projectindex.erb" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/views/admin/projekte/_projectindex.erb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="input_form.scss" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/assets/stylesheets/input_form/input_form.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-46.25">
+              <caret line="74" column="4" selection-start-line="74" selection-start-column="4" selection-end-line="74" selection-end-column="4" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="autor.rb" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/models/autor.rb">
+        <entry file="file://$PROJECT_DIR$/app/admin/autor.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+              <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="for_input.js.erb" pinned="false" current-in-tab="true">
+      <file leaf-file-name="for_input.js.erb" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/assets/javascripts/for_input.js.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.27331188">
-              <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+            <state vertical-scroll-proportion="-70.625">
+              <caret line="113" column="0" selection-start-line="113" selection-start-column="0" selection-end-line="113" selection-end-column="0" />
               <folding>
-                <marker date="1447934453363" expanded="true" signature="1092:3532" placeholder="..." />
-                <marker date="1447934453363" expanded="true" signature="1096:1218" placeholder="..." />
-                <marker date="1447934453363" expanded="true" signature="1096:1220" placeholder="..." />
-                <marker date="1447934453363" expanded="true" signature="1096:1264" placeholder="..." />
-                <marker date="1447934453363" expanded="true" signature="1278:1413" placeholder="..." />
-                <marker date="1447934453363" expanded="true" signature="1427:1562" placeholder="..." />
-                <marker date="1447934453363" expanded="true" signature="1576:1706" placeholder="..." />
-                <marker date="1447934453363" expanded="true" signature="1720:1846" placeholder="..." />
-                <marker date="1447934453363" expanded="true" signature="1860:1982" placeholder="..." />
-                <marker date="1447934453363" expanded="true" signature="1996:2118" placeholder="..." />
-                <marker date="1447934453363" expanded="true" signature="2132:2259" placeholder="..." />
-                <marker date="1447934453363" expanded="true" signature="2273:2396" placeholder="..." />
-                <marker date="1447934453363" expanded="true" signature="2410:2553" placeholder="..." />
-                <marker date="1447934453363" expanded="true" signature="2567:2710" placeholder="..." />
-                <marker date="1447934453363" expanded="true" signature="2724:2862" placeholder="..." />
-                <marker date="1447934453363" expanded="true" signature="2876:3011" placeholder="..." />
-                <marker date="1447934453363" expanded="true" signature="3025:3159" placeholder="..." />
-                <marker date="1447934453363" expanded="true" signature="3173:3310" placeholder="..." />
-                <marker date="1447934453363" expanded="true" signature="3324:3459" placeholder="..." />
+                <marker date="1448008547039" expanded="true" signature="960:3374" placeholder="..." />
+                <marker date="1448008547039" expanded="true" signature="964:1086" placeholder="..." />
+                <marker date="1448008547039" expanded="true" signature="964:1088" placeholder="..." />
+                <marker date="1448008547039" expanded="true" signature="964:1106" placeholder="..." />
+                <marker date="1448008547039" expanded="true" signature="1120:1255" placeholder="..." />
+                <marker date="1448008547039" expanded="true" signature="1269:1404" placeholder="..." />
+                <marker date="1448008547039" expanded="true" signature="1418:1548" placeholder="..." />
+                <marker date="1448008547039" expanded="true" signature="1562:1688" placeholder="..." />
+                <marker date="1448008547039" expanded="true" signature="1702:1824" placeholder="..." />
+                <marker date="1448008547039" expanded="true" signature="1838:1960" placeholder="..." />
+                <marker date="1448008547039" expanded="true" signature="1974:2101" placeholder="..." />
+                <marker date="1448008547039" expanded="true" signature="2115:2238" placeholder="..." />
+                <marker date="1448008547039" expanded="true" signature="2252:2395" placeholder="..." />
+                <marker date="1448008547039" expanded="true" signature="2409:2552" placeholder="..." />
+                <marker date="1448008547039" expanded="true" signature="2566:2704" placeholder="..." />
+                <marker date="1448008547039" expanded="true" signature="2718:2853" placeholder="..." />
+                <marker date="1448008547039" expanded="true" signature="2867:3001" placeholder="..." />
+                <marker date="1448008547039" expanded="true" signature="3015:3152" placeholder="..." />
+                <marker date="1448008547039" expanded="true" signature="3166:3301" placeholder="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="20150428005231_create_autoren.rb" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/db/migrate/20150428005231_create_autoren.rb">
+      <file leaf-file-name="prod.js.coffee" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/assets/javascripts/prod.js.coffee">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+            <state vertical-scroll-proportion="-9.375">
+              <caret line="15" column="29" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="projekt.rb" pinned="false" current-in-tab="false">
+      <file leaf-file-name="nav_bar.scss" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/assets/stylesheets/input_form/nav_bar.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-1.25">
+              <caret line="2" column="23" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="23" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="projekt.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/admin/projekt.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="75" column="0" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="schema.rb" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/db/schema.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="148" column="47" selection-start-line="148" selection-start-column="47" selection-end-line="148" selection-end-column="47" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="admin_user.rb" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/admin/admin_user.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+              <caret line="0" column="31" selection-start-line="0" selection-start-column="31" selection-end-line="0" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -166,7 +181,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/models/s_reif.rb" />
         <option value="$PROJECT_DIR$/app/models/offsch.rb" />
         <option value="$PROJECT_DIR$/app/models/lf.rb" />
         <option value="$PROJECT_DIR$/app/models/ein_liste.rb" />
@@ -211,12 +225,13 @@
         <option value="$PROJECT_DIR$/app/assets/stylesheets/input_form/input_form.scss" />
         <option value="$PROJECT_DIR$/Gemfile" />
         <option value="$PROJECT_DIR$/app/models/gprod.rb" />
-        <option value="$PROJECT_DIR$/app/admin/autor.rb" />
-        <option value="$PROJECT_DIR$/app/admin/projekt.rb" />
         <option value="$PROJECT_DIR$/db/seeds.rb" />
-        <option value="$PROJECT_DIR$/app/models/autor.rb" />
         <option value="$PROJECT_DIR$/app/views/admin/projekte/_projectInput.html.erb" />
         <option value="$PROJECT_DIR$/app/assets/javascripts/for_input.js.erb" />
+        <option value="$PROJECT_DIR$/app/admin/buch.rb" />
+        <option value="$PROJECT_DIR$/app/models/autor.rb" />
+        <option value="$PROJECT_DIR$/app/admin/autor.rb" />
+        <option value="$PROJECT_DIR$/app/admin/projekt.rb" />
       </list>
     </option>
   </component>
@@ -842,20 +857,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/tit.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="17" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/assets/stylesheets/input_form/nav_bar.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.25">
-          <caret line="2" column="23" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/tasks/dbf.rake">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -916,13 +917,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.41598696">
           <caret line="17" column="29" selection-start-line="17" selection-start-column="29" selection-end-line="17" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/admin/tit.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="37" column="62" selection-start-line="37" selection-start-column="62" selection-end-line="37" selection-end-column="62" />
         </state>
       </provider>
     </entry>
@@ -1014,39 +1008,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/admin/reihe.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.2747844">
-          <caret line="83" column="87" selection-start-line="83" selection-start-column="74" selection-end-line="83" selection-end-column="87" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/prod.js.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.24889381">
-          <caret line="15" column="29" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/assets/javascripts/active_admin.js.coffee">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.13274336">
           <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/admin/buch.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.13146552">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/admin/projekte/_projectindex.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1073,22 +1038,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/assets/stylesheets/input_form/input_form.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.75">
-          <caret line="74" column="4" selection-start-line="74" selection-start-column="4" selection-end-line="74" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/gprod.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1724138">
-          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/admin/admin_user.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1101,14 +1050,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.015673982">
           <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/admin/autor.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.20376176">
-          <caret line="13" column="5" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
           <folding />
         </state>
       </provider>
@@ -1137,30 +1078,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/admin/lektor.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/autor.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/admin/projekt.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="75" column="0" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/db/migrate/20150428005231_create_autoren.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1169,39 +1086,143 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/admin/projekte/_projectInput.html.erb">
+    <entry file="file://$PROJECT_DIR$/app/admin/buch.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-53.875">
-          <caret line="158" column="0" selection-start-line="158" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="1" selection-start-line="12" selection-start-column="1" selection-end-line="18" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/gprod.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/autor.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="9" column="39" selection-start-line="9" selection-start-column="39" selection-end-line="9" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/admin/projekte/_projectindex.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/assets/stylesheets/input_form/input_form.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-46.25">
+          <caret line="74" column="4" selection-start-line="74" selection-start-column="4" selection-end-line="74" selection-end-column="4" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/assets/javascripts/for_input.js.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.27331188">
-          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+        <state vertical-scroll-proportion="-70.625">
+          <caret line="113" column="0" selection-start-line="113" selection-start-column="0" selection-end-line="113" selection-end-column="0" />
           <folding>
-            <marker date="1447934453363" expanded="true" signature="1092:3532" placeholder="..." />
-            <marker date="1447934453363" expanded="true" signature="1096:1218" placeholder="..." />
-            <marker date="1447934453363" expanded="true" signature="1096:1220" placeholder="..." />
-            <marker date="1447934453363" expanded="true" signature="1096:1264" placeholder="..." />
-            <marker date="1447934453363" expanded="true" signature="1278:1413" placeholder="..." />
-            <marker date="1447934453363" expanded="true" signature="1427:1562" placeholder="..." />
-            <marker date="1447934453363" expanded="true" signature="1576:1706" placeholder="..." />
-            <marker date="1447934453363" expanded="true" signature="1720:1846" placeholder="..." />
-            <marker date="1447934453363" expanded="true" signature="1860:1982" placeholder="..." />
-            <marker date="1447934453363" expanded="true" signature="1996:2118" placeholder="..." />
-            <marker date="1447934453363" expanded="true" signature="2132:2259" placeholder="..." />
-            <marker date="1447934453363" expanded="true" signature="2273:2396" placeholder="..." />
-            <marker date="1447934453363" expanded="true" signature="2410:2553" placeholder="..." />
-            <marker date="1447934453363" expanded="true" signature="2567:2710" placeholder="..." />
-            <marker date="1447934453363" expanded="true" signature="2724:2862" placeholder="..." />
-            <marker date="1447934453363" expanded="true" signature="2876:3011" placeholder="..." />
-            <marker date="1447934453363" expanded="true" signature="3025:3159" placeholder="..." />
-            <marker date="1447934453363" expanded="true" signature="3173:3310" placeholder="..." />
-            <marker date="1447934453363" expanded="true" signature="3324:3459" placeholder="..." />
+            <marker date="1448008547039" expanded="true" signature="960:3374" placeholder="..." />
+            <marker date="1448008547039" expanded="true" signature="964:1086" placeholder="..." />
+            <marker date="1448008547039" expanded="true" signature="964:1088" placeholder="..." />
+            <marker date="1448008547039" expanded="true" signature="964:1106" placeholder="..." />
+            <marker date="1448008547039" expanded="true" signature="1120:1255" placeholder="..." />
+            <marker date="1448008547039" expanded="true" signature="1269:1404" placeholder="..." />
+            <marker date="1448008547039" expanded="true" signature="1418:1548" placeholder="..." />
+            <marker date="1448008547039" expanded="true" signature="1562:1688" placeholder="..." />
+            <marker date="1448008547039" expanded="true" signature="1702:1824" placeholder="..." />
+            <marker date="1448008547039" expanded="true" signature="1838:1960" placeholder="..." />
+            <marker date="1448008547039" expanded="true" signature="1974:2101" placeholder="..." />
+            <marker date="1448008547039" expanded="true" signature="2115:2238" placeholder="..." />
+            <marker date="1448008547039" expanded="true" signature="2252:2395" placeholder="..." />
+            <marker date="1448008547039" expanded="true" signature="2409:2552" placeholder="..." />
+            <marker date="1448008547039" expanded="true" signature="2566:2704" placeholder="..." />
+            <marker date="1448008547039" expanded="true" signature="2718:2853" placeholder="..." />
+            <marker date="1448008547039" expanded="true" signature="2867:3001" placeholder="..." />
+            <marker date="1448008547039" expanded="true" signature="3015:3152" placeholder="..." />
+            <marker date="1448008547039" expanded="true" signature="3166:3301" placeholder="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/assets/javascripts/prod.js.coffee">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-9.375">
+          <caret line="15" column="29" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/assets/stylesheets/input_form/nav_bar.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.25">
+          <caret line="2" column="23" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/tit.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="17" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/admin/autor.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/admin/lektor.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2507837">
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/admin/projekte/_projectInput.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-90.625">
+          <caret line="148" column="68" selection-start-line="148" selection-start-column="68" selection-end-line="148" selection-end-column="68" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/admin/tit.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/admin/reihe.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="83" column="87" selection-start-line="83" selection-start-column="74" selection-end-line="83" selection-end-column="87" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/admin/projekt.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="31" selection-start-line="0" selection-start-column="31" selection-end-line="0" selection-end-column="31" />
+          <folding />
         </state>
       </provider>
     </entry>

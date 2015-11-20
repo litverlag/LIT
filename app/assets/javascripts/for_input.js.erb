@@ -20,7 +20,6 @@ $(document).on('ready page:load',
 
             var is_added = false;
 
-
             $( "#new_autor" ).click(function() {
         if (is_added == false){
             $( " input[value='Autor hinzufügen']").remove();
@@ -37,18 +36,13 @@ $(document).on('ready page:load',
     }
 );
 
-<% default_values = []%>
-<% puts "_____________JS________"%>
-<% autor = Autor.where({name: "Autor 1"}).to_a %>
-<%  %>
-<%   %>
-<% %>
+
 
 
 
 var input_fields = '<div class="additional_fields"><li>\
         <label for="vorname">Vorname</label>\
-        <input type="text" name="autor[vorname]" id="autor_vorname" value="<%=autor.first[:vorname]%>" />\
+        <input type="text" name="autor[vorname]" id="autor_vorname" value="" />\
         </li>\
         <li>\
         <label for="autor_fox_id">Fox ID </label>\

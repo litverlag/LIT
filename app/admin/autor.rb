@@ -4,7 +4,7 @@ ActiveAdmin.register Autor do
   filter :institut
 
   #menu priority:99
-  menu
+
 
 
   controller do
@@ -14,13 +14,14 @@ ActiveAdmin.register Autor do
   end
 
   index do
-    selectable_column
     column 'Vollständiger Name', :fullname
     column :institut
 
     actions
   end
 
+  show do
 
+  end
 
 end

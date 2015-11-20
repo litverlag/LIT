@@ -146,7 +146,8 @@
                 <%= projekt_form.submit "Autor hinzufügen" %>
             <% end %>
           </ul>
-
+      <%= content_tag :div, class: "temp_information", data: {temp: @projekt.autor} do %>
+      <% end %>
 
 
 

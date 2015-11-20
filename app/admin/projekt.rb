@@ -2,7 +2,6 @@ ActiveAdmin.register Projekt do
   menu label: "Meine Projekte"
   #menu priority: x
   config.filters = false
-
    controller do
 
     include StatusLogic
