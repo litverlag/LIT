@@ -10,6 +10,10 @@ ActiveAdmin.register Lektor do
   end
 
 
+  show do
+    render :partial
+  end
+
 
 end
 

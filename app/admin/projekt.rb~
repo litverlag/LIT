@@ -6,7 +6,11 @@ ActiveAdmin.register Projekt do
 
     include StatusLogic
 
+    before_action :set_locale
 
+    def set_locale
+      I18n.locale = :de
+    end
 
     def scoped_collection
       if current_admin_user.departments.where("name = ?", 'Lektor').any?
@@ -54,23 +58,23 @@ ActiveAdmin.register Projekt do
            end
          end}
 
-
        @projekt = current_admin_user.lektor.gprod.find(params[:id])
        updateProc.call(@projekt,permitted_params[:projekt] )
        updateProc.call(@projekt.buch,permitted_params[:buch] )
 
        if permitted_params[:commit].eql?("Autor hinzufügen")
-           if not Autor.associate_with(@projekt,permitted_params[:autor]) then redirect_to edit_admin_projekt_path, notice: "Kein Autor mit diesem Namen gefunden"
-           end
+           Autor.associate_with(@projekt,permitted_params[:autor])
        end
+
+
+
 
        if permitted_params[:commit].eql?("Neuen Autor erstellen")
          @projekt.autor = Autor.create(permitted_params[:autor])
          @projekt.save
-         redirect_to collection_path, notice: 'Projekt erfolgreich überarbeitet'
        end
 
-
+       redirect_to collection_path, notice: 'Projekt erfolgreich überarbeitet'
      end
 
 
@@ -95,12 +99,6 @@ ActiveAdmin.register Projekt do
      actions
    end
 
-  show do
-    render partial: "projectShow"
-  end
 
 
-
-  form partial: 'projectInput' 
-
-end
+  form partial: 'projectInput' end

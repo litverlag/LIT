@@ -11,4 +11,7 @@ class ApplicationController < ActionController::Base
   def access_denied(exception)
     redirect_to "/admin/access_denied"
   end
+
+  before_action :set_locale
+
 end

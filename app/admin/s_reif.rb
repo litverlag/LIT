@@ -20,4 +20,8 @@ ActiveAdmin.register SReif do
     actions
   end
 
+  show do
+    render :partial
+  end
+
 end

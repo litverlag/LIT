@@ -20,4 +20,8 @@ ActiveAdmin.register Um do
     actions
   end
 
+  show do
+    render :partial
+  end
+
 end

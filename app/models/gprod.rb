@@ -34,4 +34,5 @@ class Gprod < ActiveRecord::Base
   has_one :statusbinderei, class_name: StatusBinderei
   accepts_nested_attributes_for :statusbinderei
 
+
 end

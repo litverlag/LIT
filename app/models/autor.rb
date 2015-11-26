@@ -15,7 +15,7 @@ class Autor < ActiveRecord::Base
   end
 
 
-  def self.update_or_create_or_change(modelinstance,attributes)
+  def self.associate_with(modelinstance,attributes)
 
     #Filter all the not empty arguments
     keys_with_not_empty_entries = []
@@ -25,24 +25,22 @@ class Autor < ActiveRecord::Base
       end
     end
 
-
     relevant_attr = attributes.to_h.slice(*keys_with_not_empty_entries)
 
-    if not modelinstance.autor
-      modelinstance.autor = Autor.where(relevant_attr).first_or_create
-      modelinstance.save
-    else
+    if modelinstance.autor
       #Autor.where(relevant_attr).to_a.first über das Array kann man auf das Model zugreifen welches in der DBRelation steht welche die .where() methode ausgibt
-      if Autor.where(relevant_attr).nil?
-        modelinstance.autor = Autor.where(relevant_attr).first_or_create
-      else
-        modelinstance.autor = Autor.where(relevant_attr).to_a.first
-        modelinstance.save
+      # if Autor.where(relevant_attr).nil?
+      #   modelinstance.autor = Autor.where(relevant_attr).first_or_create
+      # else
+        if modelinstance.autor = Autor.where(relevant_attr).to_a.first
+          modelinstance.save
+          return true
+        else
+          return false
+        end
+
       end
     end
-
-  end
-
 
 
 end

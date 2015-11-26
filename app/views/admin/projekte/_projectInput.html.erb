@@ -70,51 +70,51 @@
                   <%= buch_fields.label :name, "Name"%>
                   <%= buch_fields.text_field :name %>
                 </li><li>
-                    <%= buch_fields.label :titel1, "Titel 1 "%>
-                    <%= buch_fields.text_field :titel1 %>
-                </li> <li>
-                    <%= buch_fields.label :titel2, "Titel 2 "%>
-                    <%= buch_fields.text_field :titel2 %>
-                </li><li>
-                   <%= buch_fields.label :titel3, "Titel 3"%>
-                    <%= buch_fields.text_field :titel3 %>
-                 </li><li>
-                  <%= buch_fields.label :isbn, "ISBN "%>
-                  <%= buch_fields.text_field :isbn %>
-                </li><li>
-                  <%= buch_fields.label :issn, "ISSN"%>
-                  <%= buch_fields.text_field :issn%>
-                </li><li>
-                  <%= buch_fields.label :utitel1, "Untertitel 1"%>
-                  <%= buch_fields.text_field :utitel1 %>
-                </li>  <li>
-                  <%= buch_fields.label :utitel2, "Untertitel 2"%>
-                  <%= buch_fields.text_field :utitel2 %>
-                </li><li>
-                  <%= buch_fields.label :utitel3, "Untertitel 3"%>
-                  <%= buch_fields.text_field :utitel3 %>
-                </li><li>
-                  <%= buch_fields.label :seiten, "Seitenanzahl"%>
-                  <%= buch_fields.text_field :seiten %>
-                </li><li>
-                  <%= buch_fields.label :preis, "Preis in €"%>
-                  <%= buch_fields.text_field :preis %>
-                </li><li>
-                  <%= buch_fields.label :spreis, "Sparpreis in €"%>
-                  <%= buch_fields.text_field :spreis %>
-                </li>  <li>
-                  <%= buch_fields.label :gewicht, "Gewicht in g"%>
-                  <%= buch_fields.text_field :gewicht %>
-                </li><li>
-                  <%= buch_fields.label :volumen, "Volumen in l"%>
-                  <%= buch_fields.text_field :volumen%>
-                </li><li class="one_size_42px">
-                  <%= buch_fields.label :sammelband, "Ist Sammelband"%>
-                    <%= buch_fields.check_box :sammelband%>
-                </li><li>
-                  <%= buch_fields.label :erscheinungsjahr, "Erscheinungsjahr"%>
-                  <input class="datepicker" data-date-format="mm/dd/yyyy" name="buch[erscheinungsjahr]" value="<%="#{@projekt.buch.erscheinungsjahr}" %>">
-                </li>
+        <%= buch_fields.label :titel1, "Titel 1 "%>
+        <%= buch_fields.text_field :titel1 %>
+      </li> <li>
+        <%= buch_fields.label :titel2, "Titel 2 "%>
+        <%= buch_fields.text_field :titel2 %>
+      </li><li>
+        <%= buch_fields.label :titel3, "Titel 3"%>
+        <%= buch_fields.text_field :titel3 %>
+      </li><li>
+        <%= buch_fields.label :isbn, "ISBN "%>
+        <%= buch_fields.text_field :isbn %>
+      </li><li>
+        <%= buch_fields.label :issn, "ISSN"%>
+        <%= buch_fields.text_field :issn%>
+      </li><li>
+        <%= buch_fields.label :utitel1, "Untertitel 1"%>
+        <%= buch_fields.text_field :utitel1 %>
+      </li>  <li>
+        <%= buch_fields.label :utitel2, "Untertitel 2"%>
+        <%= buch_fields.text_field :utitel2 %>
+      </li><li>
+        <%= buch_fields.label :utitel3, "Untertitel 3"%>
+        <%= buch_fields.text_field :utitel3 %>
+      </li><li>
+        <%= buch_fields.label :seiten, "Seitenanzahl"%>
+        <%= buch_fields.text_field :seiten %>
+      </li><li>
+        <%= buch_fields.label :preis, "Preis in €"%>
+        <%= buch_fields.text_field :preis %>
+      </li><li>
+        <%= buch_fields.label :spreis, "Sparpreis in €"%>
+        <%= buch_fields.text_field :spreis %>
+      </li>  <li>
+        <%= buch_fields.label :gewicht, "Gewicht in g"%>
+        <%= buch_fields.text_field :gewicht %>
+      </li><li>
+        <%= buch_fields.label :volumen, "Volumen in l"%>
+        <%= buch_fields.text_field :volumen%>
+      </li><li class="one_size_42px">
+        <%= buch_fields.label :sammelband, "Ist Sammelband"%>
+        <%= buch_fields.check_box :sammelband%>
+      </li><li>
+        <%= buch_fields.label :erscheinungsjahr, "Erscheinungsjahr"%>
+        <input class="datepicker" data-date-format="mm/dd/yyyy" name="buch[erscheinungsjahr]" value="<%="#{@projekt.buch.erscheinungsjahr}" %>">
+      </li>
             <% end %>
             <%= projekt_form.submit "Buchinformationen bearbeiten" %>
         <% end %>
@@ -129,30 +129,84 @@
 
 
     <fieldset class="autor"><legend><span><%= "Autor zu #{@projekt.projektname} bearbeiten"%></span></legend>
-          <p>Erstellen sie einen neuen Autor oder fügen sie einen schon bestehenden Autor zu der Datenbank hinzu.</p>
-          <nav>
-            <ul>
-              <li id="new_autor" >Alle Attribute</li>
-            </ul>
-          </nav>
-          <ul>
-            <%= form_for @projekt, url: used_url do |projekt_form| %>
-                <%= fields_for :autor, @projekt.autor do |buch_fields| %>
-                    <li>
-                      <%= buch_fields.label :name, "Nachname"%>
-                      <%= buch_fields.text_field :name, id: 'name_autocomplete' %>
-                    </li>
-                <% end %>
-                <%= projekt_form.submit "Autor hinzufügen" %>
+      <p>Erstellen sie einen neuen Autor oder fügen sie einen schon bestehenden Autor zu der Datenbank hinzu.</p>
+      <ul>
+        <%= form_for @projekt, url: used_url do |projekt_form| %>
+
+            <%= fields_for :autor, @projekt.autor do |autor_fields| %>
+                <li>
+                  <%= autor_fields.label :name, "Nachname"%>
+                  <%= autor_fields.text_field :name, id: 'name_autocomplete' %>
+                </li><li>
+        <%= autor_fields.label :vorname, "Vorname"%>
+        <%= autor_fields.text_field :vorname %>
+      </li><li>
+        <%= autor_fields.label :anrede, "Anrede"%>
+        <%= autor_fields.text_field :anrede %>
+      </li>
+                <li>
+                  <%= autor_fields.label :email, "email"%>
+                  <%= autor_fields.text_field :email %>
+                </li>
+                <li>
+                  <%= autor_fields.label :str, "str"%>
+                  <%= autor_fields.text_field :str %>
+                </li>
+                <li>
+                  <%= autor_fields.label :ort, "ort"%>
+                  <%= autor_fields.text_field :ort %>
+                </li>
+                <li>
+                  <%= autor_fields.label :plz, "plz"%>
+                  <%= autor_fields.text_field :plz %>
+                </li>
+                <li>
+                  <%= autor_fields.label :tel, "tel"%>
+                  <%= autor_fields.text_field :tel %>
+                </li>
+                <li>
+                  <%= autor_fields.label :fax, "fax"%>
+                  <%= autor_fields.text_field :fax %>
+                </li>
+                <li>
+                  <%= autor_fields.label :institut, "institut"%>
+                  <%= autor_fields.text_field :institut %>
+                </li>
+                <li>
+                  <%= autor_fields.label :demail, "demail"%>
+                  <%= autor_fields.text_field :demail %>
+                </li>
+                <li>
+                  <%= autor_fields.label :dstr, "dstr"%>
+                  <%= autor_fields.text_field :dstr %>
+                </li>
+                <li>
+                  <%= autor_fields.label :dort, "dort"%>
+                  <%= autor_fields.text_field :dort %>
+                </li>
+                <li>
+                  <%= autor_fields.label :dplz, "dplz"%>
+                  <%= autor_fields.text_field :dplz %>
+                </li>
+                <li>
+                  <%= autor_fields.label :dtel, "dtel"%>
+                  <%= autor_fields.text_field :dtel %>
+                </li>
+                <li>
+                  <%= autor_fields.label :dfax, "dfax"%>
+                  <%= autor_fields.text_field :dfax %>
+                </li>
             <% end %>
-          </ul>
-      <%= content_tag :div, class: "temp_information", data: {temp: @projekt.autor} do %>
-      <% end %>
+            <%= projekt_form.submit "Autor hinzufügen" %>
+            <%= projekt_form.submit "Neuen Autor erstellen" %>
+
+
+        <% end %>
+      </ul>
 
 
 
-
-        </fieldset>
+    </fieldset>
 
 
 
@@ -163,6 +217,5 @@
 
 
 <% end %>
-
 
 

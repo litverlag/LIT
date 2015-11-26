@@ -20,4 +20,8 @@ ActiveAdmin.register Preps do
     actions
   end
 
+  show do
+    render :partial
+  end
+
 end

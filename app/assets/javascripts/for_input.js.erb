@@ -18,20 +18,22 @@ $(document).on('ready page:load',
 
     $(".ui-helper-hidden-accessible").remove();
 
-            var is_added = false;
+//            var is_added = false;
 
-            $( "#new_autor" ).click(function() {
-        if (is_added == false){
-            $( " input[value='Autor hinzufügen']").remove();
-            $("fieldset.autor > ul > form").append(input_fields);
-            is_added = true;
-        }else{
-            $(".additional_fields").remove();
-            is_added = false;
-            $("fieldset.autor > ul > form").append('<input type="submit" name="commit" value="Autor hinzufügen" />');
-        }
-
-    });
+//            $( "#new_autor" ).click(function() {
+//        if (is_added == false){
+//            $( " input[value='Autor hinzufügen']").remove();
+//            $( " input[value='Neuen Autor erstellen']").remove();
+//            $("fieldset.autor > ul > form").append(input_fields);
+//            is_added = true;
+//        }else{
+//            $(".additional_fields").remove();
+//            is_added = false;
+//            $("fieldset.autor > ul > form").append('<input type="submit" name="commit" value="Autor hinzufügen" />');
+//
+//        }
+//
+//    });
 
     }
 );
@@ -40,71 +42,73 @@ $(document).on('ready page:load',
 
 
 
-var input_fields = '<div class="additional_fields"><li>\
-        <label for="vorname">Vorname</label>\
-        <input type="text" name="autor[vorname]" id="autor_vorname" value="" />\
-        </li>\
-        <li>\
-        <label for="autor_fox_id">Fox ID </label>\
-        <input type="text" name="autor[fox_id]" id="autor_fox_id" />\
-       </li>\
-        <li>\
-        <label for="autor_anrede">Anrede</label>\
-        <input type="text" name="autor[anrede]" id="autor_anrede" />\
-        </li>\
-        <li>\
-        <label for="autor_email">Email</label>\
-        <input type="text" name="autor[email]" id="autor_email" />\
-       </li>\
-        <li>\
-        <label for="autor_str">Straße</label>\
-        <input type="text" name="autor[str]" id="autor_str" />\
-        </li>\
-        <li>\
-        <label for="autor_ort">Ort</label>\
-        <input type="text" name="autor[ort]" id="autor_ort" />\
-       </li>\
-        <li>\
-        <label for="autor_plz">Plz</label>\
-        <input type="text" name="autor[plz]" id="autor_plz" />\
-       </li>\
-        <li>\
-        <label for="autor_tel">Telefon</label>\
-        <input type="text" name="autor[tel]" id="autor_tel" />\
-        </li>\
-        <li>\
-        <label for="autor_fax">Fax</label>\
-        <input type="text" name="autor[fax]" id="autor_fax" />\
-        </li>\
-        <li>\
-        <label for="autor_institut">Institut</label>\
-        <input type="text" name="autor[institut]" id="autor_institut" />\
-        </li>\
-        <li>\
-        <label for="autor_demail">Email (Dienst)</label>\
-        <input type="text" name="autor[demail]" id="autor_demail" />\
-        </li>\
-        <li>\
-        <label for="autor_dstr">Straße (Dienst)</label>\
-        <input type="text" name="autor[dstr]" id="autor_dstr" />\
-        </li>\
-        <li>\
-        <label for="autor_dort">Ort (Dienst)</label>\
-        <input type="text" name="autor[dort]" id="autor_dort" />\
-        </li>\
-        <li>\
-        <label for="autor_dplz">Plz (Dienst)</label>\
-        <input type="text" name="autor[dplz]" id="autor_dplz" />\
-       </li>\
-        <li>\
-        <label for="autor_dtel">Telefon (Dienst)</label>\
-        <input type="text" name="autor[dtel]" id="autor_dtel" />\
-      </li>\
-        <li>\
-        <label for="autor_dfax">Fax (Dienst)</label>\
-        <input type="text" name="autor[dfax]" id="autor_dfax" />\
-        </li>\
-        <input type="submit" name="commit" value="Autor hinzufügen" /><\div>';
+//var input_fields = '<div class="additional_fields"><li>\
+//        <label for="vorname">Vorname</label>\
+//        <input type="text" name="autor[vorname]" id="autor_vorname" value="" />\
+//        </li>\
+//        <li>\
+//        <label for="autor_fox_id">Fox ID </label>\
+//        <input type="text" name="autor[fox_id]" id="autor_fox_id" />\
+//       </li>\
+//        <li>\
+//        <label for="autor_anrede">Anrede</label>\
+//        <input type="text" name="autor[anrede]" id="autor_anrede" />\
+//        </li>\
+//        <li>\
+//        <label for="autor_email">Email</label>\
+//        <input type="text" name="autor[email]" id="autor_email" />\
+//       </li>\
+//        <li>\
+//        <label for="autor_str">Straße</label>\
+//        <input type="text" name="autor[str]" id="autor_str" />\
+//        </li>\
+//        <li>\
+//        <label for="autor_ort">Ort</label>\
+//        <input type="text" name="autor[ort]" id="autor_ort" />\
+//       </li>\
+//        <li>\
+//        <label for="autor_plz">Plz</label>\
+//        <input type="text" name="autor[plz]" id="autor_plz" />\
+//       </li>\
+//        <li>\
+//        <label for="autor_tel">Telefon</label>\
+//        <input type="text" name="autor[tel]" id="autor_tel" />\
+//        </li>\
+//        <li>\
+//        <label for="autor_fax">Fax</label>\
+//        <input type="text" name="autor[fax]" id="autor_fax" />\
+//        </li>\
+//        <li>\
+//        <label for="autor_institut">Institut</label>\
+//        <input type="text" name="autor[institut]" id="autor_institut" />\
+//        </li>\
+//        <li>\
+//        <label for="autor_demail">Email (Dienst)</label>\
+//        <input type="text" name="autor[demail]" id="autor_demail" />\
+//        </li>\
+//        <li>\
+//        <label for="autor_dstr">Straße (Dienst)</label>\
+//        <input type="text" name="autor[dstr]" id="autor_dstr" />\
+//        </li>\
+//        <li>\
+//        <label for="autor_dort">Ort (Dienst)</label>\
+//        <input type="text" name="autor[dort]" id="autor_dort" />\
+//        </li>\
+//        <li>\
+//        <label for="autor_dplz">Plz (Dienst)</label>\
+//        <input type="text" name="autor[dplz]" id="autor_dplz" />\
+//       </li>\
+//        <li>\
+//        <label for="autor_dtel">Telefon (Dienst)</label>\
+//        <input type="text" name="autor[dtel]" id="autor_dtel" />\
+//      </li>\
+//        <li>\
+//        <label for="autor_dfax">Fax (Dienst)</label>\
+//        <input type="text" name="autor[dfax]" id="autor_dfax" />\
+//        </li>\
+//        <input type="submit" name="commit" value="Autor hinzufügen" />\
+//        <input type="submit" name="commit" value="Neuen Autor erstellen"/>\
+//        <\div>';
 
 
 

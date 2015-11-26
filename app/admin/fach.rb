@@ -8,5 +8,10 @@ ActiveAdmin.register Fach do
       params.permit!
     end
   end
-  
+
+  show do
+    render :partial
+  end
+
+
 end
