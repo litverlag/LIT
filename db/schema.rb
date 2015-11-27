@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151107183205) do
+ActiveRecord::Schema.define(version: 20151125111823) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -293,9 +293,25 @@ ActiveRecord::Schema.define(version: 20151107183205) do
 
   create_table "status_final", force: :cascade do |t|
     t.integer "gprod_id"
+    t.boolean "freigabe",    default: false
+    t.date    "freigabe_at"
     t.string  "status"
     t.string  "updated_by"
     t.date    "updated_at"
+  end
+
+  create_table "status_freigabe", force: :cascade do |t|
+    t.integer "gprod_id"
+    t.boolean "gesamt",        default: false
+    t.date    "gesamt_date"
+    t.boolean "titelei",       default: false
+    t.date    "titelei_date"
+    t.boolean "satz",          default: false
+    t.date    "satz_date"
+    t.boolean "preps",         default: false
+    t.date    "preps_date"
+    t.boolean "umschlag",      default: false
+    t.date    "umschlag_date"
   end
 
   create_table "status_offsch", force: :cascade do |t|
@@ -307,6 +323,8 @@ ActiveRecord::Schema.define(version: 20151107183205) do
 
   create_table "status_preps", force: :cascade do |t|
     t.integer "gprod_id"
+    t.boolean "freigabe",    default: false
+    t.date    "freigabe_at"
     t.string  "status"
     t.string  "updated_by"
     t.date    "updated_at"
@@ -321,6 +339,8 @@ ActiveRecord::Schema.define(version: 20151107183205) do
 
   create_table "status_satz", force: :cascade do |t|
     t.integer "gprod_id"
+    t.boolean "freigabe",    default: false
+    t.date    "freigabe_at"
     t.string  "status"
     t.string  "updated_by"
     t.date    "updated_at"
@@ -328,6 +348,8 @@ ActiveRecord::Schema.define(version: 20151107183205) do
 
   create_table "status_titelei", force: :cascade do |t|
     t.integer "gprod_id"
+    t.boolean "freigabe",    default: false
+    t.date    "freigabe_at"
     t.string  "status"
     t.string  "updated_by"
     t.date    "updated_at"
@@ -335,6 +357,8 @@ ActiveRecord::Schema.define(version: 20151107183205) do
 
   create_table "status_umschl", force: :cascade do |t|
     t.integer "gprod_id"
+    t.boolean "freigabe",    default: false
+    t.date    "freigabe_at"
     t.string  "status"
     t.string  "updated_by"
     t.date    "updated_at"

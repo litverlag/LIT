@@ -12,6 +12,14 @@ ActiveAdmin.register Tit do
          params.permit!
        end
 
+
+    ##
+    # TEST TEST TEST
+    def edit
+      @projekt = Gprod.find(params[:id])
+      internalStatusLogic(@projekt, @projekt, "fertig")
+    end
+
   end
 
 
