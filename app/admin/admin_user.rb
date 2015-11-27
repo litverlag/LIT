@@ -2,10 +2,42 @@
     menu priority:2
 
     controller do
-      def permitted_params
 
+      def permitted_params
         params.permit!
       end
+
+      def create
+        if not @user = AdminUser.create(permitted_params[:user])
+          render 'new'
+        end
+        @user.update(permitted_params[:departments])
+        if @user.departments.to_a.include?('Lektor')
+          @user.update(permitted_params[:lektor])
+        end
+      end
+
+      def update
+
+        updateProc = Proc.new{|modelinstance ,data|
+          if data != nil
+            if not modelinstance.update(data)
+              render 'edit'
+            end
+          end}
+
+
+        @user = AdminUser.find(params[:id])
+        updateProc.call(@user,permitted_params[:user] )
+        updateProc.call(@user.departments,permitted_params[:departments] )
+        if @user.departments.to_a.include?('Lektor')
+          updateProc.call(@user.lektor,permitted_params[:lektor] )
+        end
+
+      end
+
+
+
     end
 
 
@@ -65,14 +97,22 @@
 
       f.inputs 'Der User hat folgende Benutzergruppen' do
         f.input :departments, as: :select
-
-        f.input :lektor
       end
 
+      #   f.inputs 'Der User hat folgende Benutzergruppen' do
+       #    f.input :lektor, as: :select
+      # end
 
 
+          f.inputs "Lektor", :for => [:lektor] do |lek|
+            lek.input :name
+          end
 
-      f.actions
+        div do
+          render('/admin/new.html.erb')
+        end
+
+        f.actions
 
       end
     end

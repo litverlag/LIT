@@ -255,21 +255,6 @@ ActiveRecord::Schema.define(version: 20151107183205) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "reihen_hg_zuordnungen", force: :cascade do |t|
-    t.integer  "reihe_id"
-    t.integer  "autor_id"
-    t.integer  "frei_ex"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "reihen_zuordnungen", force: :cascade do |t|
-    t.integer  "buch_id"
-    t.integer  "reihe_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "status_bildpr", force: :cascade do |t|
     t.integer "gprod_id"
     t.string  "status"
@@ -293,6 +278,8 @@ ActiveRecord::Schema.define(version: 20151107183205) do
 
   create_table "status_final", force: :cascade do |t|
     t.integer "gprod_id"
+    t.boolean "freigabe",    default: false
+    t.date    "freigabe_at"
     t.string  "status"
     t.string  "updated_by"
     t.date    "updated_at"
@@ -307,6 +294,8 @@ ActiveRecord::Schema.define(version: 20151107183205) do
 
   create_table "status_preps", force: :cascade do |t|
     t.integer "gprod_id"
+    t.boolean "freigabe",    default: false
+    t.date    "freigabe_at"
     t.string  "status"
     t.string  "updated_by"
     t.date    "updated_at"
@@ -321,6 +310,8 @@ ActiveRecord::Schema.define(version: 20151107183205) do
 
   create_table "status_satz", force: :cascade do |t|
     t.integer "gprod_id"
+    t.boolean "freigabe",    default: false
+    t.date    "freigabe_at"
     t.string  "status"
     t.string  "updated_by"
     t.date    "updated_at"
@@ -328,6 +319,8 @@ ActiveRecord::Schema.define(version: 20151107183205) do
 
   create_table "status_titelei", force: :cascade do |t|
     t.integer "gprod_id"
+    t.boolean "freigabe",    default: false
+    t.date    "freigabe_at"
     t.string  "status"
     t.string  "updated_by"
     t.date    "updated_at"
@@ -335,13 +328,8 @@ ActiveRecord::Schema.define(version: 20151107183205) do
 
   create_table "status_umschl", force: :cascade do |t|
     t.integer "gprod_id"
-    t.string  "status"
-    t.string  "updated_by"
-    t.date    "updated_at"
-  end
-
-  create_table "status_umschlag", force: :cascade do |t|
-    t.integer "gprod_id"
+    t.boolean "freigabe",    default: false
+    t.date    "freigabe_at"
     t.string  "status"
     t.string  "updated_by"
     t.date    "updated_at"

@@ -13,14 +13,14 @@
 
 
 
-# Lektor.create(name:'Peter Schmidt',fox_name:'PS')
-# Lektor.create(name:'Annelise Muster',fox_name:'AM')
-# Lektor.create(name:'Fritz Hans',fox_name:'FH')
-# Lektor.create(name:'Thomas Gottschalk',fox_name:'TG')
+Lektor.create(name:'Peter Schmidt',fox_name:'PS')
+Lektor.create(name:'Annelise Muster',fox_name:'AM')
+Lektor.create(name:'Fritz Hans',fox_name:'FH')
+Lektor.create(name:'Thomas Gottschalk',fox_name:'TG')
 
- (1..10).each do |num|
- Autor.create(name:"Autor #{num}")
- end
+ # (1..10).each do |num|
+ # Autor.create(name:"Autor #{num}")
+ # end
 
 #Lektor.create([{name: 'Thomas', admin_user_id: 1}])
 #AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')

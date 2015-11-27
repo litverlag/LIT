@@ -4,7 +4,7 @@ class DeviseCreateAdminUsers < ActiveRecord::Migration
     # Create a default user
     if direction == :up
       @superadmin = AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
-      @superadmin.departments = Department.where("name = 'Superadmin'")
+      #@superadmin.departments = Department.where("name = 'Superadmin'")
     end
   end
 
