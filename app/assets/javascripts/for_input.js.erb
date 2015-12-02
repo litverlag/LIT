@@ -18,22 +18,12 @@ $(document).on('ready page:load',
 
     $(".ui-helper-hidden-accessible").remove();
 
-//            var is_added = false;
+            var is_added = false;
 
-//            $( "#new_autor" ).click(function() {
-//        if (is_added == false){
-//            $( " input[value='Autor hinzufügen']").remove();
-//            $( " input[value='Neuen Autor erstellen']").remove();
-//            $("fieldset.autor > ul > form").append(input_fields);
-//            is_added = true;
-//        }else{
-//            $(".additional_fields").remove();
-//            is_added = false;
-//            $("fieldset.autor > ul > form").append('<input type="submit" name="commit" value="Autor hinzufügen" />');
-//
-//        }
-//
-//    });
+            $( "h3").click(function( event ) {
+                 $(event.target).parent().find("table").slideToggle(100);
+
+            });
 
     }
 );

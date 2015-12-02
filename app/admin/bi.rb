@@ -9,8 +9,9 @@ ActiveAdmin.register Bi do
     include StatusLogic
 
     def permitted_params
-         params.permit!
-       end
+      params.permit!
+    end
+
 
   end
 

@@ -3,14 +3,34 @@
 
 
 
-<div class="panel">
-<h3><%= @projekt.projektname %></h3>
+
   <div class="panel_contents">
     <div class="attributes_table projekt" id="<%= "attributes_table_projekt_#{@projekt.id}" %>">
       <table border="0" cellpadding="0" cellspacing="0">
         <tbody>
+            <% if @projekt.statusfinal.status.nil?%>
+                <tr>
+                  <th>Finaler Status</th>
+                  <td> <span class="status_tag">Leer</span></td>
+                </tr>
+            <% else%>
+                <tr>
+                  <th>Finaler Status</th>
+                  <td><%= @projekt.statusfinal.status %></td>
+                </tr>
+            <%end %>
+        </tbody></table>
+    </div>
+  </div>
 
 
+
+
+<div class="panel">
+<h3><%= @projekt.projektname %> </h3>
+    <div class="attributes_table projekt" id="<%= "attributes_table_projekt_#{@projekt.id}" %>">
+      <table border="0" cellpadding="0" cellspacing="0">
+        <tbody>
         <% @relevant_attr.each_pair do |name, value| %>
           <% if value.nil?%>
                   <tr>
@@ -30,8 +50,9 @@
   </div>
 </div>
 
+
 <div class="panel">
-  <h3><%= @projekt.projektname %></h3>
+  <h3>Buch zu <%= @projekt.projektname %></h3>
   <div class="panel_contents">
     <div class="attributes_table projekt" id="<%= "attributes_table_projekt_#{@projekt.id}" %>">
       <table border="0" cellpadding="0" cellspacing="0">
@@ -58,7 +79,7 @@
 </div>
 
 <div class="panel">
-  <h3><%= @projekt.projektname %></h3>
+  <h3>Autor zu <%= @projekt.projektname %></h3>
   <div class="panel_contents">
     <div class="attributes_table projekt" id="<%= "attributes_table_projekt_#{@projekt.id}" %>">
       <table border="0" cellpadding="0" cellspacing="0">

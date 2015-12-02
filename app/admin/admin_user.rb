@@ -57,24 +57,8 @@
     filter :created_at
     filter :user_role
 
-    form do |f|
-      f.inputs "Admin Details" do
-        f.input :email
-        f.input :password
-        f.input :password_confirmation
-
-      f.inputs 'Der User hat folgende Benutzergruppen' do
-        f.input :departments, as: :select
-
-        f.input :lektor
-      end
 
 
 
-
-      f.actions
-
-      end
-    end
   end
 
