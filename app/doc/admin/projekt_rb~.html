@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>projekt.rb~ - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/darkfish.js"></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="file">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="project-metadata">
+    <div id="fileindex-section" class="nav-section">
+  <h3>Pages</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../admin/projekt_rb~.html">projekt.rb~</a>
+  
+    <li><a href="../assets/javascripts/active_admin_js_coffee.html">active_admin.js.coffee</a>
+  
+    <li><a href="../assets/javascripts/application_js.html">application.js</a>
+  
+    <li><a href="../assets/javascripts/prod_js_coffee.html">prod.js.coffee</a>
+  
+    <li><a href="../assets/stylesheets/active_admin_css_scss.html">active_admin.css.scss</a>
+  
+    <li><a href="../assets/stylesheets/application_css.html">application.css</a>
+  
+    <li><a href="../assets/stylesheets/input_form/input_form_scss.html">input_form.scss</a>
+  
+    <li><a href="../assets/stylesheets/input_form/nav_bar_scss.html">nav_bar.scss</a>
+  
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-label="Page admin/projekt.rb~">
+
+<p>ActiveAdmin.register <a href="../Projekt.html">Projekt</a> do</p>
+
+<pre>menu label: &quot;Meine Projekte&quot;
+#menu priority: x
+config.filters = false
+ controller do
+
+  include StatusLogic
+
+  before_action :set_locale
+
+  def set_locale
+    I18n.locale = :de
+  end
+
+  def scoped_collection
+    if current_admin_user.departments.where(&quot;name = ?&quot;, &#39;Lektor&#39;).any?
+      super.where(lektor: current_admin_user.lektor)
+    else
+      super.all
+    end
+  end
+
+   def permitted_params
+     params.permit!
+   end
+
+   def create
+     puts &quot;____________________________CREATE__________________________&quot;
+     if not @projekt = Projekt.create(permitted_params[:projekt])
+       render &#39;new&#39;
+     elsif not @projekt.buch = Buch.create(permitted_params[:buch])
+       render &#39;new&#39;
+     elsif not createStatus(@projekt)
+      render &#39;new&#39;
+     else
+       @projekt.lektor = current_admin_user.lektor
+       @projekt.save
+       redirect_to collection_path, notice: &quot;Projekt erfolgreich erstellt&quot;
+     end
+   end
+
+  def edit
+    super
+    puts &quot;____________________________EDIT___________________________&quot;
+  end
+
+   def update
+     puts &quot;____________________________UPDATE___________________________&quot;
+     #Proc for the updating if there is already an Author
+     updateProc = Proc.new{|modelinstance ,data|
+       if data != nil
+         if not modelinstance.update(data)
+           render &#39;edit&#39;
+         end
+       end}
+
+     @projekt = current_admin_user.lektor.gprod.find(params[:id])
+     updateProc.call(@projekt,permitted_params[:projekt] )
+     updateProc.call(@projekt.buch,permitted_params[:buch] )
+
+     if permitted_params[:commit].eql?(&quot;Autor hinzufügen&quot;)
+         Autor.associate_with(@projekt,permitted_params[:autor])
+     end
+
+     if permitted_params[:commit].eql?(&quot;Neuen Autor erstellen&quot;)
+       @projekt.autor = Autor.create(permitted_params[:autor])
+       @projekt.save
+     end
+
+     redirect_to collection_path, notice: &#39;Projekt erfolgreich überarbeitet&#39;
+   end
+
+   def destroy
+     @projekt = current_admin_user.lektor.gprod.find(params[:id])
+     @projekt.buch.destroy
+     @projekt.destroy
+     redirect_to collection_path, notice: &quot;Projekt erfolgreich gelöscht&quot;
+   end
+
+ end
+
+ index do
+   #render partial: &#39;projectindex&#39;
+   column :projektname
+   column  &quot;Emailadresse des Projektes&quot;, :projekt_email_adresse
+
+   actions
+ end
+
+form partial: &#39;projectInput&#39; end</pre>
+</main>
+
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

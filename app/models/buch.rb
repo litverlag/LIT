@@ -1,3 +1,6 @@
+## The model for the Buch class
+#
+#
 class Buch < ActiveRecord::Base
 
   has_and_belongs_to_many :reihen
@@ -24,4 +27,22 @@ class Buch < ActiveRecord::Base
        self.isbn
     end
   end
+
+  ##
+  # all_attributes_set? checks if there is at least one nil attribute in the table.
+  # Notice that here the field lektor_id and autor_id are hardcoded but you can remove them
+  # if the entries are removed from the Database table
+  def all_attributes_set?
+    all_attri = true
+    self.attributes.each do |key,value|
+      next if key.eql?("lektor_id") | key.eql?("autor_id")
+      if value.blank?
+        all_attri = false
+      end
+    end
+    return all_attri
+  end
+
+
+
 end

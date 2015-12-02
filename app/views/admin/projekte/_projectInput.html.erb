@@ -42,6 +42,14 @@
       <ul>
         <%= form_for @projekt, url: used_url do |projekt_form| %>
             <li>
+            <div class="edit_status">
+              Status der Titelei
+              <select name="status[statustitlei]">
+                <%= options_for_select($TITELEI_STATUS) %>
+              </select>
+            </div>
+            </li>
+            <li>
               <%= projekt_form.label :projektname, "Projektname" %>
               <%= "#{@projekt.projektname}" %>
             </li>
@@ -127,7 +135,7 @@
 
 
 
-
+    <%@fields_for_autor = [:name,:vorname,:anrede,:email,:str,:ort,:plz,:tel,:fax,:institut,:demail,:dstr,:dort,:dplz,:dtel,:dfax]  %>
     <fieldset class="autor"><legend><span><%= "Autor zu #{@projekt.projektname} bearbeiten"%></span></legend>
       <p>Erstellen sie einen neuen Autor oder fügen sie einen schon bestehenden Autor zu der Datenbank hinzu.</p>
       <ul>
@@ -137,13 +145,15 @@
                 <li>
                   <%= autor_fields.label :name, "Nachname"%>
                   <%= autor_fields.text_field :name, id: 'name_autocomplete' %>
-                </li><li>
-        <%= autor_fields.label :vorname, "Vorname"%>
-        <%= autor_fields.text_field :vorname %>
-      </li><li>
-        <%= autor_fields.label :anrede, "Anrede"%>
-        <%= autor_fields.text_field :anrede %>
-      </li>
+                </li>
+                <li>
+                  <%= autor_fields.label :vorname, "Vorname"%>
+                  <%= autor_fields.text_field :vorname %>
+                </li>
+                <li>
+                  <%= autor_fields.label :anrede, "Anrede"%>
+                  <%= autor_fields.text_field :anrede %>
+                </li>
                 <li>
                   <%= autor_fields.label :email, "email"%>
                   <%= autor_fields.text_field :email %>

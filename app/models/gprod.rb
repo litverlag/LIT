@@ -1,5 +1,7 @@
 class Gprod < ActiveRecord::Base
 
+  include StatusLogic
+
   has_one :buch
   accepts_nested_attributes_for :buch
 
