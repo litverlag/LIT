@@ -89,6 +89,7 @@
     filter :created_at
     filter :user_role
 
+
     form do |f|
       f.inputs "Admin Details" do
         f.input :email
@@ -116,5 +117,6 @@
 
       end
     end
+
   end
 

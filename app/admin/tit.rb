@@ -31,7 +31,7 @@ ActiveAdmin.register Tit do
   end
 
   show do
-    render :partial
+    render partial: "titeleiShow"
   end
 
 end
