@@ -17,7 +17,7 @@ ActiveAdmin.register Tit do
     # TEST TEST TEST
     def edit
       @projekt = Gprod.find(params[:id])
-      internalStatusLogic(@projekt, @projekt, "fertig")
+      changeStatusByUser(@projekt, @projekt.statuspreps, "fertig")
     end
 
   end

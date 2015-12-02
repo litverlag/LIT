@@ -5,7 +5,7 @@ module GlobalVariables
 	#Final
 		$FINAL_STATUS = ["neu", "bearbeitung", "fertig", "problem"]
     #Druck
-    	$DRUCK_STATUS = ["neu", "bearbeitung", "fertig", "problem"]
+    	$DRUCK_STATUS = ["musterdrucken", "nächsterAuftrag", "neu", "bearbeitung", "fertig", "problem"]
     #Titelei
     	$TITELEI_STATUS = ["neu", "bearbeitung", "verschickt", "fertig", "problem"]
     #Satz
@@ -22,5 +22,9 @@ module GlobalVariables
     	$RG_STATUS = ["neu", "bearbeitung", "fertig", "problem"]
     #Binderei
     	$BINDEREI_STATUS = ["neu", "bearbeitung", "fertig", "problem"]
+
+
+    #Musterarten
+        $MUSTER_ART = ["digital", "papier"]
 
 end
