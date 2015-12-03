@@ -1,0 +1,20 @@
+.status_tag {
+  background: darken($secondary-color, 15%);
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 3px 5px 2px 5px;
+  font-size: 0.9em;
+
+  &.yes { background: #6090DB }
+  &.no  { background: grey }
+
+  /* Tags for relevant status */
+
+  &.neu { background: #990097; }
+  &.in_bearbeitung { background: #002DB3 }
+  &.verschickt { background: #FEF000; }
+  &.fertig { background: #008000; }
+  &.problem { background: #FF0000; }
+
+}

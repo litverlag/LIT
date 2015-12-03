@@ -17,14 +17,14 @@ ActiveAdmin.register Tit do
     # TEST TEST TEST
     def edit
       @projekt = Gprod.find(params[:id])
-      changeStatusByUser(@projekt, @projekt.statuspreps, "fertig")
+      changeStatusByUser(@projekt, @projekt.statustitelei, "in bearbeitung")
     end
 
   end
 
 
   index title: 'Titelei' do
-    column('Status') {|tit| tit.statustitelei.status}
+    column('Status') {|tit| status_tag(tit.statustitelei.status)}
     column :projektname
 
     actions

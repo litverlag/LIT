@@ -15,6 +15,7 @@
 @import "active_admin/select2/base";
 @import 'input_form/input_form';
 @import 'input_form/nav_bar';
+@import 'status_tag';
 
 
 // Overriding any non-variable SASS must be done after the fact.
@@ -22,39 +23,16 @@
 //
 //   .status_tag { background: #6090DB; }
 
+
+
 .col-isbn {
-	width:4em
+	width:4em;
 }
 .col-selectable {
 	padding-left:2pt !important;
 	padding-right:2pt !important;
 }
 
-
-
-
-
-
-.status_tag {
-  background: darken($secondary-color, 15%);
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  padding: 3px 5px 2px 5px;
-  font-size: 0.8em;
-
-  &.ok, &.published, &.complete, &.completed, &.green { background: #8daa92; }
-  &.warn, &.warning, &.orange { background: #e29b20; }
-  &.error, &.errored, &.red { background: #d45f53; }
-
-  &.yes { background: #6090DB }
-  &.no  { background: grey }
-
-  &.fertig { background: green; }
-  &.bearbeitung { background: yellow; color: #2E2F30 }
-  &.neu { background: red; }
-
-}
 
 //Adding styles for the costum input view
 

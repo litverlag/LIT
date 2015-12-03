@@ -15,7 +15,7 @@ ActiveAdmin.register Offsch do
   end
 
   index title: 'Offsch' do
-    column('Status') {|offsch| offsch.statusoffsch.status}
+    column('Status') {|offsch| status_tag(offsch.statusoffsch.status)}
     column :projektname
     actions
   end

@@ -15,7 +15,7 @@ ActiveAdmin.register SReif do
   end
 
   index title: 'Satz' do
-    column('Status') {|satz| satz.statussatz.status}
+    column('Status') {|satz| status_tag(satz.statussatz.status)}
     column :projektname
     actions
   end
