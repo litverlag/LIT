@@ -2,7 +2,7 @@ ActiveAdmin.register Tit do
   menu label: 'Tit'
   menu priority: 6
   config.filters = false
-  actions :index, :show, :edit, :update
+
 
   controller do
 
@@ -13,18 +13,41 @@ ActiveAdmin.register Tit do
        end
 
 
+    def show
+      puts "______________TITLEI______SHOW___________________-"
+      @projekt = Gprod.find(permitted_params[:id])
+    end
+
+
+
+
     ##
     # TEST TEST TEST
     def edit
-      @projekt = Gprod.find(params[:id])
-      internalStatusLogic(@projekt, @projekt, "fertig")
+      @projekt = Gprod.find(permitted_params[:id])
+     # internalStatusLogic(@projekt, @projekt, "fertig")
+
+    end
+
+    def update
+      puts "______________TITLEI______UPDATE___________________-"
+      @projekt = Gprod.find(permitted_params[:id])
+
+      if permitted_params[:status]
+        puts permitted_params[:status][:statustitelei]
+        @projekt.statustitelei.status = permitted_params[:status][:statustitelei]
+        @projekt.save
+      end
+
+      redirect_to collection_path
+
     end
 
   end
 
 
   index title: 'Titelei' do
-    column('Status') {|tit| tit.statustitelei.status}
+    column('Status') {|tit| status_tag tit.statustitelei.status}
     column :projektname
 
     actions
@@ -33,5 +56,7 @@ ActiveAdmin.register Tit do
   show do
     render partial: "titeleiShow"
   end
+
+  form partial: 'titeleiInput'
 
 end

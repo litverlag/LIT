@@ -21,7 +21,7 @@ ActiveAdmin.register Preps do
   end
 
   show do
-    render :partial
+    render partial: "prepsShow"
   end
 
 end

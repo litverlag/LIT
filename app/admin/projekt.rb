@@ -38,53 +38,62 @@ ActiveAdmin.register Projekt do
      end
 
     def edit
-      super
+      puts "____________________________EDIT___PROJEKT________________________"
+      @projekt = current_admin_user.lektor.gprod.find(params[:id])
+      #This methods are used to check if the Author can actually release project for the departments
       puts @projekt.buch.all_attributes_set?
       puts @projekt.buch.attributes
-      puts "____________________________EDIT___________________________"
+
+      respond_to do |format|
+        format.html
+        format.js
+      end
+
+
     end
 
 
 
      def update
        puts "____________________________UPDATE___________________________"
-
        #Proc for the updating if there is already an Author
-       updateProc = Proc.new{|modelinstance ,data|
-         if data != nil
-           if not modelinstance.update(data)
-             render 'edit'
+           updateProc = Proc.new{|modelinstance ,data|
+             if data != nil
+               if not modelinstance.update(data)
+                 render 'edit'
+               end
+             end}
+
+
+           #Find the new projekt associated with the current Lektor
+           @projekt = current_admin_user.lektor.gprod.find(params[:id])
+           updateProc.call(@projekt,permitted_params[:projekt] )
+           updateProc.call(@projekt.buch,permitted_params[:buch])
+
+
+
+           #This part is used to update to a new status with the status_logic module
+           if permitted_params[:status]
+             puts permitted_params[:status]
            end
-         end}
-
-
-       #Find the new projekt associated with the current Lektor
-       @projekt = current_admin_user.lektor.gprod.find(params[:id])
-       updateProc.call(@projekt,permitted_params[:projekt] )
-       updateProc.call(@projekt.buch,permitted_params[:buch])
 
 
 
-       #This part is used to update to a new status with the status_logic module
-       if permitted_params[:status]
-         puts permitted_params[:status]
-       end
-
-
-
-       # It is checked if the the User want to create a new Author or if he wants to make an association with one who already exists
-       # if there is no Author in the Database we get an Error, if there is on he gets associated.
-       if permitted_params[:commit].eql?("Autor hinzufügen")
-           if not Autor.associate_with(@projekt,permitted_params[:autor]) then redirect_to edit_admin_projekt_path, notice: "Kein Autor mit diesem Namen gefunden"
+           # It is checked if the the User want to create a new Author or if he wants to make an association with one who already exists
+           # if there is no Author in the Database we get an Error, if there is on he gets associated.
+           if permitted_params[:commit].eql?("Autor hinzufügen")
+             if not Autor.associate_with(@projekt,permitted_params[:autor]) then redirect_to edit_admin_projekt_path, notice: "Kein Autor mit diesem Namen gefunden"
+             end
            end
-       end
-       if permitted_params[:commit].eql?("Neuen Autor erstellen")
-         @projekt.autor = Autor.create(permitted_params[:autor])
-         @projekt.save
-         redirect_to collection_path, notice: 'Projekt erfolgreich überarbeitet'
-       end
+           if permitted_params[:commit].eql?("Neuen Autor erstellen")
+             @projekt.autor = Autor.create(permitted_params[:autor])
+             @projekt.save
+             redirect_to collection_path, notice: 'Projekt erfolgreich überarbeitet'
+           end
 
-       redirect_to collection_path, notice: 'Projekt erfolgreich überarbeitet'
+           redirect_to collection_path, notice: 'Projekt erfolgreich überarbeitet'
+
+
      end
 
 

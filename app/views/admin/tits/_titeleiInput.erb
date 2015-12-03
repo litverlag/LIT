@@ -1,0 +1,30 @@
+
+
+<% used_url = admin_tit_path(@projekt.id)%>
+    <fieldset class="projekt"><legend><span><%= "#{@projekt.projektname} bearbeiten"%></span></legend>
+      <ul>
+        <%= form_for @projekt, url: used_url do |projekt_form| %>
+            <li>
+              <div class="edit_status">
+                Status der Titelei
+                <select name="status[statustitelei]">
+                  <%= options_for_select($TITELEI_STATUS) %>
+                </select>
+              </div>
+            </li>
+            <li>
+              <%= projekt_form.label :projektname, "Projektname" %>
+              <%= "#{@projekt.projektname}" %>
+            </li>
+
+            <%= projekt_form.submit "#{@projekt.projektname} bearbeiten" %>
+        <% end %>
+      </ul>
+    </fieldset>
+
+
+
+
+
+
+
