@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 20151107183205) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.integer  "lektor_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -236,9 +237,8 @@ ActiveRecord::Schema.define(version: 20151107183205) do
     t.string   "position"
     t.string   "emailkuerzel"
     t.string   "fox_name"
-    t.integer  "admin_user_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "papiere", force: :cascade do |t|

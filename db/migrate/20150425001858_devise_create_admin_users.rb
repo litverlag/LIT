@@ -1,12 +1,11 @@
 class DeviseCreateAdminUsers < ActiveRecord::Migration
-  def migrate(direction)
-    super
-    # Create a default user
-    if direction == :up
-      @superadmin = AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
-      #@superadmin.departments = Department.where("name = 'Superadmin'")
-    end
-  end
+  #def migrate(direction)
+  #  super
+  #  # Create a default user
+  #  if direction == :up
+  #    AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
+  #  end
+  #end
 
   def change
 
@@ -44,6 +43,7 @@ class DeviseCreateAdminUsers < ActiveRecord::Migration
       # t.datetime :locked_at
 
       #Adding the Lektor
+      t.belongs_to :lektor
 
       t.timestamps
     end

@@ -1,0 +1,20 @@
+
+
+<%= form_for @user, url: admin_admin_users_path(:id) do |user_form| %>
+	<div>
+		<%= user_form.label "Zugewiesene Abteilungen" %>
+		<%= user_form.collection_check_boxes(:department_ids, Department.all, :id, :name) %>
+	</div>
+
+	<div>
+		<%= user_form.label "Zugewiesener Lektor" %>
+		<%= user_form.select( :lektor_id, Lektor.all.collect {|lek| [ lek.name, lek.id ] },
+		{prompt: 'Lektor auswählen'} ) %>
+	</div>
+
+	<div>
+		<%= user_form.text_field :name %>
+	</div>
+
+<% end %>
+

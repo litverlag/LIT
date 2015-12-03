@@ -55,6 +55,13 @@ ActiveAdmin.register Projekt do
          end}
 
 
+         puts "\n\n\n\n\n"
+       puts "Parameter:"
+       puts "----------"
+       puts permitted_params[:projekt]
+       puts "----------"
+        puts "\n\n\n\n\n"
+
        @projekt = current_admin_user.lektor.gprod.find(params[:id])
        updateProc.call(@projekt,permitted_params[:projekt] )
        updateProc.call(@projekt.buch,permitted_params[:buch] )
@@ -70,6 +77,7 @@ ActiveAdmin.register Projekt do
          redirect_to collection_path, notice: 'Projekt erfolgreich überarbeitet'
        end
 
+       redirect_to collection_path, notice: "Projekt erfolgreich bearbeitet"
 
      end
 
