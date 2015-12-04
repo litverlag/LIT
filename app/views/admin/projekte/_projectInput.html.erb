@@ -5,7 +5,6 @@
     <fieldset class="projekt"><legend><span>Ein neues Projekt erstellen</span></legend>
       <p>In diesem Bereich können Sie Projekte erstellen, dazu geben Sie dem Projekt vorerst nur einen die folgenden </p>
       <ul>
-
         <%= form_for @projekt, url: used_url do |projekt_form| %>
             <li>
               <%= projekt_form.label :projektname, "Name des Projektes" %>
@@ -40,10 +39,14 @@
 
     <fieldset class="projekt"><legend><span><%= "#{@projekt.projektname} bearbeiten"%></span></legend>
       <ul>
-        <%= form_for @projekt, url: used_url do |projekt_form| %>
+
+        <%= form_for @projekt, url: used_url, remote: true do |projekt_form| %>
             <li>
               <div class="edit_status">
-              <%= link_to "Update",remote: :true%>
+              <input type="checkbox" name="status[freigabe_final]" value="True">Gesamtfreigabe
+              <input type="checkbox" name="status[freigabe_titelei]" value="True">Titeleifreigabe
+              <input type="checkbox" name="status[freigabe_umschlag]" value="True">Umschlagfreigabe
+              <input type="checkbox" name="status[freigabe_preps]" value="True">Prepsfreigabe
               </div>
             </li>
             <li>
@@ -60,16 +63,18 @@
             </li>
             <li>
               <%= projekt_form.label :final_deadline, "Finale Deadline für das gesamte Projekt" %>
-              <input class="datepicker" data-date-format="mm/dd/yyyy" name="projekt[final_deadline]" value="<%="#{@projekt.final_deadline}" %>">
+              <input class="datepicker" data-date-format="mm/dd/yyyy" name="gprod[final_deadline]" value="<%="#{@projekt.final_deadline}" %>">
             </li>
             <%= projekt_form.submit "#{@projekt.projektname} bearbeiten" %>
         <% end %>
+
+
       </ul>
     </fieldset>
 
     <fieldset class="buch"><legend><span><%= "Buch zu #{@projekt.projektname} bearbeiten"%></span></legend>
       <ul>
-        <%= form_for @projekt, url: used_url do |projekt_form| %>
+        <%= form_for @projekt, url: used_url, remote: true do |projekt_form| %>
             <%= fields_for :buch, @projekt.buch do |buch_fields| %>
                 <li>
                   <%= buch_fields.label :name, "Name"%>
@@ -136,7 +141,7 @@
     <fieldset class="autor"><legend><span><%= "Autor zu #{@projekt.projektname} bearbeiten"%></span></legend>
       <p>Erstellen sie einen neuen Autor oder fügen sie einen schon bestehenden Autor zu der Datenbank hinzu.</p>
       <ul>
-        <%= form_for @projekt, url: used_url do |projekt_form| %>
+        <%= form_for @projekt, url: used_url, remote: true do |projekt_form| %>
 
             <%= fields_for :autor, @projekt.autor do |autor_fields| %>
                 <li>

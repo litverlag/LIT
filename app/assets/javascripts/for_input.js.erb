@@ -8,11 +8,11 @@ $(document).on('ready page:load',
 
 
    $( "#name_autocomplete" ).autocomplete({
-      <% @autor_name_list = []%>
+      <% autor_name_list = []%>
        <% Autor.all.each do |autor| %>
-           <% @autor_name_list.append autor.name %>
+           <% autor_name_list.append autor.name %>
        <%end%>
-       source: <%= raw @autor_name_list.as_json %>
+       source: <%= raw autor_name_list.as_json %>
     });
 
 

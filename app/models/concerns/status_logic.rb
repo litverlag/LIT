@@ -11,11 +11,11 @@ module StatusLogic
   #   changeStatusByUser(projekt1, projekt1.titeleistatus, "Fertig")
 
   def changeStatusByUser(projekt, statusToChange, newStatus)
-    #if newStatus == "True"
-    #  newStatus = true
-    #elsif newStatus == "False"
-    #  newStatus = false
-    #end
+    if newStatus == "True"
+      newStatus = true
+    elsif newStatus == "False"
+      newStatus = false
+    end
 
     if newStatus.class == String
       statusToChange.status = newStatus

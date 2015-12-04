@@ -46,7 +46,12 @@ ActiveAdmin.register Projekt do
 
       respond_to do |format|
         format.html
-        format.js
+        format.js {
+          puts params
+          puts render :xml
+          puts render json
+          render "_projectShow.js.erb"
+        }
       end
 
 
@@ -65,15 +70,22 @@ ActiveAdmin.register Projekt do
              end}
 
 
+       respond_to do |format|
+         format.html
+         format.js {
            #Find the new projekt associated with the current Lektor
            @projekt = current_admin_user.lektor.gprod.find(params[:id])
-           updateProc.call(@projekt,permitted_params[:projekt] )
+           updateProc.call(@projekt,permitted_params[:gprod] )
            updateProc.call(@projekt.buch,permitted_params[:buch])
 
 
 
            #This part is used to update to a new status with the status_logic module
            if permitted_params[:status]
+             changeStatusByUser(@projekt,@projekt.statusfinal, permitted_params[:status][:freigabe_final])
+             changeStatusByUser(@projekt,@projekt.statusumschl, permitted_params[:status][:freigabe_umschlag])
+             changeStatusByUser(@projekt,@projekt.statuspreps, permitted_params[:status][:freigabe_preps])
+             changeStatusByUser(@projekt,@projekt.statustitelei, permitted_params[:status][:freigabe_titelei])
              puts permitted_params[:status]
            end
 
@@ -84,14 +96,18 @@ ActiveAdmin.register Projekt do
            if permitted_params[:commit].eql?("Autor hinzufügen")
              if not Autor.associate_with(@projekt,permitted_params[:autor]) then redirect_to edit_admin_projekt_path, notice: "Kein Autor mit diesem Namen gefunden"
              end
+             return
            end
            if permitted_params[:commit].eql?("Neuen Autor erstellen")
              @projekt.autor = Autor.create(permitted_params[:autor])
              @projekt.save
              redirect_to collection_path, notice: 'Projekt erfolgreich überarbeitet'
+             return
            end
 
            redirect_to collection_path, notice: 'Projekt erfolgreich überarbeitet'
+         }
+       end
 
 
      end
