@@ -15,7 +15,7 @@ ActiveAdmin.register Preps do
   end
 
   index title: 'Preps' do
-    column('Status') {|preps| preps.statuspreps.status}
+    column('Status') {|preps| status_tag(preps.statuspreps.status)}
     column :projektname
     actions
   end

@@ -166,12 +166,12 @@ ActiveRecord::Schema.define(version: 20151107183205) do
     t.integer  "auflage"
     t.date     "erscheinungsjahr"
     t.text     "kommentar_public"
-    t.boolean  "freigegeben",                   default: false
-    t.date     "freigabe_date"
+    t.boolean  "satzproduktion",                default: false
     t.boolean  "buchistfertig",                 default: false
     t.boolean  "externer_druck",                default: false
     t.integer  "externer_druck_verschickt_von"
     t.date     "externer_druck_verschickt"
+    t.boolean  "buchgedruckt",                  default: false
     t.text     "druck_bemerkungen"
     t.date     "pod_verschickt"
     t.string   "pod_meldung"
@@ -182,8 +182,8 @@ ActiveRecord::Schema.define(version: 20151107183205) do
     t.text     "satz_bemerkungen"
     t.text     "preps_bemerkungen"
     t.string   "preps_betreuer"
-    t.string   "preps_muster_status"
-    t.string   "preps_muster_art"
+    t.string   "muster_art"
+    t.string   "muster_gedruckt"
     t.text     "preps_muster_bemerkungen"
     t.date     "preps_muster_date"
     t.text     "offsch_bemerkungen"

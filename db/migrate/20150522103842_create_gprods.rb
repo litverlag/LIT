@@ -38,15 +38,16 @@ class CreateGprods < ActiveRecord::Migration
         t.integer  "auflage"
         t.date     "erscheinungsjahr"
         t.text     "kommentar_public"
-        #Das Buch wird zur Produktion  freigegeben
-        t.boolean "freigegeben", default: false
-        t.date "freigabe_date"
+        #Satzproduktion?
+        t.boolean "satzproduktion", default: false
         #Das Buch ist fertig
         t.boolean "buchistfertig", default: false
         #Geht das Buch in den externen Druck
         t.boolean  "externer_druck", default: false
         t.integer      "externer_druck_verschickt_von"
         t.date     "externer_druck_verschickt"
+        #Wurde das Buch bereits gedruckt?(Änderungen sind nicht mehr zulässig)
+        t.boolean "buchgedruckt", default: false
 
         #Druck
         t.text   "druck_bemerkungen"
@@ -59,12 +60,12 @@ class CreateGprods < ActiveRecord::Migration
         t.date "titlei_letzte_korrektur"
         #Satz
         t.text   "satz_bemerkungen"
-        #Pre Press
+        #Preps
         t.text   "preps_bemerkungen"
         t.string   "preps_betreuer"
-        #muster
-        t.string  "preps_muster_status"
-        t.string  "preps_muster_art"
+        #Muster
+        t.string  "muster_art"
+        t.string  "muster_gedruckt"
         t.text  "preps_muster_bemerkungen"
         t.date   "preps_muster_date"
         #Offset / Schirm

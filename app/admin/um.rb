@@ -15,7 +15,7 @@ ActiveAdmin.register Um do
   end
 
   index title: 'Umschlag' do
-    column('Status') {|um| um.statusumschl.status}
+    column('Status') {|um| status_tag(um.statusumschl.status)}
     column :projektname
     actions
   end

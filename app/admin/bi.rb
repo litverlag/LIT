@@ -16,7 +16,7 @@ ActiveAdmin.register Bi do
   end
 
   index title: 'Binderei' do
-    column('Status') {|bi| bi.statusbinderei.status}
+    column('Status') {|bi| status_tag(bi.statusbinderei.status)}
     column :projektname
     actions
   end
