@@ -5,6 +5,7 @@ ActiveAdmin.register Buch do
   filter :titel1
   filter :sammelband
   filter :format
+  menu false
   
   
   #menu priority:1

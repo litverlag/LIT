@@ -1,12 +1,23 @@
-ActiveAdmin.register Bi do
-  menu label: 'Bi'
-  menu priority: 15
-  config.filters = false
-  actions :index, :show, :edit, :update
+ActiveAdmin.register Druck do
 
+# See permitted parameters documentation:
+# https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
+#
+# permit_params :list, :of, :attributes, :on, :model
+#
+# or
+#
+# permit_params do
+#   permitted = [:permitted, :attributes]
+#   permitted << :other if resource.something?
+#   permitted
+# end
+
+  config.filters = false
   controller do
 
     include StatusLogic
+
 
     def permitted_params
       params.permit!
@@ -14,7 +25,7 @@ ActiveAdmin.register Bi do
 
 
     def show
-      puts "______________BINDEREI______SHOW___________________-"
+      puts "______________DRUCK______SHOW___________________-"
       @projekt = Gprod.find(permitted_params[:id])
     end
 
@@ -30,7 +41,7 @@ ActiveAdmin.register Bi do
     end
 
     def update
-      puts "______________BINDEREI______UPDATE___________________-"
+      puts "______________DRUCK______UPDATE___________________-"
       @projekt = Gprod.find(permitted_params[:id])
 
       if permitted_params[:status]
@@ -46,17 +57,18 @@ ActiveAdmin.register Bi do
 
   end
 
-  index title: 'Binderei' do
-    column('Status') {|bi| status_tag(bi.statusbinderei.status)}
+  index do
     column :projektname
     actions
   end
 
+
   show do
-    render partial: "bindereiShow"
+    render partial: "druckShow"
+
   end
 
-  form partial: 'bindereiInput'
+  form partial: 'druckInput'
 
 
 end

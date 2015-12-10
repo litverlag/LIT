@@ -48,9 +48,7 @@ ActiveAdmin.register Projekt do
         format.html
         format.js {
           puts params
-          puts render :xml
-          puts render json
-          render "_projectShow.js.erb"
+
         }
       end
 
@@ -63,6 +61,7 @@ ActiveAdmin.register Projekt do
        puts "____________________________UPDATE___________________________"
        #Proc for the updating if there is already an Author
            updateProc = Proc.new{|modelinstance ,data|
+             js_action = "project_changed"
              if data != nil
                if not modelinstance.update(data)
                  render 'edit'
@@ -94,18 +93,22 @@ ActiveAdmin.register Projekt do
            # It is checked if the the User want to create a new Author or if he wants to make an association with one who already exists
            # if there is no Author in the Database we get an Error, if there is on he gets associated.
            if permitted_params[:commit].eql?("Autor hinzufügen")
-             if not Autor.associate_with(@projekt,permitted_params[:autor]) then redirect_to edit_admin_projekt_path, notice: "Kein Autor mit diesem Namen gefunden"
+             if not Autor.associate_with(@projekt,permitted_params[:autor])
+               js_action = "autor_add"
+               render "_projectShow.js.erb"
              end
              return
            end
            if permitted_params[:commit].eql?("Neuen Autor erstellen")
              @projekt.autor = Autor.create(permitted_params[:autor])
              @projekt.save
-             redirect_to collection_path, notice: 'Projekt erfolgreich überarbeitet'
+             js_action = "autor_new"
+             render "_projectShow.js.erb"
              return
            end
 
-           redirect_to collection_path, notice: 'Projekt erfolgreich überarbeitet'
+
+           render "_projectShow.js.erb"
          }
        end
 

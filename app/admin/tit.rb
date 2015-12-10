@@ -42,8 +42,6 @@ ActiveAdmin.register Tit do
 
       redirect_to collection_path
 
-
-
     end
 
   end

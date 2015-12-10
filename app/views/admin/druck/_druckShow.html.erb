@@ -1,0 +1,38 @@
+
+<%  @relevant_attr = @projekt.attributes.to_h.slice(*["projektname"])  %>
+
+
+
+
+
+<%= status_bar(@projekt, @projekt.statusdruck.status, "Drucker Status") %>
+
+
+
+
+
+<div class="panel">
+<h3><%= @projekt.projektname %> </h3>
+    <div class="attributes_table projekt" id="<%= "attributes_table_projekt_#{@projekt.id}" %>">
+      <table border="0" cellpadding="0" cellspacing="0">
+        <tbody>
+        <% @relevant_attr.each_pair do |name, value| %>
+          <% if value.nil?%>
+                  <tr>
+                    <th><%= name %></th>
+                   <td> <span class="empty">Leer</span></td>
+                  </tr>
+          <% else%>
+              <tr>
+                <th><%= name %></th>
+                <td><%= value %></td>
+              </tr>
+          <%end %>
+        <%end%>
+
+        </tbody></table>
+      </div>
+  </div>
+</div>
+
+

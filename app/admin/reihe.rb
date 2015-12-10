@@ -2,6 +2,7 @@ ActiveAdmin.register Reihe do
   filter :name
   filter :r_code
 
+  menu false
   #menu priority:99
   menu
   

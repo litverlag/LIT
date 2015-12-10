@@ -1,6 +1,6 @@
 ActiveAdmin.register Lektor do
   #menu priority:99
-  menu
+  menu false
 
   controller do
     def permitted_params

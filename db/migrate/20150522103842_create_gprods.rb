@@ -44,7 +44,7 @@ class CreateGprods < ActiveRecord::Migration
         t.boolean "buchistfertig", default: false
         #Geht das Buch in den externen Druck
         t.boolean  "externer_druck", default: false
-        t.integer      "externer_druck_verschickt_von"
+        t.integer  "externer_druck_verschickt_von"
         t.date     "externer_druck_verschickt"
         #Wurde das Buch bereits gedruckt?(Änderungen sind nicht mehr zulässig)
         t.boolean "buchgedruckt", default: false
@@ -87,12 +87,13 @@ class CreateGprods < ActiveRecord::Migration
         t.boolean  "rg_vf", default: false
         #Binderei
         t.text   "binderei_bemerkungen"
+        t.string   "prio"
         #Lektor
         t.text   "lektor_bemerkungen_public"
         t.text   "lektor_bemerkungen_private"
 
         #TODO Eintrage ordnen ggf Löschen
-        t.string   "prio"
+
         t.string   "datei"
         t.string   "sonder"
         t.string   "eintrag"

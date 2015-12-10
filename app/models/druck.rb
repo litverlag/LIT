@@ -1,0 +1,2 @@
+class Druck < Gprod
+end

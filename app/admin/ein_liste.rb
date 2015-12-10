@@ -13,6 +13,7 @@ ActiveAdmin.register EinListe do
 #   permitted
 # end
 
+  menu false
   controller do
     def permitted_params
 
