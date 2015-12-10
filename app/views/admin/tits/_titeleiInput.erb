@@ -6,7 +6,7 @@
         <%= form_for @projekt, url: used_url do |projekt_form| %>
             <li>
               <div class="edit_status">
-                Status der Titelei
+                <label for="status">Titlei</label>
                 <select name="status[statustitelei]">
                   <%= options_for_select($TITELEI_STATUS) %>
                 </select>
