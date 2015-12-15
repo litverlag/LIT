@@ -23,8 +23,9 @@ class CreateBuecher < ActiveRecord::Migration
       t.boolean :sammelband, default: false
       t.date :erscheinungsjahr
       t.float :gewicht
-      t.float :volumen
-
+      t.string :format_bezeichnung
+      t.string :umschlag_bezeichnung
+      t.sring :papier_bezeichnung
       t.timestamps null: false
     end
   end
