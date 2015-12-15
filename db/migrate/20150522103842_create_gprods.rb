@@ -38,6 +38,11 @@ class CreateGprods < ActiveRecord::Migration
         t.integer  "auflage"
         t.date     "erscheinungsjahr"
         t.text     "kommentar_public"
+        t.date     "manusskript_eingang_date"
+        #Auflage
+        t.integer "auflage_lektor"
+        t.integer "auflage_chef"
+        t.integer "gesicherte_abnahme"
         #Satzproduktion?
         t.boolean "satzproduktion", default: false
         #Das Buch ist fertig
@@ -57,7 +62,10 @@ class CreateGprods < ActiveRecord::Migration
         t.text   "titelei_bemerkungen"
         t.string "titelei_zusaetze"
         t.boolean "titelei_extern", default: false
-        t.date "titlei_letzte_korrektur"
+        t.date "titelei_letzte_korrektur"
+        t.date "titelei_versand_datum_fuer_ueberpr"
+        t.string   "titelei_versand_an_zur_ueberpf" #TODO Falls hier nichts eingetragen wird soll Automatisch der Autor eingetragen werden
+        t.date  "titelei_korrektur_date"
         #Satz
         t.text   "satz_bemerkungen"
         #Preps
@@ -86,37 +94,15 @@ class CreateGprods < ActiveRecord::Migration
         t.boolean  "rg_bezahlt", default: false
         t.boolean  "rg_vf", default: false
         #Binderei
+        t.date  "binderei_eingang_datum"
         t.text   "binderei_bemerkungen"
         t.string   "prio"
         #Lektor
         t.text   "lektor_bemerkungen_public"
         t.text   "lektor_bemerkungen_private"
 
-        #TODO Eintrage ordnen ggf Löschen
+        t.string "dateibue"
 
-        t.string   "datei"
-        t.string   "sonder"
-        t.string   "eintrag"
-        t.date     "versand"
-        t.date     "korrektur"
-        t.string   "freigabe"
-        t.boolean  "is_archiv", default: false
-        t.string   "cover"
-        t.string   "ebook_bemerkungen"
-        t.string   "ftp"
-        t.string   "webshop"
-        t.string   "google"
-        t.string   "afs"
-        t.string   "luecken"
-        t.date     "a1_dat"
-        t.date     "a2_dat"
-        t.string   "korr"
-        t.string   "off"
-        t.date     "um_verschickt"
-        t.text     "klapptext"
-        t.string   "um_frei"
-        t.string   "um_warten"
-        t.string   "rueckenfrei"
         t.datetime "created_at",          null: false
         t.datetime "updated_at",          null: false
     end

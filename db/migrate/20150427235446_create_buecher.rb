@@ -21,10 +21,20 @@ class CreateBuecher < ActiveRecord::Migration
       t.decimal :preis, precision: 4, scale: 2
       t.decimal :spreis, precision: 4, scale: 2
       t.boolean :sammelband, default: false
-      t.date :erscheinungsjahr
+      t.date :erscheinungsjahr #TODO nur ausfüllen wenn bestimmtes Erscheinungsjahr gewünscht
       t.float :gewicht
-      t.float :volumen
 
+
+      t.string :format_bezeichnung
+      t.string :umschlag_bezeichnung
+      t.sring :papier_bezeichnung
+      t.string :bindung_bezeichnung
+
+
+      t.string :vier_farb
+      t.float :rueckenstaerke
+      t.boolean :klappentext
+      t.boolean :eintrag_cip_seite
       t.timestamps null: false
     end
   end

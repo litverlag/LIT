@@ -8,24 +8,18 @@
 
 
 
-#Format.destroy_all
-#Format.create([{name:'15,3x9,3 (KleinBl)'}, {name:'16x11,5 (Pocket)'}, {name:'A5'}, {name:'22x16'}, {name:'23,5x16,2'}, {name:'22x21'}, {name:'24x17'}, {name:'A4'}])
+
+
+Lektor.create(name:'Peter Schmidt',fox_name:'PS')
+Lektor.create(name:'Annelise Muster',fox_name:'AM')
+Lektor.create(name:'Fritz Hans',fox_name:'FH')
+Lektor.create(name:'Thomas Gottschalk',fox_name:'TG')
 
 
 
-# Lektor.create(name:'Peter Schmidt',fox_name:'PS')
-# Lektor.create(name:'Annelise Muster',fox_name:'AM')
-# Lektor.create(name:'Fritz Hans',fox_name:'FH')
-# Lektor.create(name:'Thomas Gottschalk',fox_name:'TG')
+Lektor.create([{name: 'Thomas', admin_user_id: 1}])
+AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
 
- # (1..10).each do |num|
- # Autor.create(name:"Autor #{num}")
- # end
 
-#Lektor.create([{name: 'Thomas', admin_user_id: 1}])
-#AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
-#Department.create!([{name:'Superadmin'},{name:'Umschlag'},{name:'Satz'},{name:'Titelei'},{name:'PrePs'},{name:'Rechnung'},{name:'Bildprüfung'},{name:'Pod'},{name:'Binderei'},{name:'Lektor'}])
+Department.create!([{name:'Superadmin'},{name:'Umschlag'},{name:'Satz'},{name:'Titelei'},{name:'PrePs'},{name:'Rechnung'},{name:'Bildprüfung'},{name:'Pod'},{name:'Binderei'},{name:'Lektor'}])
 
-#Format.create([bezeichnung: "format 1",bezeichnung: "format 2",bezeichnung: "format 2"])
-Papier.create([{bezeichnung: "papier 1"},{bezeichnung: "papier 2"},{bezeichnung: "papier 2"}])
-Umschlag.create([{bezeichnung: "umschlag  1"},{bezeichnung: "umschlag  2"},{bezeichnung: "umschlag  2"}])
