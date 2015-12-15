@@ -2,30 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="df1ab1dd-396a-43dc-b61e-bab3f75624d4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/admin/ums/_umschlagInput.html.erb" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/views/admin/_new.html.erb" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/views/admin/um/_umschlagInput.html.erb" afterPath="$PROJECT_DIR$/app/views/admin/druck/_druckInput.html.erb" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/views/admin/um/_umschlagShow.html.erb" afterPath="$PROJECT_DIR$/app/views/admin/ums/_umschlagShow.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/development.sqlite3" afterPath="$PROJECT_DIR$/db/development.sqlite3" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Erläuterung zum Erstellen von Nutzergruppen" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Erläuterung zum Erstellen von Nutzergruppen" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/TODO.txt" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/admin/admin_user.rb" afterPath="$PROJECT_DIR$/app/admin/admin_user.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/admin/autor.rb" afterPath="$PROJECT_DIR$/app/admin/autor.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/admin/bi.rb" afterPath="$PROJECT_DIR$/app/admin/bi.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/admin/buch.rb" afterPath="$PROJECT_DIR$/app/admin/buch.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/admin/ein_liste.rb" afterPath="$PROJECT_DIR$/app/admin/ein_liste.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/admin/lektor.rb" afterPath="$PROJECT_DIR$/app/admin/lektor.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/admin/offsch.rb" afterPath="$PROJECT_DIR$/app/admin/offsch.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/admin/preps.rb" afterPath="$PROJECT_DIR$/app/admin/preps.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/admin/projekt.rb" afterPath="$PROJECT_DIR$/app/admin/projekt.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/admin/reihe.rb" afterPath="$PROJECT_DIR$/app/admin/reihe.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/admin/s_reif.rb" afterPath="$PROJECT_DIR$/app/admin/s_reif.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/admin/tit.rb" afterPath="$PROJECT_DIR$/app/admin/tit.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/admin/um.rb" afterPath="$PROJECT_DIR$/app/admin/um.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/helpers/application_helper.rb" afterPath="$PROJECT_DIR$/app/helpers/application_helper.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/admin/projekte/_projectInput.html.erb" afterPath="$PROJECT_DIR$/app/views/admin/projekte/_projectInput.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/admin/projekte/_projectShow.js.erb" afterPath="$PROJECT_DIR$/app/views/admin/projekte/_projectShow.js.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/admin/tits/_titeleiShow.erb" afterPath="$PROJECT_DIR$/app/views/admin/tits/_titeleiShow.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150522103842_create_gprods.rb" afterPath="$PROJECT_DIR$/db/migrate/20150522103842_create_gprods.rb" />
     </list>
     <ignored path="LIT.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -63,7 +43,7 @@
       <file leaf-file-name="schema.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/db/schema.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.9059561">
+            <state vertical-scroll-proportion="0.9299896">
               <caret line="347" column="0" selection-start-line="347" selection-start-column="0" selection-end-line="347" selection-end-column="0" />
               <folding />
             </state>
@@ -156,9 +136,9 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="-4" />
+    <option name="y" value="24" />
     <option name="width" value="1920" />
-    <option name="height" value="1084" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -185,8 +165,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="RailsProjectView" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -644,10 +624,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="-4" width="1920" height="1084" extended-state="6" />
-    <editor active="true" />
+    <frame x="0" y="24" width="1920" height="1056" extended-state="6" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4429029" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.44823906" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32881" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32804757" sideWeight="0.50213444" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1068,7 +1048,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/db/schema.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9059561">
+        <state vertical-scroll-proportion="0.9299896">
           <caret line="347" column="0" selection-start-line="347" selection-start-column="0" selection-end-line="347" selection-end-column="0" />
           <folding />
         </state>

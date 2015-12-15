@@ -1,7 +1,0 @@
-Erläuterung zum Erstellen von Nutzergruppen.
-
-1. den Namen in die formtastic form in admin/admin_user.rb eintragen
-2. die Rechte in model/abliliy.rb eintragen und die Rechte mit cancancan vergeben
-	die Syntax dazu ist den schon erstellen Nutzergruppen zu entnehmen, ansonsten die 
-	cancancan Dokumentation
- 
