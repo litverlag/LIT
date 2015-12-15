@@ -16,8 +16,41 @@ module CostumViewHelper
     render "/views_for_helpers/status", status: status, name: name_of_status, projekt: instance_of_projekt
   end
 
+  def status_changer(status, name)
+    selectname status[statustitelei]
+    options
 
-  ##
+
+  end
+  #
+  # #Final
+  # $FINAL_STATUS = ["neu", "in bearbeitung", "fertig", "problem"]
+  # #Druck
+  # $DRUCK_STATUS = ["musterdrucken", "nächsterAuftrag", "neu", "bearbeitung", "fertig", "problem"]
+  # #Titelei
+  # $TITELEI_STATUS = ["neu", "in bearbeitung", "verschickt", "fertig", "problem"]
+  # #Satz
+  # $SATZ_STATUS = ["neu", "in bearbeitung", "verschickt", "fertig", "problem"]
+  # #Pre press
+  # $PREPS_STATUS = ["neu", "in bearbeitung", "verschickt", "fertig", "problem"]
+  # #Offset/Schirm
+  # $OFFSCH_STATUS = ["neu", "in bearbeitung", "fertig", "problem"]
+  # #Bildprüfung
+  # $BILDPR_STATUS = ["neu", "in bearbeitung", "fertig", "problem"]
+  # #Umschlag
+  # $UMSCHL_STATUS = ["neu", "in bearbeitung", "verschickt", "fertig", "problem"]
+  # #Buchhaltung
+  # $RG_STATUS = ["neu", "in bearbeitung", "fertig", "problem"]
+  # #Binderei
+  # $BINDEREI_STATUS = ["neu", "in bearbeitung", "fertig", "problem"]
+  #
+  #
+  # #Musterarten
+  # $MUSTER_ART = ["digital", "papier"]
+  #
+
+
+  ##costum view
   # This method is used to create a Panel with a set of infos.
   # The array has to have the
   # === Example

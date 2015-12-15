@@ -1,0 +1,34 @@
+<fieldset class="projekt"><legend><span><%= "#{@projekt.projektname} bearbeiten"%></span></legend>
+  <ul>
+
+    <%= form_for @projekt, url: used_url, remote: true do |projekt_form| %>
+        <li>
+          <div class="edit_status">
+            <input type="checkbox" name="status[freigabe_final]" value="True">Gesamtfreigabe
+            <input type="checkbox" name="status[freigabe_titelei]" value="True">Titeleifreigabe
+            <input type="checkbox" name="status[freigabe_umschlag]" value="True">Umschlagfreigabe
+            <input type="checkbox" name="status[freigabe_preps]" value="True">Prepsfreigabe
+          </div>
+        </li>
+        <li>
+          <%= projekt_form.label :projektname, "Projektname" %>
+          <%= "#{@projekt.projektname}" %>
+        </li>
+        <li>
+          <%= projekt_form.label :projekt_email_adresse, "Email des Projektes" %>
+          <%= projekt_form.text_field :projekt_email_adresse %>
+        </li>
+        <li>
+          <%= projekt_form.label :lektor_bemerkungen_private, "Private Bemerkungen zu diesem Projekt" %>
+          <%= projekt_form.text_area :lektor_bemerkungen_private, size: "10x10" %>
+        </li>
+        <li>
+          <%= projekt_form.label :final_deadline, "Finale Deadline für das gesamte Projekt" %>
+          <input class="datepicker" data-date-format="mm/dd/yyyy" name="gprod[final_deadline]" value="<%="#{@projekt.final_deadline}" %>">
+        </li>
+        <%= projekt_form.submit "#{@projekt.projektname} bearbeiten" %>
+    <% end %>
+
+
+  </ul>
+</fieldset>

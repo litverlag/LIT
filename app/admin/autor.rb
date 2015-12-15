@@ -2,7 +2,7 @@ ActiveAdmin.register Autor do
   filter :vorname
   filter :name
   filter :institut
-  menu false
+  menu
   #menu priority:99
 
 
