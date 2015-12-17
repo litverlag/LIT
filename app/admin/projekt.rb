@@ -10,13 +10,7 @@ ActiveAdmin.register Projekt do
     # It would be great if this class could be in a helper modulde, but it's not that easy beacause of ActiveAdmin
     # This method is used to replace the string coming from the HTML form ()permitted_params["format"]) by an instance of the right
     # format class so that an association can be done with the klass.update method. Same procedure with papier and umschlag
-    def buch_params(permitted_params)
-      hash_of_params = permitted_params.to_hash
-      hash_of_params["format"] = Format.find_by_bezeichnung(hash_of_params["format"]["bezeichnung"])
-      hash_of_params["papier"] = Format.find_by_bezeichnung(hash_of_params["papier"]["bezeichnung"])
-      hash_of_params["umschlag"] = Format.find_by_bezeichnung(hash_of_params["umschlag"]["bezeichnung"])
-      return hash_of_params
-    end
+
 
 
 
@@ -53,18 +47,11 @@ ActiveAdmin.register Projekt do
       puts "____________________________EDIT___PROJEKT________________________"
       @projekt = current_admin_user.lektor.gprod.find(params[:id])
       #This methods are used to check if the Author can actually release project for the departments
-      puts @projekt.buch.all_attributes_set?
-      puts @projekt.buch.attributes
 
+      @array_of_format_bezeichungen = ChoosableValue.formate
+      @array_of_umschlag_bezeichnungen =ChoosableValue.umschlaege
+      @array_of_papier_bezeichungen = ChoosableValue.papiere
 
-      # These parameters are used to create the select menu in the edit view so that the user can only choose
-      # between already existing options.Later It will be created only an association.
-      @array_of_format_bezeichungen =[]
-      @array_of_umschlag_bezeichnungen =[]
-      @array_of_papier_bezeichungen =[]
-      Format.all.to_a.each{|format|  @array_of_format_bezeichungen.append(format.bezeichnung)}
-      Umschlag.all.to_a.each{|umschlag|  @array_of_umschlag_bezeichnungen.append(umschlag.bezeichnung)}
-      Papier.all.to_a.each{|papier| @array_of_papier_bezeichungen.append(papier.bezeichnung)}
 
       @button_text_add = "Neuen Autor erstellen"
       @button_text_asso = "Autor hinzufügen"
@@ -105,7 +92,7 @@ ActiveAdmin.register Projekt do
            #Find the new projekt associated with the current Lektor
            @projekt = current_admin_user.lektor.gprod.find(params[:id])
            if permitted_params[:gprod] then updateProc.call(@projekt,permitted_params[:gprod]) end
-           if permitted_params[:buch] then updateProc.call(@projekt.buch, buch_params(permitted_params[:buch])) end
+           if permitted_params[:buch] then updateProc.call(@projekt.buch,permitted_params[:buch]) end
 
 
            # This part is used to update to a new status with the status_logic module
@@ -126,7 +113,7 @@ ActiveAdmin.register Projekt do
            # if there is no Author in the Database we get an Error, if there is on he gets associated.
            if permitted_params[:commit].eql?(@button_text_asso)
              if not Autor.associate_with(@projekt,permitted_params[:autor])
-               js_action = "autor_add"
+               @js_action = "autor_add"
                render "_projectShow.js.erb"
              end
              return
@@ -134,13 +121,13 @@ ActiveAdmin.register Projekt do
            if permitted_params[:commit].eql?(@button_text_add)
              @projekt.autor = Autor.create(permitted_params[:autor])
              @projekt.save
-             js_action = "autor_new"
+             @js_action = "autor_new"
              render "_projectShow.js.erb"
              return
            end
            if permitted_params[:commit].eql?( @button_text_edit)
              updateProc.call(@projekt.autor,permitted_params[:autor])
-             js_action = "autor_new"
+             @js_action = "autor_new"
              render "_projectShow.js.erb"
              return
            end

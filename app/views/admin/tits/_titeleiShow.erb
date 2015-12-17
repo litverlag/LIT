@@ -1,14 +1,20 @@
-
-<% @relevant_attr = @projekt
-    .attributes
-    .to_h
-    .slice(*["projektname","projekt_email_adresse", "final_deadline", "titelei_deadline","titlei_letzte_korrektur","datum_an_dem_freigabe_erhalten", "erscheinungsjahr","titelei_bemerkungen"])
-
-    names = ["Projektname", "Projektemailadresse" ,"Soll Fertig Final", "Soll Fertig Titelei", "Korrektur", "Freigabe erhalten am","Erscheinungsjahr","Bemerkungen" ,"Ersch" ]
-   @relevant_attr = change_names_in_hash(@relevant_attr,names)
+<%
+   @relevant_attr = [["Name",@projekt.projektname],
+                     ["ISBN",@projekt.buch.isbn],
+                     ["Lektor",@projekt.lektor.name],
+                     ["SollF",@projekt.final_deadline],
+                     ["SollF Titlei", @projekt.titelei_deadline],
+                     ["Format", @projekt.buch.format_bezeichnung],
+                     ["Eintrag", @projekt.buch.eintrag_cip_seite],
+                     ["Versand", @projekt.titelei_versand_datum_fuer_ueberpr],
+                     ["an", @projekt.titelei_versand_an_zur_ueberpf],
+                     ["Korrektur", @projekt.titelei_korrektur_date],
+                     ["Freigabe",@projekt.titelei_freigabe_date],
+                     ["zum Druck", @projekt.statustitelei.freigabe_at],
+                     ["Erscheinungsjahr", @projekt.buch.erscheinungsjahr],
+                     ["Bemerkungen", @projekt.titelei_bemerkungen],
+                     ["email", @projekt.projekt_email_adresse]]
 %>
-
-
 
 
 <%= status_bar(@projekt, @projekt.statustitelei.status, "Titlei Status") %>
@@ -18,7 +24,7 @@
   <div class="attributes_table projekt" id="<%= "attributes_table_projekt_#{@projekt.id}" %>">
     <table border="0" cellpadding="0" cellspacing="0">
       <tbody>
-      <% @relevant_attr.each_pair do |name, value| %>
+      <% @relevant_attr.each do |name, value| %>
           <% if value.nil?%>
               <tr>
                 <th><%= name %></th>

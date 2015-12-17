@@ -1,0 +1,92 @@
+
+<% #If abfrage um zwischen der create und update View zu unterscheiden %>
+<% if not @autor.id%>
+    <% used_url = admin_autoren_path%>
+<% else @autor.id %>
+    <% used_url = admin_autor_path(@autor.id)%>
+<% end %>
+
+<%@fields_for_autor = [:name,:vorname,:anrede,:email,:str,:ort,:plz,:tel,:fax,:institut,:demail,:dstr,:dort,:dplz,:dtel,:dfax]  %>
+
+
+    <fieldset><legend><span><%= "#{@autor.fullname} bearbeiten"%></span></legend>
+      <ul>
+        <%= form_for @autor, url: used_url ,remote: true do |autor_fields| %>
+            <li>
+              <%= autor_fields.label :name, "Nachname"%>
+              <%= autor_fields.text_field :name %>
+            </li>
+            <li>
+              <%= autor_fields.label :vorname, "Vorname"%>
+              <%= autor_fields.text_field :vorname %>
+            </li>
+            <li>
+              <%= autor_fields.label :anrede, "Anrede"%>
+              <%= autor_fields.text_field :anrede %>
+            </li>
+            <li>
+              <%= autor_fields.label :email, "E-mail"%>
+              <%= autor_fields.text_field :email %>
+            </li>
+            <li>
+              <%= autor_fields.label :str, "Straße"%>
+              <%= autor_fields.text_field :str %>
+            </li>
+            <li>
+              <%= autor_fields.label :ort, "Ort"%>
+              <%= autor_fields.text_field :ort %>
+            </li>
+            <li>
+              <%= autor_fields.label :plz, "Plz"%>
+              <%= autor_fields.text_field :plz %>
+            </li>
+            <li>
+              <%= autor_fields.label :tel, "Telefon"%>
+              <%= autor_fields.text_field :tel %>
+            </li>
+            <li>
+              <%= autor_fields.label :fax, "Fax"%>
+              <%= autor_fields.text_field :fax %>
+            </li>
+            <li>
+              <%= autor_fields.label :institut, "Institut"%>
+              <%= autor_fields.text_field :institut %>
+            </li>
+            <li>
+              <%= autor_fields.label :demail, "Dienstliche E-mail"%>
+              <%= autor_fields.text_field :demail %>
+            </li>
+            <li>
+              <%= autor_fields.label :dstr, "Dienstliche Straße"%>
+              <%= autor_fields.text_field :dstr %>
+            </li>
+            <li>
+              <%= autor_fields.label :dort, "Dienstlicher Ort"%>
+              <%= autor_fields.text_field :dort %>
+            </li>
+            <li>
+              <%= autor_fields.label :dplz, "Dienstliche Plz"%>
+              <%= autor_fields.text_field :dplz %>
+            </li>
+            <li>
+              <%= autor_fields.label :dtel, "Dienstliches Telefon"%>
+              <%= autor_fields.text_field :dtel %>
+            </li>
+            <li>
+              <%= autor_fields.label :dfax, "Dienstliches Fax"%>
+              <%= autor_fields.text_field :dfax %>
+            </li>
+            <%= autor_fields.submit @button_text_autor_input %>
+        <% end %>
+      </ul>
+    </fieldset>
+
+
+
+
+
+
+
+
+
+

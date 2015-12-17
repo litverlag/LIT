@@ -2,6 +2,7 @@ ActiveAdmin.register Tit do
   menu label: 'Tit'
   menu priority: 6
   config.filters = false
+  actions :index, :show, :edit, :update
 
 
   controller do
@@ -33,14 +34,20 @@ ActiveAdmin.register Tit do
       puts "______________TITLEI______UPDATE___________________-"
       @projekt = Gprod.find(permitted_params[:id])
 
-      if permitted_params[:status]
-        puts permitted_params[:status][:statustitelei]
-        @projekt = Gprod.find(params[:id])
-        changeStatusByUser(@projekt, @projekt.statustitelei, permitted_params[:status][:statustitelei])
-        @projekt.save
+      respond_to do |format|
+        format.js{
+          if permitted_params[:status]
+            puts permitted_params[:status][:statustitelei]
+            @projekt = Gprod.find(params[:id])
+            changeStatusByUser(@projekt, @projekt.statustitelei, permitted_params[:status][:statustitelei])
+            @projekt.save
+          end
+
+          render "_titeleiShow.js.erb"
+        }
       end
 
-      redirect_to collection_path
+
 
     end
 

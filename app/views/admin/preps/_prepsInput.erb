@@ -1,8 +1,24 @@
-<li>
-  <div class="edit_status">
-    Status der Titelei
-    <select name="status[statustitlei]">
-      <%= options_for_select($TITELEI_STATUS) %>
-    </select>
-  </div>
-</li>
+<%= status_bar(@projekt, @projekt.statuspreps.status, "Status der Prepser") %>
+
+<% used_url = admin_preps_path(@projekt.id)%>
+<fieldset class="projekt"><legend><span><%= "#{@projekt.projektname} bearbeiten"%></span></legend>
+  <ul>
+    <%= form_for @projekt, url: used_url, remote: true do |projekt_form| %>
+        <li>
+          <%= status_changer("Status der Preps", "status[statuspreps]", $PREPS_STATUS) %>
+        </li>
+        <li>
+          <%= projekt_form.label :projektname, "Projektname" %>
+          <%= "#{@projekt.projektname}" %>
+        </li>
+
+        <%= projekt_form.submit "#{@projekt.projektname} bearbeiten" %>
+    <% end %>
+  </ul>
+</fieldset>
+
+
+
+
+
+

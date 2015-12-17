@@ -7,19 +7,23 @@ module CostumViewHelper
   # This method is used to create statusbars for a costum status
   # === Example
   #
-  #   status_bar(@projekt, @projekt.statusfinal.status, "Finaler Status")
+  #   CostumViewHelper.status_bar(@projekt, @projekt.statusfinal.status, "Finaler Status")
   #
-
-
   def status_bar(instance_of_projekt,status, name_of_status)
 
     render "/views_for_helpers/status", status: status, name: name_of_status, projekt: instance_of_projekt
   end
 
-  def status_changer(status, name)
-    selectname status[statustitelei]
-    options
+  ##
+  # This method is used to create a row in a fieldset to change the status
+  # === Example
+  #
+  #   CostumViewHelper.status_changer("Status der Titelei", "status[statustitlei]", $TITELEI_STATUS)
+  #
 
+  def status_changer(name, status_to_change , options)
+
+    render "views_for_helpers/input_status_select", name: name ,selectname: status_to_change, options: options
 
   end
   #

@@ -14,6 +14,7 @@ ActiveAdmin.register EinListe do
 # end
 
   menu false
+  actions :index, :show, :edit, :update
   controller do
     def permitted_params
 

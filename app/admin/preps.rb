@@ -4,6 +4,7 @@ ActiveAdmin.register Preps do
   config.filters = false
   actions :index, :show, :edit, :update
 
+
   controller do
 
     include StatusLogic
@@ -33,28 +34,41 @@ ActiveAdmin.register Preps do
       puts "______________PREPS______UPDATE___________________-"
       @projekt = Gprod.find(permitted_params[:id])
 
-      if permitted_params[:status]
-        puts permitted_params[:status][:statustitelei]
-        @projekt = Gprod.find(params[:id])
-        changeStatusByUser(@projekt, @projekt.statustitelei, permitted_params[:status][:statustitelei])
-        @projekt.save
+      respond_to do |format|
+        format.js{
+
+          if permitted_params[:status]
+            @projekt = Gprod.find(params[:id])
+            changeStatusByUser(@projekt, @projekt.statuspreps, permitted_params[:status][:statuspreps])
+          end
+
+          render "_prepsShow.js.erb"
+
+
+        }
+
       end
 
-      redirect_to collection_path
 
     end
 
   end
 
   index title: 'Preps' do
+
+    @test = [:projektname, :projekt_email_adresse]
     column('Status') {|preps| status_tag(preps.statuspreps.status)}
-    column :projektname
+    @test.each do |value|
+    column value
+    end
     actions
   end
 
   show do
     render partial: "prepsShow"
   end
+
+
 
 
   form partial: 'prepsInput'

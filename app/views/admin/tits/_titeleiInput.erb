@@ -1,16 +1,12 @@
+<%= status_bar(@projekt, @projekt.statustitelei.status, "Titlei Status") %>
 
 
 <% used_url = admin_tit_path(@projekt.id)%>
     <fieldset class="projekt"><legend><span><%= "#{@projekt.projektname} bearbeiten"%></span></legend>
       <ul>
-        <%= form_for @projekt, url: used_url do |projekt_form| %>
+        <%= form_for @projekt, url: used_url, remote: true do |projekt_form| %>
             <li>
-              <div class="edit_status">
-                <label for="status">Titlei</label>
-                <select name="status[statustitelei]">
-                  <%= options_for_select($TITELEI_STATUS) %>
-                </select>
-              </div>
+              <%= status_changer("Status der Titelei", "status[statustitlei]", $TITELEI_STATUS) %>
             </li>
             <li>
               <%= projekt_form.label :projektname, "Projektname" %>

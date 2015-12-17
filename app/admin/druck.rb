@@ -14,6 +14,8 @@ ActiveAdmin.register Druck do
 # end
 
   config.filters = false
+  actions :index, :show, :edit, :update
+
   controller do
 
     include StatusLogic

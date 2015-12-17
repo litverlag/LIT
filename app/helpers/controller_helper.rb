@@ -15,7 +15,20 @@ module ControllerHelper
       if hash_of_params[:papier][:bezeichnung].eql?(papier.bezeichnung) then hash_of_params[:papier] = papier end
     end
     return hash_of_params
+  end
 
+  ##
+  # created by Rouven Glauert
+  # this Method is used to take a the permitted_params hash and sort out all nil entries
+  # ===Example
+  def self.make_compact(params)
+    hash = Hash.new
+    params.each do |key, value|
+      if not value.eql?("")
+        hash[key] = value
+      end
+    end
+    return hash
   end
 
 

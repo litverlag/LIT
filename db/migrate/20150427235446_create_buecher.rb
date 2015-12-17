@@ -23,11 +23,12 @@ class CreateBuecher < ActiveRecord::Migration
       t.boolean :sammelband, default: false
       t.date :erscheinungsjahr #TODO nur ausfüllen wenn bestimmtes Erscheinungsjahr gewünscht
       t.float :gewicht
+      t.float :volumen
 
 
       t.string :format_bezeichnung
       t.string :umschlag_bezeichnung
-      t.sring :papier_bezeichnung
+      t.string :papier_bezeichnung
       t.string :bindung_bezeichnung
 
 

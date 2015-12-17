@@ -90,13 +90,6 @@ ActiveRecord::Schema.define(version: 20151107183205) do
     t.integer "reihe_id", null: false
   end
 
-  create_table "bindungen", force: :cascade do |t|
-    t.integer  "buch_id"
-    t.string   "bezeichnung"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
   create_table "buecher", force: :cascade do |t|
     t.integer  "autor_id"
     t.integer  "lektor_id"
@@ -111,14 +104,22 @@ ActiveRecord::Schema.define(version: 20151107183205) do
     t.text     "utitel2"
     t.text     "utitel3"
     t.integer  "seiten"
-    t.decimal  "preis",            precision: 4, scale: 2
-    t.decimal  "spreis",           precision: 4, scale: 2
-    t.boolean  "sammelband",                               default: false
+    t.decimal  "preis",                precision: 4, scale: 2
+    t.decimal  "spreis",               precision: 4, scale: 2
+    t.boolean  "sammelband",                                   default: false
     t.date     "erscheinungsjahr"
     t.float    "gewicht"
     t.float    "volumen"
-    t.datetime "created_at",                                               null: false
-    t.datetime "updated_at",                                               null: false
+    t.string   "format_bezeichnung"
+    t.string   "umschlag_bezeichnung"
+    t.string   "papier_bezeichnung"
+    t.string   "bindung_bezeichnung"
+    t.string   "vier_farb"
+    t.float    "rueckenstaerke"
+    t.boolean  "klappentext"
+    t.boolean  "eintrag_cip_seite"
+    t.datetime "created_at",                                                   null: false
+    t.datetime "updated_at",                                                   null: false
   end
 
   create_table "buecher_reihen", id: false, force: :cascade do |t|
@@ -139,13 +140,6 @@ ActiveRecord::Schema.define(version: 20151107183205) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "formate", force: :cascade do |t|
-    t.integer  "buch_id"
-    t.string   "bezeichnung"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
   create_table "gprods", force: :cascade do |t|
     t.integer  "lektor_id"
     t.integer  "autor_id"
@@ -160,28 +154,37 @@ ActiveRecord::Schema.define(version: 20151107183205) do
     t.date     "umschlag_deadline"
     t.date     "rg_deadline"
     t.date     "binderei_deadline"
-    t.boolean  "projekt_abgeschlossen",         default: false
+    t.boolean  "projekt_abgeschlossen",              default: false
     t.string   "projekt_email_adresse"
     t.string   "projektname"
     t.integer  "auflage"
     t.date     "erscheinungsjahr"
     t.text     "kommentar_public"
-    t.boolean  "satzproduktion",                default: false
-    t.boolean  "buchistfertig",                 default: false
-    t.boolean  "externer_druck",                default: false
+    t.date     "manusskript_eingang_date"
+    t.integer  "auflage_lektor"
+    t.integer  "auflage_chef"
+    t.integer  "gesicherte_abnahme"
+    t.boolean  "satzproduktion",                     default: false
+    t.boolean  "buchistfertig",                      default: false
+    t.boolean  "externer_druck",                     default: false
     t.integer  "externer_druck_verschickt_von"
     t.date     "externer_druck_verschickt"
-    t.boolean  "buchgedruckt",                  default: false
+    t.boolean  "buchgedruckt",                       default: false
     t.text     "druck_bemerkungen"
     t.date     "pod_verschickt"
     t.string   "pod_meldung"
     t.text     "titelei_bemerkungen"
     t.string   "titelei_zusaetze"
-    t.boolean  "titelei_extern",                default: false
-    t.date     "titlei_letzte_korrektur"
+    t.boolean  "titelei_extern",                     default: false
+    t.date     "titelei_letzte_korrektur"
+    t.date     "titelei_versand_datum_fuer_ueberpr"
+    t.string   "titelei_versand_an_zur_ueberpf"
+    t.date     "titelei_korrektur_date"
+    t.date     "titelei_freigabe_date"
     t.text     "satz_bemerkungen"
     t.text     "preps_bemerkungen"
     t.string   "preps_betreuer"
+    t.string   "druck_art"
     t.string   "muster_art"
     t.string   "muster_gedruckt"
     t.text     "preps_muster_bemerkungen"
@@ -191,43 +194,22 @@ ActiveRecord::Schema.define(version: 20151107183205) do
     t.string   "offsch_an_sch_mit_u"
     t.text     "bildpr_bemerkungen"
     t.text     "umschlag_bemerkungen"
-    t.boolean  "umschlag_schutzumschlag",       default: false
+    t.boolean  "umschlag_schutzumschlag",            default: false
     t.string   "umschlag_umschlagsbild"
     t.text     "rg_bemerkungen"
     t.string   "rg_rg_mail"
     t.date     "rg_versand_1"
     t.date     "rg_versand_2"
-    t.boolean  "rg_bezahlt",                    default: false
-    t.boolean  "rg_vf",                         default: false
+    t.boolean  "rg_bezahlt",                         default: false
+    t.boolean  "rg_vf",                              default: false
+    t.date     "binderei_eingang_datum"
     t.text     "binderei_bemerkungen"
+    t.string   "prio"
     t.text     "lektor_bemerkungen_public"
     t.text     "lektor_bemerkungen_private"
-    t.string   "prio"
-    t.string   "datei"
-    t.string   "sonder"
-    t.string   "eintrag"
-    t.date     "versand"
-    t.date     "korrektur"
-    t.string   "freigabe"
-    t.boolean  "is_archiv",                     default: false
-    t.string   "cover"
-    t.string   "ebook_bemerkungen"
-    t.string   "ftp"
-    t.string   "webshop"
-    t.string   "google"
-    t.string   "afs"
-    t.string   "luecken"
-    t.date     "a1_dat"
-    t.date     "a2_dat"
-    t.string   "korr"
-    t.string   "off"
-    t.date     "um_verschickt"
-    t.text     "klapptext"
-    t.string   "um_frei"
-    t.string   "um_warten"
-    t.string   "rueckenfrei"
-    t.datetime "created_at",                                    null: false
-    t.datetime "updated_at",                                    null: false
+    t.string   "dateibue"
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
   end
 
   create_table "lektoren", force: :cascade do |t|
@@ -239,13 +221,6 @@ ActiveRecord::Schema.define(version: 20151107183205) do
     t.integer  "admin_user_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
-  end
-
-  create_table "papiere", force: :cascade do |t|
-    t.integer  "buch_id"
-    t.string   "bezeichnung"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
   end
 
   create_table "reihen", force: :cascade do |t|
@@ -333,15 +308,6 @@ ActiveRecord::Schema.define(version: 20151107183205) do
     t.string  "status"
     t.string  "updated_by"
     t.date    "updated_at"
-  end
-
-  create_table "umschlaege", force: :cascade do |t|
-    t.integer  "buch_id"
-    t.string   "bezeichnung"
-    t.string   "kaschierung"
-    t.boolean  "leinenumschlag"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
   end
 
 end

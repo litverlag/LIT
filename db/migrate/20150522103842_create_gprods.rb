@@ -66,11 +66,14 @@ class CreateGprods < ActiveRecord::Migration
         t.date "titelei_versand_datum_fuer_ueberpr"
         t.string   "titelei_versand_an_zur_ueberpf" #TODO Falls hier nichts eingetragen wird soll Automatisch der Autor eingetragen werden
         t.date  "titelei_korrektur_date"
+        t.date "titelei_freigabe_date"
+
         #Satz
         t.text   "satz_bemerkungen"
         #Preps
         t.text   "preps_bemerkungen"
         t.string   "preps_betreuer"
+        t.string "druck_art"
         #Muster
         t.string  "muster_art"
         t.string  "muster_gedruckt"

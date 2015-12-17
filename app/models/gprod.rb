@@ -37,4 +37,5 @@ class Gprod < ActiveRecord::Base
   accepts_nested_attributes_for :statusbinderei
 
 
+
 end

@@ -6,15 +6,15 @@
         <%= fields_for :buch, @projekt.buch do |buch_fields| %>
             <li>
               <%= buch_fields.label :name, "Format"%>
-              <%= select_tag("buch[format][bezeichnung]", options_for_select(@array_of_format_bezeichungen)) %>
+              <%= select_tag("buch[format_bezeichnung]", options_for_select(@array_of_format_bezeichungen)) %>
             </li>
             <li>
               <%= buch_fields.label :name, "Papier"%>
-              <%= select_tag("buch[papier][bezeichnung]", options_for_select(@array_of_papier_bezeichungen)) %>
+              <%= select_tag("buch[papier_bezeichnung]", options_for_select(@array_of_papier_bezeichungen)) %>
             </li>
             <li>
               <%= buch_fields.label :name, "Umschlag"%>
-              <%= select_tag("buch[umschlag][bezeichnung]", options_for_select(@array_of_umschlag_bezeichnungen)) %>
+              <%= select_tag("buch[umschlag_bezeichnung]", options_for_select(@array_of_umschlag_bezeichnungen)) %>
             </li>
             <li>
               <%= buch_fields.label :name, "Name"%>

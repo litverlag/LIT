@@ -21,6 +21,9 @@
 
 en:
   hello: "Hello world"
+  date:
+    formats:
+      default: "%d/%m/%Y"
 
 #Fusch!! Für eine richtige Internationalisierung bräuchte man ein eigens Verzeichnis z.B. config/locales/de.yml
 
@@ -32,3 +35,4 @@ en:
         separator: '.'
         precision: 2
         format: '%u%n'
+
