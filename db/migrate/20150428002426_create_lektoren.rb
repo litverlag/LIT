@@ -6,7 +6,6 @@ class CreateLektoren < ActiveRecord::Migration
       t.string :position
       t.string :emailkuerzel
       t.string :fox_name
-      t.belongs_to :admin_user
 
       t.timestamps null: false
     end

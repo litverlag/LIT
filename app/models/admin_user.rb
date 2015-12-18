@@ -5,7 +5,7 @@ class AdminUser < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
 
-  has_one :lektor
+  belongs_to :lektor
   accepts_nested_attributes_for :lektor
 
   has_and_belongs_to_many :departments

@@ -8,33 +8,38 @@
         params.permit!
       end
 
+      def new
+        @user = AdminUser.new
+        super
+      end
+
       def create
-        if not @user = AdminUser.create(permitted_params[:user])
+        if @user = AdminUser.create(permitted_params[:admin_user])
+          redirect_to collection_path, notice: 'User erfolgreich erstellt'
+        else
           render 'new'
-        end
-        @user.update(permitted_params[:departments])
-        if @user.departments.to_a.include?('Lektor')
-          @user.update(permitted_params[:lektor])
         end
       end
 
+      def edit
+        @user = AdminUser.find(permitted_params[:id])
+      end
+
       def update
-
-        updateProc = Proc.new{|modelinstance ,data|
-          if data != nil
-            if not modelinstance.update(data)
-              render 'edit'
-            end
-          end}
-
-
         @user = AdminUser.find(params[:id])
-        updateProc.call(@user,permitted_params[:user] )
-        updateProc.call(@user.departments,permitted_params[:departments] )
-        if @user.departments.to_a.include?('Lektor')
-          updateProc.call(@user.lektor,permitted_params[:lektor] )
+
+        ##
+        # If password fields are empty these fields will be ignored during update
+        if params[:admin_user][:password].blank? && params[:admin_user][:password_confirmation].blank?
+        params[:admin_user].delete(:password)
+        params[:admin_user].delete(:password_confirmation)
         end
 
+        if @user.update_attributes(permitted_params[:admin_user])
+          redirect_to collection_path, notice: 'User erfolgreich bearbeitet'
+        else
+          render 'edit'
+        end      
       end
 
 
@@ -55,6 +60,8 @@
 
     show do
       attributes_table do
+        row :vorname
+        row :nachname
         row :email
         row :current_sign_in_at
         row :sign_in_count
@@ -62,22 +69,15 @@
 
       end
 
-        panel "Zugewiesene Lektoren" do
-          #table_for admin_user.lektoren do
-          #  column "Name"  do |b|
-          #    b.name
-          #  end
-          #  column "Kürzel"  do |b|
-          #    b.fox_name
-          #  end
-          #end
-        end
-
       panel "Zugewiesene Abteilungen" do
         table_for admin_user.departments do
-          column "Name"  do |b|
-            b.name
-          end
+          column "Abteilungen", :name
+        end
+      end
+
+      panel "Zugewiesener Lektor" do
+        table_for admin_user.lektor do
+          column "Lektor", :name
         end
       end
     end
@@ -92,30 +92,18 @@
 
 
     form do |f|
-      f.inputs "Admin Details" do
+      f.inputs "User Details" do
+        f.input :vorname
+        f.input :nachname
         f.input :email
-        f.input :password
-        f.input :password_confirmation
+        f.input :password, label: "Passwort"
+        f.input :password_confirmation, label: "Passwort bestätigen"
 
-      f.inputs 'Der User hat folgende Benutzergruppen' do
-        f.input :departments, as: :select
+      panel "Berechtigungen" do 
+        #render("/admin/admin_users/adminuserInput.html.erb")
+        render partial: 'adminuserInput'
       end
-
-      #   f.inputs 'Der User hat folgende Benutzergruppen' do
-       #    f.input :lektor, as: :select
-      # end
-
-
-          f.inputs "Lektor", :for => [:lektor] do |lek|
-            lek.input :name
-          end
-
-        div do
-          render('/admin/new.html.erb')
-        end
-
-        f.actions
-
+      f.actions
       end
     end
 

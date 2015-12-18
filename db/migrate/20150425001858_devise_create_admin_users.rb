@@ -3,7 +3,11 @@ class DeviseCreateAdminUsers < ActiveRecord::Migration
     super
     # Create a default user
     if direction == :up
+<<<<<<< HEAD
       @superadmin = AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
+=======
+      AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
+>>>>>>> 3e4c4a08970d622a49fe68be0a200c76912f1622
     end
   end
 
@@ -14,7 +18,9 @@ class DeviseCreateAdminUsers < ActiveRecord::Migration
       ## Database authenticatable
       t.string :email,              null: false, default: ""
       t.string :encrypted_password, null: false, default: ""
-      t.string :name, null: false, default: ""
+      
+      t.string :vorname, null: false, default: ""
+      t.string :nachname, null: false, default: ""
 
 
       ## Recoverable
@@ -43,6 +49,7 @@ class DeviseCreateAdminUsers < ActiveRecord::Migration
       # t.datetime :locked_at
 
       #Adding the Lektor
+      t.belongs_to :lektor
 
       t.timestamps
     end

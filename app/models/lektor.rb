@@ -1,6 +1,6 @@
 class Lektor < ActiveRecord::Base
 
-  belongs_to :admin_user
+  has_one :admin_user
   accepts_nested_attributes_for :admin_user
 
   has_many :gprod

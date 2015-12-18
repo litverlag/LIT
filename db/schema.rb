@@ -31,7 +31,8 @@ ActiveRecord::Schema.define(version: 20151107183205) do
   create_table "admin_users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
-    t.string   "name",                   default: "", null: false
+    t.string   "vorname",                default: "", null: false
+    t.string   "nachname",               default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -40,6 +41,7 @@ ActiveRecord::Schema.define(version: 20151107183205) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.integer  "lektor_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -218,9 +220,8 @@ ActiveRecord::Schema.define(version: 20151107183205) do
     t.string   "position"
     t.string   "emailkuerzel"
     t.string   "fox_name"
-    t.integer  "admin_user_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "reihen", force: :cascade do |t|

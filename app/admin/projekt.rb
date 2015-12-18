@@ -105,9 +105,22 @@ ActiveAdmin.register Projekt do
            end
 
 
+<<<<<<< HEAD
            # TO BE INTERNATIONALIZED this strings are temporary for the names of the buttons
 
 
+=======
+         puts "\n\n\n\n\n"
+       puts "Parameter:"
+       puts "----------"
+       puts permitted_params[:projekt]
+       puts "----------"
+        puts "\n\n\n\n\n"
+
+       @projekt = current_admin_user.lektor.gprod.find(params[:id])
+       updateProc.call(@projekt,permitted_params[:projekt] )
+       updateProc.call(@projekt.buch,permitted_params[:buch] )
+>>>>>>> 3e4c4a08970d622a49fe68be0a200c76912f1622
 
            # It is checked if the the User want to create a new Author or if he wants to make an association with one who already exists
            # if there is no Author in the Database we get an Error, if there is on he gets associated.
@@ -137,6 +150,7 @@ ActiveAdmin.register Projekt do
          }
        end
 
+       redirect_to collection_path, notice: "Projekt erfolgreich bearbeitet"
 
      end
 
