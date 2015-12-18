@@ -1,6 +1,6 @@
   ActiveAdmin.register AdminUser do
     menu priority:2
-    menu false
+    menu
 
     controller do
 

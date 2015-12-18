@@ -15,12 +15,10 @@
 @import "active_admin/select2/base";
 @import 'input_form/input_form';
 @import 'input_form/nav_bar';
-<<<<<<< HEAD
-@import 'status_tag';
 
-=======
+@import 'status_tag';
 @import 'input_form/user_input';
->>>>>>> 3e4c4a08970d622a49fe68be0a200c76912f1622
+
 
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:

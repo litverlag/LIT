@@ -25,6 +25,44 @@ $(document).on('ready page:load',
 
             });
 
+
+    $("#admin_user_department_ids_10").click(function( event ) {
+        if($("#admin_user_department_ids_10").prop('checked')){
+            $("#lektor_select_box").show();
+            $( "#admin_user_department_ids_9" ).prop( "disabled", true );
+            $( "#admin_user_department_ids_8" ).prop( "disabled", true );
+            $( "#admin_user_department_ids_7" ).prop( "disabled", true );
+            $( "#admin_user_department_ids_6" ).prop( "disabled", true );
+            $( "#admin_user_department_ids_5" ).prop( "disabled", true );
+            $( "#admin_user_department_ids_4" ).prop( "disabled", true );
+            $( "#admin_user_department_ids_3" ).prop( "disabled", true );
+            $( "#admin_user_department_ids_2" ).prop( "disabled", true );
+            $( "#admin_user_department_ids_1" ).prop( "disabled", true );
+
+            $( "#admin_user_department_ids_9" ).prop( "checked", false );
+            $( "#admin_user_department_ids_8" ).prop( "checked", false );
+            $( "#admin_user_department_ids_7" ).prop( "checked", false );
+            $( "#admin_user_department_ids_6" ).prop( "checked", false );
+            $( "#admin_user_department_ids_5" ).prop( "checked", false );
+            $( "#admin_user_department_ids_4" ).prop( "checked", false );
+            $( "#admin_user_department_ids_3" ).prop( "checked", false );
+            $( "#admin_user_department_ids_2" ).prop( "checked", false );
+            $( "#admin_user_department_ids_1" ).prop( "checked", false );
+        }else{
+            $("#lektor_select_box").hide();
+            $( "#admin_user_department_ids_9" ).prop( "disabled", false );
+            $( "#admin_user_department_ids_8" ).prop( "disabled", false );
+            $( "#admin_user_department_ids_7" ).prop( "disabled", false );
+            $( "#admin_user_department_ids_6" ).prop( "disabled", false );
+            $( "#admin_user_department_ids_5" ).prop( "disabled", false );
+            $( "#admin_user_department_ids_4" ).prop( "disabled", false );
+            $( "#admin_user_department_ids_3" ).prop( "disabled", false );
+            $( "#admin_user_department_ids_2" ).prop( "disabled",false );
+            $( "#admin_user_department_ids_1" ).prop( "disabled", false );
+        }
+
+    });
+
     }
 );
 

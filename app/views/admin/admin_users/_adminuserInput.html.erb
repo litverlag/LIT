@@ -13,7 +13,7 @@
 		<%= user_form.collection_check_boxes(:department_ids, Department.all, :id, :name ) %>
 		</li>
 
-		<li class='user_input'>
+		<li class='user_input' id="lektor_select_box">
 		<%= user_form.label('Zugewiesener Lektor', class: 'label') %>
 		<%= user_form.select( :lektor_id, Lektor.all.collect {|lek| [ lek.name, lek.id ] },
 		{prompt: 'Lektor auswählen'} ) %>
