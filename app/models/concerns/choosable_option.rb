@@ -20,15 +20,27 @@ class ChoosableOption
 
 
 
-  #_____________ABOVE THIS LINE_______
 
 
-  def make_options_hash(data)
-    unless data.nil?
+
+  def make_options_hash(options,names)
+    unless options.nil?
       t_array1 = []
-      data.each do |value|
-        t_array1.push([value.to_sym,value])
+      i = 0
+      if names.nil?
+        options.each do |value|
+          t_array1.push([value.to_sym,value])
+        end
+      else
+        if not names.length == options.length
+          raise ArgumentError, "The array for the names has to have the same length as the one for the options. see options.yml"
+        end
+        options.each do |value|
+          t_array1.push([names[i].to_sym,value])
+          i = i + 1
+        end
       end
+
       # The final hash options has to have this structure {{:a4,"a4"},{:a3,"a3"},..}
       t_array1.to_h
     end
@@ -37,9 +49,9 @@ class ChoosableOption
   ##
   # This method takes the Hash and converts it into a array with all options
   #
-  def make_array_of_all(data)
+  def make_array_of_all(options)
     array_of_all_options = []
-    data.each do |key,value|
+    options.each do |key,value|
       array_of_all_options.append(value)
     end
     return array_of_all_options
@@ -52,12 +64,22 @@ class ChoosableOption
 
     yam = YAML.load_file(Rails.root.join('config/options.yml'))
 
-    yam["options"].each do |type_of_option|
-      ALL_OPTIONS[type_of_option.first] = make_options_hash(type_of_option.second)
+    yam["names"].each do |name_of_option|
+      yam["options"].each do |type_of_option|
+        if name_of_option.first == type_of_option.first
+          if !name_of_option.second.nil?
+
+            ALL_OPTIONS[type_of_option.first] = make_options_hash(type_of_option.second,name_of_option.second)
+          end
+
+          if name_of_option.second.nil?
+          ALL_OPTIONS[type_of_option.first] = make_options_hash(type_of_option.second,nil)
+          end
+        end
+      end
     end
-
-
   end
+
 
 
   ##
