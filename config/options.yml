@@ -1,0 +1,13 @@
+options:
+    bindung: [klebe,hardcover, fadenheftung, heft]
+    prio:
+    form:
+    datei:
+    format: ["A5", "A4", "22", "23", "24", "Sonder"]
+    umschlag:
+    druckart:
+    vierfarb:
+    sonder:
+    papier: ["o80", "w90", "km100", "kg120", "wg90"]
+    musterart:
+
