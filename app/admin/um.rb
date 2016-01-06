@@ -17,7 +17,7 @@ ActiveAdmin.register Um do
       puts "______________UMSCHLAG______SHOW___________________-"
       @projekt = Gprod.find(permitted_params[:id])
     end
-    
+
     def edit
 
       @projekt = Gprod.find(permitted_params[:id])
@@ -29,21 +29,28 @@ ActiveAdmin.register Um do
       puts "______________UMSCHLAG______UPDATE___________________-"
       @projekt = Gprod.find(permitted_params[:id])
 
-      if permitted_params[:status]
-        puts permitted_params[:status][:statustitelei]
-        @projekt = Gprod.find(params[:id])
-        changeStatusByUser(@projekt, @projekt.statustitelei, permitted_params[:status][:statustitelei])
-        @projekt.save
+      respond_to do |format|
+
+        format.js{
+          if permitted_params[:status]
+            puts permitted_params[:status][:statusumschlag]
+            @projekt = Gprod.find(params[:id])
+            changeStatusByUser(@projekt, @projekt.statusumschl, permitted_params[:status][:statusumschlag])
+          end
+
+          render '_umschlagShow.js'
+        }
       end
 
-      redirect_to collection_path
+
+
 
     end
 
   end
 
   index title: 'Umschlag' do
-    column('Status') {|um| status_tag(um.statusumschl.status)}
+    column('Status') { |um| status_tag(um.statusumschl.status) }
     column :projektname
     actions
   end
@@ -53,7 +60,6 @@ ActiveAdmin.register Um do
   end
 
   form partial: 'umschlagInput'
-
 
 
 end

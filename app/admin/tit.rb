@@ -37,7 +37,6 @@ ActiveAdmin.register Tit do
       respond_to do |format|
         format.js{
           if permitted_params[:status]
-            puts permitted_params[:status][:statustitelei]
             @projekt = Gprod.find(params[:id])
             changeStatusByUser(@projekt, @projekt.statustitelei, permitted_params[:status][:statustitelei])
             @projekt.save

@@ -1,228 +1,29 @@
-
-<% #If abfrage um zwischen der create und update View zu unterscheiden %>
-<% if not @projekt.id%>
-    <% used_url = admin_projekte_path%>
-    <fieldset class="projekt"><legend><span>Ein neues Projekt erstellen</span></legend>
-      <p>In diesem Bereich können Sie Projekte erstellen, dazu geben Sie dem Projekt vorerst nur einen die folgenden </p>
-      <ul>
-
-        <%= form_for @projekt, url: used_url do |projekt_form| %>
-            <li>
-              <%= projekt_form.label :projektname, "Name des Projektes" %>
-              <%= projekt_form.text_field :projektname %>
-            </li>
-            <li>
-              <%= projekt_form.label :projekt_email_adresse, "Email des Projektes" %>
-              <%= projekt_form.text_field :projekt_email_adresse %>
-            </li>
-            <li>
-              <%= projekt_form.label :lektor_bemerkungen_private, "Private Bemerkungen zu diesem Projekt" %>
-              <%= projekt_form.text_area :lektor_bemerkungen_private, size: "10x10" %>
-            </li>
-            <%= projekt_form.submit %>
-        <% end %>
-
-      </ul>
-    </fieldset>
-
-<% elsif @projekt.id %>
-    <% used_url = admin_projekt_path(@projekt.id)%>
+<%= status_bar(@projekt, @projekt.statusbinderei.status, "Binderei Status") %>
 
 
-
-    <nav>
-      <ul>
-        <li onclick='$(".buch").hide();$(".autor").hide();$(".projekt").show()'>Projekt</li>
-        <li onclick='$(".buch").show();$(".autor").hide();$(".projekt").hide()'>Buch</li>
-        <li onclick='$(".buch").hide();$(".autor").show();$(".projekt").hide()'>Autor</li>
-      </ul>
-    </nav>
-
-    <fieldset class="projekt"><legend><span><%= "#{@projekt.projektname} bearbeiten"%></span></legend>
-      <ul>
-        <%= form_for @projekt, url: used_url do |projekt_form| %>
-            <li>
-              <div class="edit_status">
-              <%= link_to "Update",remote: :true%>
-              </div>
-            </li>
-            <li>
-              <%= projekt_form.label :projektname, "Projektname" %>
-              <%= "#{@projekt.projektname}" %>
-            </li>
-            <li>
-              <%= projekt_form.label :projekt_email_adresse, "Email des Projektes" %>
-              <%= projekt_form.text_field :projekt_email_adresse %>
-            </li>
-            <li>
-              <%= projekt_form.label :lektor_bemerkungen_private, "Private Bemerkungen zu diesem Projekt" %>
-              <%= projekt_form.text_area :lektor_bemerkungen_private, size: "10x10" %>
-            </li>
-            <li>
-              <%= projekt_form.label :final_deadline, "Finale Deadline für das gesamte Projekt" %>
-              <input class="datepicker" data-date-format="mm/dd/yyyy" name="projekt[final_deadline]" value="<%="#{@projekt.final_deadline}" %>">
-            </li>
-            <%= projekt_form.submit "#{@projekt.projektname} bearbeiten" %>
-        <% end %>
-      </ul>
-    </fieldset>
-
-    <fieldset class="buch"><legend><span><%= "Buch zu #{@projekt.projektname} bearbeiten"%></span></legend>
-      <ul>
-        <%= form_for @projekt, url: used_url do |projekt_form| %>
-            <%= fields_for :buch, @projekt.buch do |buch_fields| %>
-                <li>
-                  <%= buch_fields.label :name, "Name"%>
-                  <%= buch_fields.text_field :name %>
-                </li><li>
-        <%= buch_fields.label :titel1, "Titel 1 "%>
-        <%= buch_fields.text_field :titel1 %>
-      </li> <li>
-        <%= buch_fields.label :titel2, "Titel 2 "%>
-        <%= buch_fields.text_field :titel2 %>
-      </li><li>
-        <%= buch_fields.label :titel3, "Titel 3"%>
-        <%= buch_fields.text_field :titel3 %>
-      </li><li>
-        <%= buch_fields.label :isbn, "ISBN "%>
-        <%= buch_fields.text_field :isbn %>
-      </li><li>
-        <%= buch_fields.label :issn, "ISSN"%>
-        <%= buch_fields.text_field :issn%>
-      </li><li>
-        <%= buch_fields.label :utitel1, "Untertitel 1"%>
-        <%= buch_fields.text_field :utitel1 %>
-      </li>  <li>
-        <%= buch_fields.label :utitel2, "Untertitel 2"%>
-        <%= buch_fields.text_field :utitel2 %>
-      </li><li>
-        <%= buch_fields.label :utitel3, "Untertitel 3"%>
-        <%= buch_fields.text_field :utitel3 %>
-      </li><li>
-        <%= buch_fields.label :seiten, "Seitenanzahl"%>
-        <%= buch_fields.text_field :seiten %>
-      </li><li>
-        <%= buch_fields.label :preis, "Preis in €"%>
-        <%= buch_fields.text_field :preis %>
-      </li><li>
-        <%= buch_fields.label :spreis, "Sparpreis in €"%>
-        <%= buch_fields.text_field :spreis %>
-      </li>  <li>
-        <%= buch_fields.label :gewicht, "Gewicht in g"%>
-        <%= buch_fields.text_field :gewicht %>
-      </li><li>
-        <%= buch_fields.label :volumen, "Volumen in l"%>
-        <%= buch_fields.text_field :volumen%>
-      </li><li class="one_size_42px">
-        <%= buch_fields.label :sammelband, "Ist Sammelband"%>
-        <%= buch_fields.check_box :sammelband%>
-      </li><li>
-        <%= buch_fields.label :erscheinungsjahr, "Erscheinungsjahr"%>
-        <input class="datepicker" data-date-format="mm/dd/yyyy" name="buch[erscheinungsjahr]" value="<%="#{@projekt.buch.erscheinungsjahr}" %>">
-      </li>
-            <% end %>
-            <%= projekt_form.submit "Buchinformationen bearbeiten" %>
-        <% end %>
-      </ul>
-    </fieldset>
+<% used_url = admin_bi_path(@projekt.id)%>
+<fieldset class="projekt"><legend><span><%= "#{@projekt.projektname} bearbeiten"%></span></legend>
+  <ul>
+    <%= form_for @projekt, url: used_url, remote: true do |projekt_form| %>
+        <li>
+          <%= projekt_form.label :projektname, "Projektname" %>
+          <%= "#{@projekt.projektname}" %>
+        </li>
+        <li>
+          <%= projekt_form.label :projektname, "Betreuender Lektor" %>
+          <%= "#{@projekt.lektor.fullname}" %>
+        </li>
+        <li>
+          <%= status_changer("Status der Binderei", "status[statusbinderei]", $BINDEREI_STATUS) %>
+        </li>
+        <%= projekt_form.submit "#{@projekt.projektname} bearbeiten" %>
+    <% end %>
+  </ul>
+</fieldset>
 
 
 
 
 
-
-
-    <%@fields_for_autor = [:name,:vorname,:anrede,:email,:str,:ort,:plz,:tel,:fax,:institut,:demail,:dstr,:dort,:dplz,:dtel,:dfax]  %>
-    <fieldset class="autor"><legend><span><%= "Autor zu #{@projekt.projektname} bearbeiten"%></span></legend>
-      <p>Erstellen sie einen neuen Autor oder fügen sie einen schon bestehenden Autor zu der Datenbank hinzu.</p>
-      <ul>
-        <%= form_for @projekt, url: used_url do |projekt_form| %>
-
-            <%= fields_for :autor, @projekt.autor do |autor_fields| %>
-                <li>
-                  <%= autor_fields.label :name, "Nachname"%>
-                  <%= autor_fields.text_field :name, id: 'name_autocomplete' %>
-                </li>
-                <li>
-                  <%= autor_fields.label :vorname, "Vorname"%>
-                  <%= autor_fields.text_field :vorname %>
-                </li>
-                <li>
-                  <%= autor_fields.label :anrede, "Anrede"%>
-                  <%= autor_fields.text_field :anrede %>
-                </li>
-                <li>
-                  <%= autor_fields.label :email, "email"%>
-                  <%= autor_fields.text_field :email %>
-                </li>
-                <li>
-                  <%= autor_fields.label :str, "str"%>
-                  <%= autor_fields.text_field :str %>
-                </li>
-                <li>
-                  <%= autor_fields.label :ort, "ort"%>
-                  <%= autor_fields.text_field :ort %>
-                </li>
-                <li>
-                  <%= autor_fields.label :plz, "plz"%>
-                  <%= autor_fields.text_field :plz %>
-                </li>
-                <li>
-                  <%= autor_fields.label :tel, "tel"%>
-                  <%= autor_fields.text_field :tel %>
-                </li>
-                <li>
-                  <%= autor_fields.label :fax, "fax"%>
-                  <%= autor_fields.text_field :fax %>
-                </li>
-                <li>
-                  <%= autor_fields.label :institut, "institut"%>
-                  <%= autor_fields.text_field :institut %>
-                </li>
-                <li>
-                  <%= autor_fields.label :demail, "demail"%>
-                  <%= autor_fields.text_field :demail %>
-                </li>
-                <li>
-                  <%= autor_fields.label :dstr, "dstr"%>
-                  <%= autor_fields.text_field :dstr %>
-                </li>
-                <li>
-                  <%= autor_fields.label :dort, "dort"%>
-                  <%= autor_fields.text_field :dort %>
-                </li>
-                <li>
-                  <%= autor_fields.label :dplz, "dplz"%>
-                  <%= autor_fields.text_field :dplz %>
-                </li>
-                <li>
-                  <%= autor_fields.label :dtel, "dtel"%>
-                  <%= autor_fields.text_field :dtel %>
-                </li>
-                <li>
-                  <%= autor_fields.label :dfax, "dfax"%>
-                  <%= autor_fields.text_field :dfax %>
-                </li>
-            <% end %>
-            <%= projekt_form.submit "Autor hinzufügen" %>
-            <%= projekt_form.submit "Neuen Autor erstellen" %>
-
-
-        <% end %>
-      </ul>
-
-
-
-    </fieldset>
-
-
-
-
-
-
-
-
-
-<% end %>
 
 
