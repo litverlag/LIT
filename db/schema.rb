@@ -54,11 +54,6 @@ ActiveRecord::Schema.define(version: 20151107183205) do
     t.integer "department_id", null: false
   end
 
-  create_table "admin_users_lektoren", id: false, force: :cascade do |t|
-    t.integer "admin_user_id", null: false
-    t.integer "lektor_id",     null: false
-  end
-
   create_table "autoren", force: :cascade do |t|
     t.string   "fox_id"
     t.string   "anrede"

@@ -38,7 +38,8 @@
         if @user.update_attributes(permitted_params[:admin_user])
           redirect_to collection_path, notice: 'User erfolgreich bearbeitet'
         else
-          render 'edit'
+          redirect_to edit_admin_admin_user_url(@user), alert: 'Update gescheitert! Bitte lassen Sie 
+          die Passwort-Felder frei oder füllen Sie beide Felder aus'
         end      
       end
 
