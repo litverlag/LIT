@@ -28,7 +28,7 @@
           <% if value.nil?%>
               <tr>
                 <th><%= name %></th>
-                <td> <span class="empty"> <%= t('emtpy') %></span></td>
+                <td> <span class="empty"> <%= I18n.t 'empty' %></span></td>
               </tr>
           <% else%>
               <tr>
