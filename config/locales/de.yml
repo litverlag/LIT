@@ -20,13 +20,13 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 de:
+  empty: "Leer"
   hello: "Hallo Welt"
   date:
     formats:
       default: "%d/%m/%Y"
 
 
-  empty: "Leer"
 
   buttons:
     author_edit: "Autor bearbeiten"
