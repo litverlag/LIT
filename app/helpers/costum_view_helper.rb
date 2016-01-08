@@ -19,47 +19,16 @@ module CostumViewHelper
   # === Example
   #
   #   CostumViewHelper.status_changer("Status der Titelei", "status[statustitlei]", $TITELEI_STATUS)
-  #
-
   def status_changer(name, status_to_change , options)
 
     render "views_for_helpers/input_status_select", name: name ,selectname: status_to_change, options: options
 
   end
-  #
-  # #Final
-  # $FINAL_STATUS = ["neu", "in bearbeitung", "fertig", "problem"]
-  # #Druck
-  # $DRUCK_STATUS = ["musterdrucken", "nächsterAuftrag", "neu", "bearbeitung", "fertig", "problem"]
-  # #Titelei
-  # $TITELEI_STATUS = ["neu", "in bearbeitung", "verschickt", "fertig", "problem"]
-  # #Satz
-  # $SATZ_STATUS = ["neu", "in bearbeitung", "verschickt", "fertig", "problem"]
-  # #Pre press
-  # $PREPS_STATUS = ["neu", "in bearbeitung", "verschickt", "fertig", "problem"]
-  # #Offset/Schirm
-  # $OFFSCH_STATUS = ["neu", "in bearbeitung", "fertig", "problem"]
-  # #Bildprüfung
-  # $BILDPR_STATUS = ["neu", "in bearbeitung", "fertig", "problem"]
-  # #Umschlag
-  # $UMSCHL_STATUS = ["neu", "in bearbeitung", "verschickt", "fertig", "problem"]
-  # #Buchhaltung
-  # $RG_STATUS = ["neu", "in bearbeitung", "fertig", "problem"]
-  # #Binderei
-  # $BINDEREI_STATUS = ["neu", "in bearbeitung", "fertig", "problem"]
-  #
-  #
-  # #Musterarten
-  # $MUSTER_ART = ["digital", "papier"]
-  #
 
 
-  ##costum view
-  # This method is used to create a Panel with a set of infos.
-  # The array has to have the
-  # === Example
-  #
-  #   info_panel(@projekt, relevant_attr, names)
+
+
+
   def change_names_in_hash(relevant_attr, names)
     i= 0
     relevant_attr.keys.each do |key|
@@ -73,6 +42,15 @@ module CostumViewHelper
     end
     return relevant_attr
     #render "/views_for_helpers/info_panel", projekt_instance: projekt_instance, relevant_attr: relevant_attr, names: names
+  end
+
+
+  ##
+  # This method gives you the javascipt the change a status when it's updatet in a edit view
+  #
+  #
+  def change_status_tag(projectinstance,symbol_of_status)
+    render "views_for_helpers/js/change_status_tag_helper.js", projectinstance: projectinstance, s_status: symbol_of_status
   end
 
 

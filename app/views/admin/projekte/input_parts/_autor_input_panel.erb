@@ -72,7 +72,7 @@
         <% end %>
 
         <% if not @projekt.autor %>
-            <%= projekt_form.submit "#{@button_text_asso}" %>
+            <% #projekt_form.submit "#{@button_text_asso}" %>
             <%= projekt_form.submit "#{@button_text_add}" %>
         <% else %>
             <%= projekt_form.submit "#{@button_text_edit}" %>

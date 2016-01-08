@@ -41,7 +41,7 @@
           <% if value.nil?%>
               <tr>
                 <th><%= name %></th>
-                <td> <span class="empty">Leer</span></td>
+                <td> <span class="empty"><%= I18n.t 'empty' %></span></td>
               </tr>
           <% else%>
               <tr>

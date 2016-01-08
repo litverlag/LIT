@@ -19,8 +19,28 @@
 # To learn more, please read the Rails Internationalization guide
 # available at http://guides.rubyonrails.org/i18n.html.
 
-en:
-  hello: "Hello world"
+de:
+  empty: "Leer"
+  hello: "Hallo Welt"
   date:
     formats:
       default: "%d/%m/%Y"
+
+
+
+  buttons:
+    author_edit: "Autor bearbeiten"
+    author_asso: "Autor hinzufügen"
+    author_new: "Neuen Autor erstellen"
+
+  number:
+    currency:
+      format:
+        unit: '€'
+        delimiter: ','
+        separator: '.'
+        precision: 2
+        format: '%u%n'
+
+  flash_notice:
+    revised_succes: "Projekt erfolgreich überarbeitet"

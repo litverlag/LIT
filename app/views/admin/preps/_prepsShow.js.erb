@@ -1,5 +1,5 @@
 
-$(".status_tag").replaceWith('<span class="<%="status_tag #{@projekt.statuspreps.status}"%>"><%= @projekt.statuspreps.status %></span>');
+$(".status_tag").replaceWith('<span class="<%="status_tag #{@projekt.statuspreps.status.gsub(/\s+/, "")}"%>"><%= @projekt.statuspreps.status %></span>');
 
 
 

@@ -6,6 +6,7 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+
 module Prod
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
@@ -26,5 +27,12 @@ module Prod
 
     #Load models from subdirectories
     config.autoload_paths += Dir[Rails.root.join('app', 'models', '{**}')]
+
+     #BY Rouven Glauert worked at LIT rouvenglauert@gmail.com
+     #set the default locale to german
+     config.i18n.default_locale = :de
   end
+
+
+
 end

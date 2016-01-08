@@ -2,14 +2,36 @@
   <ul>
 
     <%= form_for @projekt, url: used_url, remote: true do |projekt_form| %>
+
         <li>
           <div class="edit_status">
-            <input type="checkbox" name="status[freigabe_final]" value="True">Gesamtfreigabe
-            <input type="checkbox" name="status[freigabe_titelei]" value="True">Titeleifreigabe
-            <input type="checkbox" name="status[freigabe_umschlag]" value="True">Umschlagfreigabe
-            <input type="checkbox" name="status[freigabe_preps]" value="True">Prepsfreigabe
+
+            <% if @projekt.statusfinal.status.nil? %>
+                <div class = "freigabe_final">
+                    <input type="checkbox" name="status[freigabe_final]" value="True">Gesamtfreigabe
+                </div>
+            <% end %>
+
+            <% if @projekt.statustitelei.status.nil? %>
+                <div class = "freigabe_titelei" >
+                  <input type="checkbox" name="status[freigabe_titelei]" value="True">Titeleifreigabe
+                </div>
+            <% end %>
+
+            <% if @projekt.statusumschl.status.nil? %>
+                <div class = "freigabe_umschlag" >
+                   <input type="checkbox" name="status[freigabe_umschlag]" value="True">Umschlagfreigabe
+                </div>
+            <% end %>
+
+            <% if @projekt.statuspreps.status.nil? %>
+                <div class = "freigabe_preps" style="display: inline;">
+                    <input type="checkbox" name="status[freigabe_preps]" value="True">Prepsfreigabe
+                </div>
+            <% end %>
           </div>
         </li>
+
         <li>
           <%= projekt_form.label :projektname, "Projektname" %>
           <%= "#{@projekt.projektname}" %>

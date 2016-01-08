@@ -6,13 +6,16 @@
       <ul>
         <%= form_for @projekt, url: used_url, remote: true do |projekt_form| %>
             <li>
-              <%= status_changer("Status der Titelei", "status[statustitlei]", $TITELEI_STATUS) %>
-            </li>
-            <li>
               <%= projekt_form.label :projektname, "Projektname" %>
               <%= "#{@projekt.projektname}" %>
             </li>
-
+            <li>
+              <%= projekt_form.label :projektname, "Betreuender Lektor" %>
+              <%= "#{@projekt.lektor.fullname}" %>
+            </li>
+            <li>
+              <%= status_changer("Status der Titelei", "status[statustitelei]", $TITELEI_STATUS) %>
+            </li>
             <%= projekt_form.submit "#{@projekt.projektname} bearbeiten" %>
         <% end %>
       </ul>
