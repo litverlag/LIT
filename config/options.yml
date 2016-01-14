@@ -1,4 +1,20 @@
+#Diese Variablen werden im Code verwendet NIEMALS ändern sonst muss man im gesamten Code die symbole ändern, sollen sie geändert werden muss das Array in names: kopiert 
+#werden, dann bleiben die Namen im Code gleich und mann kann die optionen ändern.
 options:
+    bindung: [klebe,hardcover, fadenheftung, heft]
+    prio:
+    form:
+    datei:
+    format: ["A5", "A4", "22", "23", "24", "Sonder"]
+    umschlag: ["wieReihe", "TeX", "InDesign", "Extern", "Schutzschlag"]
+    druckart:
+    vierfarb:
+    sonder:
+    papier: ["o80", "w90", "km100", "kg120", "wg90"]
+    musterart:
+
+#Symbolnamen, die im Code verwendet werden sollen. 
+names:
     bindung: [klebe,hardcover, fadenheftung, heft]
     prio:
     form:
@@ -10,4 +26,3 @@ options:
     sonder:
     papier: ["o80", "w90", "km100", "kg120", "wg90"]
     musterart:
-
