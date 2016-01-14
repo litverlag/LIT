@@ -16,7 +16,7 @@
 		<li class='user_input' id="lektor_select_box">
 		<%= user_form.label('Zugewiesener Lektor', class: 'label') %>
 		<%= user_form.select( :lektor_id, Lektor.all.collect {|lek| [ lek.name, lek.id ] },
-		{prompt: 'Lektor auswählen'} ) %>
+		{ include_blank: true} ) %>
 		</li>
 	</ul>
 
