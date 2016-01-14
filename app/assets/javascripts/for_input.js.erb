@@ -7,7 +7,44 @@ $(document).on('ready page:load',
         function () {
 
 
-   $( "#name_autocomplete" ).autocomplete({
+          // Ändert den Eintrag in dem titelei_versand_an_zur_ueberpf feld falls focus()
+         $("#gprod_titelei_versand_an_zur_ueberpf").focus(function() {
+           this.value = "";
+         });
+          $("#gprod_titelei_versand_an_zur_ueberpf").focusout(function() {
+            if (this.value == ""){
+              this.value = "<%= I18n.t 'textfield_messages.versand_an' %>";
+            }
+          });
+
+
+
+
+          //Dieses kleine Teil wird benutzt um die Standartfehlernachricht der HTML5-validierung zu ändern
+          function not_a_number() {
+            var textfield = $(this).get(0);
+
+            // 'setCustomValidity not only sets the message, but also marks
+            // the field as invalid. In order to see whether the field really is
+            // invalid, we have to remove the message first
+            textfield.setCustomValidity('');
+
+            if (!textfield.validity.valid) {
+              textfield.setCustomValidity("<%=  I18n.t 'flash_notice.is_not_a_number'%>");
+            }}
+          $('#gprod_gesicherte_abnahme').on('change invalid', not_a_number);
+          $('#gprod_auflage_lektor').on('change invalid', not_a_number);
+          $('#gprod_auflage_chef').on('change invalid', not_a_number);
+
+
+
+//TODO das Datumformat des Datepickers noch ändern
+//         $(".datepicker").change(function (){
+//          alert(this.value);
+//         });
+
+
+          $( "#name_autocomplete" ).autocomplete({
       <% autor_name_list = []%>
        <% Autor.all.each do |autor| %>
            <% autor_name_list.append autor.name %>

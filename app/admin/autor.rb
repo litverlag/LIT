@@ -1,6 +1,7 @@
 ActiveAdmin.register Autor do
   config.filters = false
-  menu
+  menu false
+
   #menu priority:99
 
 

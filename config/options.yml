@@ -2,6 +2,7 @@
 #werden, dann bleiben die Namen im Code gleich und mann kann die optionen ändern.
 
 options:
+#Optionen für die Bucheigenschaften
     bindung: [klebe,hardcover, fadenheftung, heft]
     prio:
     form:
@@ -14,9 +15,10 @@ options:
     papier: ["o80", "w90", "km100", "kg120", "wg90"]
     musterart:
 
-#Symbolnamen, die im Code verwendet werden sollen. 
 
+#Symbolnamen, die im Code verwendet werden sollen.
 names:
+#Optionen für die Bucheigenschaften
     bindung: [klebe,hardcover, fadenheftung, heft]
     prio:
     form:

@@ -1,9 +1,11 @@
 <%
    @relevant_attr = [["Name", @projekt.projektname],
+                     ["Öffentlicher Kommentar", @projekt.kommentar_public],
                      ["Auflage", @projekt.auflage],
                      ["Binderei Eingang", @projekt.binderei_eingang_datum],
                      ["Soll Fertig", @projekt.final_deadline],
                      ["Soll Fertig Binderei", @projekt.binderei_deadline],
+                     ["Private Bemerkungen der Binderei", @projekt.binderei_bemerkungen],
                      ["Prio",@projekt.prio],
                      ["Lektor", @projekt.lektor.name],
                      ["Seiten", @projekt.buch.seiten],
@@ -42,5 +44,3 @@
   </div>
 </div>
 </div>
-
-

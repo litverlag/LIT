@@ -1,6 +1,6 @@
 ActiveAdmin.register Tit do
-  menu label: 'Tit'
-  menu priority: 6
+  menu label: 'Titelei'
+  #menu priority: 6
   config.filters = false
   actions :index, :show, :edit, :update
 
@@ -36,6 +36,7 @@ ActiveAdmin.register Tit do
 
       respond_to do |format|
         format.js{
+          @projekt.update(permitted_params[:gprod])
           if permitted_params[:status]
             @projekt = Gprod.find(params[:id])
             changeStatusByUser(@projekt, @projekt.statustitelei, permitted_params[:status][:statustitelei])

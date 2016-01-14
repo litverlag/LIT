@@ -3,7 +3,7 @@ ActiveAdmin.register Offsch do
   menu priority: 14
   config.filters = false
   actions :index, :show, :edit, :update
-
+  menu false
   controller do
 
     include StatusLogic

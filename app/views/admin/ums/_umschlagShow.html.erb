@@ -1,6 +1,8 @@
 <%
    @relevant_attr = [["Name", @projekt.projektname],
                      ["ISBN", @projekt.buch.isbn],
+                     ["Öffentlicher Kommentar", @projekt.kommentar_public],
+                     ["Private Bemerkungen des Umschlags", @projekt.umschlag_bemerkungen],
                      ["Soll Fertig", @projekt.final_deadline],
                      ["Soll Fertig Umschlag", @projekt.umschlag_deadline],
                      ["Lektor", @projekt.lektor.name],

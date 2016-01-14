@@ -26,6 +26,8 @@ de:
     formats:
       default: "%d/%m/%Y"
 
+  textfield_messages:
+    versand_an: "Falls sie hier nichts ausfüllen wird der Autor eingetragen"
 
 
   buttons:
@@ -44,3 +46,4 @@ de:
 
   flash_notice:
     revised_succes: "Projekt erfolgreich überarbeitet"
+    is_not_a_number: "Bitte tragen Sie eine Zahl ein"

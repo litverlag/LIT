@@ -1,3 +1,4 @@
+
 <%= status_bar(@projekt, @projekt.statusbinderei.status, "Binderei Status") %>
 
 
@@ -10,12 +11,27 @@
           <%= "#{@projekt.projektname}" %>
         </li>
         <li>
-          <%= projekt_form.label :projektname, "Betreuender Lektor" %>
+          <%= projekt_form.label :lektorname, "Betreuender Lektor" %>
           <%= "#{@projekt.lektor.fullname}" %>
         </li>
         <li>
           <%= status_changer("Status der Binderei", "status[statusbinderei]", $BINDEREI_STATUS) %>
         </li>
+        <li>
+          <%= projekt_form.label :binderei_eingang_datum, "Eingangsdatum der Binderei" %>
+          <input class="datepicker" data-date-format="mm/dd/yyyy" name="gprod[binderei_eingang_datum]" value="<%="#{@projekt.binderei_eingang_datum}" %>">
+        </li>
+        <li>
+          <%= projekt_form.label :binderei_bemerkungen, "Private Bemerkungen der Binderei" %>
+         <%= projekt_form.text_area :binderei_bemerkungen, size: "10x10" %>
+        </li>
+        <li>
+          <%= projekt_form.label :binderei_bemerkungen, "Öffentliche Bemerkungen" %>
+         <%= projekt_form.text_area :kommentar_public , size: "10x10"  %>
+        </li>
+
+
+
         <%= projekt_form.submit "#{@projekt.projektname} bearbeiten" %>
     <% end %>
   </ul>

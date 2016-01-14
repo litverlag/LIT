@@ -1,5 +1,7 @@
 <%
    @relevant_attr = [["Name",@projekt.projektname],
+                     ["Öffentlicher Kommentar", @projekt.kommentar_public],
+                     ["Private Bemerkungen der Preps", @projekt.preps_bemerkungen],
    ["ISBN",@projekt.buch.isbn],
    ["Auflage",@projekt.auflage_lektor],
    ["Aufage Chef",@projekt.auflage_chef],

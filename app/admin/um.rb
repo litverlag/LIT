@@ -1,6 +1,6 @@
 ActiveAdmin.register Um do
-  menu label: 'Um'
-  menu priority: 5
+  menu label: 'Umschlag'
+  #menu priority: 5
   config.filters = false
   actions :index, :show, :edit, :update
 
@@ -32,6 +32,7 @@ ActiveAdmin.register Um do
       respond_to do |format|
 
         format.js{
+          @projekt.update(permitted_params[:gprod])
           if permitted_params[:status]
             puts permitted_params[:status][:statusumschlag]
             @projekt = Gprod.find(params[:id])

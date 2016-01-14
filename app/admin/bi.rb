@@ -1,6 +1,6 @@
 ActiveAdmin.register Bi do
-  menu label: 'Bi'
-  menu priority: 15
+  menu label: 'Binderei'
+  #menu priority: 15
   config.filters = false
   actions :index, :show, :edit, :update
 
@@ -19,6 +19,8 @@ ActiveAdmin.register Bi do
 
     def edit
       @projekt = Gprod.find(permitted_params[:id])
+
+
     end
 
     def update
@@ -28,6 +30,7 @@ ActiveAdmin.register Bi do
       respond_to do |format|
         format.js{
 
+          @projekt.update permitted_params[:gprod]
 
           if permitted_params[:status]
             puts permitted_params[:status][:statusbinderei]

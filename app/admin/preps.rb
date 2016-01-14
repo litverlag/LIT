@@ -36,7 +36,7 @@ ActiveAdmin.register Preps do
 
       respond_to do |format|
         format.js{
-
+          @projekt.update(permitted_params[:gprod])
           if permitted_params[:status]
             @projekt = Gprod.find(params[:id])
             changeStatusByUser(@projekt, @projekt.statuspreps, permitted_params[:status][:statuspreps])

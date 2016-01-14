@@ -16,10 +16,43 @@
             <li>
               <%= status_changer("Status der Titelei", "status[statustitelei]", $TITELEI_STATUS) %>
             </li>
+            <li>
+              <%= projekt_form.label :titelei_bemerkungen, "Private Bemerkungen der Titelei" %>
+              <%= projekt_form.text_area :titelei_bemerkungen, size: "10x10" %>
+            </li>
+            <li>
+              <%= projekt_form.label :binderei_bemerkungen, "Öffentliche Bemerkungen" %>
+              <%= projekt_form.text_area :kommentar_public , size: "10x10"  %>
+            </li>
+            <li>
+              <%= projekt_form.label :titelei_zusaetze, "Titelei Zusätze" %>
+              <%= projekt_form.text_field :titelei_zusaetze  %>
+            </li>
+            <li>
+              <%= projekt_form.label :titelei_letzte_korrektur, "titelei_letzte_korrektur" %>
+              <input class="datepicker" data-date-format="mm/dd/yyyy" name="gprod[titelei_letzte_korrektur]" value="<%="#{@projekt.titelei_letzte_korrektur}" %>">
+            </li>
+            <li>
+              <%= projekt_form.label :titelei_versand_datum_fuer_ueberpr, "Zur Überprüfung am" %>
+              <input class="datepicker" data-date-format="mm/dd/yyyy" name="gprod[titelei_versand_datum_fuer_ueberpr]" value="<%="#{@projekt.titelei_versand_datum_fuer_ueberpr}" %>">
+            </li>
+            <li>
+              <%= projekt_form.label :titelei_versand_an_zur_ueberpf, "Zur Überprüfung an" %>
+              <%= projekt_form.text_field :titelei_versand_an_zur_ueberpf, value: (I18n.t 'textfield_messages.versand_an').to_s %>
+            </li>
+            <li>
+              <%= projekt_form.label :titelei_korrektur_date, "titelei_korrektur_date" %>
+              <input class="datepicker" data-date-format="mm/dd/yyyy" name="gprod[titelei_korrektur_date]" value="<%="#{@projekt.titelei_korrektur_date}" %>">
+            </li>
+            <li>
+              <%= projekt_form.label :titelei_freigabe_date, "Finale Deadline für das gesamte Projekt" %>
+              <input class="datepicker" data-date-format="mm/dd/yyyy" name="gprod[final_deadline]" value="<%="#{@projekt.titelei_freigabe_date}" %>">
+            </li>
             <%= projekt_form.submit "#{@projekt.projektname} bearbeiten" %>
         <% end %>
       </ul>
     </fieldset>
+
 
 
 

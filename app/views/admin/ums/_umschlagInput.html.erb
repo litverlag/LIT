@@ -16,6 +16,14 @@
         <li>
           <%= status_changer("Status des Umschlags", "status[statusumschlag]", $UMSCHL_STATUS) %>
         </li>
+        <li>
+          <%= projekt_form.label :umschlag_bemerkungen, "Private Bemerkungen des Umschlags" %>
+          <%= projekt_form.text_area  :umschlag_bemerkungen, size: "10x10" %>
+        </li>
+        <li>
+          <%= projekt_form.label :binderei_bemerkungen, "Öffentliche Bemerkungen" %>
+          <%= projekt_form.text_area :kommentar_public , size: "10x10"  %>
+        </li>
         <%= projekt_form.submit "#{@projekt.projektname} bearbeiten" %>
     <% end %>
   </ul>
