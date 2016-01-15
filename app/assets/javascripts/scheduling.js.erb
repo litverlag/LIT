@@ -10,12 +10,13 @@ function scheduler(){
 
 
         var final_date = moment(this.value).format("DD.MM.YYYY");
-        var preps_date = moment(this.value).subtract(5,'days').format("DD.MM.YYYY");
-        var binderei_date = moment(this.value).subtract(6,'days').format("DD.MM.YYYY");
-        var titelei_date = moment(this.value).subtract(7,'days').format("DD.MM.YYYY");
-        var umschlag_date = moment(this.value).subtract(7,'days').format("DD.MM.YYYY");
 
-        final_date_field.val(final_date);
+        var titelei_date = moment(this.value).subtract(parseInt(<%= ChoosableOption.instance.fristen :titelei %>),'days').format("DD.MM.YYYY");
+        var umschlag_date = moment(this.value).subtract(parseInt(<%= ChoosableOption.instance.fristen :umschlag %>),'days').format("DD.MM.YYYY");
+        var preps_date = moment(this.value).subtract(parseInt(<%= ChoosableOption.instance.fristen :preps %>),'days').format("DD.MM.YYYY");
+        var binderei_date = moment(this.value).subtract(parseInt(<%= ChoosableOption.instance.fristen :binderei %>),'days').format("DD.MM.YYYY");
+
+
         preps_date_field.val(preps_date);
         binderei_date_field.val(binderei_date);
         titelei_date_field.val(titelei_date);

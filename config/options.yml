@@ -14,7 +14,8 @@ options:
     sonder:
     papier: ["o80", "w90", "km100", "kg120", "wg90"]
     musterart:
-
+    #Automische fristen ausgehen von Finaler Frist
+    fristen: [5,6,7,8]
 
 #Symbolnamen, die im Code verwendet werden sollen.
 names:
@@ -30,3 +31,5 @@ names:
     sonder:
     papier: ["o80", "w90", "km100", "kg120", "wg90"]
     musterart:
+    #Automische fristen ausgehen von Finaler Frist
+    fristen: [titelei,preps,umschlag,binderei]

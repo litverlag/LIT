@@ -39,10 +39,11 @@ $(document).on('ready page:load',
 
 
 
-//TODO das Datumformat des Datepickers noch ändern
-//         $(".datepicker").change(function (){
-//          alert(this.value);
-//         });
+//Das Datumformat des Datepickers ändern
+        $(".datepicker").change(function (){
+            this.value = moment(this.value).format("DD.MM.YYYY");
+
+        });
 
 
           $( "#name_autocomplete" ).autocomplete({
