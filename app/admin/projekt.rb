@@ -45,7 +45,19 @@ ActiveAdmin.register Projekt do
 
     def edit
       puts "____________________________EDIT___PROJEKT________________________"
-      @projekt = current_admin_user.lektor.gprod.find(params[:id])
+
+      #Find the new projekt associated with the current Lektor or if superadmin you can access all projects
+      departName = []
+      current_admin_user.departments.to_a.each do |a|
+        departName.append a.name
+      end
+      if departName.include? "Superadmin"
+        @projekt = Gprod.find(params[:id])
+      elsif !current_admin_user.lektor.nil?
+        @projekt = current_admin_user.lektor.gprod.find(params[:id])
+      end
+
+
       #This methods are used to check if the Author can actually release project for the departments
 
       @array_of_format_bezeichungen = ChoosableOption.instance.format :all
@@ -89,8 +101,18 @@ ActiveAdmin.register Projekt do
        respond_to do |format|
          format.html
          format.js {
-           #Find the new projekt associated with the current Lektor
-           @projekt = current_admin_user.lektor.gprod.find(params[:id])
+           #Find the new projekt associated with the current Lektor or if superadmin you can access all projects
+           departName = []
+           current_admin_user.departments.to_a.each do |a|
+             departName.append a.name
+           end
+           if departName.include? "Superadmin"
+             @projekt = Gprod.find(params[:id])
+           elsif !current_admin_user.lektor.nil?
+             @projekt = current_admin_user.lektor.gprod.find(params[:id])
+           end
+
+
            if permitted_params[:gprod] then updateProc.call(@projekt,permitted_params[:gprod]) end
            if permitted_params[:buch] then updateProc.call(@projekt.buch,permitted_params[:buch]) end
 
@@ -109,7 +131,6 @@ ActiveAdmin.register Projekt do
            if permitted_params[:commit].eql?(@button_text_asso)
              if not Autor.associate_with(@projekt,permitted_params[:autor])
                @js_action = "autor_add"
-               render "_projectShow.js.erb"
              end
 
            end
@@ -117,13 +138,12 @@ ActiveAdmin.register Projekt do
              @projekt.autor = Autor.create(permitted_params[:autor])
              @projekt.save
              @js_action = "autor_new"
-             render "_projectShow.js.erb"
 
            end
            if permitted_params[:commit].eql?( @button_text_edit)
              updateProc.call(@projekt.autor,permitted_params[:autor])
              @js_action = "autor_new"
-             render "_projectShow.js.erb"
+
 
            end
 
