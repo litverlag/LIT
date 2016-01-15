@@ -45,7 +45,6 @@ ActiveAdmin.register Projekt do
 
     def edit
       puts "____________________________EDIT___PROJEKT________________________"
-
       #Find the new projekt associated with the current Lektor or if superadmin you can access all projects
       departName = []
       current_admin_user.departments.to_a.each do |a|
@@ -158,7 +157,16 @@ ActiveAdmin.register Projekt do
 
 
      def destroy
-       @projekt = current_admin_user.lektor.gprod.find(params[:id])
+       #Find the new projekt associated with the current Lektor or if superadmin you can access all projects
+       departName = []
+       current_admin_user.departments.to_a.each do |a|
+         departName.append a.name
+       end
+       if departName.include? "Superadmin"
+         @projekt = Gprod.find(params[:id])
+       elsif !current_admin_user.lektor.nil?
+         @projekt = current_admin_user.lektor.gprod.find(params[:id])
+       end
        @projekt.buch.destroy
        @projekt.destroy
        redirect_to collection_path, notice: "Projekt erfolgreich gelöscht"
