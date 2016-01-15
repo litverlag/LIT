@@ -15,37 +15,38 @@ class Ability
     #TODO Rechte für alle Benutzergruppen eintragen
     if @departName.include?'Superadmin'
       can :manage, :all
+    else
+      can [:read, :update], AdminUser.find(user.id)
     end
     if @departName.include?'Umschlag'
-      can :manage, :all
+      can [:read, :update], Um
     end
     if @departName.include?'Satz'
-      can :manage, :all
+      can [:read, :update], SReif
     end
     if @departName.include?'Titelei'
-      can :manage, :all
+      can [:read, :update], Tit
     end
     if @departName.include?'PrePs'
-      can :manage, :all
+      can [:read, :update], Preps
     end
     if @departName.include?'Rechnung'
-      can :manage, :all
+      # can :manage, :all
     end
     if @departName.include?'Bildprüfung'
-      can :manage, :all
+      # can :manage, :all
     end
     if @departName.include?'Lektor'
-      can :manage, Projekt
+      can :crud, Projekt
     end
     if @departName.include?'Pod'
-      can :manage, :all
+      can [:read, :update], :Druck
     end
     if @departName.include?'Binderei'
-      can :manage, :all
+      can [:read, :update], :Bi
     end
 
-
-    can :manage, :all #TODO remove this can :manage :all
+   # can :manage, :all #TODO remove this can :manage :all
     can :read, ActiveAdmin::Page, :name => "Dashboard"
     can :read, ActiveAdmin::Page, :name => "Access_denied"
 
