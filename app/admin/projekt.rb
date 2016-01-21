@@ -4,14 +4,12 @@ ActiveAdmin.register Projekt do
   config.filters = false
    controller do
 
-    include StatusLogic
+    include StatusLogic, PrintReport
 
     ##
     # It would be great if this class could be in a helper modulde, but it's not that easy beacause of ActiveAdmin
     # This method is used to replace the string coming from the HTML form ()permitted_params["format"]) by an instance of the right
     # format class so that an association can be done with the klass.update method. Same procedure with papier and umschlag
-
-
 
 
     def scoped_collection
@@ -164,18 +162,31 @@ ActiveAdmin.register Projekt do
        redirect_to collection_path, notice: "Projekt erfolgreich gelöscht"
      end
 
+
+    ##
+    # Match download link with corresponding method which generates the output
+    def index
+      super do |format|#index!, html
+        format.odt {print_projekt}
+      end
+    end
+
    end
 
 
-   index do
+   index download_links: [:odt] do
      #render partial: 'projectindex'
      column('Status') {|projekt| status_tag(projekt.statusfinal.status)}
      column :projektname
      column  "Emailadresse des Projektes", :projekt_email_adresse
 
-
      actions
    end
+
+
+
+
+
 
   show do
     render partial: "projectShow"
