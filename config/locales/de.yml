@@ -47,3 +47,20 @@ de:
   flash_notice:
     revised_succes: "Projekt erfolgreich überarbeitet"
     is_not_a_number: "Bitte tragen Sie eine Zahl ein"
+
+  field_names:
+    projectname: "Projektname"
+    lektor: "Betreuender Lektor"
+    umschlag_note: "Private Bemerkungen des Umschlags"
+    public_note: "Öffentliche Bemerkungen"
+    isbn: "ISBN"
+    deadline_final: "Finale Deadline für das gesamte Projekt"
+    deadline_umschlag: "Sollf Umschlag"
+    status_umschlag: "Status des Umschlags"
+    umschlag_type: "Umschlag"
+    format_type: "Format"
+    ruecken: "Rückenstärke"
+    number_pages: "Seiten"
+    bindung_type: "Bindung"
+    umschlag_bild : "Umschlag Bild"
+    klappentext: "Klappentext"

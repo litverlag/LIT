@@ -3,7 +3,7 @@ ActiveAdmin.register SReif do
   menu priority: 4
   config.filters = false
   actions :index, :show, :edit, :update
-  menu false
+  menu
   controller do
 
     include StatusLogic
