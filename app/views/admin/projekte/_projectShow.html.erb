@@ -1,6 +1,6 @@
 
-<%  @relevant_attr = @projekt.attributes.to_h.slice(*["projektname"])  %>
-
+<%  @relevant_attr = @projekt.attributes.to_h  %>
+<!--.slice(*["projektname"])-->
 
 <%= status_bar(@projekt, @projekt.statusfinal.status ," Finaler Status") %>
 <%= status_bar(@projekt, @projekt.statusumschl.status ," Umschlag Status") %>

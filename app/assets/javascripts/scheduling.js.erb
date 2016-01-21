@@ -1,0 +1,27 @@
+function scheduler(){
+
+    var final_date_field = $("#final_deadline");
+    var preps_date_field = $("#preps_deadline");
+    var binderei_date_field = $("#binderei_deadline");
+    var titelei_date_field = $("#titelei_deadline");
+    var umschlag_date_field = $("#umschlag_deadline");
+
+    final_date_field.change(function() {
+
+
+        var final_date = moment(this.value).format("DD.MM.YYYY");
+        var preps_date = moment(this.value).subtract(5,'days').format("DD.MM.YYYY");
+        var binderei_date = moment(this.value).subtract(6,'days').format("DD.MM.YYYY");
+        var titelei_date = moment(this.value).subtract(7,'days').format("DD.MM.YYYY");
+        var umschlag_date = moment(this.value).subtract(7,'days').format("DD.MM.YYYY");
+
+        final_date_field.val(final_date);
+        preps_date_field.val(preps_date);
+        binderei_date_field.val(binderei_date);
+        titelei_date_field.val(titelei_date);
+        umschlag_date_field.val(umschlag_date);
+
+
+
+    });
+}
