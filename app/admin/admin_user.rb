@@ -103,8 +103,8 @@
       panel "Berechtigungen" do 
         #render("/admin/admin_users/adminuserInput.html.erb")
         render partial: 'adminuserInput'
+        f.actions
       end
-      f.actions
       end
     end
 

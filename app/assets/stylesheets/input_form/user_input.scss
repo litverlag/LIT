@@ -15,7 +15,23 @@ ul li.user_input {
 	}
 }
 
+form.admin_user {
 
-form #admin_user_submit_action input[type="submit"] {
-  margin-top: 0px;
+	div.panel {
+		margin-bottom: 0px;
+	}
+
+	fieldset.inputs {
+		padding: 0px;
+	}
+
+	fieldset.actions {
+		box-shadow: none;
+		margin-top: 10px;
+		margin-bottom: 0px;
+
+		input[type=submit] {
+			margin-top: 0px;
+		}
+	}
 }
