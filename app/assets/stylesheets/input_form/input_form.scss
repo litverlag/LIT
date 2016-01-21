@@ -1,10 +1,10 @@
 fieldset {
-  border: 0px none;
-  padding: 10px 0px;
+  border: 0 none;
+  padding: 10px 0;
   margin-bottom: 20px;
-  background: #F4F4F4 none repeat scroll 0% 0%;
+  background: #F4F4F4 none repeat scroll 0 0;
   border-radius: 4px;
-  box-shadow: 0px 1px 4px #DDD inset;
+  box-shadow: 0 1px 4px #DDD inset;
   font-size: 0.95em;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 1em;
@@ -19,14 +19,14 @@ fieldset {
   }
 
   form {
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
   }
 
   legend{
     width: 100%;
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
 
     span {
       display: block;
@@ -120,7 +120,7 @@ form input[type="checkbox"] {
   width: 300px;
   border: solid 1px;
   list-style:none;
-  padding-left: 0px;
+  padding-left: 0;
 }
 
 .ui-menu-item{
@@ -136,4 +136,19 @@ form input[type="checkbox"] {
   padding-bottom: 5px;
   border-bottom: 1px solid #E8E8E8;
 
+  .freigabe_titelei{
+    display: inline;
+  }
+
+  .freigabe_final{
+    display: inline;
+  }
+  .freigabe_umschlag{
+    display: inline;
+  }
+  .freigabe_preps{
+    display: inline;
+  }
+
 }
+

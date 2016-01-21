@@ -12,35 +12,35 @@ ActiveAdmin.register Bi do
       params.permit!
     end
 
-
     def show
       puts "______________BINDEREI______SHOW___________________-"
       @projekt = Gprod.find(permitted_params[:id])
     end
 
-
-
-
-
     def edit
-
       @projekt = Gprod.find(permitted_params[:id])
-
-
     end
 
     def update
       puts "______________BINDEREI______UPDATE___________________-"
       @projekt = Gprod.find(permitted_params[:id])
 
-      if permitted_params[:status]
-        puts permitted_params[:status][:statustitelei]
-        @projekt = Gprod.find(params[:id])
-        changeStatusByUser(@projekt, @projekt.statustitelei, permitted_params[:status][:statustitelei])
-        @projekt.save
+      respond_to do |format|
+        format.js{
+
+
+          if permitted_params[:status]
+            puts permitted_params[:status][:statusbinderei]
+            @projekt = Gprod.find(params[:id])
+            changeStatusByUser(@projekt, @projekt.statusbinderei, permitted_params[:status][:statusbinderei])
+          end
+          render '_bindereiShow.js'
+
+        }
+
       end
 
-      redirect_to collection_path
+
 
     end
 

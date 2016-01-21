@@ -5,16 +5,16 @@
     <%= form_for @projekt, url: used_url, remote: true do |projekt_form| %>
         <%= fields_for :buch, @projekt.buch do |buch_fields| %>
             <li>
-              <%= buch_fields.label :name, "Format"%>
-              <%= select_tag("buch[format_bezeichnung]", options_for_select(@array_of_format_bezeichungen)) %>
+              <%= buch_fields.label :_format_bezeichnung, "Format"%>
+              <%= select_tag("buch[format_bezeichnung]", options_for_select(@array_of_format_bezeichungen,selected: @projekt.buch.format_bezeichnung),include_blank: true ) %>
             </li>
             <li>
-              <%= buch_fields.label :name, "Papier"%>
-              <%= select_tag("buch[papier_bezeichnung]", options_for_select(@array_of_papier_bezeichungen)) %>
+              <%= buch_fields.label :_papier_bezeichnung, "Papier"%>
+              <%= select_tag "buch[papier_bezeichnung]", options_for_select(@array_of_papier_bezeichungen, selected: @projekt.buch.papier_bezeichnung), include_blank: true %>
             </li>
             <li>
-              <%= buch_fields.label :name, "Umschlag"%>
-              <%= select_tag("buch[umschlag_bezeichnung]", options_for_select(@array_of_umschlag_bezeichnungen)) %>
+              <%= buch_fields.label :_umschlag_bezeichnung, "Umschlag"%>
+              <%= select_tag("buch[umschlag_bezeichnung]", options_for_select(@array_of_umschlag_bezeichnungen,selected: @projekt.buch.umschlag_bezeichnung), include_blank: true ) %>
             </li>
             <li>
               <%= buch_fields.label :name, "Name"%>

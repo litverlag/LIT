@@ -48,14 +48,14 @@ ActiveAdmin.register Projekt do
       @projekt = current_admin_user.lektor.gprod.find(params[:id])
       #This methods are used to check if the Author can actually release project for the departments
 
-      @array_of_format_bezeichungen = ChoosableValue.formate
-      @array_of_umschlag_bezeichnungen =ChoosableValue.umschlaege
-      @array_of_papier_bezeichungen = ChoosableValue.papiere
+      @array_of_format_bezeichungen = ChoosableOption.instance.format :all
+      @array_of_umschlag_bezeichnungen = ChoosableOption.instance.umschlag :all
+      @array_of_papier_bezeichungen = ChoosableOption.instance.papier :all
 
 
-      @button_text_add = "Neuen Autor erstellen"
-      @button_text_asso = "Autor hinzufügen"
-      @button_text_edit = "Autor bearbeiten"
+      @button_text_add = I18n.t 'buttons.author_new'
+      @button_text_asso = I18n.t 'buttons.author_asso'
+      @button_text_edit =  I18n.t 'buttons.author_edit'
 
       respond_to do |format|
         format.html
@@ -71,7 +71,7 @@ ActiveAdmin.register Projekt do
 
      def update
 
-       puts "____________________________UPDATE___________________________"
+       puts "____________________________UPDATE____PROJEKTE_______________________"
        #Proc for the updating if there is already an Author
            updateProc = Proc.new{|modelinstance ,data|
              js_action = "project_changed"
@@ -81,9 +81,9 @@ ActiveAdmin.register Projekt do
                end
              end}
        # TO BE INTERNATIONALIZED this strings are temporary for the names of the buttons
-       @button_text_add = "Neuen Autor erstellen"
-       @button_text_asso = "Autor hinzufügen"
-       @button_text_edit = "Autor bearbeiten"
+       @button_text_add = I18n.t 'buttons.author_new'
+       @button_text_asso = I18n.t 'buttons.author_asso'
+       @button_text_edit =  I18n.t 'buttons.author_edit'
 
 
        respond_to do |format|
@@ -101,7 +101,6 @@ ActiveAdmin.register Projekt do
              changeStatusByUser(@projekt,@projekt.statusumschl, permitted_params[:status][:freigabe_umschlag])
              changeStatusByUser(@projekt,@projekt.statuspreps, permitted_params[:status][:freigabe_preps])
              changeStatusByUser(@projekt,@projekt.statustitelei, permitted_params[:status][:freigabe_titelei])
-             puts permitted_params[:status]
            end
 
 
@@ -112,28 +111,27 @@ ActiveAdmin.register Projekt do
                @js_action = "autor_add"
                render "_projectShow.js.erb"
              end
-             return
+
            end
            if permitted_params[:commit].eql?(@button_text_add)
              @projekt.autor = Autor.create(permitted_params[:autor])
              @projekt.save
              @js_action = "autor_new"
              render "_projectShow.js.erb"
-             return
+
            end
            if permitted_params[:commit].eql?( @button_text_edit)
              updateProc.call(@projekt.autor,permitted_params[:autor])
              @js_action = "autor_new"
              render "_projectShow.js.erb"
-             return
-           end
 
+           end
 
            render "_projectShow.js.erb"
          }
        end
 
-       redirect_to collection_path, notice: "Projekt erfolgreich bearbeitet"
+      # redirect_to collection_path, notice: "Projekt erfolgreich bearbeitet"
 
      end
 
@@ -151,7 +149,7 @@ ActiveAdmin.register Projekt do
 
    index do
      #render partial: 'projectindex'
-     column('Status') {|projekt| projekt.statusfinal.status}
+     column('Status') {|projekt| status_tag(projekt.statusfinal.status)}
      column :projektname
      column  "Emailadresse des Projektes", :projekt_email_adresse
 
