@@ -70,14 +70,7 @@ $(document).on('ready page:load',
         "#admin_user_department_ids_4, #admin_user_department_ids_5, #admin_user_department_ids_6, " +
         "#admin_user_department_ids_7, #admin_user_department_ids_8, "+
         "#admin_user_department_ids_9").change(check_box_dep);
-
-    // clear password-fields on update admin_user
-    $("form.admin_user").submit(function() {
-        if( !$("#admin_user_password_confirmation").val() ) {
-            $("#admin_user_password").val("");
-        }
-    });
-    }
+            
 
 );
 

@@ -102,10 +102,23 @@
         f.input :password, label: "Passwort"
         f.input :password_confirmation, label: "Passwort bestätigen"
 
-      panel "Berechtigungen" do 
-        render partial: 'adminuserInput'
+        ##
+        # check if user is adminuser
+        departName = []
+        current_admin_user.departments.to_a.each do |a|
+          departName.append a.name
+        end
+
+        puts "_____________________--DepartName--________________-_____"
+        puts departName
+
+        if departName.include? "Superadmin"
+          panel "Berechtigungen" do
+            render partial: 'adminuserInput'
+          end
+        end
+
         f.actions
-      end
       end
     end
 
