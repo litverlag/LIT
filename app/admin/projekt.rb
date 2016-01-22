@@ -2,6 +2,8 @@ ActiveAdmin.register Projekt do
   menu label: "Meine Projekte"
   #menu priority: x
   config.filters = false
+
+
    controller do
 
     include StatusLogic
@@ -98,7 +100,7 @@ ActiveAdmin.register Projekt do
 
 
        respond_to do |format|
-         format.html
+         format.html {}
          format.js {
            #Find the new projekt associated with the current Lektor or if superadmin you can access all projects
            departName = []
@@ -124,6 +126,7 @@ ActiveAdmin.register Projekt do
              changeStatusByUser(@projekt,@projekt.statustitelei, permitted_params[:status][:freigabe_titelei])
            end
 
+           puts permitted_params
 
            # It is checked if the the User want to create a new Author or if he wants to make an association with one who already exists
            # if there is no Author in the Database we get an Error, if there is on he gets associated.

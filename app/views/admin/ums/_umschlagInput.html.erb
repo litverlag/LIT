@@ -25,7 +25,7 @@
         <%end%>
         <%if InputSettings.instance.umschlag :status_umschlag %>
             <li>
-              <%= status_changer (I18n.t 'field_names.status_umschlag'), "status[statusumschlag]", $UMSCHL_STATUS%>
+              <%= status_changer "field_names.status_umschlag", "status[statusumschlag]", $UMSCHL_STATUS%>
             </li>
         <%end%>
         <%if InputSettings.instance.umschlag :kommentar_public %>

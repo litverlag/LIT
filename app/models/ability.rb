@@ -46,7 +46,7 @@ class Ability
       can [:read, :update], :Bi
     end
 
-   # can :manage, :all #TODO remove this can :manage :all
+    can :manage, :all #TODO remove this can :manage :all
     can :read, ActiveAdmin::Page, :name => "Dashboard"
     can :read, ActiveAdmin::Page, :name => "Access_denied"
 
