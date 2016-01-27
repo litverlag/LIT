@@ -165,9 +165,10 @@ ActiveAdmin.register Projekt do
 
     ##
     # Match download link with corresponding method which generates the output
+    # in this case we use print_report for the .odt output
     def index
       super do |format|#index!, html
-        format.odt {print_projekt}
+        format.odt {print_report("projekt_report", method(:projekt))}
       end
     end
 
