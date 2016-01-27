@@ -27,6 +27,8 @@ module Prod
 
     #Load models from subdirectories
     config.autoload_paths += Dir[Rails.root.join('app', 'models', '{**}')]
+    config.autoload_paths += Dir[ Rails.root.join('config', 'concerns', '**/') ]
+
 
      #BY Rouven Glauert worked at LIT rouvenglauert@gmail.com
      #set the default locale to german

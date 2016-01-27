@@ -1,83 +1,25 @@
+require 'singleton'
+
 class InputSettings
   include Singleton
 
-  ##
-  # Contains all possible options and gets filled once when initializing the server
-  ALL_OPTIONS = {}
+ PROVIDER = SettingsProvider.new("config/import_settings.yml",['gprods','buecher'])
 
 
-  def make_options_hash(options,names)
-    unless options.nil?
-      t_array1 = []
-      i = 0
-      if names.nil?
-        options.each do |value|
-          t_array1.push([value.to_sym,value])
-        end
-      else
-        if not names.length == options.length
-          raise ArgumentError, "The array for the names has to have the same length as the one for the options. see options.yml"
-        end
-        options.each do |value|
-          t_array1.push([names[i].to_sym,value])
-          i = i + 1
-        end
-      end
-
-      t_array1.to_h
+  def is_visible?(department, field)
+    if department.is_a? Symbol
+      department = department.to_s
     end
-  end
-
-  ##
-  # This method imports the data from an external file it is called once at the initialization of the server
-  #
-  def import
-    yam = YAML.load_file(Rails.root.join('config/import_settings.yml'))
-    puts yam
-    yam["names"].each do |name_of_option|
-      yam["options"].each do |type_of_option|
-        if name_of_option.first == type_of_option.first
-          if !name_of_option.second.nil?
-
-            ALL_OPTIONS[type_of_option.first] = make_options_hash(type_of_option.second,name_of_option.second)
-          end
-
-          if name_of_option.second.nil?
-            ALL_OPTIONS[type_of_option.first] = make_options_hash(type_of_option.second,nil)
-          end
-        end
-      end
-    end
-    puts "_________________"
-    puts ALL_OPTIONS
+    PROVIDER.get_all_options[department][field]
   end
 
 
-
-  ##
-  # This method takes the type of options like "format" and a symbol like :a4 to return the corresponding value
-  # if you take :all as the symbol argument you get an array of all possible options for this type
-  #
-  #
-  def get_option(type_of_option, symbol)
-    options = ALL_OPTIONS[type_of_option]
-    options[symbol]
-
+  def which_type(field)
+    PROVIDER.names_and_types[field]
   end
 
-  ##
-  # Method the acces the format options
-  if ALL_OPTIONS.empty?
-    InputSettings.instance.import
+  def all
+    PROVIDER.all_coloum_names
   end
-
-
-  ALL_OPTIONS.each do |key,value|
-    define_method key do |symbol|
-      get_option(key,symbol)
-    end
-  end
-
-
-
 end
+
