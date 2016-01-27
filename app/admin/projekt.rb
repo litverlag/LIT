@@ -46,17 +46,7 @@ ActiveAdmin.register Projekt do
     def edit
       puts "____________________________EDIT___PROJEKT________________________"
       #Find the new projekt associated with the current Lektor or if superadmin you can access all projects
-      departName = []
-      current_admin_user.departments.to_a.each do |a|
-        departName.append a.name
-      end
-      if departName.include? "Superadmin"
-        @projekt = Gprod.find(params[:id])
-      elsif !current_admin_user.lektor.nil?
-        @projekt = current_admin_user.lektor.gprod.find(params[:id])
-      end
-
-
+      @projekt = Projekt.find_projekt_by_id(permitted_params[:id],current_admin_user)
       #This methods are used to check if the Author can actually release project for the departments
 
       @array_of_format_bezeichungen = ChoosableOption.instance.format :all
@@ -67,6 +57,7 @@ ActiveAdmin.register Projekt do
       @button_text_add = I18n.t 'buttons.author_new'
       @button_text_asso = I18n.t 'buttons.author_asso'
       @button_text_edit =  I18n.t 'buttons.author_edit'
+
 
       respond_to do |format|
         format.html
@@ -100,16 +91,7 @@ ActiveAdmin.register Projekt do
        respond_to do |format|
          format.html
          format.js {
-           #Find the new projekt associated with the current Lektor or if superadmin you can access all projects
-           departName = []
-           current_admin_user.departments.to_a.each do |a|
-             departName.append a.name
-           end
-           if departName.include? "Superadmin"
-             @projekt = Gprod.find(params[:id])
-           elsif !current_admin_user.lektor.nil?
-             @projekt = current_admin_user.lektor.gprod.find(params[:id])
-           end
+           @projekt = Projekt.find_projekt_by_id(permitted_params[:id],current_admin_user)
 
 
            if permitted_params[:gprod] then updateProc.call(@projekt,permitted_params[:gprod]) end
@@ -158,15 +140,7 @@ ActiveAdmin.register Projekt do
 
      def destroy
        #Find the new projekt associated with the current Lektor or if superadmin you can access all projects
-       departName = []
-       current_admin_user.departments.to_a.each do |a|
-         departName.append a.name
-       end
-       if departName.include? "Superadmin"
-         @projekt = Gprod.find(params[:id])
-       elsif !current_admin_user.lektor.nil?
-         @projekt = current_admin_user.lektor.gprod.find(params[:id])
-       end
+       @projekt = Projekt.find_projekt_by_id(permitted_params[:id],current_admin_user)
        @projekt.buch.destroy
        @projekt.destroy
        redirect_to collection_path, notice: "Projekt erfolgreich gelöscht"
