@@ -1,51 +1,49 @@
-<%= status_bar(@projekt, @projekt.statuspreps.status, "Preps Status") %>
+<%= status_bar(@projekt, @projekt.statusbinderei.status, "Binderei Status") %>
+					<%-# I don't know how to handle this one and how to get the @department - where is @projekt defined and where does it come from?
+					%>
 
+<% used_url = admin_bi_path(@projekt.id)%>
 
-<% used_url = admin_preps_path(@projekt.id)%>
-<fieldset class="projekt"><legend><span><%= "#{@projekt.projektname} bearbeiten"%></span></legend>
-  <ul>
-    <%= form_for @projekt, url: used_url, remote: true do |projekt_form| %>
-        <li>
-          <%= projekt_form.label :projektname, "Projektname" %>
-          <%= "#{@projekt.projektname}" %>
-        </li>
-        <li>
-          <%= projekt_form.label :lektor_name, "Betreuender Lektor" %>
-          <%= "#{@projekt.lektor.fullname}" %>
-        </li>
-        <li>
-          <%= status_changer("Status der Preps", "status[statuspreps]", $PREPS_STATUS) %>
-        </li>
-        <%= projekt_form.submit "#{@projekt.projektname} bearbeiten" %>
-    <% end %>
-  </ul>
-</fieldset>
+<%@fields_for_autor = [:name,:vorname,:anrede,:email,:str,:ort,:plz,:tel,:fax,:institut,:demail,:dstr,:dort,:dplz,:dtel,:dfax]  %>
 
-
+<%@attributes = InputSettings.instance.all()%>
 
 <div class="panel">
-  <h3><%= @projekt.projektname %> </h3>
-  <div class="attributes_table projekt" id="<%= "attributes_table_projekt_#{@projekt.id}" %>">
-    <table border="0" cellpadding="0" cellspacing="0">
-      <tbody>
-      <% @relevant_attr.each do |name, value| %>
-          <% if value.nil?%>
-              <tr>
-                <th><%= name %></th>
-                <td> <span class="empty"><%= I18n.t 'empty' %></span></td>
-              </tr>
-          <% else%>
-              <tr>
-                <th><%= name %></th>
-                <td><%= value %></td>
-              </tr>
-          <%end %>
-      <%end%>
+<h3><%= @projekt.projektname %> </h3>
+<fieldset class="projekt"><legend><span><%= "#{@projekt.projektname} bearbeiten"%></span></legend>
+    <ul>
+        <% @attributes.each_pair do |field| %>
+          <% if InputSettings.instance.isVisible?(@department, field)%>
+            <% @fieldType = InputSettings.instance.whichType?(field)%>
+            <% case @fieldType%>
+          	<% when "TextField"%>
+            	<li>
+            	  <%= projeckt_form.label field, ""+field%>
+              	  <%= projeckt_form.text_field field %>
+            	</li>
+          	<% when "TextArea"%>
+             	<li>
+            	  <%= projeckt_form.label field, ""+field%>
+              	  <%= projeckt_form.text_area field, "10x10" %>
+            	</li>
+            <% when "Date"%>
+            	<li>
+            	  <%= projeckt_form.label field, ""+field%>
+              	  <%#date management %>
+              	  %>
+            	</li>
+            <% else %>
+            	<li>
+            	  <%= projeckt_form.label field, ""+field%>
+              	  <%= #hardcoding for the choosable options - we need an if for each hardcoding case (so maybe another switch case inside the switch case?) %>
+              	  %>
+            	</li>
+            <%end%>
+          <%end%>
+        <%end%>
+	</ul>
+</fieldset>m
 
-      </tbody></table>
-  </div>
-</div>
-</div>
 
 
 
