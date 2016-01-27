@@ -1,193 +1,122 @@
 /**
- * Created by rouven on 13.11.15.
+ All functions relevant for the input Views
  */
 
 
-$(document).on('ready page:load',
-        function () {
-
-            scheduler();
-
-          // Ändert den Eintrag in dem titelei_versand_an_zur_ueberpf feld falls focus()
-         $("#gprod_titelei_versand_an_zur_ueberpf").focus(function() {
-           this.value = "";
-         });
-          $("#gprod_titelei_versand_an_zur_ueberpf").focusout(function() {
-            if (this.value == ""){
-              this.value = "<%= I18n.t 'textfield_messages.versand_an' %>";
-            }
-          });
+function textbox_info_submit(){
+  $( "input[type|='submit']").click(function(){
+    var versand_zur_ueber = $("#gprod_titelei_versand_an_zur_ueberpf");
+    if (versand_zur_ueber.val() == "<%= I18n.t 'textfield_messages.versand_an' %>"){
+      versand_zur_ueber.val("An den Autor gesendet");
+    }
+  });
+};
 
 
 
+function textbox_info(){
+  var versand_zur_ueber = $("#gprod_titelei_versand_an_zur_ueberpf");
+  if (versand_zur_ueber.val() == "<%= I18n.t 'textfield_messages.versand_an' %>"){
+    versand_zur_ueber.focus(function() {
+      this.value = "";
+    });
+    versand_zur_ueber.focusout(function() {
+      if (this.value == ""){
+        this.value = "<%= I18n.t 'textfield_messages.versand_an' %>";
+      }
+    });
+  }
 
-          //Dieses kleine Teil wird benutzt um die Standartfehlernachricht der HTML5-validierung zu ändern
-          function not_a_number() {
-            var textfield = $(this).get(0);
 
-            // 'setCustomValidity not only sets the message, but also marks
-            // the field as invalid. In order to see whether the field really is
-            // invalid, we have to remove the message first
-            textfield.setCustomValidity('');
+};
 
-            if (!textfield.validity.valid) {
-              textfield.setCustomValidity("<%=  I18n.t 'flash_notice.is_not_a_number'%>");
-            }}
-          $('#gprod_gesicherte_abnahme').on('change invalid', not_a_number);
-          $('#gprod_auflage_lektor').on('change invalid', not_a_number);
-          $('#gprod_auflage_chef').on('change invalid', not_a_number);
+
+//Dieser Teil wird benutzt um die Standartfehlernachricht der HTML5-validierung zu ändern
+function number_field_error_msg(){
+  function not_a_number() {
+    var textfield = $(this).get(0);
+
+    // 'setCustomValidity not only sets the message, but also marks
+    // the field as invalid. In order to see whether the field really is
+    // invalid, we have to remove the message first
+    textfield.setCustomValidity('');
+
+    if (!textfield.validity.valid) {
+      textfield.setCustomValidity("<%=  I18n.t 'flash_notice.is_not_a_number'%>");
+    }};
+  $( "input[type|='number']").on('change invalid', not_a_number);
+};
 
 
 
 //Das Datumformat des Datepickers ändern
-        $(".datepicker").change(function (){
-            this.value = moment(this.value).format("DD.MM.YYYY");
+function datepicker_format(){
+  $(".datepicker").change(function (){
+    this.value = moment(this.value).format("DD.MM.YYYY");
 
-        });
-
-
-          $( "#name_autocomplete" ).autocomplete({
-      <% autor_name_list = []%>
-       <% Autor.all.each do |autor| %>
-           <% autor_name_list.append autor.name %>
-       <%end%>
-       source: <%= raw autor_name_list.as_json %>
-    });
+  });
+};
 
 
-    $(".ui-helper-hidden-accessible").remove();
+//Autocomplete für die Autorennamen beim Erstellen von Projekten
+function autocomplete_names(){$( "#name_autocomplete" ).autocomplete({
+  <% autor_name_list = []%>
+  <% Autor.all.each do |autor| %>
+  <% autor_name_list.append autor.name %>
+  <%end%>
+  source: <%= raw autor_name_list.as_json %>
+});
+};
 
-            var is_added = false;
 
-            $( "h3").click(function( event ) {
-                 $(event.target).parent().find("table").slideToggle(100);
 
-            });
+function slider(){
+  $( "h3").click(function( event ) {
+    $(event.target).parent().find("table").slideToggle(100);
 
-    
-    function check_box_lek() {
-        if($("#admin_user_department_ids_10").prop('checked')){
-            $("#lektor_select_box").show();
-            for (i=1;i<10;i++) {
-                $( "#admin_user_department_ids_" + i.toString() ).prop( "disabled", true);
-                $( "#admin_user_department_ids_" + i.toString() ).prop( "checked", false);
-            }
-        } else {
-            $("#lektor_select_box").hide();
-            $("#lektor_select_box").find("option:selected").prop("selected", false);
-            for (i=1;i<10;i++) {
-                $( "#admin_user_department_ids_" + i.toString() ).prop( "disabled", false);
-            }
-        }  
+  });
+};
+
+
+
+function check_box_lek() {
+  if($("#admin_user_department_ids_10").prop('checked')){
+    $("#lektor_select_box").show();
+    for (i=1;i<10;i++) {
+      $( "#admin_user_department_ids_" + i.toString() ).prop( "disabled", true);
+      $( "#admin_user_department_ids_" + i.toString() ).prop( "checked", false);
     }
-
-    function check_box_dep() {
-        var all_unchecked = true;
-        for (i=1;i<10;i++) {
-            if($("#admin_user_department_ids_" + i.toString() ).prop('checked')) {
-                $( "#admin_user_department_ids_10" ).prop( "disabled", true);
-                $( "#admin_user_department_ids_10" ).prop( "checked", false);
-                $("#lektor_select_box").hide();
-                all_unchecked = false;  
-            }
-        }
-        if (all_unchecked) {
-            $( "#admin_user_department_ids_10" ).prop( "disabled", false);   
-        }  
+  } else {
+    $("#lektor_select_box").hide();
+    $("#lektor_select_box").find("option:selected").prop("selected", false);
+    for (i=1;i<10;i++) {
+      $( "#admin_user_department_ids_" + i.toString() ).prop( "disabled", false);
     }
+  }
+};
 
-    // on page load
-    check_box_lek();
-    check_box_dep();
-
-    // on change lektor checkbox
-    $("#admin_user_department_ids_10").change(check_box_lek);
-
-    // on change other department checkbox
-    $("#admin_user_department_ids_1, #admin_user_department_ids_2, #admin_user_department_ids_3, " +
-        "#admin_user_department_ids_4, #admin_user_department_ids_5, #admin_user_department_ids_6, " +
-        "#admin_user_department_ids_7, #admin_user_department_ids_8, "+
-        "#admin_user_department_ids_9").change(check_box_dep);
-
-
+function check_box_dep() {
+  var all_unchecked = true;
+  for (i=1;i<10;i++) {
+    if($("#admin_user_department_ids_" + i.toString() ).prop('checked')) {
+      $( "#admin_user_department_ids_10" ).prop( "disabled", true);
+      $( "#admin_user_department_ids_10" ).prop( "checked", false);
+      $("#lektor_select_box").hide();
+      all_unchecked = false;
     }
+  }
+  if (all_unchecked) {
+    $( "#admin_user_department_ids_10" ).prop( "disabled", false);
+  }
+};
 
-);
+function admin_users_input(){
+  // on change lektor checkbox
+  $("#admin_user_department_ids_10").change(check_box_lek);
 
-
-
-
-
-//var input_fields = '<div class="additional_fields"><li>\
-//        <label for="vorname">Vorname</label>\
-//        <input type="text" name="autor[vorname]" id="autor_vorname" value="" />\
-//        </li>\
-//        <li>\
-//        <label for="autor_fox_id">Fox ID </label>\
-//        <input type="text" name="autor[fox_id]" id="autor_fox_id" />\
-//       </li>\
-//        <li>\
-//        <label for="autor_anrede">Anrede</label>\
-//        <input type="text" name="autor[anrede]" id="autor_anrede" />\
-//        </li>\
-//        <li>\
-//        <label for="autor_email">Email</label>\
-//        <input type="text" name="autor[email]" id="autor_email" />\
-//       </li>\
-//        <li>\
-//        <label for="autor_str">Straße</label>\
-//        <input type="text" name="autor[str]" id="autor_str" />\
-//        </li>\
-//        <li>\
-//        <label for="autor_ort">Ort</label>\
-//        <input type="text" name="autor[ort]" id="autor_ort" />\
-//       </li>\
-//        <li>\
-//        <label for="autor_plz">Plz</label>\
-//        <input type="text" name="autor[plz]" id="autor_plz" />\
-//       </li>\
-//        <li>\
-//        <label for="autor_tel">Telefon</label>\
-//        <input type="text" name="autor[tel]" id="autor_tel" />\
-//        </li>\
-//        <li>\
-//        <label for="autor_fax">Fax</label>\
-//        <input type="text" name="autor[fax]" id="autor_fax" />\
-//        </li>\
-//        <li>\
-//        <label for="autor_institut">Institut</label>\
-//        <input type="text" name="autor[institut]" id="autor_institut" />\
-//        </li>\
-//        <li>\
-//        <label for="autor_demail">Email (Dienst)</label>\
-//        <input type="text" name="autor[demail]" id="autor_demail" />\
-//        </li>\
-//        <li>\
-//        <label for="autor_dstr">Straße (Dienst)</label>\
-//        <input type="text" name="autor[dstr]" id="autor_dstr" />\
-//        </li>\
-//        <li>\
-//        <label for="autor_dort">Ort (Dienst)</label>\
-//        <input type="text" name="autor[dort]" id="autor_dort" />\
-//        </li>\
-//        <li>\
-//        <label for="autor_dplz">Plz (Dienst)</label>\
-//        <input type="text" name="autor[dplz]" id="autor_dplz" />\
-//       </li>\
-//        <li>\
-//        <label for="autor_dtel">Telefon (Dienst)</label>\
-//        <input type="text" name="autor[dtel]" id="autor_dtel" />\
-//      </li>\
-//        <li>\
-//        <label for="autor_dfax">Fax (Dienst)</label>\
-//        <input type="text" name="autor[dfax]" id="autor_dfax" />\
-//        </li>\
-//        <input type="submit" name="commit" value="Autor hinzufügen" />\
-//        <input type="submit" name="commit" value="Neuen Autor erstellen"/>\
-//        <\div>';
-
-
-
-
-
-
+// on change other department checkbox
+  $("#admin_user_department_ids_1, #admin_user_department_ids_2, #admin_user_department_ids_3, " +
+      "#admin_user_department_ids_4, #admin_user_department_ids_5, #admin_user_department_ids_6, " +
+      "#admin_user_department_ids_7, #admin_user_department_ids_8, "+
+      "#admin_user_department_ids_9").change(check_box_dep);
+};
