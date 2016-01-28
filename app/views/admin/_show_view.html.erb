@@ -1,0 +1,38 @@
+
+
+
+<!-- This template has to be rendered with the desired departement as a parameter. The parameter should be called department -->
+
+
+
+<!-- all related status models -->
+<% @stat = ["statusbildpr", "statusbinderei", "statusdruck", "statusfinal", "statusoffsch",
+             "statuspreps", "statusrg", "statussatz", "statustitelei", "statusumschl"] %>
+
+<% @stat.each do |stat| %>
+    <% if ShowSettings.instance.is_visible?(@department, stat) %>
+        <%= status_bar(@projekt, @projekt."#{stat}".status , I18n.t stat) %>
+    <% end %>
+<% end %>    
+
+
+<div class="panel">
+	<h3>Informationen zu Projekt<%= @projekt.projektname %> </h3>
+    <div class="attributes_table projekt" id="<%= "attributes_table_projekt_#{@projekt.id}" %>">
+      <table border="0" cellpadding="0" cellspacing="0">
+        <tbody>
+        <% ShowSettings.instance.all.each do |field| %>
+        	<% if ShowSettings.instance.is_visible?(@department, field) %>
+        		<tr>
+        			<th><span class="name"> <%= I18n.t field %></span></th>
+						<% if @projekt."#{field}".nil? %>
+							<td><span class="empty"> <%= I18n.t 'empty' %></span></td>
+						<% else %>
+							<td><%= @projekt."#{field}" %></td>
+						<% end %>
+					</tr>
+        	<% end %>
+        </tbody>
+      </table>
+    </div>
+</div>
