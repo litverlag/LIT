@@ -61,7 +61,6 @@ class ChoosableOption
   # This method imports the data from an external file it is called once at the initialization of the server
   #
   def import
-    puts "IMPORT"
     yam = YAML.load_file(Rails.root.join('config/options.yml'))
 
     yam["names"].each do |name_of_option|

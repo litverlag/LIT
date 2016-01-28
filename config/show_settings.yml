@@ -1,0 +1,16 @@
+
+
+#Diese Variablen werden im Code verwendet NIEMALS ändern sonst muss man im gesamten Code die symbole ändern, sollen sie geändert werden muss das Array in names: kopiert
+#werden, dann bleiben die Namen im Code gleich und mann kann die optionen ändern.
+
+options:
+#True um die Option an zu schalten false um Sie zu deaktivieren
+    binderei: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true]
+    titelei:
+    satz:
+    projekt:
+    umschlag:
+    preps:
+
+
+ #fields#100["id", "lektor_id", "autor_id", "final_deadline", "zum_druck", "druck_deadline", "titelei_deadline", "satz_deadline", "preps_deadline", "offsch_deadline", "bildpr_deadline", "umschlag_deadline", "rg_deadline", "binderei_deadline", "projekt_abgeschlossen", "projekt_email_adresse", "projektname", "auflage", "erscheinungsjahr", "kommentar_public", "manusskript_eingang_date", "auflage_lektor", "auflage_chef", "gesicherte_abnahme", "satzproduktion", "buchistfertig", "externer_druck", "externer_druck_verschickt_von", "externer_druck_verschickt", "buchgedruckt", "druck_bemerkungen", "pod_verschickt", "pod_meldung", "titelei_bemerkungen", "titelei_zusaetze", "titelei_extern", "titelei_letzte_korrektur", "titelei_versand_datum_fuer_ueberpr", "titelei_versand_an_zur_ueberpf", "titelei_korrektur_date", "titelei_freigabe_date", "satz_bemerkungen", "preps_bemerkungen", "preps_betreuer", "druck_art", "muster_art", "muster_gedruckt", "preps_muster_bemerkungen", "preps_muster_date", "offsch_bemerkungen", "offsch_an_autor", "offsch_an_sch_mit_u", "bildpr_bemerkungen", "umschlag_bemerkungen", "umschlag_schutzumschlag", "umschlag_umschlagsbild", "rg_bemerkungen", "rg_rg_mail", "rg_versand_1", "rg_versand_2", "rg_bezahlt", "rg_vf", "binderei_eingang_datum", "binderei_bemerkungen", "prio", "lektor_bemerkungen_public", "lektor_bemerkungen_private", "dateibue", "created_at", "updated_at", "id", "autor_id", "lektor_id", "gprod_id", "name", "isbn", "issn", "titel1", "titel2", "titel3", "utitel1", "utitel2", "utitel3", "seiten", "preis", "spreis", "sammelband", "erscheinungsjahr", "gewicht", "volumen", "format_bezeichnung", "umschlag_bezeichnung", "papier_bezeichnung", "bindung_bezeichnung", "vier_farb", "rueckenstaerke", "klappentext", "eintrag_cip_seite", "created_at", "updated_at"]
