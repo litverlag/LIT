@@ -1,49 +1,107 @@
-<%= status_bar(@projekt, @projekt.statusbinderei.status, "Binderei Status") %>
-					<%-# I don't know how to handle this one and how to get the @department - where is @projekt defined and where does it come from?
-					%>
+<!-- This template has to be rendered with the desired departement as a parameter. The parameter should be called department -->
 
-<% used_url = admin_bi_path(@projekt.id)%>
 
-<%@fields_for_autor = [:name,:vorname,:anrede,:email,:str,:ort,:plz,:tel,:fax,:institut,:demail,:dstr,:dort,:dplz,:dtel,:dfax]  %>
 
-<%@attributes = InputSettings.instance.all()%>
+<!-- all related status models -->
+<% @stat = ["statusbildpr", "statusbinderei", "statusdruck", "statusfinal", "statusoffsch",
+             "statuspreps", "statusrg", "statussatz", "statustitelei", "statusumschl"] %>
+
+<% @stat.each do |stat| %>
+    <% if InputSettings.instance.is_visible?(@department, stat) %>
+        <%= status_bar(@projekt, @projekt.send("#{stat}").status , (I18n.t stat)) %>
+    <% end %>
+<% end %>
+    
+<% @gprodsAtt = InputSettings.instance.all %>
+<% @buchAtt = InputSettings.instance.all %>
+
 
 <div class="panel">
 <h3><%= @projekt.projektname %> </h3>
+
+<% used_url = admin_preps_path(@projekt.id)%>
 <fieldset class="projekt"><legend><span><%= "#{@projekt.projektname} bearbeiten"%></span></legend>
-    <ul>
-        <% @attributes.each_pair do |field| %>
-          <% if InputSettings.instance.isVisible?(@department, field)%>
-            <% @fieldType = InputSettings.instance.whichType?(field)%>
+	<%= form_for @projekt, url: used_url, remote: true do |projekt_form| %>
+	<ul>
+        <% @gprodsAtt.each do |field| %>
+          <% if InputSettings.instance.is_visible?(@department, field)%>
+            <% @fieldType = InputSettings.instance.which_type(field)%>
             <% case @fieldType%>
-          	<% when "TextField"%>
+          	<% when "String"%>
             	<li>
-            	  <%= projeckt_form.label field, ""+field%>
-              	  <%= projeckt_form.text_field field %>
+            	  <%= projekt_form.label field, (I18n.t field) %>
+              	  <%= projekt_form.text_field field %>
             	</li>
-          	<% when "TextArea"%>
+          	<% when "text"%>
              	<li>
-            	  <%= projeckt_form.label field, ""+field%>
-              	  <%= projeckt_form.text_area field, "10x10" %>
+            	  <%= projekt_form.label field, (I18n.t field) %>
+              	  <%= projekt_form.text_area field, size: "10x10"  %>
             	</li>
-            <% when "Date"%>
+            <% when "date"%>
             	<li>
-            	  <%= projeckt_form.label field, ""+field%>
-              	  <%#date management %>
-              	  %>
+            	  <%= projekt_form.label field, (I18n.t field) %>
+	              <input class="datepicker" data-date-format="mm/dd/yyyy" name="gprod[<%=field%>]" value="<%=@projekt.send("#{field}") %>">
             	</li>
+            <% when "integer", "float", "decimal"%>
+            	<li>
+            	  <%= projekt_form.label field, (I18n.t field) %>
+	              <input value="<%=@projekt.gprods.field %>" name="gprods[<%=field%>]" id=field type="number">
+            	</li>
+            <% when "boolean"%>
+            	<li>
+            	  <%= projekt_form.label field, (I18n.t field) %>
+                  <input type="checkbox" name="gprods[<%=field%>]" value="True"><%=(I18n.t field)%>
+            	</li>	
             <% else %>
             	<li>
-            	  <%= projeckt_form.label field, ""+field%>
-              	  <%= #hardcoding for the choosable options - we need an if for each hardcoding case (so maybe another switch case inside the switch case?) %>
-              	  %>
+            	  <%= projekt_form.label field, (I18n.t field) %>
+              	  <!-- hardcoding for the choosable options - we need an if for each hardcoding case (so maybe another switch case inside the switch case?) -->
             	</li>
             <%end%>
           <%end%>
         <%end%>
-	</ul>
-</fieldset>m
+    </ul>
 
-
-
-
+	<ul>
+        <% @buchAtt.each do |field| %>
+          <% if InputSettings.instance.is_visible?(@department, field)%>
+            <% @fieldType = InputSettings.instance.which_type(field)%>
+            <% case @fieldType%>
+          	<% when "String"%>
+            	<li>
+            	  <%= projekt_form.label field, (I18n.t field) %>
+              	  <%= projekt_form.text_field field %>
+            	</li>
+          	<% when "text"%>
+             	<li>
+            	  <%= projekt_form.label field, (I18n.t field) %>
+              	  <%= projekt_form.text_area  field, size: "10x10"  %>
+            	</li>
+            <% when "date"%>
+            	<li>
+            	  <%= projekt_form.label field, (I18n.t field) %>
+	              <input class="datepicker" data-date-format="mm/dd/yyyy" name="buecher[<%=field%>]" value="<%=@projekt.send("#{field}") %>">
+            	</li>
+            <% when "integer", "float", "decimal"%>
+            	<li>
+            	  <%= projekt_form.label field, (I18n.t field) %>
+	              <input value="<%=@projekt.buecher.field %>" name="buecher[<%=field%>]" id=field type="number">
+            	</li>
+            <% when "boolean"%>
+            	<li>
+            	  <%= projekt_form.label field, (I18n.t field) %>
+                  <input type="checkbox" name="buecher[<%=field%>]" value="True"><%=(I18n.t field)%>
+            	</li>	
+            <% else %>
+            	<li>
+            	  <%= projekt_form.label field, (I18n.t field) %>
+              	  <!-- hardcoding for the choosable options - we need an if for each hardcoding case (so maybe another switch case inside the switch case?) -->
+            	</li>
+            <%end%>
+          <%end%>
+        <%end%>
+    </ul>
+        
+    <%= projekt_form.submit "#{@projekt.projektname} bearbeiten" %>
+    <%end%>
+</fieldset>
