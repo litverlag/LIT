@@ -11,7 +11,7 @@
 
 <% @stat.each do |stat| %>
     <% if ShowSettings.instance.is_visible?(@department, stat) %>
-        <%= status_bar(@projekt, @projekt."#{stat}".status , I18n.t stat) %>
+        <%= status_bar(@projekt, @projekt.send(stat).status , I18n.t stat) %>
     <% end %>
 <% end %>    
 
@@ -36,3 +36,6 @@
       </table>
     </div>
 </div>
+
+
+
