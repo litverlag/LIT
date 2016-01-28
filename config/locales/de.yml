@@ -26,6 +26,8 @@ de:
     formats:
       default: "%d/%m/%Y"
 
+  textfield_messages:
+    versand_an: "Falls sie hier nichts ausfüllen wird der Autor eingetragen"
 
 
   buttons:
@@ -49,3 +51,44 @@ de:
       user_update: "Benutzer erfolgreich überarbeitet"
     revised_failure:
       user_update: "Überarbeiten des Users gescheitert"
+
+    is_not_a_number: "Bitte tragen Sie eine Zahl ein"
+
+  field_names:
+    projectname: "Projektname"
+    lektor: "Betreuender Lektor"
+    umschlag_note: "Private Bemerkungen des Umschlags"
+    public_note: "Öffentliche Bemerkungen"
+    isbn: "ISBN"
+    deadline_final: "Finale Deadline für das gesamte Projekt"
+    deadline_umschlag: "Sollf Umschlag"
+    status_umschlag: "Status des Umschlags"
+    umschlag_type: "Umschlag"
+    format_type: "Format"
+    ruecken: "Rückenstärke"
+    number_pages: "Seiten"
+    bindung_type: "Bindung"
+    umschlag_bild : "Umschlag Bild"
+    klappentext: "Klappentext"
+    auflage_lektor: "auflage_lektor"
+    auflage_chef: "auflage_chef"
+    gesicherte_abnahme: "gesicherte_abnahme"
+    deadline_final: "deadline_final"
+    deadline_preps: "deadline_preps"
+    muster_art: "muster_art"
+    muster_gedruckt: "muster_gedruckt"
+    preps_muster_bemerkungen: "preps_muster_bemerkungen"
+    preps_muster_date: "preps_muster_date"
+    bindung_bezeichnung: "bindung_bezeichnung"
+    druck_art: "druck_art"
+    prio: "prio"
+    manusskript_eingang_date: "manusskript_eingang_date"
+    buch_seiten: "buch_seiten"
+    buch_format_bezeichnung: "buch_format_bezeichnung"
+    buch_umschlag_bezeichnung: "buch_umschlag_bezeichnung"
+    buch_papier_bezeichnung: "buch_papier_bezeichnung"
+    buch_vier_farb: "buch_vier_farb"
+    projekt_email_adresse: "project_email_adresse"
+    preps_betreuer: "preps_betreuer"
+
+>>>>>>> 176434d7bc13887206b2f9cc7373f0b3c55fc99c

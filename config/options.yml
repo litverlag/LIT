@@ -1,17 +1,8 @@
-options:
-    bindung: [klebe,hardcover, fadenheftung, heft]
-    prio:
-    form:
-    datei:
-    format: ["A5", "A4", "22", "23", "24", "Sonder"]
-    umschlag: ["wieReihe", "TeX", "InDesign", "Extern", "Schutzschlag"]
-    druckart:
-    vierfarb:
-    sonder:
-    papier: ["o80", "w90", "km100", "kg120", "wg90"]
-    musterart:
+#Diese Variablen werden im Code verwendet NIEMALS ändern sonst muss man im gesamten Code die symbole ändern, sollen sie geändert werden muss das Array in names: kopiert 
+#werden, dann bleiben die Namen im Code gleich und mann kann die optionen ändern.
 
-names:
+options:
+#Optionen für die Bucheigenschaften
     bindung: [klebe,hardcover, fadenheftung, heft]
     prio:
     form:
@@ -23,3 +14,22 @@ names:
     sonder:
     papier: ["o80", "w90", "km100", "kg120", "wg90"]
     musterart:
+    #Automische fristen ausgehen von Finaler Frist
+    fristen: [5,6,7,8]
+
+#Symbolnamen, die im Code verwendet werden sollen.
+names:
+#Optionen für die Bucheigenschaften
+    bindung: [klebe,hardcover, fadenheftung, heft]
+    prio:
+    form:
+    datei:
+    format: ["A5", "A4", "22", "23", "24", "Sonder"]
+    umschlag: ["wieReihe", "TeX", "InDesign", "Extern", "Schutzschlag"]
+    druckart:
+    vierfarb:
+    sonder:
+    papier: ["o80", "w90", "km100", "kg120", "wg90"]
+    musterart:
+    #Automische fristen ausgehen von Finaler Frist
+    fristen: [titelei,preps,umschlag,binderei]

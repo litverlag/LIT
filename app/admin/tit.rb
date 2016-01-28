@@ -1,6 +1,6 @@
 ActiveAdmin.register Tit do
-  menu label: 'Tit'
-  menu priority: 6
+  menu label: 'Titelei'
+  #menu priority: 6
   config.filters = false
   actions :index, :show, :edit, :update
 
@@ -24,9 +24,11 @@ ActiveAdmin.register Tit do
 
 
     def edit
-
+      puts "______________TITLEI______EDIT___________________-"
       @projekt = Gprod.find(permitted_params[:id])
-
+      @array_of_format_bezeichungen = ChoosableOption.instance.format :all
+      @array_of_umschlag_bezeichnungen = ChoosableOption.instance.umschlag :all
+      @array_of_papier_bezeichungen = ChoosableOption.instance.papier :all
 
     end
 
@@ -36,6 +38,8 @@ ActiveAdmin.register Tit do
 
       respond_to do |format|
         format.js{
+          puts permitted_params
+          @projekt.update(permitted_params[:gprod])
           if permitted_params[:status]
             @projekt = Gprod.find(params[:id])
             changeStatusByUser(@projekt, @projekt.statustitelei, permitted_params[:status][:statustitelei])

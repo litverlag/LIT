@@ -1,6 +1,23 @@
 
-<%  @relevant_attr = @projekt.attributes.to_h  %>
-<!--.slice(*["projektname"])-->
+
+<%
+   @relevant_attr = [["Name", @projekt.projektname],
+                     ["Öffentlicher Kommentar", @projekt.kommentar_public],
+                     ["Auflage", @projekt.auflage],
+                     ["Soll Fertig", @projekt.final_deadline],
+                     ["Soll Fertig Binderei", @projekt.binderei_deadline],
+                     ["Prio",@projekt.prio],
+                     ["Seiten", @projekt.buch.seiten],
+                     ["Format",@projekt.buch.format_bezeichnung],
+                     ["Umschlag", @projekt.buch.umschlag_bezeichnung],
+                     ["Bindung", @projekt.buch.bindung_bezeichnung],
+                     ["4f",@projekt.buch.vier_farb]]
+                     ["Auflage des Lektors",@projekt.auflage_lektor]
+                     ["Auflage des Chefs",@projekt.auflage_chef]
+                     ["Gesicherte Abnahme",@projekt.gesicherte_abnahme]
+%>
+
+
 
 <%= status_bar(@projekt, @projekt.statusfinal.status ," Finaler Status") %>
 <%= status_bar(@projekt, @projekt.statusumschl.status ," Umschlag Status") %>
@@ -17,7 +34,7 @@
     <div class="attributes_table projekt" id="<%= "attributes_table_projekt_#{@projekt.id}" %>">
       <table border="0" cellpadding="0" cellspacing="0">
         <tbody>
-        <% @relevant_attr.each_pair do |name, value| %>
+        <% @relevant_attr.each do |name, value| %>
           <% if value.nil?%>
                   <tr>
                     <th><%= name %></th>
@@ -30,11 +47,10 @@
               </tr>
           <%end %>
         <%end%>
-
         </tbody></table>
       </div>
-  </div>
 </div>
+
 
 
 <div class="panel">

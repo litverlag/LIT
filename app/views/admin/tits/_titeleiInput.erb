@@ -2,24 +2,93 @@
 
 
 <% used_url = admin_tit_path(@projekt.id)%>
-    <fieldset class="projekt"><legend><span><%= "#{@projekt.projektname} bearbeiten"%></span></legend>
-      <ul>
-        <%= form_for @projekt, url: used_url, remote: true do |projekt_form| %>
-            <li>
-              <%= projekt_form.label :projektname, "Projektname" %>
-              <%= "#{@projekt.projektname}" %>
-            </li>
-            <li>
-              <%= projekt_form.label :projektname, "Betreuender Lektor" %>
-              <%= "#{@projekt.lektor.fullname}" %>
-            </li>
+<fieldset class="projekt"><legend><span><%= "#{@projekt.projektname} bearbeiten"%></span></legend>
+
+  <ul>
+    <%= form_for @projekt, url: used_url, remote: true do |titelei_form| %>
+        <li>
+          <%= titelei_form.label :projektname, "Projektname" %>
+          <%= "#{@projekt.projektname}" %>
+        </li>
+        <li>
+          <%= titelei_form.label :lektor_name, "Betreuender Lektor" %>
+          <%= "#{@projekt.lektor.fullname}" %>
+        </li>
+        <%if InputSettings.instance.titelei :statuschanger%>
             <li>
               <%= status_changer("Status der Titelei", "status[statustitelei]", $TITELEI_STATUS) %>
             </li>
-            <%= projekt_form.submit "#{@projekt.projektname} bearbeiten" %>
-        <% end %>
-      </ul>
-    </fieldset>
+        <%end%>
+        <%if InputSettings.instance.titelei :titelei_bemerkungen%>
+            <li>
+              <%= titelei_form.label :titelei_bemerkungen, "Private Bemerkungen der Titelei" %>
+              <%= titelei_form.text_area :titelei_bemerkungen, size: "10x10" %>
+            </li>
+        <%end%>
+        <%if InputSettings.instance.titelei  :kommentar_public%>
+            <li>
+              <%= titelei_form.label :kommentar_public, "Öffentliche Bemerkungen" %>
+              <%= titelei_form.text_area :kommentar_public , size: "10x10"  %>
+            </li>
+        <%end%>
+        <%if InputSettings.instance.titelei :titelei_zusaetze%>
+            <li>
+              <%= titelei_form.label :titelei_zusaetze, "Titelei Zusätze" %>
+              <%= titelei_form.text_field :titelei_zusaetze  %>
+            </li>
+        <%end%>
+        <%if InputSettings.instance.titelei :titelei_letzte_korrektur%>
+            <li>
+              <%= titelei_form.label :titelei_letzte_korrektur, "titelei_letzte_korrektur" %>
+              <input class="datepicker" data-date-format="mm/dd/yyyy" name="gprod[titelei_letzte_korrektur]" value="<%="#{@projekt.titelei_letzte_korrektur}" %>">
+            </li>
+        <%end%>
+        <%if InputSettings.instance.titelei :titelei_versand_datum_fuer_ueberpr%>
+            <li>
+              <%= titelei_form.label :titelei_versand_datum_fuer_ueberpr, "Zur Überprüfung am" %>
+              <input class="datepicker" data-date-format="mm/dd/yyyy" name="gprod[titelei_versand_datum_fuer_ueberpr]" value="<%="#{@projekt.titelei_versand_datum_fuer_ueberpr}" %>">
+            </li>
+        <%end%>
+        <%if InputSettings.instance.titelei :titelei_versand_an_zur_ueberpf%>
+            <li>
+              <%= titelei_form.label :titelei_versand_an_zur_ueberpf, "Zur Überprüfung an" %>
+              <%= titelei_form.text_field :titelei_versand_an_zur_ueberpf, value: if @projekt.titelei_versand_an_zur_ueberpf.nil? then (I18n.t 'textfield_messages.versand_an').to_s else @projekt.titelei_versand_an_zur_ueberpf end %>
+            </li>
+        <%end%>
+        <%if InputSettings.instance.titelei :titelei_korrektur_date%>
+            <li>
+              <%= titelei_form.label :titelei_korrektur_date, "titelei_korrektur_date" %>
+              <input class="datepicker" data-date-format="mm/dd/yyyy" name="gprod[titelei_korrektur_date]" value="<%="#{@projekt.titelei_korrektur_date}" %>">
+            </li>
+        <%end%>
+        <%if InputSettings.instance.titelei :titelei_freigabe_date%>
+            <li>
+              <%= titelei_form.label :titelei_freigabe_date, "Finale Deadline für das gesamte Projekt" %>
+              <input class="datepicker" data-date-format="mm/dd/yyyy" name="gprod[final_deadline]" value="<%="#{@projekt.final_deadline}" %>">
+            </li>
+        <%end%>
+        <%if InputSettings.instance.titelei :format_bezeichnung %>
+            <li>
+              <%= titelei_form.label :_format_bezeichnung, "Format"%>
+              <%= select_tag("buch[format_bezeichnung]", options_for_select(@array_of_format_bezeichungen,selected: @projekt.buch.format_bezeichnung),include_blank: true ) %>
+            </li>
+        <%end%>
+        <%if InputSettings.instance.titelei :eintrag_cip_seite %>
+            <li>
+              <%= titelei_form.label :eintrag_cip_seite, "Eintrag"%>
+              <input value="<%=@projekt.buch.eintrag_cip_seite %>" name="buch[eintrag_cip_seite]" id="gprod_buch_eintrag_cip_seite" type="number">
+            </li>
+        <%end%>
+        <%if InputSettings.instance.titelei :erscheinungsjahr %>
+            <li>
+              <%= titelei_form.label :erscheinungsjahr, "Erscheinungsjahr vom Buch"%>
+              <input value="<%= @projekt.buch.erscheinungsjahr %>" name="buch[erscheinungsjahr]" id="gprod_buch_erscheinungsjahr" type="number">
+            </li>
+        <%end%>
+        <%= titelei_form.submit "#{@projekt.projektname} bearbeiten" %>
+    <% end %>
+  </ul>
+</fieldset>
 
 
 

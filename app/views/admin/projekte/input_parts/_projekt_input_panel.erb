@@ -44,6 +44,30 @@
           <%= projekt_form.label :lektor_bemerkungen_private, "Private Bemerkungen zu diesem Projekt" %>
           <%= projekt_form.text_area :lektor_bemerkungen_private, size: "10x10" %>
         </li>
+
+        <li>
+          <%= projekt_form.label :binderei_bemerkungen, "Öffentliche Bemerkungen" %>
+          <%= projekt_form.text_area :kommentar_public, size: "10x10" %>
+        </li>
+
+        <li>
+          <%= projekt_form.label :auflage_lektor, "Auflage des Lektors" %>
+          <%= projekt_form.number_field :auflage_lektor %>
+        </li>
+
+        <li>
+          <%= projekt_form.label :auflage_chef, "Auflage des Chefs" %>
+          <%= projekt_form.number_field :auflage_chef %>
+        </li>
+
+        <li>
+          <%= projekt_form.label :gesicherte_abnahme, "Gesicherte Abnahme" %>
+          <%= projekt_form.number_field :gesicherte_abnahme %>
+        </li>
+        <li>
+          <%= projekt_form.label :titelei_extern, "titelei_extern" %>
+          <%= projekt_form.check_box :titelei_extern %>
+          </li>
         <li>
           <%= projekt_form.label :final_deadline, "Sollfertig für das gesamte Projekt" %>
           <input class="datepicker"  id="final_deadline" data-date-format="mm/dd/yyyy" name="gprod[final_deadline]" value="<%="#{@projekt.final_deadline}" %>">
@@ -64,6 +88,7 @@
           <%= projekt_form.label :final_deadline, "Sollfertig für Bindung" %>
           <input class="datepicker"  id="binderei_deadline" data-date-format="mm/dd/yyyy" name="gprod[binderei_deadline]" value="<%="#{@projekt.binderei_deadline}" %>">
         </li>
+
         <%= projekt_form.submit "#{@projekt.projektname} bearbeiten" %>
     <% end %>
 

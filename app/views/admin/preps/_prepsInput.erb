@@ -13,9 +13,150 @@
           <%= projekt_form.label :lektor_name, "Betreuender Lektor" %>
           <%= "#{@projekt.lektor.fullname}" %>
         </li>
-        <li>
-          <%= status_changer("Status der Preps", "status[statuspreps]", $PREPS_STATUS) %>
-        </li>
+        <%if InputSettings.instance.preps :status_preps %>
+            <li>
+              <%= status_changer "Status der Preps", "status[statuspreps]", $PREPS_STATUS%>
+            </li>
+        <%end%>
+        <%if InputSettings.instance.preps :kommentar_public %>
+            <li>
+              <%= projekt_form.label :kommentar_public, (I18n.t "field_names.public_note") %>
+              <%= projekt_form.text_area :kommentar_public , size: "10x10"  %>
+            </li>
+        <%end%>
+        <%if InputSettings.instance.preps :buch_isbn %>
+            <li>
+              <%= projekt_form.label :buch_isbn, "ISBN" %>
+              <input value="<%=@projekt.buch.isbn %>" name="buch[isbn]" id="buch_isbn" type="number">
+            </li>
+        <%end%>
+        <%if InputSettings.instance.preps :auflage_lektor %>
+            <li>
+              <%= projekt_form.label :auflage_lektor, (I18n.t "field_names.auflage_lektor") %>
+              <%= projekt_form.text_field :auflage_lektor %>
+            </li>
+        <%end%>
+        <%if InputSettings.instance.preps :auflage_chef %>
+            <li>
+              <%= projekt_form.label :auflage_chef, (I18n.t "field_names.auflage_chef") %>
+              <%= projekt_form.number_field :auflage_chef %>
+            </li>
+        <%end%>
+        <%if InputSettings.instance.preps :final_deadline %>
+            <li>
+              <%= projekt_form.label :final_deadline,(I18n.t 'field_names.deadline_final' )%>
+              <input class="datepicker" data-date-format="mm/dd/yyyy" name="gprod[final_deadline]" value="<%="#{@projekt.final_deadline}" %>">
+            </li>
+        <%end%>
+        <%if InputSettings.instance.preps :preps_deadline %>
+            <li>
+              <%= projekt_form.label :preps_deadline, (I18n.t 'field_names.deadline_preps' )%>
+              <input class="datepicker" data-date-format="mm/dd/yyyy" name="gprod[preps_deadline]" value="<%="#{@projekt.preps_deadline}" %>">
+            </li>
+        <%end%>
+        <%if InputSettings.instance.preps :muster_art %>
+            <li>
+              <%= projekt_form.label :muster_art, (I18n.t "field_names.muster_art") %>
+              <%= projekt_form.text_field :muster_art  %>
+            </li>
+        <%end%>
+        <%if InputSettings.instance.preps :muster_gedruckt %>
+            <li>
+              <%= projekt_form.label :muster_gedruckt, (I18n.t "field_names.muster_gedruckt") %>
+              <%= projekt_form.text_field :muster_gedruckt %>
+            </li>
+        <%end%>
+        <%if InputSettings.instance.preps :preps_muster_bemerkungen %>
+            <li>
+              <%= projekt_form.label :preps_muster_bemerkungen, (I18n.t "field_names.preps_muster_bemerkungen") %>
+              <%= projekt_form.text_field :preps_muster_bemerkungen %>
+            </li>
+        <%end%>
+        <%if InputSettings.instance.preps :preps_muster_date %>
+            <li>
+              <%= projekt_form.label :preps_muster_date, (I18n.t 'field_names.preps_muster_date' )%>
+              <input class="datepicker" data-date-format="mm/dd/yyyy" name="gprod[preps_muster_date]" value="<%="#{@projekt.preps_muster_date}" %>">
+            </li>
+        <%end%>
+        <%if InputSettings.instance.preps :bindung_bezeichnung %>
+            <li>
+              <%= projekt_form.label :bindung_bezeichnung, (I18n.t "field_names.bindung_bezeichnung") %>
+              <input value="<%=@projekt.buch.bindung_bezeichnung %>" name="buch[bindung_bezeichnung]" id="buch_bindung_bezeichnung">
+            </li>
+        <%end%>
+        <%if InputSettings.instance.preps :druck_art %>
+            <li>
+              <%= projekt_form.label :druck_art, (I18n.t "field_names.druck_art") %>
+              <%= projekt_form.text_field :druck_art %>
+            </li>
+        <%end%>
+        <%if InputSettings.instance.preps :prio %>
+            <li>
+              <%= projekt_form.label :prio, (I18n.t "field_names.prio") %>
+              <%= projekt_form.text_field :prio %>
+            </li>
+        <%end%>
+        <%if InputSettings.instance.preps :manusskript_eingang_date %>
+            <li>
+              <%= projekt_form.label :manusskript_eingang_date, (I18n.t 'field_names.manusskript_eingang_date' )%>
+              <input class="datepicker" data-date-format="mm/dd/yyyy" name="gprod[manusskript_eingang_date]" value="<%="#{@projekt.manusskript_eingang_date}" %>">
+            </li>
+        <%end%>
+        <%if InputSettings.instance.preps :buch_seiten %>
+            <li>
+              <%= projekt_form.label :buch_seiten, (I18n.t "field_names.buch_seiten") %>
+              <input value="<%=@projekt.buch.seiten %>" name="buch[seiten]" id="buch_seiten" type="number">
+            </li>
+        <%end%>
+        <%if InputSettings.instance.preps :buch_format_bezeichnung %>
+            <li>
+              <%= projekt_form.label :buch_format_bezeichnung, (I18n.t "field_names.buch_format_bezeichnung") %>
+              <input value="<%=@projekt.buch.format_bezeichnung %>" name="buch[format_bezeichnung]" id="buch_format_bezeichnung">
+            </li>
+        <%end%>
+        <%if InputSettings.instance.preps :buch_umschlag_bezeichnung %>
+            <li>
+              <%= projekt_form.label :buch_umschlag_bezeichnung, (I18n.t "field_names.buch_umschlag_bezeichnung") %>
+              <input value="<%=@projekt.buch.umschlag_bezeichnung %>" name="buch[umschlag_bezeichnung]" id="buch_umschlag_bezeichnung">
+            </li>
+        <%end%>
+        <%if InputSettings.instance.preps :statusumschl_status %>
+            <li>
+              <%= projekt_form.label :statusumschl_status, (I18n.t "field_names.status_umschlag") %>
+              <input value="<%=@projekt.statusumschl.status %>" name="statusumschl[status]" id="statusumschl_status">
+            </li>
+        <%end%>
+        <%if InputSettings.instance.preps :buch_papier_bezeichnung %>
+            <li>
+              <%= projekt_form.label :buch_papier_bezeichnung, (I18n.t "field_names.buch_papier_bezeichnung") %>
+              <input value="<%=@projekt.buch.papier_bezeichnung %>" name="buch[papier_bezeichnung]" id="buch_papier_bezeichnung">
+            </li>
+        <%end%>
+        <%if InputSettings.instance.preps :buch_vier_farb %>
+            <li>
+              <%= projekt_form.label :buch_vier_farb, (I18n.t "field_names.buch_vier_farb") %>
+              <input value="<%=@projekt.buch.vier_farb %>" name="buch[vier_farb]" id="buch_vier_farb">
+            </li>
+        <%end%>
+        <%if InputSettings.instance.preps :projekt_email_adresse %>
+            <li>
+              <%= projekt_form.label :projekt_email_adresse, (I18n.t "field_names.projekt_email_adresse") %>
+              <%= projekt_form.text_field :projekt_email_adresse %>
+            </li>
+        <%end%>
+        <%if InputSettings.instance.preps :preps_betreuer %>
+            <li>
+              <%= projekt_form.label :preps_betreuer, (I18n.t "field_names.preps_betreuer") %>
+              <%= projekt_form.text_field :preps_betreuer %>
+            </li>
+        <%end%>
+
+
+
+
+
+
+
         <%= projekt_form.submit "#{@projekt.projektname} bearbeiten" %>
     <% end %>
   </ul>

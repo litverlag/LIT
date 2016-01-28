@@ -1,5 +1,7 @@
 <%
    @relevant_attr = [["Name",@projekt.projektname],
+                     ["Öffentlicher Kommentar", @projekt.kommentar_public],
+                     ["Private Bemerkungen der Preps", @projekt.preps_bemerkungen],
    ["ISBN",@projekt.buch.isbn],
    ["Auflage",@projekt.auflage_lektor],
    ["Aufage Chef",@projekt.auflage_chef],
@@ -19,12 +21,12 @@
    ["Seiten", @projekt.buch.seiten],
    ["Format", @projekt.buch.format_bezeichnung],
    ["Umschlag", @projekt.buch.umschlag_bezeichnung],
-   ["Titelei", @projekt.kommentar_public],
+   #["Titelei", @projekt.kommentar_public],
    ["Satz", @projekt.statusumschl.status],
    ["Papier", @projekt.buch.papier_bezeichnung],
    ["4f", @projekt.buch.vier_farb],
    ["email",@projekt.projekt_email_adresse],
-   ["Sonder", @projekt.kommentar_public],
+   #["Sonder", @projekt.kommentar_public],
    ["Betreuer", @projekt.preps_betreuer],
    ["Kommentar",@projekt.kommentar_public]]
 %>

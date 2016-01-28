@@ -1,0 +1,21 @@
+#Diese Variablen werden im Code verwendet NIEMALS ändern sonst muss man im gesamten Code die symbole ändern, sollen sie geändert werden muss das Array in names: kopiert
+#werden, dann bleiben die Namen im Code gleich und mann kann die optionen ändern.
+
+options:
+#True um die Option an zu schalten false um Sie zu deaktivieren
+    binderei: [true,false]
+    titelei: [true,true,true,true,true,true,true,true,true,true,true,true,true]
+    satz:
+    projekt:
+    umschlag: [true,true,true,true,true,true,true,true,true,true,true,true,true,true, true, true]
+    preps: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true]
+
+
+#Symbolnamen, die im Code verwendet werden sollen.
+names:
+    binderei: [Blub,bbkl]
+    titelei: [statuschanger, titelei_bemerkungen, binderei_bemerkungen, titelei_zusaetze, kommentar_public, titelei_letzte_korrektur, titelei_versand_datum_fuer_ueberpr, titelei_versand_an_zur_ueberpf, titelei_korrektur_date, titelei_freigabe_date,format_bezeichnung,eintrag_cip_seite,erscheinungsjahr]
+    satz:
+    projekt:
+    umschlag: [projektname, lektorname, isbn, final_deadline, kommentar_public, kommentar_umschlag, status_umschlag, umschlag_deadline, umschlag_bezeichnung, rueckenstaerke, format_bezeichnung, rueckenstaerke, seiten, bindung_bezeichnung, umschlagsbild, klappentext]
+    preps: [status_preps, kommentar_public, buch_isbn, auflage_lektor, auflage_chef, final_deadline, preps_deadline, muster_art, muster_gedruckt, preps_muster_bemerkungen, preps_muster_date, bindung_bezeichnung, druck_art, prio, manusskript_eingang_date, buch_seiten, buch_format_bezeichnung, buch_umschlag_bezeichnung, statusumschl_status, buch_papier_bezeichnung, buch_vier_farb, projekt_email_adresse, preps_betreuer]

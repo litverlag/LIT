@@ -13,6 +13,7 @@ ActiveAdmin.register Druck do
 #   permitted
 # end
 
+  menu
   config.filters = false
   actions :index, :show, :edit, :update
 
