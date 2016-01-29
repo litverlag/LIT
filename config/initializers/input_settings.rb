@@ -17,12 +17,17 @@ class InputSettings
 
   def which_type(field)
     #PROVIDER.names_and_types[field]
-    "date"
+    "boolean"
   end
 
-  def all
+  def all(table)
     #PROVIDER.all_coloum_names
-    ["projektname", "auflage_lektor", "final_deadline"]
+    if(table == "gprods")
+      return ["projektname", "auflage_lektor", "final_deadline"]
+    end
+    if(table == "buecher")
+      return ["issn", "isbn", "id"]
+    end
   end
 end
 

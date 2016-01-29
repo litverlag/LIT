@@ -85,10 +85,10 @@ de:
     manusskript_eingang_date: "manusskript_eingang_date"
     buch_seiten: "buch_seiten"
     buch_format_bezeichnung: "buch_format_bezeichnung"
+    name: "name"
+    issn: "issn"
     buch_umschlag_bezeichnung: "buch_umschlag_bezeichnung"
     buch_papier_bezeichnung: "buch_papier_bezeichnung"
     buch_vier_farb: "buch_vier_farb"
     projekt_email_adresse: "project_email_adresse"
     preps_betreuer: "preps_betreuer"
-
->>>>>>> 176434d7bc13887206b2f9cc7373f0b3c55fc99c

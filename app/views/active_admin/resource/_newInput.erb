@@ -12,13 +12,11 @@
     <% end %>
 <% end %>
     
-<% @gprodsAtt = InputSettings.instance.all %>
-<% @buchAtt = InputSettings.instance.all %>
+<% @gprodsAtt = InputSettings.instance.all("gprods") %>
+<% @buchAtt = InputSettings.instance.all("buecher") %>
 
 
 <div class="panel">
-<h3><%= @projekt.projektname %> </h3>
-
 <% used_url = admin_preps_path(@projekt.id)%>
 <fieldset class="projekt"><legend><span><%= "#{@projekt.projektname} bearbeiten"%></span></legend>
 	<%= form_for @projekt, url: used_url, remote: true do |projekt_form| %>
@@ -27,7 +25,7 @@
           <% if InputSettings.instance.is_visible?(@department, field)%>
             <% @fieldType = InputSettings.instance.which_type(field)%>
             <% case @fieldType%>
-          	<% when "String"%>
+          	<% when "string"%>
             	<li>
             	  <%= projekt_form.label field, (I18n.t field) %>
               	  <%= projekt_form.text_field field %>
@@ -45,7 +43,7 @@
             <% when "integer", "float", "decimal"%>
             	<li>
             	  <%= projekt_form.label field, (I18n.t field) %>
-	              <input value="<%=@projekt.gprods.field %>" name="gprods[<%=field%>]" id=field type="number">
+	              <input value="<%=@projekt.send("#{field}") %>" name="gprods[<%=field%>]" type="number">
             	</li>
             <% when "boolean"%>
             	<li>
@@ -63,42 +61,45 @@
     </ul>
 
 	<ul>
+		<%= projekt_form.fields_for :buecher do |buecher_form|%>
+		
         <% @buchAtt.each do |field| %>
           <% if InputSettings.instance.is_visible?(@department, field)%>
             <% @fieldType = InputSettings.instance.which_type(field)%>
             <% case @fieldType%>
-          	<% when "String"%>
+          	<% when "string"%>
             	<li>
-            	  <%= projekt_form.label field, (I18n.t field) %>
-              	  <%= projekt_form.text_field field %>
+            	  <%= buecher_form.label field, (I18n.t field) %>
+              	  <%= buecher_form.text_field field %>
             	</li>
           	<% when "text"%>
              	<li>
-            	  <%= projekt_form.label field, (I18n.t field) %>
-              	  <%= projekt_form.text_area  field, size: "10x10"  %>
+            	  <%= buecher_form.label field, (I18n.t field) %>
+              	  <%= buecher_form.text_area  field, size: "10x10"  %>
             	</li>
             <% when "date"%>
             	<li>
-            	  <%= projekt_form.label field, (I18n.t field) %>
+            	  <%= buecher_form.label field, (I18n.t field) %>
 	              <input class="datepicker" data-date-format="mm/dd/yyyy" name="buecher[<%=field%>]" value="<%=@projekt.send("#{field}") %>">
             	</li>
             <% when "integer", "float", "decimal"%>
             	<li>
-            	  <%= projekt_form.label field, (I18n.t field) %>
-	              <input value="<%=@projekt.buecher.field %>" name="buecher[<%=field%>]" id=field type="number">
+            	  <%= buecher_form.label field, (I18n.t field) %>
+	              <input value="<%=@projekt.buch.send("#{field}") %>" name="buch[<%=field%>]" id=field type="number">
             	</li>
             <% when "boolean"%>
             	<li>
-            	  <%= projekt_form.label field, (I18n.t field) %>
+            	  <%= buecher_form.label field, (I18n.t field) %>
                   <input type="checkbox" name="buecher[<%=field%>]" value="True"><%=(I18n.t field)%>
             	</li>	
             <% else %>
             	<li>
-            	  <%= projekt_form.label field, (I18n.t field) %>
+            	  <%= buecher_form.label field, (I18n.t field) %>
               	  <!-- hardcoding for the choosable options - we need an if for each hardcoding case (so maybe another switch case inside the switch case?) -->
             	</li>
             <%end%>
           <%end%>
+        <%end%>
         <%end%>
     </ul>
         

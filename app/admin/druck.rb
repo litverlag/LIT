@@ -39,7 +39,7 @@ ActiveAdmin.register Druck do
     def edit
 
       @projekt = Gprod.find(permitted_params[:id])
-
+      @department = "druck"
 
     end
 
@@ -67,11 +67,11 @@ ActiveAdmin.register Druck do
 
 
   show do
-    render partial: "druckShow"
+    render partial: "show_view"
 
   end
 
-  form partial: 'druckInput'
+  form partial: 'newInput'
 
 
 end
