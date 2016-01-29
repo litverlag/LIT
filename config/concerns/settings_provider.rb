@@ -44,15 +44,16 @@ class SettingsProvider
     @names_and_types
   end
 
-  def add_attributes(department,name,type)
-    @all_names.append(name)
-    @names_and_types.store(name.to_sym,type)
-    @all_options[department].store(name.to_sym,nil)
-  end
+  # def add_attributes(department,name,type)
+  #   @all_names.append(name)
+  #   @names_and_types.store(name.to_sym,type)
+  #   @all_options[department].store(name.to_sym,nil)
+  # end
+  #
+  # def set_options(department,name,option)
+  #   @all_options[department][name] = option
+  # end
 
-  def set_options(department,name,option)
-    @all_options[department][name] = option
-  end
   def change_type(name,new_type)
     @names_and_types[name] = new_type
   end
@@ -78,7 +79,7 @@ class SettingsProvider
           end
         else
           if not keys.length == values.length
-            raise ArgumentError, "The array for the names has to have the same length as the one for the options. see options.yml"
+            raise ArgumentError, "Array of keys length #{keys.length} must equal Array of values length #{values.length} "
           end
           values.each do |value|
             t_array1.push([keys[i].to_sym,value])
@@ -91,15 +92,25 @@ class SettingsProvider
 
     ##
     # This method imports the data from an external file it is called once at the initialization of the server
+    #
     def import(filename,table_name,name_in_yaml)
       yam = YAML.load_file(Rails.root.join(filename))
-      @all_names = get_table_fields(table_name)
-      @names_and_types = get_field_types(table_name)
+      if table_name.is_a? Hash
+        # In this case table name is alrey
+        t_names = []
+        table_name.each {|key,value| t_names.append key}
+        @all_names = t_names
+        @names_and_types = table_name
+      else
+        @all_names = get_table_fields table_name
+        @names_and_types = get_field_types table_name
+      end
+
       #write_legend!(filename,names)
-      yam[name_in_yaml].each do |deparment|
-        if not deparment.second.nil?
+      yam[name_in_yaml].each do |department|
+        if not department.second.nil?
           @all_options = {}
-          @all_options[deparment.first] = make_hash_from_two_arr(@all_names,deparment.second)
+          @all_options[department.first] = make_hash_from_two_arr(@all_names,department.second)
         end
       end
     end

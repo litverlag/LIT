@@ -11,22 +11,25 @@ gropds_options:
     projekt:
     umschlag:
     preps:
+    druck:
 
-gropds_options:
+buecher_options:
 #True um die Option an zu schalten false um Sie zu deaktivieren
-    binderei: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true]
+    binderei: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true]
     titelei:
     satz:
     projekt:
     umschlag:
     preps:
+    druck:
 
 
-status:
+status_options:
 #["statusbildpr", "statusbinderei", "statusdruck", "statusfinal", "statusoffsch", "statuspreps", "statusrg", "statussatz", "statustitelei", "statusumschl"]
-      binderei: [true,true,true]
+        binderei: [true,true,true,true,true,true,true,true,true,true]
         titelei:
         satz:
         projekt:
         umschlag:
         preps:
+        druck:
