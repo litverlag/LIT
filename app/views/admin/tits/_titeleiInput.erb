@@ -10,10 +10,7 @@
           <%= titelei_form.label :projektname, "Projektname" %>
           <%= "#{@projekt.projektname}" %>
         </li>
-        <li>
-          <%= titelei_form.label :lektor_name, "Betreuender Lektor" %>
-          <%= "#{@projekt.lektor.fullname}" %>
-        </li>
+
         <%if InputSettings.instance.titelei :statuschanger%>
             <li>
               <%= status_changer("Status der Titelei", "status[statustitelei]", $TITELEI_STATUS) %>

@@ -24,11 +24,13 @@ class SettingsProvider
 
   def initialize(filename,table,name_in_yml)
     import(filename,table,name_in_yml)
+    puts @all_options
   end
 
   ##
   # returns a hash table of all db fields and the corrensponding option
   def get_all_options
+    #puts @all_options
     @all_options
   end
 
@@ -105,7 +107,7 @@ class SettingsProvider
         @all_names = get_table_fields table_name
         @names_and_types = get_field_types table_name
       end
-
+      #puts yam[name_in_yaml]
       #write_legend!(filename,names)
       yam[name_in_yaml].each do |department|
         if not department.second.nil?
