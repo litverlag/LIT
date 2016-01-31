@@ -10,8 +10,9 @@ class InputSettings
 
   def is_visible?(department, field)
    # begin
+    field = field.to_sym
     if not GPRODS_PROVIDER.get_all_options[department][field].nil?
-      return GPRODS_PROVIDER.get_all_options[department][field]
+       return GPRODS_PROVIDER.get_all_options[department][field]
     elsif not BUECHER_PROVIDER.get_all_options[department][field].nil?
       return BUECHER_PROVIDER.get_all_options[department][field]
     elsif not  STATUS_PROVIDER.get_all_options[department][field].nil?

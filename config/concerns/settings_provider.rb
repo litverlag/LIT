@@ -23,14 +23,21 @@ class SettingsProvider
   #
 
   def initialize(filename,table,name_in_yml)
-    import(filename,table,name_in_yml)
-    puts @all_options
+    if not table.is_a? Hash
+      if ActiveRecord::Base.connection.tables.include?(table)
+        import(filename,table,name_in_yml)
+      else
+        return nil
+      end
+    else
+      import(filename,table,name_in_yml)
+    end
   end
 
   ##
   # returns a hash table of all db fields and the corrensponding option
   def get_all_options
-    #puts @all_options
+
     @all_options
   end
 
@@ -108,13 +115,14 @@ class SettingsProvider
         @names_and_types = get_field_types table_name
       end
       #puts yam[name_in_yaml]
-      #write_legend!(filename,names)
+      #write_legend!(filename,names
+      @all_options ={}
       yam[name_in_yaml].each do |department|
         if not department.second.nil?
-          @all_options = {}
           @all_options[department.first] = make_hash_from_two_arr(@all_names,department.second)
         end
       end
+
     end
 
     def write_legend!(filename,coloum_names)
@@ -134,6 +142,7 @@ class SettingsProvider
     #     get_table_field(array_of_table_names)
     #
     def get_table_fields(table_name)
+
       array_of_names = []
       ActiveRecord::Base.connection.columns(table_name).each do |c|
         array_of_names.append c.name
