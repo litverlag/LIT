@@ -1,54 +1,58 @@
-## SettingsProvider
+###
 #
-#   The Class gives the possibility to import true or false settings in from a yaml file and is used to give configurate
-#   the views for each departement.
+# The Class gives the possibility to import true or false settings in from a yaml file and is used to give configurate
+# the views for each departement.
 #
-#   The class offers three interfaces
-          # get_all_options
-          # all_coloum_names
-          # names_and_types
+# The name of the yaml file to import the settings it has to have the following structure
+#   options:
+#      department1: [true,true,true]
+#      department2: [true,false,true]
 #
-#
-#
-class SettingsProvider
-  ##
-  #     filename
-  #     The name of the yaml file to import the settings it has to have the following structure
-  #           options:
-  #               department1: [true,true,true]
-  #               department2: [true,false,true]
-  #
-  #     tables
-  #     Tables are the names of the tables to which correspond to the options
-  #
 
+class SettingsProvider
+  ###
+  # *filename*
+  # filename is the name and path of the yaml in which the options are saved
+  #
+  # *table*
+  # is either the name of the table of the database to get the fields or an hash  in this form
+  #         table = {"name_of_field": :"type_of field", ... }
+  #         table = {"statusbildpr": :"selectable", "statusbinderei": :"selectable"}
+  # *name_in_yaml*
+  # is the name of the of the hash in the yaml file on the first level of nesting
+  #
   def initialize(filename,table,name_in_yml)
-    if not table.is_a? Hash
+    if table.is_a? String
       if ActiveRecord::Base.connection.tables.include?(table)
         import(filename,table,name_in_yml)
       else
-        return nil
+        raise StandardError, "There is no table with this name in the Database"
       end
-    else
+    elsif table.is_a? Hash
       import(filename,table,name_in_yml)
+    else
+      raise ArgumentError, "The paramater table must be either a string with the tablename or a Hash in this form "
     end
   end
 
   ##
-  # returns a hash table of all db fields and the corrensponding option
+  # Returns an Hash table which all possible fields and the corresponding true or false option.
+  # The field are either from the table you have chosen when initialising an instance or from the hash you have given as a parameter or from the database.
+  # The options come from the yaml file.
   def get_all_options
 
     @all_options
   end
 
   ##
-  # returns an array which all fields from all selected databases
+  # Returns an array which all possible fields. They are either from the table you have chosen when initialising an instance or from the hash you have given as a parameter.
   def all_coloum_names
     @all_names
   end
 
   ##
-  # return a hash table with all field names for each table and its corresponding db types
+  # Returns an Hash table which all possible fields and the corresponding type.
+  # The fields and types come either from the table you have chosen when initialising an instance or from the hash you have given as a parameter or from the database.
   def names_and_types
     @names_and_types
   end
@@ -63,9 +67,16 @@ class SettingsProvider
   #   @all_options[department][name] = option
   # end
 
-  def change_type(name,new_type)
-    @names_and_types[name] = new_type
+   def change_type(name,new_type)
+     @names_and_types[name] = new_type
+   end
+
+  def remove_attribute(name)
+      @all_names.delete name
+      @all_options.delete name
+      @names_and_types.delete name
   end
+
 
 
   begin
@@ -76,7 +87,6 @@ class SettingsProvider
 
     ##
     # This methods takes to Arrays and makes a hash table with the first array as the keys and the second as the values
-    #
     #
     def make_hash_from_two_arr(keys,values)
       unless values.nil?

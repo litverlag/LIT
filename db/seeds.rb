@@ -18,5 +18,5 @@ Lektor.create(name:'Thomas Gottschalk',fox_name:'TG')
 #AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
 
 
-Department.create!([{name:'Superadmin'},{name:'Umschlag'},{name:'Satz'},{name:'Titelei'},{name:'PrePs'},{name:'Rechnung'},{name:'Bildprüfung'},{name:'Pod'},{name:'Binderei'},{name:'Lektor'}])
+#Department.create!([{name:'Superadmin'},{name:'Umschlag'},{name:'Satz'},{name:'Titelei'},{name:'PrePs'},{name:'Rechnung'},{name:'Bildprüfung'},{name:'Pod'},{name:'Binderei'},{name:'Lektor'}])
 
