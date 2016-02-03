@@ -17,10 +17,9 @@ ActiveAdmin.register Bi do
       @projekt = Gprod.find(permitted_params[:id])
     end
 
-    def edit
+    def edit# This variable decides how the view is rendered, depending on the *_settings.yml in conf
+      @department = "binderei"
       @projekt = Gprod.find(permitted_params[:id])
-
-
     end
 
     def update
@@ -37,7 +36,7 @@ ActiveAdmin.register Bi do
             @projekt = Gprod.find(params[:id])
             changeStatusByUser(@projekt, @projekt.statusbinderei, permitted_params[:status][:statusbinderei])
           end
-          render '_bindereiShow.js'
+          render '_new_Input_response.js.erb'
 
         }
 
@@ -59,7 +58,7 @@ ActiveAdmin.register Bi do
     render partial: "bindereiShow"
   end
 
-  form partial: 'bindereiInput'
+  form partial: 'newInput'
 
 
 end

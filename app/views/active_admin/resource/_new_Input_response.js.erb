@@ -1,0 +1,13 @@
+<% @statAtt = InputSettings.instance.all("status") %>
+<% @statAtt.each do |status_field| %>
+    <% @fieldType = InputSettings.instance.which_type(status_field)%>
+        document.getElementById("<%= status_field %>").outerHTML = '<span id="<%= status_field %>" class="<%="status_tag #{@projekt.send(status_field).status.gsub(/\s+/, "")}"%>"><%= @projekt.send(status_field).status %></span>';
+<%end%>
+
+
+
+//$(".status_tag").replaceWith('<span class="<%="status_tag #{@projekt.statusumschl.status.gsub(/\s+/, "")}"%>"><%= @projekt.statusumschl.status %></span>');
+$(".flashes").replaceWith('<div class="flashes"> <div class="flash flash_notice"><%= t('flash_notice.revised_succes') %></div></div>');
+$(".flashes").delay(2000).fadeOut(500);
+
+

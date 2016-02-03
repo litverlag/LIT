@@ -50,10 +50,10 @@ ActiveAdmin.register Projekt do
       #Find the new projekt associated with the current Lektor or if superadmin you can access all projects
       @projekt = Projekt.find_projekt_by_id(permitted_params[:id],current_admin_user)
       #This methods are used to check if the Author can actually release project for the departments
-
-      @array_of_format_bezeichungen = ChoosableOption.instance.format :all
-      @array_of_umschlag_bezeichnungen = ChoosableOption.instance.umschlag :all
-      @array_of_papier_bezeichungen = ChoosableOption.instance.papier :all
+      @department = "lektor"
+      @array_of_format_bezeichungen = ChoosableOption.instance.format_bezeichnung :all
+      @array_of_umschlag_bezeichnungen = ChoosableOption.instance.umschlag_bezeichnung :all
+      @array_of_papier_bezeichungen = ChoosableOption.instance.papier_bezeichnung :all
 
 
       @button_text_add = I18n.t 'buttons.author_new'

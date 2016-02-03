@@ -22,7 +22,6 @@ class ChoosableOption
 
 
 
-
   def make_options_hash(options,names)
     unless options.nil?
       t_array1 = []
@@ -111,7 +110,5 @@ class ChoosableOption
       get_option(key,symbol)
     end
   end
-
-
 
 end

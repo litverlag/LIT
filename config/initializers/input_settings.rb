@@ -16,13 +16,21 @@ class InputSettings
   def is_visible?(department, field)
    # begin
     field = field.to_sym
-    if not GPRODS_PROVIDER.get_all_options[department][field].nil?
-       return GPRODS_PROVIDER.get_all_options[department][field]
-    elsif not BUECHER_PROVIDER.get_all_options[department][field].nil?
-      return BUECHER_PROVIDER.get_all_options[department][field]
-    elsif not  STATUS_PROVIDER.get_all_options[department][field].nil?
-      return STATUS_PROVIDER.get_all_options[department][field]
+    if department.nil?
+      raise ArgumentError, "department can't be nil"
     end
+    if GPRODS_PROVIDER.get_all_options[department].nil?
+      raise ArgumentError, "The department is not defiend in the yaml file"
+    else
+      if not GPRODS_PROVIDER.get_all_options[department][field].nil?
+        return GPRODS_PROVIDER.get_all_options[department][field]
+      elsif not BUECHER_PROVIDER.get_all_options[department][field].nil?
+        return BUECHER_PROVIDER.get_all_options[department][field]
+      elsif not  STATUS_PROVIDER.get_all_options[department][field].nil?
+        return STATUS_PROVIDER.get_all_options[department][field]
+      end
+    end
+
    # rescue
    #   raise ArgumentError, "In the YAML file is a definition missing"
     #end
@@ -74,14 +82,12 @@ class InputSettings
     GPRODS_PROVIDER.remove_attribute "created_at"
     GPRODS_PROVIDER.remove_attribute "updated_at"
 
-
     BUECHER_PROVIDER.remove_attribute "autor_id"
     BUECHER_PROVIDER.remove_attribute "lektor_id"
-    BUECHER_PROVIDER.remove_attribute "gprod_at"
+    BUECHER_PROVIDER.remove_attribute "gprod_id"
     BUECHER_PROVIDER.remove_attribute "id"
     BUECHER_PROVIDER.remove_attribute "created_at"
     BUECHER_PROVIDER.remove_attribute "updated_at"
-
 
 
   end

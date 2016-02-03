@@ -24,7 +24,8 @@ ActiveAdmin.register Preps do
 
 
     def edit
-
+      # This variable decides how the view is rendered, depending on the *_settings.yml in conf
+      @department = "preps"
       @projekt = Gprod.find(permitted_params[:id])
 
 
@@ -71,7 +72,7 @@ ActiveAdmin.register Preps do
 
 
 
-  form partial: 'prepsInput'
+  form partial: 'newInput'
 
 
 end

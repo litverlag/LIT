@@ -24,6 +24,8 @@ ActiveAdmin.register Offsch do
 
     def edit
 
+      # This variable decides how the view is rendered, depending on the *_settings.yml in conf
+      @department = "Offsch"
       @projekt = Gprod.find(permitted_params[:id])
 
 
@@ -56,6 +58,6 @@ ActiveAdmin.register Offsch do
     render partial: "offschShow"
   end
 
-  form partial: 'offschInput'
+  form partial: 'newInput'
 
 end

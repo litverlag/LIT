@@ -23,7 +23,8 @@ ActiveAdmin.register SReif do
 
 
     def edit
-
+      # This variable decides how the view is rendered, depending on the *_settings.yml in conf
+      @department = "satz"
       @projekt = Gprod.find(permitted_params[:id])
 
 
@@ -56,7 +57,7 @@ ActiveAdmin.register SReif do
     render partial: "satzShow"
   end
 
-  form partial: 'satzInput'
+  form partial: 'newInput'
 
 
 end

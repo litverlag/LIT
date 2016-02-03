@@ -22,6 +22,8 @@ class SettingsProvider
   # is the name of the of the hash in the yaml file on the first level of nesting
   #
   def initialize(filename,table,name_in_yml)
+    @filename = filename
+    @name_in_yml = name_in_yml
     if table.is_a? String
       if ActiveRecord::Base.connection.tables.include?(table)
         import(filename,table,name_in_yml)
@@ -40,8 +42,7 @@ class SettingsProvider
   # The field are either from the table you have chosen when initialising an instance or from the hash you have given as a parameter or from the database.
   # The options come from the yaml file.
   def get_all_options
-
-    @all_options
+   return @all_options
   end
 
   ##
@@ -72,9 +73,13 @@ class SettingsProvider
    end
 
   def remove_attribute(name)
+      @all_options.each do |key,dep|
+       dep.delete(name.to_sym)
+      end
       @all_names.delete name
-      @all_options.delete name
-      @names_and_types.delete name
+      @names_and_types.each do |key,dep|
+        dep.delete(name)
+      end
   end
 
 
@@ -84,7 +89,8 @@ class SettingsProvider
     @all_names
     @all_options
     @names_and_types
-
+    @filename
+    @name_in_yml
     ##
     # This methods takes to Arrays and makes a hash table with the first array as the keys and the second as the values
     #
@@ -124,8 +130,7 @@ class SettingsProvider
         @all_names = get_table_fields table_name
         @names_and_types = get_field_types table_name
       end
-      #puts yam[name_in_yaml]
-      #write_legend!(filename,names
+      write_legend!
       @all_options ={}
       yam[name_in_yaml].each do |department|
         if not department.second.nil?
@@ -135,13 +140,13 @@ class SettingsProvider
 
     end
 
-    def write_legend!(filename,coloum_names)
-      f = File.open filename, 'r'
+    def write_legend!
+      f = File.open @filename, 'r'
       file = f.read
-      new_string = file.gsub(/#fields.*/,"#fields##{coloum_Names.length}#{coloum_names}")
+      new_string = file.gsub(/#fields##{@name_in_yml}.*/,"#fields##{@name_in_yml}##{@all_names.length}#{@all_names}")
       f.close
-      File.truncate(filename, 0)
-      File.open(filename, 'r+'){ |f|
+      File.truncate(@filename, 0)
+      File.open(@filename, 'r+'){ |f|
         f.write new_string
       }
     end

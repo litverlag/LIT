@@ -19,7 +19,11 @@ ActiveAdmin.register Um do
     end
 
     def edit
+      puts "______________UMSCHLAG______EDIT___________________-"
+      puts ChoosableOption.instance.methods
 
+      # This variable decides how the view is rendered, depending on the *_settings.yml in conf
+      @department = "umschlag"
       @projekt = Gprod.find(permitted_params[:id])
 
 
@@ -32,6 +36,7 @@ ActiveAdmin.register Um do
       respond_to do |format|
 
         format.js{
+          puts permitted_params
           @projekt.update(permitted_params[:gprod])
           if permitted_params[:status]
             puts permitted_params[:status][:statusumschlag]
@@ -60,7 +65,7 @@ ActiveAdmin.register Um do
     render partial: "umschlagShow"
   end
 
-  form partial: 'umschlagInput'
+  form partial: 'newInput'
 
 
 end

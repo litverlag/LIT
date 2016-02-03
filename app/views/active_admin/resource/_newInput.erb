@@ -1,25 +1,59 @@
-<!-- This template has to be rendered with the desired departement as a parameter. The parameter should be called department -->
 
-
+<% case @department %>
+<% when "binderei"%>
+    <% used_url = (admin_bi_path(@projekt.id)) %>
+<% when "preps" %>
+    <% used_url = (admin_preps_path(@projekt.id)) %>
+<% when "satz"%>
+    <% used_url = (admin_s_reif_path(@projekt.id)) %>
+<% when "titelei" %>
+    <% used_url = (admin_tit_path(@projekt.id)) %>
+<% when "umschlag" %>
+    <% used_url = (admin_um_path(@projekt.id)) %>
+<% when "druck" %>
+    <% used_url = (admin_druck_path(@projekt.id)) %>
+<% end %>
 
 <!-- all related status models -->
 <% @stat = ["statusbildpr", "statusbinderei", "statusdruck", "statusfinal", "statusoffsch",
              "statuspreps", "statusrg", "statussatz", "statustitelei", "statusumschl"] %>
 
-<% @stat.each do |stat| %>
-    <% if InputSettings.instance.is_visible?(@department, stat) %>
-        <%= status_bar(@projekt, @projekt.send("#{stat}").status , (I18n.t stat)) %>
-    <% end %>
-<% end %>
-    
+<div class="panel_contents">
+  <div class="attributes_table projekt" id="<%= "attributes_table_projekt_#{@projekt.id}" %>">
+    <table class="status_table" border="0" cellpadding="0" cellspacing="0">
+      <tbody>
+      <% @stat.each do |stat| %>
+          <% if InputSettings.instance.is_visible?(@department, stat) %>
+
+              <%= status_bar(@projekt, @projekt.send("#{stat}").status ,(I18n.t("status_names.#{stat}"))) %>
+
+          <% end %>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
 <% @gprodsAtt = InputSettings.instance.all("gprods") %>
 <% @buchAtt = InputSettings.instance.all("buecher") %>
-
+<% @statAtt = InputSettings.instance.all("status") %>
 
 <div class="panel">
-<% used_url = admin_preps_path(@projekt.id)%>
 <fieldset class="projekt"><legend><span><%= "#{@projekt.projektname} bearbeiten"%></span></legend>
 	<%= form_for @projekt, url: used_url, remote: true do |projekt_form| %>
+      <ul>
+        <% @statAtt.each do |status_field| %>
+            <%puts status_field %>
+            <% if InputSettings.instance.is_visible?(@department, status_field)%>
+                <% @fieldType = InputSettings.instance.which_type(status_field)%>
+                <li>
+                  <%= status_changer((I18n.t "status_names.#{status_field}"), "gprod[#{status_field}_attributes][status]", (StatusOptionsAdapter.option status_field)) %>
+                </li>
+            <%end%>
+        <%end%>
+      </ul>
+
+
 	<ul>
         <% @gprodsAtt.each do |field| %>
           <% if InputSettings.instance.is_visible?(@department, field)%>
@@ -43,13 +77,14 @@
             <% when "integer", "float", "decimal"%>
             	<li>
             	  <%= projekt_form.label field, (I18n.t("gprod_names.#{field}")) %>
-	              <input value="<%=@projekt.send("#{field}") %>" name="gprods[<%=field%>]" type="number">
+	              <input value="<%=@projekt.send("#{field}") %>" name="gprod[<%=field%>]" type="number">
             	</li>
             <% when "boolean"%>
             	<li>
             	  <%= projekt_form.label field, (I18n.t("gprod_names.#{field}")) %>
-                  <input type="checkbox" name="gprods[<%=field%>]" value="True"><%=(I18n.t("gprod_names.#{field}"))%>
-            	</li>	
+                  <input type="checkbox" name="gprod[<%=field%>]" value="True"><%=(I18n.t("gprod_names.#{field}"))%>
+            	</li>
+
             <% else %>
             	<li>
             	  <%= projekt_form.label field, (I18n.t("gprod_names.#{field}")) %>
@@ -61,7 +96,7 @@
     </ul>
 
 	<ul>
-		<%= projekt_form.fields_for :buecher do |buecher_form|%>
+		<%= projekt_form.fields_for :buch do |buecher_form|%>
         <% @buchAtt.each do |field| %>
           <% if InputSettings.instance.is_visible?(@department, field)%>
             <% @fieldType = InputSettings.instance.which_type(field)%>
@@ -79,18 +114,23 @@
             <% when "date"%>
             	<li>
             	  <%= buecher_form.label field, (I18n.t("buecher_names.#{field}")) %>
-	              <input class="datepicker" data-date-format="mm/dd/yyyy" name="buecher[<%=field%>]" value="<%=@projekt.send("#{field}") %>">
+	              <input class="datepicker" data-date-format="mm/dd/yyyy" name="gprod[buch_attributes][<%=field%>]" value="<%=@projekt.send("#{field}") %>">
             	</li>
             <% when "integer", "float", "decimal"%>
             	<li>
             	  <%= buecher_form.label field, (I18n.t("buecher_names.#{field}")) %>
-	              <input value="<%=@projekt.buch.send("#{field}") %>" name="buch[<%=field%>]" id=field type="number">
+	              <input value="<%=@projekt.buch.send("#{field}") %>" name="gprod[buch_attributes][<%=field%>]" id=field type="number">
             	</li>
             <% when "boolean"%>
             	<li>
             	  <%= buecher_form.label field, (I18n.t("buecher_names.#{field}")) %>
-                  <input type="checkbox" name="buecher[<%=field%>]" value="True">
-            	</li>	
+                  <input type="checkbox" name="gprod[buch_attributes][<%=field%>]" value="True">
+            	</li>
+                <% when "selectable"%>
+                    <li>
+                      <%= projekt_form.label field, (I18n.t("buecher_names.#{field}")) %>
+                      <%= select_tag("gprod[buch_attributes][#{field}]", options_for_select(ChoosableOption.send("instance").send(field,:all),selected: @projekt.buch.send(field)),include_blank: true ) %>
+                    </li>
             <% else %>
             	<!--<li>-->
             	  <% buecher_form.label field, (I18n.t("buecher_names.#{field}")) %>

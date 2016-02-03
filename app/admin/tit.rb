@@ -25,6 +25,8 @@ ActiveAdmin.register Tit do
 
     def edit
       puts "______________TITLEI______EDIT___________________-"
+      # This variable decides how the view is rendered, depending on the *_settings.yml in conf
+      @department = "titelei"
       @projekt = Gprod.find(permitted_params[:id])
       @array_of_format_bezeichungen = ChoosableOption.instance.format :all
       @array_of_umschlag_bezeichnungen = ChoosableOption.instance.umschlag :all
@@ -67,6 +69,6 @@ ActiveAdmin.register Tit do
     render partial: "titeleiShow"
   end
 
-  form partial: 'titeleiInput'
+  form partial: 'newInput'
 
 end
