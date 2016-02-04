@@ -28,7 +28,7 @@ class SettingsProvider
       if ActiveRecord::Base.connection.tables.include?(table)
         import(filename,table,name_in_yml)
       else
-        raise StandardError, "There is no table with this name in the Database"
+
       end
     elsif table.is_a? Hash
       import(filename,table,name_in_yml)

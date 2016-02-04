@@ -4,6 +4,7 @@ ActiveAdmin.register Projekt do
   config.filters = false
 
 
+
    controller do
 
     include StatusLogic

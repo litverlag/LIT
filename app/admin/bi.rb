@@ -31,10 +31,11 @@ ActiveAdmin.register Bi do
 
           @projekt.update permitted_params[:gprod]
 
+          #Part to update the status
           if permitted_params[:status]
-            puts permitted_params[:status][:statusbinderei]
-            @projekt = Gprod.find(params[:id])
-            changeStatusByUser(@projekt, @projekt.statusbinderei, permitted_params[:status][:statusbinderei])
+            permitted_params[:status].each do  |status_key,status_value|
+              changeStatusByUser(@projekt, @projekt.send(status_key), status_value)
+            end
           end
           render '_new_Input_response.js.erb'
 

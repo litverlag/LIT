@@ -38,21 +38,17 @@ ActiveAdmin.register Preps do
       respond_to do |format|
         format.js{
           @projekt.update(permitted_params[:gprod])
+          #Part to update the status
           if permitted_params[:status]
-            @projekt = Gprod.find(params[:id])
-            changeStatusByUser(@projekt, @projekt.statuspreps, permitted_params[:status][:statuspreps])
+            permitted_params[:status].each do  |status_key,status_value|
+              changeStatusByUser(@projekt, @projekt.send(status_key), status_value)
+            end
           end
 
-          render "_prepsShow.js.erb"
-
-
+          render '_new_Input_response.js.erb'
         }
-
       end
-
-
     end
-
   end
 
   index title: 'Preps' do

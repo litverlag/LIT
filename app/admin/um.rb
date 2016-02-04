@@ -38,13 +38,15 @@ ActiveAdmin.register Um do
         format.js{
           puts permitted_params
           @projekt.update(permitted_params[:gprod])
+          #Part to update the status
           if permitted_params[:status]
-            puts permitted_params[:status][:statusumschlag]
-            @projekt = Gprod.find(params[:id])
-            changeStatusByUser(@projekt, @projekt.statusumschl, permitted_params[:status][:statusumschlag])
+            permitted_params[:status].each do  |status_key,status_value|
+              changeStatusByUser(@projekt, @projekt.send(status_key), status_value)
+            end
           end
 
-          render '_umschlagShow.js'
+
+          render '_new_Input_response.js.erb'
         }
       end
 

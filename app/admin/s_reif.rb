@@ -34,14 +34,20 @@ ActiveAdmin.register SReif do
       puts "______________SREIF_____UPDATE___________________-"
       @projekt = Gprod.find(permitted_params[:id])
 
-      if permitted_params[:status]
-        puts permitted_params[:status][:statustitelei]
-        @projekt = Gprod.find(params[:id])
-        changeStatusByUser(@projekt, @projekt.statustitelei, permitted_params[:status][:statustitelei])
-        @projekt.save
+      respond_to do |format|
+        format.js{
+          #Part to update the status
+          if permitted_params[:status]
+            permitted_params[:status].each do  |status_key,status_value|
+              changeStatusByUser(@projekt, @projekt.send(status_key), status_value)
+            end
+          end
+          render '_new_Input_response.js.erb'
+        }
+
       end
 
-      redirect_to collection_path
+
 
     end
 

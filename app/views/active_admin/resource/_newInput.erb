@@ -47,7 +47,7 @@
             <% if InputSettings.instance.is_visible?(@department, status_field)%>
                 <% @fieldType = InputSettings.instance.which_type(status_field)%>
                 <li>
-                  <%= status_changer((I18n.t "status_names.#{status_field}"), "gprod[#{status_field}_attributes][status]", (StatusOptionsAdapter.option status_field)) %>
+                  <%= status_changer((I18n.t "status_names.#{status_field}"), "status[#{status_field}]", (StatusOptionsAdapter.option status_field),status_field) %>
                 </li>
             <%end%>
         <%end%>

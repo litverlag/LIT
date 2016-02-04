@@ -37,7 +37,7 @@ class Ability
       # can :manage, :all
     end
     if @departName.include?'Lektor'
-      can :crud, Projekt
+      can :manage, Projekt
     end
     if @departName.include?'Pod'
       can [:read, :update], :Druck
@@ -46,7 +46,7 @@ class Ability
       can [:read, :update], :Bi
     end
 
-    can :manage, :all #TODO remove this can :manage :all
+    #can :manage, :all #TODO remove this can :manage :all
     can :read, ActiveAdmin::Page, :name => "Dashboard"
     can :read, ActiveAdmin::Page, :name => "Access_denied"
 

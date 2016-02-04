@@ -28,9 +28,6 @@ ActiveAdmin.register Tit do
       # This variable decides how the view is rendered, depending on the *_settings.yml in conf
       @department = "titelei"
       @projekt = Gprod.find(permitted_params[:id])
-      @array_of_format_bezeichungen = ChoosableOption.instance.format :all
-      @array_of_umschlag_bezeichnungen = ChoosableOption.instance.umschlag :all
-      @array_of_papier_bezeichungen = ChoosableOption.instance.papier :all
 
     end
 
@@ -40,15 +37,16 @@ ActiveAdmin.register Tit do
 
       respond_to do |format|
         format.js{
-          puts permitted_params
+
           @projekt.update(permitted_params[:gprod])
+          #Part to update the status
           if permitted_params[:status]
-            @projekt = Gprod.find(params[:id])
-            changeStatusByUser(@projekt, @projekt.statustitelei, permitted_params[:status][:statustitelei])
-            @projekt.save
+            permitted_params[:status].each do  |status_key,status_value|
+              changeStatusByUser(@projekt, @projekt.send(status_key), status_value)
+            end
           end
 
-          render "_titeleiShow.js.erb"
+          render '_new_Input_response.js.erb'
         }
       end
 

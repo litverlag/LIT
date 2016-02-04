@@ -19,9 +19,9 @@ module CostumViewHelper
   # === Example
   #
   #   CostumViewHelper.status_changer("Status der Titelei", "status[statustitlei]", $TITELEI_STATUS)
-  def status_changer(name, status_to_change , options)
+  def status_changer(name, status_to_change , options, status_field)
 
-    render "views_for_helpers/input_status_select", name: name ,selectname: status_to_change, options: options
+    render "views_for_helpers/input_status_select", name: name ,selectname: status_to_change, options: options, status_field: status_field
 
   end
 
