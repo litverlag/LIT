@@ -84,12 +84,13 @@
             	  <%= projekt_form.label field, (I18n.t("gprod_names.#{field}")) %>
                   <input type="checkbox" name="gprod[<%=field%>]" value="True"><%=(I18n.t("gprod_names.#{field}"))%>
             	</li>
-
+              <% when "selectable"%>
+                  <li>
+                    <%= projekt_form.label field, (I18n.t("gprod_names.#{field}")) %>
+                    <%= select_tag("gprod[#{field}]", options_for_select(ChoosableOption.send("instance").send(field,:all),selected: @projekt.send(field)),include_blank: true ) %>
+                  </li>
             <% else %>
-            	<li>
-            	  <%= projekt_form.label field, (I18n.t("gprod_names.#{field}")) %>
-              	  <!-- hardcoding for the choosable options - we need an if for each hardcoding case (so maybe another switch case inside the switch case?) -->
-            	</li>
+
             <%end%>
           <%end%>
         <%end%>
@@ -132,10 +133,7 @@
                       <%= select_tag("gprod[buch_attributes][#{field}]", options_for_select(ChoosableOption.send("instance").send(field,:all),selected: @projekt.buch.send(field)),include_blank: true ) %>
                     </li>
             <% else %>
-            	<!--<li>-->
-            	  <% buecher_form.label field, (I18n.t("buecher_names.#{field}")) %>
-              	  <!-- hardcoding for the choosable options - we need an if for each hardcoding case (so maybe another switch case inside the switch case?) -->
-            	<!--</li>-->
+
             <%end%>
           <%end%>
         <%end%>

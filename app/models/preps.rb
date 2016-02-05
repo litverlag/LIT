@@ -4,5 +4,6 @@ class Preps < Gprod
 		.where("status_preps.status IS NOT NULL")
 	end
 
-
 end
+
+
