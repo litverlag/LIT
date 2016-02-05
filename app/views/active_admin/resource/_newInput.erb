@@ -12,6 +12,8 @@
     <% used_url = (admin_um_path(@projekt.id)) %>
 <% when "druck" %>
     <% used_url = (admin_druck_path(@projekt.id)) %>
+<% when "rechnung" %>
+    <% used_url = (admin_rechnung_path(@projekt.id)) %>
 <% end %>
 
 <!-- all related status models -->

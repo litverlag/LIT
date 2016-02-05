@@ -44,5 +44,6 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'umschl', 'umschl'
   inflect.irregular 'rg', 'rg'
   inflect.irregular 'binderei', 'binderei'
+  inflect.irregular 'rechnung', 'rechnungen'
   inflect.uncountable 'cip'
 end

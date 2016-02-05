@@ -4,7 +4,7 @@ require 'singleton'
 # it has three instances of Input settings on for the buecher field, one for the gprod fields and one for the Status_fields
 #
 #
-class InputSettings
+class ShowSettings
   include Singleton
   #@status is used to insert new field/options pairs to the SettingsProvider which do not come from a database table.
   @status = {:statusbildpr => "selectable", :statusbinderei => "selectable", :statusdruck => "selectable", :statusfinal => "selectable", :statusoffsch => "selectable", :statuspreps => "selectable", :statusrg => "selectable", :statussatz => "selectable", :statustitelei => "selectable", :statusumschl => "selectable"}

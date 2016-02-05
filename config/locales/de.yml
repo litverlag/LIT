@@ -158,3 +158,11 @@ de:
     statussatz: "statussatz"
     statustitelei: "statustitelei"
     statusumschl: "statusumschl"
+    
+  scopes_names:
+    neu_filter: "neu"
+    bearbeitung_filter: "in bearbeitung"
+    fertig_filter: "fertig"
+    problem_filter: "problem"
+    musterdrucken_filter: "musterdrucken"
+    nächsterAuftrag_filter: "nächsterAuftrag"
