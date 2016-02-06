@@ -5,8 +5,8 @@ class Tit < Gprod
 	# 	.where("status_titelei.status IS NOT NULL")
 	# end
 	
-  #status_names array must be written in the same order of the status_strings array (see models/concerns/global_variables)
-  scope_maker([:musterdrucken, :nächsterAuftrag, :neu_filter, :bearbeitung_filter, :fertig_filter, :problem_filter], "status_final", StatusOptionsAdapter.option(:statusfinal)) 
+  #status_names array must be written in the same order of the status_strings array (see models/concerns/global_variables) + table name + symbol for StatusOptionsAdapter
+  scope_maker([:neu_filter, :bearbeitung_filter, :verschickt_filter, :fertig_filter, :problem_filter], "status_titelei", StatusOptionsAdapter.option(:statustitelei)) 
 
 	
 end

@@ -6,6 +6,8 @@ ActiveAdmin.register Reihe do
   #menu priority:99
   menu
   
+ 
+  
   index download_links: [:csv,:xml,:json,:odt] do
     selectable_column
     column :r_code

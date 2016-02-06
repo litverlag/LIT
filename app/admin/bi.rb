@@ -4,6 +4,12 @@ ActiveAdmin.register Bi do
   config.filters = false
   actions :index, :show, :edit, :update
 
+  scope (I18n.t("scopes_names.fertig_filter")), :fertig_filter
+  scope (I18n.t("scopes_names.bearbeitung_filter")), :bearbeitung_filter
+  scope (I18n.t("scopes_names.neu_filter")), :neu_filter
+  scope (I18n.t("scopes_names.problem_filter")), :problem_filter
+
+
   controller do
 
     include StatusLogic

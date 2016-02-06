@@ -6,6 +6,7 @@ ActiveAdmin.register Tit do
 
   scope (I18n.t("scopes_names.fertig_filter")), :fertig_filter
   scope (I18n.t("scopes_names.bearbeitung_filter")), :bearbeitung_filter
+  scope (I18n.t("scopes_names.verschickt_filter")), :verschickt_filter
   scope (I18n.t("scopes_names.neu_filter")), :neu_filter
   scope (I18n.t("scopes_names.problem_filter")), :problem_filter
 
