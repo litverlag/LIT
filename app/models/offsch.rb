@@ -1,3 +1,7 @@
+##
+# # /app/models/Gprod.rb
+# This class represents all the projects which are printed by an external service
+
 class Offsch < Gprod
 	#def self.default_scope
 	#	Offsch.joins("INNER JOIN status_offsch on status_offsch.gprod_id = gprods.id")\

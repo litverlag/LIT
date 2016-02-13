@@ -1,3 +1,6 @@
+##
+# # /app/models/s_reif.rb
+# Represents the part of the production which is called Satz.
 class SReif < Gprod
 	#def self.default_scope
 	#	SReif.joins("INNER JOIN status_satz on status_satz.gprod_id = gprods.id")\

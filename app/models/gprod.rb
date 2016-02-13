@@ -1,3 +1,9 @@
+##
+# # /app/models/Gprod.rb
+# This class represents a whole project for the production it starts with a lektor creating a projekt inherited
+# from Gprod. If he releases the project for the first departments they can access the Gprod class and change attributes in their Views.
+# Gprod is of course associated with, Buch , Lektor and Autor, but it has also an association with a state (status) for each departement. The states are
+# saved in additional tables where they are also logged, but for further information look in the corresponding files,
 class Gprod < ActiveRecord::Base
 
   include StatusLogic
@@ -11,16 +17,22 @@ class Gprod < ActiveRecord::Base
   belongs_to :autor
   accepts_nested_attributes_for :autor
 
+  ##
+  # The Class method scope_maker is used to create a scope for the states in the index view.
+  # The method is called when initializing the Gprod class and it creates a scope for each symvbol in the status_names array
+  # *table* is the name of the status table for instance "status_final" for StatusFinal.
+  # *status_strings* are the possible options available for this status.
+  #       scope_maker(status_names, table, status_strings)
   def self.scope_maker(status_names, table, status_strings)
     status_names.length.times do |i|
       scope (status_names[i]), -> {
-        Gprod.joins("INNER JOIN #{table} ON (gprods.id = #{table}.gprod_id)").where("#{table}.status = ?", status_strings[i])
+        Gprod.joins("INNER JOIN #{table} ON (gprods.id = #{table}.gprod_id)").where("#{table}.status IS NOT NULL) AND (#{table}.status = ?", status_strings[i])
       }
     end
   end
   
   #status_names array must be written in the same order of the status_strings array (see models/concerns/global_variables) + table name + symbol for StatusOptionsAdapter
-  scope_maker([:neu_filter, :bearbeitung_filter, :fertig_filter, :problem_filter], "status_final", StatusOptionsAdapter.option(:statusfinal)) 
+  scope_maker([:neu_filter, :bearbeitung_filter, :fertig_filter, :problem_filter], "status_final", StatusOptionsAdapter.option(:statusfinal))
 
 
 

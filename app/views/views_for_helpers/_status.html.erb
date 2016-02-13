@@ -1,14 +1,9 @@
 
+<p class="label"><%= name %></p>
+  <% if status.nil?%>
+      <span d="<%= name %>"class="status_tag">Leer</span>
+  <% else%>
+      <span id="<%= name %>" class="<%="status_tag #{status.gsub(/\s+/, "")}"%>"><%= status %></span>
+  <%end %>
 
 
-          <% if status.nil?%>
-              <tr>
-               <th><%= name %></th>
-                <td> <span d="<%= name %>"class="status_tag">Leer</span></td>
-              </tr>
-          <% else%>
-              <tr>
-                <th><%= name %></th>
-                <td><span id="<%= name %>" class="<%="status_tag #{status.gsub(/\s+/, "")}"%>"><%= status %></span></td>
-              </tr>
-          <%end %>

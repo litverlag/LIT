@@ -1,6 +1,7 @@
-## The model for the Buch class
+##
+# # /app/models/buch.rb
 #
-#
+# Represents a book. And is associated with reihe, autor, gprod, lektor.
 class Buch < ActiveRecord::Base
 
   has_and_belongs_to_many :reihen
@@ -12,12 +13,9 @@ class Buch < ActiveRecord::Base
   belongs_to :gprod
   belongs_to :lektor
 
-  has_one :format
-  has_one :bindung
-  has_one :papier
-  has_one :umschlag
-  accepts_nested_attributes_for :format, :bindung, :papier, :umschlag
-
+  ##
+  # Checks if the ISBN is corrent makes use of the LISBN gem
+  #
   def short_isbn
     i = Lisbn.new("978-#{self.isbn}")
 

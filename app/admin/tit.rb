@@ -13,14 +13,17 @@ ActiveAdmin.register Tit do
 
   controller do
 
+
     include StatusLogic
 
     def permitted_params
          params.permit!
-       end
+    end
 
 
     def show
+      #departement is set to choose the right department for the Show / Edit View
+      @department = "titelei"
       puts "______________TITLEI______SHOW___________________-"
       @projekt = Gprod.find(permitted_params[:id])
     end
@@ -70,7 +73,7 @@ ActiveAdmin.register Tit do
   end
 
   show do
-    render partial: "titeleiShow"
+    render partial: "show_view"
   end
 
   form partial: 'newInput'

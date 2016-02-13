@@ -10,6 +10,8 @@ ActiveAdmin.register Bi do
   scope (I18n.t("scopes_names.problem_filter")), :problem_filter
 
 
+
+
   controller do
 
     include StatusLogic
@@ -18,7 +20,11 @@ ActiveAdmin.register Bi do
       params.permit!
     end
 
+
+
     def show
+      #departement is set to choose the right department for the Show / Edit View
+      @department = "binderei"
       puts "______________BINDEREI______SHOW___________________-"
       @projekt = Gprod.find(permitted_params[:id])
     end
@@ -62,7 +68,7 @@ ActiveAdmin.register Bi do
   end
 
   show do
-    render partial: "bindereiShow"
+    render partial: "show_view"
   end
 
   form partial: 'newInput'

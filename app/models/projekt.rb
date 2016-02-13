@@ -1,3 +1,7 @@
+##
+# # /app/models/peojekt.rb
+#
+# Represents a whole project in the LIT Verlag
 class Projekt < Gprod
 
 

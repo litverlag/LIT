@@ -20,6 +20,8 @@ ActiveAdmin.register Preps do
 
 
     def show
+      #departement is set to choose the right department for the Show / Edit View
+      @department = "preps"
       puts "______________PREPS______SHOW___________________-"
       @projekt = Gprod.find(permitted_params[:id])
     end
@@ -67,7 +69,7 @@ ActiveAdmin.register Preps do
   end
 
   show do
-    render partial: "prepsShow"
+    render partial: "show_view"
   end
 
 

@@ -29,7 +29,6 @@ module Prod
     config.autoload_paths += Dir[Rails.root.join('app', 'models', '{**}')]
     config.autoload_paths += Dir[ Rails.root.join('config', 'concerns', '**/') ]
 
-
      #BY Rouven Glauert worked at LIT rouvenglauert@gmail.com
      #set the default locale to german
      config.i18n.default_locale = :de

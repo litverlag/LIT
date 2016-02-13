@@ -38,6 +38,7 @@ ActiveAdmin.register Druck do
     def show
       puts "______________DRUCK______SHOW___________________-"
       @projekt = Gprod.find(permitted_params[:id])
+      @department = "druck"
     end
 
 
@@ -74,6 +75,7 @@ ActiveAdmin.register Druck do
   end
 
   index do
+    column('Status') {|druck| status_tag(druck.statusdruck.status)}
     column :projektname
     actions
   end

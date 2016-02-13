@@ -1,3 +1,8 @@
+##
+# #/app/models/admin_user.rb
+#
+# This model represents the Users of the system. For the management of the log in we have used devise and for the right we have used cancancan
+
 class AdminUser < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable

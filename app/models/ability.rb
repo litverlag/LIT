@@ -1,3 +1,13 @@
+## /app/models/ability.rb
+# This class is used to set the abilities for the users, for instance you can give the users
+# the ability ro read, update or update certain models. Each user belongs to a department from the department table in
+# database. If you want to change the attributes just change the part in the ability in the control statement with the can method
+
+# Here the User can do everything
+#       can :manage, :all
+# Here the User can change the Um model (Umschlag)
+#       can [:read, :update], , Um
+#
 class Ability
   include CanCan::Ability
 

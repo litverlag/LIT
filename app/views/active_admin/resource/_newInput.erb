@@ -20,21 +20,15 @@
 <% @stat = ["statusbildpr", "statusbinderei", "statusdruck", "statusfinal", "statusoffsch",
              "statuspreps", "statusrg", "statussatz", "statustitelei", "statusumschl"] %>
 
-<div class="panel_contents">
-  <div class="attributes_table projekt" id="<%= "attributes_table_projekt_#{@projekt.id}" %>">
-    <table class="status_table" border="0" cellpadding="0" cellspacing="0">
-      <tbody>
-      <% @stat.each do |stat| %>
-          <% if InputSettings.instance.is_visible?(@department, stat) %>
-
-              <%= status_bar(@projekt, @projekt.send("#{stat}").status ,(I18n.t("status_names.#{stat}"))) %>
-
-          <% end %>
+<div class="status_container">
+  <% @stat.each do |stat| %>
+      <% if InputSettings.instance.is_visible?(@department, stat) %>
+          <%= status_bar(@projekt, @projekt.send("#{stat}").status ,(I18n.t("status_names.#{stat}"))) %>
       <% end %>
-      </tbody>
-    </table>
+  <% end %>
   </div>
-</div>
+
+
 
 <% @gprodsAtt = InputSettings.instance.all("gprods") %>
 <% @buchAtt = InputSettings.instance.all("buecher") %>

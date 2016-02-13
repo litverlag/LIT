@@ -1,3 +1,7 @@
+##
+# # /app/models/um.rb
+# Represents the part of the production process handled by Umschlag departemt
+
 class Um < Gprod
 	#def self.default_scope
 	#	Um.joins("INNER JOIN status_umschl on status_umschl.gprod_id = gprods.id")\

@@ -34,34 +34,14 @@
           </div>
         </li>
 
-        <li>
-          <%= projekt_form.label :final_deadline, (I18n.t 'gprod_names.final_deadline')%>
-          <input class="datepicker"  id="final_deadline" data-date-format="mm/dd/yyyy" name="gprod[final_deadline]" value="<%="#{@projekt.final_deadline}" %>">
-        </li>
-             <li>
-           <%= projekt_form.label :titelei_deadline, (I18n.t 'gprod_names.titelei_deadline') %>
-           <input class="datepicker" id="titelei_deadline" data-date-format="mm/dd/yyyy" name="gprod[titelei_deadline]" value="<%="#{@projekt.titelei_deadline}" %>">
-         </li>
-             <li>
-           <%= projekt_form.label :umschlag_deadline,(I18n.t 'gprod_names.umschlag_deadline') %>
-           <input class="datepicker"  id="umschlag_deadline" data-date-format="mm/dd/yyyy" name="gprod[umschlag_deadline]" value="<%="#{@projekt.umschlag_deadline}" %>">
-         </li>
-             <li>
-           <%= projekt_form.label :preps_deadline, (I18n.t 'gprod_names.preps_deadline') %>
-           <input class="datepicker"  id="preps_deadline" data-date-format="mm/dd/yyyy" name="gprod[preps_deadline]" value="<%="#{@projekt.preps_deadline}" %>">
-         </li>
-             <li>
-           <%= projekt_form.label "binderei_deadline", (I18n.t 'gprod_names.binderei_deadline') %>
-           <input class="datepicker"  id="binderei_deadline" data-date-format="mm/dd/yyyy" name="gprod[binderei_deadline]" value="<%="#{@projekt.binderei_deadline}" %>">
-         </li>
 
 
-
+        <% puts InputSettings.instance.is_visible?(@department, @gprodsAtt[5])%>
         <% @gprodsAtt.each do |field| %>
             <% if InputSettings.instance.is_visible?(@department, field)%>
                 <% @fieldType = InputSettings.instance.which_type(field)%>
                 <% case @fieldType%>
-    <% when "string"%>
+                <% when "string"%>
                     <li>
                       <%= projekt_form.label field, (I18n.t("gprod_names.#{field}")) %>
                       <%= projekt_form.text_field field %>
@@ -86,18 +66,18 @@
                       <%= projekt_form.label field, (I18n.t("gprod_names.#{field}")) %>
                       <input type="checkbox" name="gprod[<%=field%>]" value="True"><%=(I18n.t("gprod_names.#{field}"))%>
                     </li>
-
-                <% else %>
+                <% when "selectable"%>
                     <li>
                       <%= projekt_form.label field, (I18n.t("gprod_names.#{field}")) %>
-                      <!-- hardcoding for the choosable options - we need an if for each hardcoding case (so maybe another switch case inside the switch case?) -->
+                      <%= select_tag("gprod[#{field}]", options_for_select(ChoosableOption.send("instance").send(field,:all),selected: @projekt.send(field)),include_blank: true ) %>
                     </li>
+                <% else %>
+
                 <%end%>
             <%end%>
         <%end%>
-
-        <%= projekt_form.submit "#{@projekt.projektname} bearbeiten" %>
-    <% end %>
+        <%= projekt_form.submit "Projekt überarbeiten" %>
+    <%end%>
 
 
   </ul>

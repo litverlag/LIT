@@ -22,6 +22,8 @@ ActiveAdmin.register SReif do
 
 
     def show
+      #departement is set to choose the right department for the Show / Edit View
+      @department = "satz"
       puts "______________SREIF______SHOW___________________-"
       @projekt = Gprod.find(permitted_params[:id])
     end
@@ -68,7 +70,7 @@ ActiveAdmin.register SReif do
   end
 
   show do
-    render partial: "satzShow"
+    render partial: "show_view"
   end
 
   form partial: 'newInput'

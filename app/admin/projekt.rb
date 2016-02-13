@@ -17,7 +17,7 @@ ActiveAdmin.register Projekt do
     # It would be great if this class could be in a helper modulde, but it's not that easy beacause of ActiveAdmin
     # This method is used to replace the string coming from the HTML form ()permitted_params["format"]) by an instance of the right
     # format class so that an association can be done with the klass.update method. Same procedure with papier and umschlag
-
+    # Rouven asks: Who wrote this? please mail me rouvenglauert@gmail.com
 
 
 
@@ -37,17 +37,23 @@ ActiveAdmin.register Projekt do
 
      def create
        puts "____________________________CREATE__________________________"
-       if not @projekt = Projekt.create(permitted_params[:projekt])
-         render 'new'
-       elsif not @projekt.buch = Buch.create(Hash[:name ,"unbekannt"])
-         render 'new'
-       elsif not createStatus(@projekt)
-        render 'new'
+       #Check if the current User is a Lektor if not he is not able to create a Projekt
+       if current_admin_user.departments.to_a[0].name == "Lektor"
+         if not @projekt = Projekt.create(permitted_params[:projekt])
+           render 'new'
+         elsif not @projekt.buch = Buch.create(Hash[:name ,"unbekannt"])
+           render 'new'
+         elsif not createStatus(@projekt)
+           render 'new'
+         else
+           @projekt.lektor = current_admin_user.lektor
+           @projekt.save
+           redirect_to collection_path, notice: "Projekt erfolgreich erstellt"
+         end
        else
-         @projekt.lektor = current_admin_user.lektor
-         @projekt.save
-         redirect_to collection_path, notice: "Projekt erfolgreich erstellt"
+         raise StandardError, "A project can only be created from an account with a lektor"
        end
+
      end
 
     def edit

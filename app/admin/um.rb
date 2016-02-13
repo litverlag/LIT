@@ -14,12 +14,16 @@ ActiveAdmin.register Um do
 
     include StatusLogic
 
+
+
     def permitted_params
       params.permit!
     end
 
 
     def show
+      #departement is set to choose the right department for the Show / Edit View
+      @department = "umschlag"
       puts "______________UMSCHLAG______SHOW___________________-"
       @projekt = Gprod.find(permitted_params[:id])
     end
@@ -70,7 +74,7 @@ ActiveAdmin.register Um do
   end
 
   show do
-    render partial: "umschlagShow"
+    render partial: "show_view"
   end
 
   form partial: 'newInput'

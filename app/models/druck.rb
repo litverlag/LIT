@@ -1,3 +1,6 @@
+##
+# # /app/models/druck.rb
+# Represents the departemnt Druckerei, sometimes referred as POD.
 class Druck < Gprod
   
   #def self.default_scope

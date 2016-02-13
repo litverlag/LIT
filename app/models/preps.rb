@@ -1,3 +1,6 @@
+##
+# # /app/models/preps.rb
+# Represents the Prepress department.
 class Preps < Gprod
 	#def self.default_scope
 	#	Preps.joins("INNER JOIN status_preps on status_preps.gprod_id = gprods.id")\

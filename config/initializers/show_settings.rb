@@ -17,7 +17,7 @@ class ShowSettings
     # begin
     field = field.to_sym
     if department.nil?
-      raise ArgumentError, "department can't be nil"
+      raise ArgumentError, "Department can't be nil"
     end
     if GPRODS_PROVIDER.get_all_options[department].nil?
       raise ArgumentError, "The department is not defiend in the yaml file"

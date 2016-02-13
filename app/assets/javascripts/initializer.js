@@ -19,6 +19,10 @@ $(document).on('ready page:load',
         check_box_lek();
         check_box_dep();
         admin_users_input();
+        //Slides the Panels in the shwo views
+        slider();
+
+        remove_null_line();
 
 
         $(".ui-helper-hidden-accessible").remove();
