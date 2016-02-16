@@ -6,7 +6,7 @@ ActiveAdmin.register Um do
 
   controller do
 
-    include StatusLogic
+    include StatusLogic, PrintReport
 
     def permitted_params
       params.permit!
@@ -41,15 +41,21 @@ ActiveAdmin.register Um do
           render '_umschlagShow.js'
         }
       end
+    end
 
 
-
-
+    ##
+    # Match download link with corresponding method which generates the output
+    # in this case we use print_report for the .odt output
+    def index
+      super do |format|#index!, html
+        format.odt {print_report("umschlag_report", method(:umschlag))}
+      end
     end
 
   end
 
-  index title: 'Umschlag' do
+  index title: 'Umschlag', download_links: [:odt] do
     column('Status') { |um| status_tag(um.statusumschl.status) }
     column :projektname
     actions

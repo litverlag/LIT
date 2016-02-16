@@ -9,6 +9,12 @@ module PrintReport
 		case func.name.to_s
 		when "projekt"
 			template_name = "report_projekt"
+		when "titelei"
+			template_name = "report_titelei"
+		when "umschlag"
+			template_name = "report_umschlag"
+		when "preps"
+			template_name = "report_preps"
 		end
 			
 		##
@@ -30,14 +36,63 @@ module PrintReport
 	##
 	# the following functions are used to substitute the placeholders for a each report
 	def projekt(report)
-		report.add_field(:title, 'Hello World')
+		report.add_field(:title, 'Aktuelle Projekte')
 
 		report.add_table("TABLE_1", Projekt.select("id", "projektname"), :header=>true) do |t|
 			t.add_column(:id, :id)
 			t.add_column(:name, :projektname)
+			#TODO: which attributes must be shown on this print?? 
 		end
 
-  	report.add_field(:user, current_admin_user.id)
+  	report.add_field(:user, current_admin_user.email)
+    report.add_field(:date, Time.now)
+	end
+
+	def titelei(report)
+		report.add_field(:title, 'Aktuelle Titelei-Aufträge')
+
+		report.add_table("TABLE_1",
+			Gprod.joins("INNER JOIN status_titelei ON status_titelei.gprod_id = gprods.id").select(:status, :projektname),
+			:header=>true) do |t|
+
+			t.add_column(:status, :status)
+			t.add_column(:name, :projektname)
+			#TODO: which attributes must be shown on this print?? 
+		end
+
+  	report.add_field(:user, current_admin_user.email)
+    report.add_field(:date, Time.now)
+	end
+
+	def umschlag(report)
+		report.add_field(:title, 'Aktuelle Umschlag-Aufträge')
+
+		report.add_table("TABLE_1",
+			Gprod.joins("INNER JOIN status_umschl ON status_umschl.gprod_id = gprods.id").select(:status, :projektname),
+			:header=>true) do |t|
+
+			t.add_column(:status, :status)
+			t.add_column(:name, :projektname)
+			#TODO: which attributes must be shown on this print?? 
+		end
+
+  	report.add_field(:user, current_admin_user.email)
+    report.add_field(:date, Time.now)
+	end
+
+	def preps(report)
+		report.add_field(:title, 'Aktuelle Preps-Aufträge')
+
+		report.add_table("TABLE_1",
+			Gprod.joins("INNER JOIN status_preps ON status_preps.gprod_id = gprods.id").select(:status, :projektname),
+			:header=>true) do |t|
+
+			t.add_column(:status, :status)
+			t.add_column(:name, :projektname)
+			#TODO: which attributes must be shown on this print?? 
+		end
+
+  	report.add_field(:user, current_admin_user.email)
     report.add_field(:date, Time.now)
 	end
 

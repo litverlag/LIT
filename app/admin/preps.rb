@@ -48,13 +48,21 @@ ActiveAdmin.register Preps do
         }
 
       end
+    end
 
 
+    ##
+    # Match download link with corresponding method which generates the output
+    # in this case we use print_report for the .odt output
+    def index
+      super do |format|#index!, html
+        format.odt {print_report("preps_report", method(:preps))}
+      end
     end
 
   end
 
-  index title: 'Preps' do
+  index title: 'Preps', download_links: [:odt] do
 
     @test = [:projektname, :projekt_email_adresse]
     column('Status') {|preps| status_tag(preps.statuspreps.status)}
