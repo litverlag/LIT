@@ -13,8 +13,8 @@ ActiveAdmin.register Tit do
 
   controller do
 
+    include StatusLogic, PrintReport
 
-    include StatusLogic
 
     def permitted_params
          params.permit!
@@ -58,15 +58,21 @@ ActiveAdmin.register Tit do
           render '_new_Input_response.js.erb'
         }
       end
+    end
 
-
-
+    ##
+    # Match download link with corresponding method which generates the output
+    # in this case we use print_report for the .odt output
+    def index
+      super do |format|#index!, html
+        format.odt {print_report("titelei_report", method(:titelei))}
+      end
     end
 
   end
 
 
-  index title: 'Titelei' do
+  index title: 'Titelei', download_links: [:odt] do
     column('Status') {|tit| status_tag tit.statustitelei.status}
     column :projektname
     actions
