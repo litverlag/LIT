@@ -22,7 +22,6 @@ $(document).on('ready page:load',
         //Slides the Panels in the shwo views
         slider();
 
-        remove_null_line();
 
 
         $(".ui-helper-hidden-accessible").remove();

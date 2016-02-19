@@ -7,6 +7,10 @@ class Projekt < Gprod
 
 	belongs_to :lektor
 
+  def self.default_scope
+    Gprod.joins("INNER JOIN status_final on status_final.gprod_id = gprods.id")
+  end
+
 	##
 	# This method is used to find a Grod if there is a current_admin_user associated with a Lektor
 	# you can only acces the Gprods of this Lektor. If the User has the Departement "Superadmin"

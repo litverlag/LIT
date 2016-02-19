@@ -5,6 +5,7 @@ ActiveAdmin.register SReif do
   actions :index, :show, :edit, :update
   menu
   
+  scope (I18n.t("scopes_names.alle_filter")), :alle_filter
   scope (I18n.t("scopes_names.fertig_filter")), :fertig_filter
   scope (I18n.t("scopes_names.bearbeitung_filter")), :bearbeitung_filter
   scope (I18n.t("scopes_names.verschickt_filter")), :verschickt_filter
