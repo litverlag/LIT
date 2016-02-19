@@ -27,7 +27,8 @@ class Gprod < ActiveRecord::Base
     scope :alle_filter, -> {}
     status_names.length.times do |i|
       scope (status_names[i]), -> {
-        Gprod.joins("INNER JOIN #{table} ON (gprods.id = #{table}.gprod_id)").where("#{table}.status IS NOT NULL) AND (#{table}.status = ?", status_strings[i])
+        #this SQL interrogation is possible only using the INNER JOIN in default scope (in every Abteilung)
+        Gprod.where("#{table}.status = ?", status_strings[i])
       }
     end
   end
