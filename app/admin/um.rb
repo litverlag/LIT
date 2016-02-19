@@ -3,7 +3,8 @@ ActiveAdmin.register Um do
   #menu priority: 5
   config.filters = false
   actions :index, :show, :edit, :update
-
+  
+  scope (I18n.t("scopes_names.alle_filter")), :alle_filter
   scope (I18n.t("scopes_names.fertig_filter")), :fertig_filter
   scope (I18n.t("scopes_names.bearbeitung_filter")), :bearbeitung_filter
   scope (I18n.t("scopes_names.verschickt_filter")), :verschickt_filter

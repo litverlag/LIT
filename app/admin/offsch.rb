@@ -4,7 +4,8 @@ ActiveAdmin.register Offsch do
   config.filters = false
   actions :index, :show, :edit, :update
   menu false
-
+  
+  scope (I18n.t("scopes_names.alle_filter")), :alle_filter
   scope (I18n.t("scopes_names.fertig_filter")), :fertig_filter
   scope (I18n.t("scopes_names.bearbeitung_filter")), :bearbeitung_filter
   scope (I18n.t("scopes_names.neu_filter")), :neu_filter

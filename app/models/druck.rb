@@ -3,10 +3,10 @@
 # Represents the departemnt Druckerei, sometimes referred as POD.
 class Druck < Gprod
   
-  #def self.default_scope
-  #  Preps.joins("INNER JOIN status_preps on status_preps.gprod_id = gprods.id")\
-  #  .where("status_preps.status IS NOT NULL")
-  #end
+  def self.default_scope
+    Preps.joins("INNER JOIN status_druck on status_druck.gprod_id = gprods.id")\
+    .where("status_druck.status IS NOT NULL")
+  end
   
   
 #status_names array must be written in the same order of the status_strings array (see models/concerns/global_variables) + table name + symbol for StatusOptionsAdapter

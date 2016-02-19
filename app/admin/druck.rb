@@ -16,7 +16,8 @@ ActiveAdmin.register Druck do
   menu
   config.filters = false
   actions :index, :show, :edit, :update
-
+  
+  scope (I18n.t("scopes_names.alle_filter")), :alle_filter
   scope (I18n.t("scopes_names.musterdrucken_filter")), :musterdrucken
   scope (I18n.t("scopes_names.nächsterAuftrag_filter")), :nächsterAuftrag
   scope (I18n.t("scopes_names.fertig_filter")), :fertig_filter
