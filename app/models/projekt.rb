@@ -8,7 +8,7 @@ class Projekt < Gprod
 	belongs_to :lektor
 
   def self.default_scope
-    Preps.joins("INNER JOIN status_final on status_final.gprod_id = gprods.id")
+    Gprod.joins("INNER JOIN status_final on status_final.gprod_id = gprods.id")
   end
 
 	##
