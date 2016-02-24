@@ -17,6 +17,7 @@ $(document).on('ready page:load',
         datepicker_format();
         // checkbox logic for the admin_views
         check_box_lek();
+        check_box_frei();
         check_box_dep();
         admin_users_input();
         //Slides the Panels in the shwo views
