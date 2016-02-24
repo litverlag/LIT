@@ -38,15 +38,15 @@
 <% when "rechnung" %>
     <% used_url = (admin_rechnung_path(@projekt.id)) %>
 <% when "projekt" %>
-   	<% used_url = admin_projekte_path%>
-    	<% used_url = admin_projekt_path(@projekt.id)%>
-	    <nav>
-    	  <ul>
-        	<li onclick='$(".buch").hide();$(".autor").hide();$(".projekt").show()'>Projekt</li>
-        	<li onclick='$(".buch").show();$(".autor").hide();$(".projekt").hide()'>Buch</li>
-        	<li onclick='$(".buch").hide();$(".autor").show();$(".projekt").hide()'>Autor</li>
-      	</ul>
-    	</nav>
+    <% used_url = admin_projekt_path(@projekt.id)%>
+    <!-- Projeckt view buttons -->
+	<nav>
+      <ul>
+      	<li onclick='$(".buch").hide();$(".autor").hide();$(".projekt").show()'>Projekt</li>
+       	<li onclick='$(".buch").show();$(".autor").hide();$(".projekt").hide()'>Buch</li>
+       	<li onclick='$(".buch").hide();$(".autor").show();$(".projekt").hide()'>Autor</li>
+      </ul>
+    </nav>
 <% end %>
 
 
