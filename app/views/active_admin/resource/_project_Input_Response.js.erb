@@ -1,30 +1,6 @@
 $(".flashes").replaceWith('<div class="flashes"> <div class="flash flash_notice"><%= t('flash_notice.revised_succes') %></div></div>');
 $(".flashes").delay(2000).fadeOut(500);
 
-//TODO comments to be removed
-<% if not @projekt.statusfinal.nil? %>
-//$(".flashes").replaceWith('<div class="flashes"> <div class="flash flash_notice">Projekt für alle Abteilungen freigegeben</div></div>');
-//$(".flashes").delay(2000).fadeOut(500);
-//$(".freigabe_final").remove();
-<% end %>
-
-<% if not @projekt.statustitelei.status.nil? %>
-//$(".flashes").replaceWith('<div class="flashes"> <div class="flash flash_notice">Projekt für Titelei freigegeben</div></div>');
-//$(".flashes").delay(2000).fadeOut(500);
-//$(".freigabe_titelei").remove();
-<% end %>
-
-<% if not @projekt.statusumschl.status.nil? %>
-//$(".flashes").replaceWith('<div class="flashes"> <div class="flash flash_notice">Projekt für Umschlag freigegeben</div></div>');
-//$(".flashes").delay(2000).fadeOut(500);
-//$(".freigabe_umschlag").remove();
-<% end %>
-
-<% if not @projekt.statuspreps.status.nil? %>
-//$(".flashes").replaceWith('<div class="flashes"> <div class="flash flash_notice">Projekt für Preps freigegeben</div></div>');
-//$(".flashes").delay(2000).fadeOut(500);
-//$(".freigabe_preps").remove();
-<% end %>
 
 if ($.trim( $(".edit_status").text() ).length == 0 ) {
   $(".edit_status").remove();

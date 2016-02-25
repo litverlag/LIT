@@ -30,6 +30,7 @@ ActiveAdmin.register Projekt do
 
 
      def permitted_params
+       #alle
        params.permit!
      end
 
@@ -73,9 +74,7 @@ ActiveAdmin.register Projekt do
 
       respond_to do |format|
         format.html
-        format.js {
-
-        }
+        format.js { }
       end
 
 
@@ -94,12 +93,13 @@ ActiveAdmin.register Projekt do
                  render 'edit'
                end
              end}
+             
        # TO BE INTERNATIONALIZED this strings are temporary for the names of the buttons
        @button_text_add = I18n.t 'buttons.author_new'
        @button_text_asso = I18n.t 'buttons.author_asso'
        @button_text_edit =  I18n.t 'buttons.author_edit'
-
-      
+  
+       
        respond_to do |format|
          format.html {}
          format.js {
@@ -108,7 +108,12 @@ ActiveAdmin.register Projekt do
 
            if permitted_params[:gprod] then updateProc.call(@projekt,permitted_params[:gprod]) end
            if permitted_params[:buch] then updateProc.call(@projekt.buch,permitted_params[:buch]) end
+            @projekt.update(permitted_params[:gprod][:satzproduktion])
+          puts "__________________TesT________________________________"
 
+          puts permitted_params[:gprod]
+          puts permitted_params[:status][:freigabe_titelei]
+          puts "__________________TesT________________________________"
 
            # This part is used to update to a new status with the status_logic module
            if permitted_params[:status]
@@ -118,7 +123,7 @@ ActiveAdmin.register Projekt do
              changeStatusByUser(@projekt,@projekt.statustitelei, permitted_params[:status][:freigabe_titelei])
            end
 
-           puts permitted_params
+           #puts permitted_params
 
            # It is checked if the the User want to create a new Author or if he wants to make an association with one who already exists
            # if there is no Author in the Database we get an Error, if there is on he gets associated.
@@ -142,7 +147,7 @@ ActiveAdmin.register Projekt do
            end
 
            #to obtain modified data (ex rojectShow.js.erb)
-           render "_project_Input_Response.js.erb"
+           #render "_project_Input_Response.js.erb"
          }
        end
 

@@ -43,9 +43,9 @@
             	</li>
             <% when "boolean"%>
             	<li>
-            	  <%= projekt_form.label field, (I18n.t("gprod_names.#{field}")) %>
-                  <input type="checkbox" name="gprod[<%=field%>]" value="True"><%=(I18n.t("gprod_names.#{field}"))%>
-            	</li>
+                  <%= projekt_form.label field, (I18n.t("gprod_names.#{field}")) %>
+                  <%= projekt_form.check_box field%><%=(I18n.t("gprod_names.#{field}"))%>
+                </li>
               <% when "selectable"%>
                   <li>
                     <%= projekt_form.label field, (I18n.t("gprod_names.#{field}")) %>

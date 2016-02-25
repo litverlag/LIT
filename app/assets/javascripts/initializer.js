@@ -21,7 +21,8 @@ $(document).on('ready page:load',
         admin_users_input();
         //Slides the Panels in the shwo views
         slider();
-
+		//checkbox logic for freigabe
+		check_box_frei();
 
 
         $(".ui-helper-hidden-accessible").remove();

@@ -14,26 +14,43 @@
         <li>
           <div class="edit_status">
 
-            <% if @projekt.statusfinal.status.nil? %>
-                <div class = "freigabe_final">
+			<% if @projekt.statusfinal.freigabe? %>
+                <div class = "freigabe_final" style="display: inline;">
+                    <input type="checkbox" name="status[freigabe_final]" value="True" disabled="disabled" checked>Gesamtfreigabe
+                </div>
+            <% else %>
+            	<div class = "freigabe_final" style="display: inline;">
                     <input type="checkbox" name="status[freigabe_final]" value="True">Gesamtfreigabe
                 </div>
             <% end %>
 
-            <% if @projekt.statustitelei.status.nil? %>
-                <div class = "freigabe_titelei" >
-                  <input type="checkbox" name="status[freigabe_titelei]" value="True">Titeleifreigabe
+			<% if @projekt.statustitelei.freigabe? %>
+                <div class = "freigabe_titelei" style="display: inline;">
+                    <input type="checkbox" name="status[freigabe_titelei]" value="True" disabled="disabled" checked>Titeleifreigabe
+                </div>
+            <% else %>
+            	<div class = "freigabe_titelei" style="display: inline;">
+                    <input type="checkbox" name="status[freigabe_titelei]" value="True">Titeleifreigabe
+                </div>
+            <% end %>
+            
+			<% if @projekt.statusumschl.freigabe? %>
+                <div class = "freigabe_umschlag" style="display: inline;">
+                    <input type="checkbox" name="status[freigabe_umschlag]" value="True" disabled="disabled" checked>Umschlagfreigabe
+                </div>
+            <% else %>
+            	<div class = "freigabe_umschlag" style="display: inline;">
+                    <input type="checkbox" name="status[freigabe_umschlag]" value="True">Umschlagfreigabe
                 </div>
             <% end %>
 
-            <% if @projekt.statusumschl.status.nil? %>
-                <div class = "freigabe_umschlag" >
-                   <input type="checkbox" name="status[freigabe_umschlag]" value="True">Umschlagfreigabe
-                </div>
-            <% end %>
 
-            <% if @projekt.statuspreps.status.nil? %>
+            <% if @projekt.statuspreps.freigabe? %>
                 <div class = "freigabe_preps" style="display: inline;">
+                    <input type="checkbox" name="status[freigabe_preps]" value="True" disabled="disabled" checked>Prepsfreigabe
+                </div>
+            <% else %>
+            	<div class = "freigabe_preps" style="display: inline;">
                     <input type="checkbox" name="status[freigabe_preps]" value="True">Prepsfreigabe
                 </div>
             <% end %>
@@ -70,7 +87,7 @@
                 <% when "boolean"%>
                     <li>
                       <%= projekt_form.label field, (I18n.t("gprod_names.#{field}")) %>
-                      <input type="checkbox" name="gprod[<%=field%>]" value="True"><%=(I18n.t("gprod_names.#{field}"))%>
+                      <%= projekt_form.check_box field%><%=(I18n.t("gprod_names.#{field}"))%>
                     </li>
                 <% when "selectable"%>
                     <li>

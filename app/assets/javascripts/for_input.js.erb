@@ -105,17 +105,19 @@ function check_box_lek() {
 };
 
 function check_box_frei() {
-  if($("gprod[satzprodution]").prop('checked')){
-      $( "status[freigabe_titelei]").prop( "disabled", true);
-      $( "status[freigabe_umschlag]").prop( "disabled", true);
-      $( "status[freigabe_preps]").prop( "disabled", true);
-      $( "status[freigabe_titelei]" ).prop( "checked", false);
-      $( "status[freigabe_umschlag]" ).prop( "checked", false);
-      $( "status[freigabe_preps]" ).prop( "checked", false);
+  if($("input[name='gprod[satzproduktion]']").prop("checked")){
+      $( "input[name='status[freigabe_titelei]']").prop( "disabled", true);
+      $( "input[name='status[freigabe_umschlag]']").prop( "disabled", true);
+      $( "input[name='status[freigabe_preps]']").prop( "disabled", true);
+      $( "input[name='status[freigabe_titelei]']" ).prop( "checked", false);
+      $( "input[name='status[freigabe_umschlag]']" ).prop( "checked", false);
+      $( "input[name='status[freigabe_preps]']" ).prop( "checked", false);
    }else{
-      $( "status[freigabe_final]").prop( "disabled", true);
-      $( "status[freigabe_final]" ).prop( "checked", false);
+      $( "input[name='status[freigabe_final]']").prop( "disabled", true);
+      $( "input[name='status[freigabe_final]']" ).prop( "checked", false);
    }
+    $("input[name='gprod[satzproduktion]']").change();  
+   
 };
 
 function check_box_dep() {

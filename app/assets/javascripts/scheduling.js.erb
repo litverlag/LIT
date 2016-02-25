@@ -1,15 +1,16 @@
 function scheduler(){
 
-    var final_date_field = $(".datepicker[name='gprod[final_deadline]']");
-    var preps_date_field = $("#preps_deadline");
-    var binderei_date_field = $("#binderei_deadline");
-    var titelei_date_field = $("#titelei_deadline");
-    var umschlag_date_field = $("#umschlag_deadline");
+    var final_date_field = $("input[name='gprod[final_deadline]']");
+    var preps_date_field = $("input[name='gprod[preps_deadline]']");
+    var druck_date_field = $("input[name='gprod[druck_deadline]']");
+    var binderei_date_field = $("input[name='gprod[binderei_deadline]']");
+    var titelei_date_field = $("input[name='gprod[titelei_deadline]']");
+    var umschlag_date_field = $("input[name='gprod[umschlag_deadline]']");
     
-	final_date_field.change(alert("GEHT"));
 
     final_date_field.change(function() {
-
+		
+		//alert("sdfsdf");
 
         var final_date = moment(this.value).format("DD.MM.YYYY");
 
