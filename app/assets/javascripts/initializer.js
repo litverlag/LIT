@@ -22,7 +22,7 @@ $(document).on('ready page:load',
         //Slides the Panels in the shwo views
         slider();
 		//checkbox logic for freigabe
-		check_box_frei();
+		//check_box_frei();
 
 
         $(".ui-helper-hidden-accessible").remove();
