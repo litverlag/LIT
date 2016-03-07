@@ -105,14 +105,21 @@ function check_box_lek() {
 };
 
 function check_box_frei() {
-  if($("input[name='gprod[satzproduktion]']").prop("checked")){
+  if($("#gprod_satzproduktion").prop("checked")){
       $( "input[name='status[freigabe_titelei]']").prop( "disabled", true);
       $( "input[name='status[freigabe_umschlag]']").prop( "disabled", true);
       $( "input[name='status[freigabe_preps]']").prop( "disabled", true);
-      $( "input[name='status[freigabe_titelei]']" ).prop( "checked", false);
-      $( "input[name='status[freigabe_umschlag]']" ).prop( "checked", false);
-      $( "input[name='status[freigabe_preps]']" ).prop( "checked", false);
-   }
+  } else {
+  	if(! $( "input[name='status[freigabe_titelei]']").prop( "checked")){
+  		$( "input[name='status[freigabe_titelei]']").prop( "disabled", false);
+  	}
+  	if(! $( "input[name='status[freigabe_umschlag]']").prop( "checked")){
+  		$( "input[name='status[freigabe_umschlag]']").prop( "disabled", false);
+  	}
+  	if(! $( "input[name='status[freigabe_preps]']").prop( "checked")){
+  		$( "input[name='status[freigabe_preps]']").prop( "disabled", false);
+  	}
+  }
     $("input[name='gprod[satzproduktion]']").change(check_box_frei);  
    
 };
