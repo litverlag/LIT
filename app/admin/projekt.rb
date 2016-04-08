@@ -3,6 +3,7 @@ ActiveAdmin.register Projekt do
   #menu priority: x
   config.filters = false
 
+  #scopes -> filter the viewable project in the table
   scope (I18n.t("scopes_names.alle_filter")), :alle_filter
   scope (I18n.t("scopes_names.fertig_filter")), :fertig_filter
   scope (I18n.t("scopes_names.bearbeitung_filter")), :bearbeitung_filter
@@ -11,7 +12,8 @@ ActiveAdmin.register Projekt do
 
 
    controller do
-     
+    
+    #from models/concerns
     include StatusLogic, PrintReport
 
     ##

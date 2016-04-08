@@ -17,6 +17,7 @@ ActiveAdmin.register Druck do
   config.filters = false
   actions :index, :show, :edit, :update
   
+  #scopes -> filter the viewable project in the table
   scope (I18n.t("scopes_names.alle_filter")), :alle_filter
   scope (I18n.t("scopes_names.musterdrucken_filter")), :musterdrucken
   scope (I18n.t("scopes_names.nächsterAuftrag_filter")), :nächsterAuftrag
@@ -28,6 +29,7 @@ ActiveAdmin.register Druck do
 
   controller do
 
+    #from models/concerns
     include StatusLogic
 
 

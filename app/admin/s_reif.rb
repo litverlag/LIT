@@ -5,6 +5,7 @@ ActiveAdmin.register SReif do
   actions :index, :show, :edit, :update
   menu
   
+  #scopes -> filter the viewable project in the table
   scope (I18n.t("scopes_names.alle_filter")), :alle_filter
   scope (I18n.t("scopes_names.fertig_filter")), :fertig_filter
   scope (I18n.t("scopes_names.bearbeitung_filter")), :bearbeitung_filter
@@ -12,9 +13,10 @@ ActiveAdmin.register SReif do
   scope (I18n.t("scopes_names.neu_filter")), :neu_filter
   scope (I18n.t("scopes_names.problem_filter")), :problem_filter
 
-  
   controller do
 
+    #from models/concerns
+    #ACHTUNG: SATZ IS FOR NOW NOT IMPLEMENTED IN THE STATUS LOGIC
     include StatusLogic
 
     def permitted_params

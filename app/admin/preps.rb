@@ -4,6 +4,7 @@ ActiveAdmin.register Preps do
   config.filters = false
   actions :index, :show, :edit, :update
 
+  #scopes -> filter the viewable project in the table
   scope (I18n.t("scopes_names.alle_filter")), :alle_filter
   scope (I18n.t("scopes_names.fertig_filter")), :fertig_filter
   scope (I18n.t("scopes_names.bearbeitung_filter")), :bearbeitung_filter
@@ -13,6 +14,7 @@ ActiveAdmin.register Preps do
 
   controller do
 
+    #from models/concerns
     include StatusLogic
 
     def permitted_params
