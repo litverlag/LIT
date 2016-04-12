@@ -3,7 +3,10 @@ source 'https://rubygems.org'
 gem 'activeadmin', github: 'activeadmin'
 gem 'devise' 
 gem 'dbf'
+
+# ODT Report
 gem 'odf-report'
+
 gem 'lisbn'
 gem 'ruby-progressbar'
 gem 'select2-rails'

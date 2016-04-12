@@ -35,15 +35,33 @@ module PrintReport
 
 	##
 	# the following functions are used to substitute the placeholders for a each report
+	#NOTE: if you want to edit the label in the template, you have to delete and write it again, otherwise won't work
+
+
 	def projekt(report)
 		report.add_field(:title, 'Aktuelle Projekte')
 
-		report.add_table("TABLE_1", Projekt.select("id", "final_deadline", "projektname"), :header=>true) do |t|
+		report.add_table("TABLE_1", Gprod.joins("INNER JOIN buecher ON buecher.gprod_id = gprods.id")
+		          .select("id","name", "isbn", "final_deadline", "projektname", "auflage", "binderei_bemerkungen", "druck_bemerkungeN", "prio", "binderei_eingang_datum",
+		          "lektor_id", "seiten", "format_bezeichnung", "umschlag_bezeichnung", "titelei_bemerkungen", "papier_bezeichnung"),
+		          :header=>true) do |t|
 			t.add_column(:id, :id)
-			t.add_column(:name, :projektname)
-			t.add_column(:bac, :final_deadline)
+			t.add_column(:pname, :projektname)
+			t.add_column(:name, :name)
+      t.add_column(:isbn, :isbn)
+      t.add_column(:auflage, :auflage)
+      t.add_column(:sollf, :final_deadline)
+      t.add_column(:bi, :binderei_bemerkungen)
+      t.add_column(:druck, :druck_bemerkungen)
+      t.add_column(:prio, :prio)
+      t.add_column(:msein, :binderei_eingang_datum)
+      t.add_column(:lek, :lektor_id)
+			t.add_column(:seiten, :seiten)
+			t.add_column(:format, :format_bezeichnung)
+			t.add_column(:umschlag, :umschlag_bezeichnung)
+      t.add_column(:titelei, :titelei_bemerkungen)
+			t.add_column(:papier, :papier_bezeichnung)
 			#TODO: which attributes must be shown on this print?? 
-			#NOTE: if you want to edit the label in the template, you have to delete and write it again, otherwise won't work
 		end
 
   	report.add_field(:user, current_admin_user.email)
