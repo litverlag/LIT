@@ -38,10 +38,12 @@ module PrintReport
 	def projekt(report)
 		report.add_field(:title, 'Aktuelle Projekte')
 
-		report.add_table("TABLE_1", Projekt.select("id", "projektname"), :header=>true) do |t|
+		report.add_table("TABLE_1", Projekt.select("id", "final_deadline", "projektname"), :header=>true) do |t|
 			t.add_column(:id, :id)
 			t.add_column(:name, :projektname)
+			t.add_column(:bac, :final_deadline)
 			#TODO: which attributes must be shown on this print?? 
+			#NOTE: if you want to edit the label in the template, you have to delete and write it again, otherwise won't work
 		end
 
   	report.add_field(:user, current_admin_user.email)
