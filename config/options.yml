@@ -10,7 +10,7 @@ options:
     format_bezeichnung: ["A5", "A4", "22", "23", "24", "Sonder"]
     umschlag_bezeichnung: ["wieReihe", "TeX", "InDesign", "Extern", "Schutzschlag"]
     druck_art:
-    vier_farb:
+    vier_farb: ["1", "2", "3", "4"]
     sonder:
     papier_bezeichnung: ["o80", "w90", "km100", "kg120", "wg90"]
     musterart:
@@ -27,7 +27,7 @@ names:
     format_bezeichnung: ["A5", "A4", "22", "23", "24", "Sonder"]
     umschlag_bezeichnung: ["wieReihe", "TeX", "InDesign", "Extern", "Schutzschlag"]
     druckart:
-    vierfarb:
+    vier_farb: ["1", "2", "3", "4"]
     sonder:
     papier_bezeichnung: ["o80", "w90", "km100", "kg120", "wg90"]
     musterart:

@@ -67,6 +67,7 @@ ActiveAdmin.register Projekt do
       @array_of_format_bezeichungen = ChoosableOption.instance.format_bezeichnung :all
       @array_of_umschlag_bezeichnungen = ChoosableOption.instance.umschlag_bezeichnung :all
       @array_of_papier_bezeichungen = ChoosableOption.instance.papier_bezeichnung :all
+      @array_of_vier_farb = ChoosableOption.instance.vier_farb :all
 
 
       @button_text_add = I18n.t 'buttons.author_new'

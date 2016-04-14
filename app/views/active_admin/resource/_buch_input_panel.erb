@@ -17,6 +17,10 @@
               <%= select_tag("buch[umschlag_bezeichnung]", options_for_select(@array_of_umschlag_bezeichnungen,selected: @projekt.buch.umschlag_bezeichnung), include_blank: true ) %>
             </li>
             <li>
+              <%= buch_fields.label :_vier_farb, "Vier Farb"%>
+              <%= select_tag("buch[vier_farb]", options_for_select(@array_of_vier_farb,selected: @projekt.buch.vier_farb), include_blank: true ) %>
+            </li>
+            <li>
               <%= buch_fields.label :name, "Name"%>
               <%= buch_fields.text_field :name %>
             </li>
