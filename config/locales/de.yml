@@ -120,6 +120,7 @@ de:
     lektor_bemerkungen_public: "Lektor Bemerkungen"
     lektor_bemerkungen_private: "Private Bemerkungen"
     dateibue: "Datei Bue"
+    bilder: "Bilder"
 
   buecher_names:
     name: "Name"
@@ -146,6 +147,8 @@ de:
     rueckenstaerke: "Rückenstärke"
     klappentext: "Klappenext"
     eintrag_cip_seite: "Eintrag CIP Seite"
+    sw: "SW"
+    r_code: "Reihe"
 
   status_names:
     statusbildpr: "statusbildpr"

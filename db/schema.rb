@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151107183205) do
+ActiveRecord::Schema.define(version: 20160418121527) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -117,6 +117,8 @@ ActiveRecord::Schema.define(version: 20151107183205) do
     t.boolean  "eintrag_cip_seite"
     t.datetime "created_at",                                                   null: false
     t.datetime "updated_at",                                                   null: false
+    t.string   "sw"
+    t.string   "r_code"
   end
 
   create_table "buecher_reihen", id: false, force: :cascade do |t|
@@ -207,6 +209,7 @@ ActiveRecord::Schema.define(version: 20151107183205) do
     t.string   "dateibue"
     t.datetime "created_at",                                         null: false
     t.datetime "updated_at",                                         null: false
+    t.string   "bilder"
   end
 
   create_table "lektoren", force: :cascade do |t|

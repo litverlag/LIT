@@ -52,7 +52,7 @@ module PrintReport
       t.add_column(:auflage, :auflage)
       t.add_column(:sollf, :final_deadline)
       t.add_column(:bi, :binderei_bemerkungen)
-      t.add_column(:druck, "bac")
+      t.add_column(:druck, )
       t.add_column(:prio, :prio)
       t.add_column(:msein, :manusskript_eingang_date)
       t.add_column(:lek, :lektor_id)
