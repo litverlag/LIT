@@ -42,7 +42,7 @@ module PrintReport
 		report.add_field(:title, 'Aktuelle Projekte')
 
 		report.add_table("TABLE_1", Gprod.joins("INNER JOIN buecher ON buecher.gprod_id = gprods.id")
-		          .select("id","name", "isbn", "final_deadline", "projektname", "auflage", "binderei_bemerkungen", "druck_bemerkungeN", "prio", "binderei_eingang_datum",
+		          .select("id","name", "isbn", "final_deadline", "projektname", "auflage", "binderei_bemerkungen", "prio", "manusskript_eingang_date",
 		          "lektor_id", "seiten", "format_bezeichnung", "umschlag_bezeichnung", "titelei_bemerkungen", "papier_bezeichnung"),
 		          :header=>true) do |t|
 			t.add_column(:id, :id)
@@ -52,9 +52,9 @@ module PrintReport
       t.add_column(:auflage, :auflage)
       t.add_column(:sollf, :final_deadline)
       t.add_column(:bi, :binderei_bemerkungen)
-      t.add_column(:druck, :druck_bemerkungen)
+      t.add_column(:druck, "bac")
       t.add_column(:prio, :prio)
-      t.add_column(:msein, :binderei_eingang_datum)
+      t.add_column(:msein, :manusskript_eingang_date)
       t.add_column(:lek, :lektor_id)
 			t.add_column(:seiten, :seiten)
 			t.add_column(:format, :format_bezeichnung)
