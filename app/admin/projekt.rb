@@ -193,7 +193,7 @@ ActiveAdmin.register Projekt do
      @department = "projekt"
      puts "______________PROJEKT______INDEX__________________-"
      puts @department
-     
+    
      column('Status') {|projekt| status_tag(projekt.statusfinal.status)}
      column :projektname
      column  "Emailadresse des Projektes", :projekt_email_adresse
