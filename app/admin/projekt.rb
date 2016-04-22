@@ -192,17 +192,43 @@ ActiveAdmin.register Projekt do
      #render partial: 'projectindex'
      @department = "projekt"
      puts "______________PROJEKT______INDEX__________________-"
-     puts @department
     
-     column('Status') {|projekt| status_tag(projekt.statusfinal.status)}
-     column :projektname
-     column  "Emailadresse des Projektes", :projekt_email_adresse
-
+     column I18n.t("status_names.statusfinal") do |p|
+       status_tag(p.statusfinal.status)
+     end
+     column I18n.t("gprod_names.final_deadline") do |p|
+       ##
+       # the raw method is used to surround the data with a div element of class='deadline'
+       # this is used by the js function deadline_colorcode defined in for_show.js.erb
+       raw "<div class='deadline'>#{p.final_deadline}</div>"
+     end
+     column I18n.t("status_names.statustitelei") do |p|
+       status_tag(p.statustitelei.status)
+     end
+     column I18n.t("gprod_names.titelei_deadline") do |p|
+       raw "<div class='deadline'>#{p.titelei_deadline}</div>"
+     end
+     column I18n.t("status_names.statusumschl") do |p|
+       status_tag(p.statusumschl.status)
+     end
+     column I18n.t("gprod_names.umschlag_deadline") do |p|
+       raw "<div class='deadline'>#{p.umschlag_deadline}</div>"
+     end
+     column I18n.t("status_names.statuspreps") do |p|
+       status_tag(p.statuspreps.status)
+     end
+     column I18n.t("gprod_names.preps_deadline") do |p|
+       raw "<div class='deadline'>#{p.preps_deadline}</div>"
+     end
+     column I18n.t("gprod_names.projektname") do |p|
+       p.projektname
+     end
+     column I18n.t("gprod_names.projekt_email_adresse") do |p|
+       p.projekt_email_adresse
+     end
+    
      actions
    end
-
-
-
 
 
 
