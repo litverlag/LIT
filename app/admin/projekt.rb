@@ -53,7 +53,7 @@ ActiveAdmin.register Projekt do
            redirect_to collection_path, notice: "Projekt erfolgreich erstellt"
          end
        else
-         raise StandardError, "A project can only be created from an account with a lektor"
+         raise StandardError, "A project can only be created by a lektor"
        end
 
      end
@@ -192,6 +192,7 @@ ActiveAdmin.register Projekt do
      #render partial: 'projectindex'
      @department = "projekt"
      puts "______________PROJEKT______INDEX__________________-"
+     puts  current_admin_user.departments.to_a[0].name
     
      column I18n.t("status_names.statusfinal") do |p|
        status_tag(p.statusfinal.status)

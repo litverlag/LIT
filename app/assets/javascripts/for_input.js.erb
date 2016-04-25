@@ -151,3 +151,14 @@ function admin_users_input(){
       "#admin_user_department_ids_9").change(check_box_dep);
 };
 
+
+/* function use to enable a new Projekt erstellen submit only when the name is not blank anymore */
+function new_projekt_submit(){
+	if ($("#projekt_projektname").val() == ""){
+		$( "submit[name='commit']").prop( "disabled", true);
+	} else {
+		$( "submit[name='commit']").prop( "disabled", false);
+	}
+
+    $("input[name='projekt[projektname]']").change(new_projekt_submit);
+}

@@ -16,7 +16,16 @@
               <%= projekt_form.label :lektor_bemerkungen_private, "Private Bemerkungen zu diesem Projekt" %>
               <%= projekt_form.text_area :lektor_bemerkungen_private, size: "10x10" %>
             </li>
-            <%= projekt_form.submit %>
+            <%= puts current_admin_user.departments.to_a[0].name%>
+            <%= (puts current_admin_user.departments.to_a[0].name == Lektor)%>
+               <% if (current_admin_user.departments.to_a[0].name == "Lektor") %>
+               <%= projekt_form.submit%>
+               <% else %>
+               <% flash[:error] = "A project can only be created by a lektor"%>
+                 <script type="text/javascript">
+    				window.location.href="/admin/projekte"
+  				 </script>
+               <% end %>
         	<% end %>
       	</ul>
     	</fieldset>
