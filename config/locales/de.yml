@@ -49,6 +49,7 @@ de:
       project_update: "Projekt erfolgreich überarbeitet"
       user_create: "Benutzer erfolgreich erstellt"
       user_update: "Benutzer erfolgreich überarbeitet"
+      new_project: "Projekt erfolgreich erstellt"
     revised_failure:
       new_project_error: "Nur Lektoren können neue Projekten erstellen"
       user_update: "Überarbeiten des Users gescheitert"

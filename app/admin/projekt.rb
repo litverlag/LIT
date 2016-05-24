@@ -42,18 +42,18 @@ ActiveAdmin.register Projekt do
        #Check if the current User is a Lektor if not he is not able to create a Projekt
        if current_admin_user.departments.to_a[0].name == "Lektor"
          if not @projekt = Projekt.create(permitted_params[:projekt])
-           render 'new'
+           #render 'new'
          elsif not @projekt.buch = Buch.create(Hash[:name ,"unbekannt"])
-           render 'new'
+           #render 'new'
          elsif not createStatus(@projekt)
-           render 'new'
+           #render 'new'
          else
            @projekt.lektor = current_admin_user.lektor
            @projekt.save
-           redirect_to collection_path, notice: "Projekt erfolgreich erstellt"
+           redirect_to collection_path, notice: I18n.t 'flash_notice.revised_success.new_project'
          end
        else
-         raise StandardError, "A project can only be created by a lektor"
+         #raise StandardError, "A project can only be created by a lektor"
        end
 
      end
