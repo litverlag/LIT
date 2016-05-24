@@ -50,7 +50,7 @@ ActiveAdmin.register Projekt do
          else
            @projekt.lektor = current_admin_user.lektor
            @projekt.save
-           redirect_to collection_path, notice: I18n.t 'flash_notice.revised_success.new_project'
+           redirect_to collection_path, notice: (I18n.t("flash_notice.revised_success.new_project"))
          end
        else
          #raise StandardError, "A project can only be created by a lektor"
