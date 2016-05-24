@@ -1,3 +1,4 @@
+
 <% if @department.nil? %>
 	<% used_url = admin_projekte_path%>
     	<fieldset class="projekt"><legend><span>Ein neues Projekt erstellen</span></legend>
@@ -21,7 +22,7 @@
                <% if (current_admin_user.departments.to_a[0].name == "Lektor") %>
                <%= projekt_form.submit%>
                <% else %>
-               <% flash[:error] = "A project can only be created by a lektor"%>
+               <% flash[:error] = I18n.t 'flash_notice.revised_failure.new_project_error' %>
                  <script type="text/javascript">
     				window.location.href="/admin/projekte"
   				 </script>

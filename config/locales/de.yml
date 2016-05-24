@@ -50,6 +50,7 @@ de:
       user_create: "Benutzer erfolgreich erstellt"
       user_update: "Benutzer erfolgreich überarbeitet"
     revised_failure:
+      new_project_error: "Nur Lektoren können neue Projekten erstellen"
       user_update: "Überarbeiten des Users gescheitert"
 
     is_not_a_number: "Bitte tragen Sie eine Zahl ein"
