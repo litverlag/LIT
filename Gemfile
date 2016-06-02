@@ -58,6 +58,9 @@ group :development, :test do
   gem 'cancan'
 
   gem 'cancancan'
+  
+  #used to generate graphic model documentation
+  gem 'railroady'
 
 
 end
