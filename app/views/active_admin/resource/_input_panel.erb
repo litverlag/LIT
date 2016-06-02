@@ -15,44 +15,50 @@
         <%end%>
       </ul>
 
-
 	<ul>
         <% @gprodsAtt.each do |field| %>
           <% if InputSettings.instance.is_visible?(@department, field)%>
             <% @fieldType = InputSettings.instance.which_type(field)%>
+			<!-- case when block to check the type of the parameter to show -->
             <% case @fieldType%>
           	<% when "string"%>
+          	    <!-- string = text_field -->
             	<li>
             	  <%= projekt_form.label field, (I18n.t("gprod_names.#{field}")) %>
               	  <%= projekt_form.text_field field %>
             	</li>
-          	<% when "text"%>
-             	<li>
+           	<% when "text"%>
+ 	            <!-- text = text_area -->
+            	<li>
             	  <%= projekt_form.label field, (I18n.t("gprod_names.#{field}")) %>
               	  <%= projekt_form.text_area field, size: "10x10"  %>
             	</li>
             <% when "date"%>
+	            <!-- date = datepicker (mm/dd/yyyy) (there's a jquery script about in assets/javascripts/for_input.js.erb) -->
             	<li>
             	  <%= projekt_form.label field, (I18n.t("gprod_names.#{field}")) %>
 	              <input class="datepicker" data-date-format="mm/dd/yyyy" name="gprod[<%=field%>]" value="<%=@projekt.send("#{field}") %>">
             	</li>
             <% when "integer", "float", "decimal"%>
+                <!-- integer/float/decimal = number (there's a jquery script about in assets/javascripts/for_input.js.erb) -->
             	<li>
             	  <%= projekt_form.label field, (I18n.t("gprod_names.#{field}")) %>
 	              <input value="<%=@projekt.send("#{field}") %>" name="gprod[<%=field%>]" type="number">
             	</li>
             <% when "boolean"%>
+            	<!-- boolean = check_box -->
             	<li>
                   <%= projekt_form.label field, (I18n.t("gprod_names.#{field}")) %>
                   <%= projekt_form.check_box field%><%=(I18n.t("gprod_names.#{field}"))%>
                 </li>
               <% when "selectable"%>
+                  <!-- selectable = choosable option (see models/concerns/choosable_option.rb) -->
                   <li>
                     <%= projekt_form.label field, (I18n.t("gprod_names.#{field}")) %>
                     <%= select_tag("gprod[#{field}]", options_for_select(ChoosableOption.send("instance").send(field,:all),selected: @projekt.send(field)),include_blank: true ) %>
                   </li>
             <% else %>
-
+			<!-- at the moment other types of data are not managed -->
             <%end%>
           <%end%>
         <%end%>
@@ -65,37 +71,43 @@
             <% @fieldType = InputSettings.instance.which_type(field)%>
             <% case @fieldType%>
           	<% when "string"%>
+          	    <!-- string = text_field -->
             	<li>
             	  <%= buecher_form.label field, (I18n.t("buecher_names.#{field}")) %>
               	  <%= buecher_form.text_field field %>
             	</li>
           	<% when "text"%>
+          	    <!-- text = text_area -->
              	<li>
             	  <%= buecher_form.label field, (I18n.t("buecher_names.#{field}")) %>
               	  <%= buecher_form.text_area  field, size: "10x10"  %>
             	</li>
             <% when "date"%>
+            	<!-- date = datepicker (mm/dd/yyyy) (there's a jquery script about in assets/javascripts/for_input.js.erb) -->
             	<li>
             	  <%= buecher_form.label field, (I18n.t("buecher_names.#{field}")) %>
 	              <input class="datepicker" data-date-format="mm/dd/yyyy" name="gprod[buch_attributes][<%=field%>]" value="<%=@projekt.send("#{field}") %>">
             	</li>
             <% when "integer", "float", "decimal"%>
+                <!-- integer/float/decimal = number (there's a jquery script about in assets/javascripts/for_input.js.erb) -->
             	<li>
             	  <%= buecher_form.label field, (I18n.t("buecher_names.#{field}")) %>
 	              <input value="<%=@projekt.buch.send("#{field}") %>" name="gprod[buch_attributes][<%=field%>]" id=field type="number">
             	</li>
             <% when "boolean"%>
+            	<!-- boolean = check_box -->
             	<li>
             	  <%= buecher_form.label field, (I18n.t("buecher_names.#{field}")) %>
                   <input type="checkbox" name="gprod[buch_attributes][<%=field%>]" value="True">
             	</li>
-                <% when "selectable"%>
+              <% when "selectable"%>
+              		<!-- selectable = choosable option (see models/concerns/choosable_option.rb) -->
                     <li>
                       <%= projekt_form.label field, (I18n.t("buecher_names.#{field}")) %>
                       <%= select_tag("gprod[buch_attributes][#{field}]", options_for_select(ChoosableOption.send("instance").send(field,:all),selected: @projekt.buch.send(field)),include_blank: true ) %>
                     </li>
             <% else %>
-
+			<!-- at the moment other types of data are not managed -->
             <%end%>
           <%end%>
         <%end%>

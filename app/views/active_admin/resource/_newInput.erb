@@ -1,4 +1,4 @@
-
+<!-- this is the form to create new project (direct from project index view)-->
 <% if @department.nil? %>
 	<% used_url = admin_projekte_path%>
     	<fieldset class="projekt"><legend><span>Ein neues Projekt erstellen</span></legend>
@@ -32,6 +32,7 @@
     	</fieldset>
 <% else %>
 
+<!--here the url path is choosen depending on the department (as a parameter)-->
 <% case @department %>
 <% when "binderei"%>
     <% used_url = (admin_bi_path(@projekt.id)) %>
@@ -92,5 +93,5 @@
 	<% end %>
 </div>
 
-
+<!-- status and panels are just for the project view -->
 <% end %>

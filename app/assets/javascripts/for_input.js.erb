@@ -152,7 +152,7 @@ function admin_users_input(){
 };
 
 
-/* function use to enable a new Projekt erstellen submit only when the name is not blank anymore */
+/* this function enables a new Projekt erstellen submit only when the name is not blank anymore */
 function new_projekt_submit(){
 	if ($("#projekt_projektname").val() == ""){
 		$( "submit[name='commit']").prop( "disabled", true);
