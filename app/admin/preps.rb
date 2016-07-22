@@ -76,7 +76,7 @@ ActiveAdmin.register Preps do
     @test = [:projektname, :projekt_email_adresse]
     column('Status') {|preps| status_tag(preps.statuspreps.status)}
     @test.each do |value|
-    column value
+		column value
     end
     actions
   end

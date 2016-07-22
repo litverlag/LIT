@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class LektorTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "false" do
+	assert false
+  end
 end

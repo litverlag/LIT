@@ -17,7 +17,7 @@ class RailsTestDataCreator
                     end
                 end
             end
-        end 
+        end
     end
 
     def get_data_array(table_name,column_name,type)

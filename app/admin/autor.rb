@@ -30,7 +30,7 @@ ActiveAdmin.register Autor do
       respond_to do |format|
         format.html
         format.js {
-          render "_autorCreate.js.erb"
+          render "_autorCreate.js.erb" #flash notice
         }
       end
 

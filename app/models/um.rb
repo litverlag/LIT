@@ -8,7 +8,9 @@ class Um < Gprod
 		.where("status_umschl.status IS NOT NULL")
 	end
 	  
-  #status_names array must be written in the same order of the status_strings array (see models/concerns/global_variables) + table name + symbol for StatusOptionsAdapter
+  #status_names array must be written in the same order of the status_strings
+  # array (see models/concerns/global_variables) + table name + symbol for
+  # StatusOptionsAdapter
   scope_maker([:neu_filter, :bearbeitung_filter, :verschickt_filter, :fertig_filter, :problem_filter], "status_umschl", StatusOptionsAdapter.option(:statusumschl)) 
 
 end

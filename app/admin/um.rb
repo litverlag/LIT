@@ -76,9 +76,12 @@ ActiveAdmin.register Um do
 
   end
 
-  index title: 'Umschlag', download_links: [:odt] do
+  index title: I18n.t("gprod_names.umschlag_umschlag"), download_links: [:odt] do
+	@test = [:projektname, :isbn, :umschlag_bezeichnung, :rueckenstaerke]
     column('Status') { |um| status_tag(um.statusumschl.status) }
-    column :projektname
+	@test.each do |val|
+		column val
+	end
     actions
   end
 

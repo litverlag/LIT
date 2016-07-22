@@ -5,25 +5,63 @@ module GlobalVariables
 	#Final
 
 	  $MUSTER_ART = ["digital", "papier"]
-		$FINAL_STATUS = ["neu", "in bearbeitung", "fertig", "problem"]
+		$FINAL_STATUS = [I18n.t("scopes_names.neu_filter"), 
+				   I18n.t("scopes_names.bearbeitung_filter"), 
+				   I18n.t("scopes_names.fertig_filter"), 
+				   I18n.t("scopes_names.problem_filter")]
     #Druck
-    	$DRUCK_STATUS = ["musterdrucken", "nächsterAuftrag", "neu", "bearbeitung", "fertig", "problem"]
+    	$DRUCK_STATUS = [I18n.t("scopes_names.musterdrucken_filter"), 
+					  I18n.t("scopes_names.nächsterAuftrag_filter"), 
+					  I18n.t("scopes_names.neu_filter"), 
+					  I18n.t("scopes_names.bearbeitung_filter"), 
+					  I18n.t("scopes_names.fertig_filter"), 
+					  I18n.t("scopes_names.problem_filter")]
     #Titelei
-    	$TITELEI_STATUS = ["neu", "in bearbeitung", "verschickt", "fertig", "problem"]
+    	$TITELEI_STATUS = [I18n.t("scopes_names.neu_filter"), 
+						I18n.t("scopes_names.bearbeitung_filter"), 
+						I18n.t("scopes_names.verschickt_filter"), 
+						I18n.t("scopes_names.fertig_filter"), 
+						I18n.t("scopes_names.problem_filter")]
     #Satz
-    	$SATZ_STATUS = ["neu", "in bearbeitung", "verschickt", "fertig", "problem"]
+    	$SATZ_STATUS = [I18n.t("scopes_names.neu_filter"), 
+					 I18n.t("scopes_names.bearbeitung_filter"), 
+					 I18n.t("scopes_names.verschickt_filter"), 
+					 I18n.t("scopes_names.fertig_filter"), 
+					 I18n.t("scopes_names.problem_filter")]
     #Pre press
-    	$PREPS_STATUS = [ "neu", "in bearbeitung", "verschickt", "fertig", "problem"]
+    	$PREPS_STATUS = [ I18n.t("scopes_names.neu_filter"), 
+					   I18n.t("scopes_names.bearbeitung_filter"), 
+					   I18n.t("scopes_names.verschickt_filter"), 
+					   I18n.t("scopes_names.fertig_filter"), 
+					   I18n.t("scopes_names.problem_filter")]
     #Offset/Schirm
-    	$OFFSCH_STATUS = ["neu", "in bearbeitung", "fertig", "problem"]
-    #Bildprüfung
-    	$BILDPR_STATUS = [ "neu", "in bearbeitung", "fertig", "problem"]
-    #Umschlag
-    	$UMSCHL_STATUS = [ "neu", "in bearbeitung", "verschickt", "fertig", "problem"]
+    	$OFFSCH_STATUS = [I18n.t("scopes_names.neu_filter"), 
+					   I18n.t("scopes_names.bearbeitung_filter"), 
+					   I18n.t("scopes_names.fertig_filter"), 
+					   I18n.t("scopes_names.problem_filter")]
+    
+		#Bildprüfung
+    	$BILDPR_STATUS = [ I18n.t("scopes_names.neu_filter"), 
+						I18n.t("scopes_names.bearbeitung_filter"), 
+						I18n.t("scopes_names.fertig_filter"), 
+						I18n.t("scopes_names.problem_filter")]
+    
+		#Umschlag
+    	$UMSCHL_STATUS = [ I18n.t("scopes_names.neu_filter"), 
+						I18n.t("scopes_names.bearbeitung_filter"), 
+						I18n.t("scopes_names.verschickt_filter"), 
+						I18n.t("scopes_names.fertig_filter"), 
+						I18n.t("scopes_names.problem_filter")]
     #Buchhaltung
-    	$RG_STATUS = [ "neu", "in bearbeitung", "fertig", "problem"]
-    #Binderei
-    	$BINDEREI_STATUS = [ "neu", "in bearbeitung", "fertig", "problem"]
-
+    	$RG_STATUS = [ I18n.t("scopes_names.neu_filter"), 
+					I18n.t("scopes_names.bearbeitung_filter"), 
+					I18n.t("scopes_names.fertig_filter"), 
+					I18n.t("scopes_names.problem_filter")]
+    
+		#Binderei
+    	$BINDEREI_STATUS = [ I18n.t("scopes_names.neu_filter"), 
+						  I18n.t("scopes_names.bearbeitung_filter"), 
+						  I18n.t("scopes_names.fertig_filter"), 
+						  I18n.t("scopes_names.problem_filter")]
 
 end

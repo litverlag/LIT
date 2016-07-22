@@ -10,7 +10,7 @@ class CreateBuecher < ActiveRecord::Migration
       #Normale Attribute
       t.string :name
       t.string :isbn
-      t.string :issn
+      #t.string :issn	#Should only be in 'reihen' db.
       t.text :titel1
       t.text :titel2
       t.text :titel3
