@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'activeadmin', github: 'activeadmin'
 gem 'devise' 
 gem 'dbf'
+gem 'google_drive'
 
 # ODT Report
 gem 'odf-report'
