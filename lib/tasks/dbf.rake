@@ -36,11 +36,30 @@ namespace :dbf do
       'pol' => 'Politikwissenschaft'
     }
     
-    lektorname = {
-      'rai' => 'Rainer',
-      'bel' => 'Bellman',
-      'web' => 'Weber'
-    }
+		lektorname = {
+			'hf'  => 'Hopf',
+			'whf' => 'Hopf',
+			'ch'	=> 'Unknown_ch',
+			'hfch'=> 'wtf_hfch',
+			'rai' => 'Rainer',
+			'bel' => 'Bellman',
+			'opa' => 'Unknown_opa',
+			'litb'=> 'Lit Berlin',
+			'wla' => 'Lit Wien',
+			'web' => 'Unknown_web'
+		}
+		lektoremailkuerzel = {
+			'hf'  => 'hopf@lit-verlag.de',
+			'whf' => 'hopf@lit-verlag.de',
+			'ch'	=> 'Unknown_ch',
+			'hfch'=> 'wtf_hfch',
+			'rai' => 'rainer@lit-verlag.de',
+			'bel' => 'bellmann@lit-verlag.de',
+			'opa' => 'Unknown_opa',
+			'litb'=> 'berlin@lit-verlag.de',
+			'wla' => 'wien@lit-verlag.de',
+			'web' => 'Unknown_web'
+		}
 
     reihen_path = File.join(path, "reihen", "REIHEN.DBF")
     cip_path = File.join(path, "cip", "CIPM.DBF")
@@ -172,7 +191,8 @@ namespace :dbf do
     lektoren.uniq.each do |lektor|
       Lektor.create(
         :fox_name => lektor,
-        :name => lektorname[lektor]
+        :name => lektorname[lektor],
+				:emailkuerzel => lektoremailkuerzel[lektor]
       )
     end
     

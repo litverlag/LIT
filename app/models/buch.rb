@@ -15,15 +15,18 @@ class Buch < ActiveRecord::Base
 
   ##
   # Checks if the ISBN is corrent makes use of the LISBN gem
-  #
+	#
+	## Who wrote this bullshit? How about we dont assume that the isbn data in
+	##  the database is incomplete?
   def short_isbn
-    i = Lisbn.new("978-#{self.isbn}")
+		i = Lisbn.new(self.isbn)					if (/\d{3}-\d-\d{3}-\d+/ =~ self.isbn)==0
+		i = Lisbn.new("978-#{self.isbn}") if (			/\d-\d{3}-\d+/ =~ self.isbn)==0
 
-    if i.valid?
-      "#{i.parts[3]}-#{i.parts[4]}"
-    else
-       self.isbn
-    end
+		if i.valid?
+			"#{i.parts[3]}-#{i.parts[4]}"
+		else
+			"#WrongFormat: '"+self.isbn+"'"
+		end
   end
 
   ##

@@ -17,16 +17,39 @@ def get_col_from_title( table )
 	return Hash[*name.zip(index).flatten]
 end
 
-def debug_gea( i , h )
-	puts 'Strange entry in column '+i.to_s+': '+table[i,h]
-end
 
 # Should be used once for the big tables LF/EinListe
 #  This function assumes, that every entry is unique.
 def get_em_all( table )
 	h = get_col_from_title( table )
 
-	(1..table.num_rows).each do |i|
+	lektorname = {
+		'hf'  => 'Hopf',
+		'whf' => 'Hopf',
+		'ch'	=> 'Unknown_ch',
+		'hfch'=> 'wtf_hfch',
+		'rai' => 'Rainer',
+		'bel' => 'Bellman',
+		'opa' => 'Unknown_opa',
+		'litb'=> 'Lit Berlin',
+		'wla' => 'Lit Wien',
+		'web' => 'Unknown_web'
+	}
+
+	lektoremailkuerzel = {
+		'hf'  => 'hopf@lit-verlag.de',
+		'whf' => 'hopf@lit-verlag.de',
+		'ch'	=> 'Unknown_ch',
+		'hfch'=> 'wtf_hfch',
+		'rai' => 'rainer@lit-verlag.de',
+		'bel' => 'bellmann@lit-verlag.de',
+		'opa' => 'Unknown_opa',
+		'litb'=> 'berlin@lit-verlag.de',
+		'wla' => 'wien@lit-verlag.de',
+		'web' => 'Unknown_web'
+	}
+
+	(2..table.num_rows).each do |i|
 		# Create a book for each entry in the table.
 		# Fill in trivial information.
 		buch = Buch.new(
@@ -37,21 +60,59 @@ def get_em_all( table )
 
 		# Error check isbn entries.
 		isbn = table[ i, h['ISBN'] ]
-		if isbn.match('[0-9]{5}-[0-9]') != isbn
-			if isbn.match('[0-9]{3}-[0-9]') != isbn
-				#ate/egl
-				puts 'ATE/EGL not implemented yet.'
+		puts '[Debug] processing '+isbn.to_s
+		if isbn.nil? or isbn.size < 1
+			puts '[Debug] Strange entry in column '+i.to_s+': '+table[i,h['ISBN']]
+			next
+		end
+		unless (/[0-9]{5}-[0-9]/ =~ isbn) == 0
+			unless (/[0-9]{3}-[0-9]/ =~ isbn) == 0
+				#TODO What ate/egl short-isbn noation should we use?
+				puts "[Implement] ATE/EGL short-isbn notation. \tSKIPPED"
 				next
 			else
-				debug_gea(i,h['ISBN'])
+				puts '[Debug] Strange entry in column '+i.to_s+": '"+table[i,h['ISBN']]+"'\tSKIPPED"
 				next
 			end
 		end
 
-		# Autor ... suchen ...
-		# Need to use 'buecher_reihen' table to find the author ..
+		# Reihe.
+		r_code = table[ i, h['Reihe'] ]
+		unless r_code.empty?
+			buch[:r_code] = r_code
+		else
+			puts "[Debug] \t Kein reihenkuerzel vorhanden."
+		end
 
-		buch.save
+		# Lektor.
+		fox_name = table[ i, h['Lek'] ]
+		lektor = Lektor.where(fox_name: fox_name).first
+		unless lektor.nil?
+			buch[:lektor_id] = lektor[:id]
+		else
+			lektor = Lektor.create(
+				:fox_name			=> fox_name.downcase,
+				:name					=> lektorname[fox_name.downcase],
+				:emailkuerzel => lektoremailkuerzel[fox_name.downcase]
+			)
+		end
+
+		# Autor.
+		#  - first try: via email.., error check against lektor-mail
+		email = table[ i, h['email'] ]
+		unless email == lektor[:emailkuerzel]
+			autor = Autor.where(email: email).first
+			unless autor.nil?
+				buch[:autor_id] = autor[:id]
+			else
+				puts "[Debug] \t Author not existent."
+			end
+		else
+			puts "[Implement] another way to find the author."
+		end
+
+		puts "[Debug] \t Saving it:'"+buch[:name].to_s+"'"
+		#buch.save
 	end
 
 end
