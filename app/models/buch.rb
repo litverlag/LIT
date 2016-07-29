@@ -3,6 +3,7 @@
 #
 # Represents a book. And is associated with reihe, autor, gprod, lektor.
 class Buch < ActiveRecord::Base
+	include ActiveModel::Validations
 
   has_and_belongs_to_many :reihen
   accepts_nested_attributes_for :reihen
@@ -45,6 +46,14 @@ class Buch < ActiveRecord::Base
   end
 
 
+	##
+	# Validations. This is neat.
+	# The short form default to the commented entry below.
+	#validates :isbn, format: /\d{0,3}-?\d-\d{3}-\d+-\d/
+	#validates :isbn, format: { with: /\d{0,3}-?\d-\d{3}-\d+-\d/, on: :create }
+
+	validates :isbn, format: /\d{0,3}-?\d-\d{3}-\d+-\d/, uniqueness: true
+	validates :name, presence: true
 
 
 end

@@ -4,8 +4,13 @@
 # Tabelle' to our database.
 #
 require 'google_drive'
+require 'rubyXL'
+
 session = GoogleDrive.saved_session( ".credentials/client_secret.json" )
 spreadsheet = session.spreadsheet_by_key( "1YWWcaEzdkBLidiXkO-_3fWtne2kMgXuEnw6vcICboRc" )
+
+#NOTE: Should automate the download of the xlxs doc.
+workbook = RubyXL::Parser.parse('tmp/prod.xlxs')
 
 # A function to map the columns of any 'Lit-produktions-tabelle'.
 def get_col_from_title( table )
@@ -20,7 +25,14 @@ end
 
 # Should be used once for the big tables LF/EinListe
 #  This function assumes, that every entry is unique.
-def get_em_all( table )
+#
+# After writing the following I got sad and left.
+#  As the ruby GoogleAPI does not support an easy way to access cell
+#  formatting.. (Only option is to write a javascript function, which can then
+#  be called via an API function call.) .. this function gets an additional
+#  argument: the path to a downloaded xlsx document, containing the same
+#  information.
+def get_em_all( table, xlsx )
 	h = get_col_from_title( table )
 
 	lektorname = {
@@ -40,7 +52,7 @@ def get_em_all( table )
 		'hf'  => 'hopf@lit-verlag.de',
 		'whf' => 'hopf@lit-verlag.de',
 		'ch'	=> 'Unknown_ch',
-		'hfch'=> 'wtf_hfch',
+		'hfch'=> 'wtf_is_hfch',
 		'rai' => 'rainer@lit-verlag.de',
 		'bel' => 'bellmann@lit-verlag.de',
 		'opa' => 'Unknown_opa',
@@ -98,7 +110,7 @@ def get_em_all( table )
 		end
 
 		# Autor.
-		#  - first try: via email.., error check against lektor-mail
+		#  - first try: via email, error check against lektor-mail
 		email = table[ i, h['email'] ]
 		unless email == lektor[:emailkuerzel]
 			autor = Autor.where(email: email).first

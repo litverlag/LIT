@@ -2,8 +2,11 @@ source 'https://rubygems.org'
 
 gem 'activeadmin', github: 'activeadmin'
 gem 'devise' 
+
+# Gather all the current data..
 gem 'dbf'
 gem 'google_drive'
+gem 'rubyXL'
 
 # ODT Report
 gem 'odf-report'
