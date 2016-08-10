@@ -1,6 +1,6 @@
 namespace :dbf do
   desc "Import dbf files."
-  task import_dbf: :environment do
+  task import: :environment do
 
 		# Should be fine like this.
 		#path = ARGV.last
