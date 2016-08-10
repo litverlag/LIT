@@ -1,7 +1,10 @@
 namespace :dbf do
-  desc "Import dbf files"
-  task import: :environment do
-    path = ARGV.last
+  desc "Import dbf files."
+  task import_dbf: :environment do
+
+		# Should be fine like this.
+		#path = ARGV.last
+    path = 'db/dbfs'
     
     progressbar = ProgressBar.create( 
       :format         => '%E %bᗧ%i %p%%',
