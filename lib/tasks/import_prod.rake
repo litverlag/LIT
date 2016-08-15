@@ -9,15 +9,15 @@
 
 namespace :gapi do
 	desc "Import GoogleSpreadsheet-'Produktionstabellen'-data."
-	task import_prod: :import_dbf do
+	task import: :environment do
 
 		session = GoogleDrive.saved_session( ".credentials/client_secret.json" )
 		spreadsheet = session.spreadsheet_by_key( "1YWWcaEzdkBLidiXkO-_3fWtne2kMgXuEnw6vcICboRc" )
 
-		#NOTE: Should automate the download of the xlxs doc.
-		workbook = RubyXL::Parser.parse('tmp/prod.xlxs')
+		#: Should automate the download of the xlxs doc.
+		#workbook = RubyXL::Parser.parse('tmp/prod.xlxs')
 
-		# A function to map the columns of any 'Lit-produktions-tabelle'.
+		# A function to map the columns a single 'Lit-produktions-tabelle'.
 		def get_col_from_title( table )
 			# Build index and name table.
 			index = ( 1..table.max_cols ).drop(0)
@@ -33,10 +33,8 @@ namespace :gapi do
 		#
 		#  As the ruby GoogleAPI does not support an easy way to access cell
 		#  formatting.. (Only option is to write a javascript function, which can then
-		#  be called via an API function call.) .. this function gets an additional
-		#  argument: the path to a downloaded xlsx document, containing the same
-		#  information.
-		def get_em_all( table, xlsx )
+		#  be called via an API function call.) .. 		
+		def get_em_all( table ) #, xlxs )
 			h = get_col_from_title( table )
 
 			lektorname = {
