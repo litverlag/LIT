@@ -14,9 +14,6 @@ namespace :gapi do
 		session = GoogleDrive.saved_session( ".credentials/client_secret.json" )
 		spreadsheet = session.spreadsheet_by_key( "1YWWcaEzdkBLidiXkO-_3fWtne2kMgXuEnw6vcICboRc" )
 
-		#NOTE: Should automate the download of the xlxs doc.
-		workbook = RubyXL::Parser.parse('tmp/prod.xlxs')
-
 		# A function to map the columns of any 'Lit-produktions-tabelle'.
 		def get_col_from_title( table )
 			# Build index and name table.
@@ -33,9 +30,7 @@ namespace :gapi do
 		#
 		#  As the ruby GoogleAPI does not support an easy way to access cell
 		#  formatting.. (Only option is to write a javascript function, which can then
-		#  be called via an API function call.) .. this function gets an additional
-		#  argument: the path to a downloaded xlsx document, containing the same
-		#  information.
+		#  be called via an API function call.) .. we are .. mad.
 		def get_em_all( table, xlsx )
 			h = get_col_from_title( table )
 
@@ -67,11 +62,18 @@ namespace :gapi do
 
 			(2..table.num_rows).each do |i|
 				# Create a book for each entry in the table.
-				# Fill in trivial information.
+				#  (The first line only contains headers)
+				# Create Author if not existent.
+				# Create gprod (Project) and get status via color.. [gAPI-call].
+				#												   .. this ^ will be fun ..
+
 				buch = Buch.new(
-					:name		=> table[ i, h['Name'  ] ],
+					#:name		=> table[ i, h['Name'  ] ], ### wrong i think..
 					:isbn		=> table[ i, h['ISBN'  ] ],
 					:seiten => table[ i, h['Seiten'] ],
+				)
+				gprod = Gprod.new(
+					:projektname	=> table[ i, h['Name'  ] ],
 				)
 
 				# Error check isbn entries.
@@ -103,6 +105,12 @@ namespace :gapi do
 				# Lektor.
 				fox_name = table[ i, h['Lek'] ]
 				lektor = Lektor.where(fox_name: fox_name).first
+				if lektor.nil? # Try again ..
+					lektor = Lektor.where(name: lektorname[fox_name.downcase])
+					if lektor.nil? # And again ..
+						lektor = Lektor.where(emailkuerzel: lektormailkuerzel[fox_name.downcase])
+					end
+				end
 				unless lektor.nil?
 					buch[:lektor_id] = lektor[:id]
 				else
@@ -126,6 +134,19 @@ namespace :gapi do
 				else
 					puts "[Implement] another way to find the author."
 				end
+
+				# Bindung + Druck['extern', 'local', ..]
+				bindung = table[ i, h['Bi'] ]
+				if bindung =~ /\+/i
+					bindung = 'Multiple: ' + bindung
+				elsif	bindung =~ /fhc/i;		bindung = 'faden_hardcover'
+				elsif	bindung =~ /k/i;			bindung = 'klebe'
+				elsif	bindung =~ /f/i;			bindung = 'faden'
+				elsif bindung =~ /h/i;			bindung = 'hardcover'
+				else 
+					bindung = "Special: " + bindung
+				end
+				buch[:bindung_bezeichnung] = bindung
 
 				#puts "[Debug] \t Saving it:'"+buch[:name].to_s+"'"
 				buch.save
