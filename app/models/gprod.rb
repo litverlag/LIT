@@ -39,7 +39,7 @@ class Gprod < ActiveRecord::Base
 
 
   validates :projektname, :projekt_email_adresse, presence: true
-	validates :projekt_email_adresse, format: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i, 
+	validates :projekt_email_adresse, format: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
   has_one :statusfinal, class_name: StatusFinal
   accepts_nested_attributes_for :statusfinal
