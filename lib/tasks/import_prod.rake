@@ -14,10 +14,7 @@ namespace :gapi do
 		session = GoogleDrive.saved_session( ".credentials/client_secret.json" )
 		spreadsheet = session.spreadsheet_by_key( "1YWWcaEzdkBLidiXkO-_3fWtne2kMgXuEnw6vcICboRc" )
 
-		#: Should automate the download of the xlxs doc.
-		#workbook = RubyXL::Parser.parse('tmp/prod.xlxs')
-
-		# A function to map the columns a single 'Lit-produktions-tabelle'.
+		# A function to map the columns of any 'Lit-produktions-tabelle'.
 		def get_col_from_title( table )
 			# Build index and name table.
 			index = ( 1..table.max_cols ).drop(0)
@@ -64,43 +61,63 @@ namespace :gapi do
 			}
 
 			(2..table.num_rows).each do |i|
-				# Create a book for each entry in the table.
-				# Fill in trivial information.
-				buch = Buch.new(
-					:name		=> table[ i, h['Name'  ] ],
-					:isbn		=> table[ i, h['ISBN'  ] ],
-					:seiten => table[ i, h['Seiten'] ],
+				# Search a book for each entry in the table.
+				#  (The first line only contains headers)
+				# Create/search Author if not existent.
+				# Create/search gprod (Project) and get status via color.. [gAPI-call].
+				#														   .. this ^ will be fun ..
+
+				#buch = Buch.new(
+					#:seiten => table[ i, h['Seiten'] ],
+				#)
+				gprod = Gprod.new(
+					:projektname	=> table[ i, h['Name'    ] ],
 				)
 
 				# Error check isbn entries.
-				isbn = table[ i, h['ISBN'] ]
-				puts '[Debug] processing '+isbn.to_s
-				if isbn.nil? or isbn.size < 1
-					puts '[Debug] Strange entry in column '+i.to_s+': '+table[i,h['ISBN']]
+				short_isbn = table[ i, h['ISBN'] ]
+				if short_isbn.nil? or short_isbn.size < 1
+					Rails.logger.debug '[Debug] Strange entry in column '\
+									+i.to_s+': '+table[i,h['ISBN']]+"'\tSKIPPED"
 					next
 				end
-				unless (/[0-9]{5}-[0-9]/ =~ isbn) == 0
-					unless (/[0-9]{3}-[0-9]/ =~ isbn) == 0
-						#TODO What ate/egl short-isbn noation should we use?
-						puts "[Implement] ATE/EGL short-isbn notation. \tSKIPPED"
+				buch = Buch.where( "isbn like '%"+short_isbn+"'" ).first
+
+				# Throw some conditional error/debug messages.
+				if (/[0-9]{5}-[0-9]/ =~ short_isbn) == 0				# Normal '12345-6' ISBN?
+					if buch.nil?
+						Rails.logger.fatal "[Fatal] Short ISBN not found: '"\
+										+short_isbn+"'\tSKIPPED" 
+						next
+					end
+				else
+					if (/[0-9]{3}-[0-9]/ =~ short_isbn) == 0			# Maybe ATE/EGL?
+						Rails.logger.fatal "[Fatal] ATE/EGL short_isbn notation. \tSKIPPED"
 						next
 					else
-						puts '[Debug] Strange entry in column '+i.to_s+": '"+table[i,h['ISBN']]+"'\tSKIPPED"
+						Rails.logger.debug '[Debug] Strange entry in column '\
+										+i.to_s+": '"+table[i,h['ISBN']]+"'\tSKIPPED"
 						next
 					end
 				end
 
-				# Reihe.
+				# Reihen code
 				r_code = table[ i, h['Reihe'] ]
 				unless r_code.empty?
 					buch[:r_code] = r_code
 				else
-					puts "[Debug] \t Kein reihenkuerzel vorhanden."
+					Rails.logger.debug "[Debug] \t Kein reihenkuerzel gefunden."
 				end
 
-				# Lektor.
+				# Lektor ID
 				fox_name = table[ i, h['Lek'] ]
 				lektor = Lektor.where(fox_name: fox_name).first
+				if lektor.nil? # Try again ..
+					lektor = Lektor.where(name: lektorname[fox_name.downcase]).first
+					if lektor.nil? # And again ..
+						lektor = Lektor.where(emailkuerzel: lektormailkuerzel[fox_name.downcase]).first
+					end
+				end
 				unless lektor.nil?
 					buch[:lektor_id] = lektor[:id]
 				else
@@ -111,21 +128,47 @@ namespace :gapi do
 					)
 				end
 
-				# Autor.
-				#  - first try: via email, error check against lektor-mail
+				# Autor ID and Projekt E-Mail
 				email = table[ i, h['email'] ]
-				unless email == lektor[:emailkuerzel]
+				if email.nil? or email.empty?
+					email = lektor[:emailkuerzel]				# This will log a fatal error below.
+				end
+				gprod[:projekt_email_adresse] = email
+				unless email == lektor[:emailkuerzel] # email from Table does not belong to author.
 					autor = Autor.where(email: email).first
 					unless autor.nil?
 						buch[:autor_id] = autor[:id]
 					else
-						puts "[Debug] \t Author not existent."
+						Rails.logger.debug "[Debug] \t Author not existent."
 					end
 				else
-					puts "[Implement] another way to find the author."
+					Rails.logger.fatal "[Fatal] The given email does not belong to the author."\
+									+"\n\t Implement more searches for the Author-ID."
 				end
 
-				#puts "[Debug] \t Saving it:'"+buch[:name].to_s+"'"
+				# Bindung, Externer Druck?
+				bindung = table[ i, h['Bi'] ]
+				if		bindung =~ /\+/i ;		bindung = 'multi'						; extern = true
+				elsif	bindung =~ /fhc/i;		bindung = 'faden_hardcover'	; extern = true
+				elsif	bindung =~ /k/i	 ;		bindung = 'klebe'						; extern = false
+				elsif	bindung =~ /f/i	 ;		bindung = 'faden'						; extern = true
+				elsif bindung =~ /h/i	 ;		bindung = 'hardcover'				; extern = true
+				else
+					bindung = 'unknown'
+					Rails.logger.error "[Error] Unknown 'bindung': '"+bindung+"'"
+				end
+				buch[:bindung_bezeichnung] = bindung
+				gprod[:externer_druck] = extern
+
+				# Auflage
+				auflage = table[ i, h['Auflage' ] ].to_i
+				# Here be error-checks.
+				gprod[:auflage] = auflage
+
+
+				# Papier
+
+				#Rails.logger.info "[Info] \t Saving it:'"+buch[:name].to_s+"'"
 				buch.save
 			end
 
@@ -136,7 +179,9 @@ namespace :gapi do
 		def update( table )
 		end
 
-		# Get a 'GoogleDrive::Worksheet' object.
+		# Order might be important:
+		#		Do 'LF' and 'EinListe' last, 
+		#	because their entries are always up-to-date and unique.
 		lf_table = spreadsheet.worksheet_by_title( 'LF' )
 		lf_h = get_col_from_title( lf_table )
 		get_em_all( lf_table )

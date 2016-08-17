@@ -7,18 +7,17 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 
-
-
-
-Lektor.create(name:'Peter Schmidt',fox_name:'PS')
-Lektor.create(name:'Annelise Muster',fox_name:'AM')
-Lektor.create(name:'Fritz Hans',fox_name:'FH')
-Lektor.create(name:'Thomas Gottschalk',fox_name:'TG')
+Lektor.create(name:'Guido Bellmann',fox_name:'bel')
 
 #create Departments
-Department.create!([{name:'Superadmin'},{name:'Umschlag'},{name:'Satz'},{name:'Titelei'},{name:'PrePs'},{name:'Rechnung'},{name:'Bildprüfung'},{name:'Pod'},{name:'Binderei'},{name:'Lektor'}])
+Department.create!([
+	{name:'Superadmin'},{name:'Umschlag'},{name:'Satz'},{name:'Titelei'},
+	{name:'PrePs'},{name:'Rechnung'},{name:'Bildprüfung'},{name:'Pod'},
+	{name:'Binderei'},{name:'Lektor'}
+])
 
 #create default Admin User
-admin = AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
+admin = AdminUser.create!(email: 'admin@example.com', \
+													password: 'cibcib', password_confirmation: 'cibcib')
 admin.departments = Department.all.select { |d| d.name == "Superadmin"}
 

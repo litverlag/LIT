@@ -26,6 +26,5 @@ class Autor < ActiveRecord::Base
 	validates :email, format: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i, 
 										allow_nil: true, 
 										allow_blank: true
-	#validates :isbn, format: { with: /\d{0,3}-?\d-\d{3}-\d+-\d/, on: :create }
 
  end

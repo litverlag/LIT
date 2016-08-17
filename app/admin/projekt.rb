@@ -17,10 +17,15 @@ ActiveAdmin.register Projekt do
     include StatusLogic, PrintReport
 
     ##
-    # It would be great if this class could be in a helper modulde, but it's not that easy beacause of ActiveAdmin
-    # This method is used to replace the string coming from the HTML form ()permitted_params["format"]) by an instance of the right
-    # format class so that an association can be done with the klass.update method. Same procedure with papier and umschlag
-    # Rouven asks: Who wrote this? please mail me rouvenglauert@gmail.com
+		# It would be great if this class could be in a helper modulde, but it's
+		# not that easy beacause of ActiveAdmin This method is used to replace the
+		# string coming from the HTML form ()permitted_params["format"]) by an
+		# instance of the right format class so that an association can be done
+		# with the klass.update method. Same procedure with papier and umschlag
+		#
+		# Rouven asks: Who wrote this? please mail me rouvenglauert@gmail.com
+		#
+		# Mr.GRN-5 asks: Who is Rouven?
 
     def scoped_collection
       if current_admin_user.departments.where("name = ?", 'Lektor').any?
@@ -43,7 +48,7 @@ ActiveAdmin.register Projekt do
        if current_admin_user.departments.to_a[0].name == "Lektor"
          if not @projekt = Projekt.create(permitted_params[:projekt])
            #render 'new'
-         elsif not @projekt.buch = Buch.create(Hash[:name ,"unbekannt"])
+         elsif not @projekt.buch = Buch.create( :name => "unbekannt" )
            #render 'new'
          elsif not createStatus(@projekt)
            #render 'new'

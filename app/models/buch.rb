@@ -48,12 +48,15 @@ class Buch < ActiveRecord::Base
 
 	##
 	# Validations. This is neat.
-	# The short form default to the commented entry below.
+	# Example of short(implicit) and long(explicit) format.
 	#validates :isbn, format: /\d{0,3}-?\d-\d{3}-\d+-\d/
 	#validates :isbn, format: { with: /\d{0,3}-?\d-\d{3}-\d+-\d/, on: :create }
 
-	validates :isbn, format: /\d{0,3}-?\d-\d{3}-\d+-\d/, uniqueness: true
-	validates :name, presence: true
-
-
-end
+	validates :isbn, format: /\d{0,3}-?\d-\d{3}-\d+-\d/, uniqueness: true, 
+		allow_nil: true, allow_blank: true
+	validates :bindung_bezeichnung, inclusion: 
+		{ in: %w(faden_hardcover klebe faden hardcover multi unknown), 
+			message: "'%{value}' ist keine zulässige Bindung.", 
+			allow_nil: true, allow_blank: true }
+	#validates
+end                                                   
