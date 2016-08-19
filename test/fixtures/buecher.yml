@@ -1,8 +1,12 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyText
-  isbn: MyString
+buecher_001:
+  id: 980190962
+  autor_id: 
+  lektor_id: 
+  gprod_id: 
+  name: Peggy Sue und der blaue Hund
+  isbn: 3-123-33214-6
   issn: MyString
   titel1: MyText
   titel2: MyText
@@ -10,22 +14,22 @@ one:
   utitel1: MyText
   utitel2: MyText
   utitel3: MyText
-  seiten: 1
+  seiten: 324
   preis: 9.99
   spreis: 9.99
-  sammelband: false
-
-two:
-  name: MyText
-  isbn: MyString
-  issn: MyString
-  titel1: MyText
-  titel2: MyText
-  titel3: MyText
-  utitel1: MyText
-  utitel2: MyText
-  utitel3: MyText
-  seiten: 1
-  preis: 9.99
-  spreis: 9.99
-  sammelband: false
+  sammelband: f
+  erscheinungsjahr: 
+  gewicht: 
+  volumen: 
+  format_bezeichnung: A5
+  umschlag_bezeichnung: LaTeX
+  papier_bezeichnung: Offset 90g
+  bindung_bezeichnung: klebe
+  vier_farb: 
+  rueckenstaerke: 
+  klappentext: t
+  eintrag_cip_seite: 
+  created_at: '2016-08-19 14:32:31'
+  updated_at: '2016-08-19 14:32:31'
+  sw: 
+  r_code: 

@@ -51,7 +51,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-group :development, :test do
+group :development do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
 
@@ -68,6 +68,13 @@ group :development, :test do
   #used to generate graphic model documentation
   gem 'railroady'
 
+end
 
+group :test do
+  gem 'byebug'
+  gem 'spring', '~> 1.4.0'
+  gem 'cancan'
+  gem 'cancancan'
+  gem 'railroady'
 end
 

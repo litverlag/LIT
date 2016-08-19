@@ -309,30 +309,4 @@ ActiveRecord::Schema.define(version: 20160720141549) do
     t.date    "updated_at"
   end
 
-  create_table "widl_LF", id: false, force: :cascade do |t|
-    t.integer "id"
-    t.string  "st"
-    t.text    "Name"
-    t.string  "ISBN"
-    t.integer "Auflage"
-    t.text    "SollF"
-    t.string  "Bi"
-    t.text    "Druck"
-    t.text    "Druck2"
-    t.text    "Druck3"
-    t.text    "Druck4"
-    t.text    "Druck5"
-    t.text    "Druc6k"
-    t.text    "Druck7"
-    t.text    "Druck8"
-    t.text    "Druck9"
-    t.text    "Druck10"
-    t.text    "Druck11"
-    t.text    "Druck12"
-    t.text    "Druck13"
-    t.text    "email"
-    t.text    "sonder"
-    t.text    "empty"
-  end
-
 end

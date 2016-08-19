@@ -1,39 +1,31 @@
-##!/home/developer/.rvm/rubies/ruby-2.2.2/bin/ruby
-#
-# This script adds all entries from the Google-Spreadsheeds 'Produktions
-# Tabelle' to our database.
-#
-# v in Gemfile
-#require 'google_drive'
-#require 'rubyXL'
+##
+# This script links all the data.
+# We create Gprod objects and search for all the things:
+#   buch | lektor | reihe | autor | ...
 
 namespace :gapi do
 	desc "Import GoogleSpreadsheet-'Produktionstabellen'-data."
 	task import: :environment do
-
 		session = GoogleDrive.saved_session( ".credentials/client_secret.json" )
 		spreadsheet = session.spreadsheet_by_key( "1YWWcaEzdkBLidiXkO-_3fWtne2kMgXuEnw6vcICboRc" )
 
+		##
 		# A function to map the columns of any 'Lit-produktions-tabelle'.
 		def get_col_from_title( table )
 			# Build index and name table.
 			index = ( 1..table.max_cols ).drop(0)
 			name = table.rows[0]
-			
 			# Zip them.
 			return Hash[*name.zip(index).flatten]
 		end
 
-
-		# Should be used once for the big tables LF/EinListe
-		#  This function assumes, that every entry is unique.
-		#
-		#  As the ruby GoogleAPI does not support an easy way to access cell
-		#  formatting.. (Only option is to write a javascript function, which can then
-		#  be called via an API function call.) .. 		
-		def get_em_all( table ) #, xlxs )
+		##
+		# As the ruby GoogleAPI does not support an easy way to access cell
+		# formatting.. my prefered option is to write a javascript function,
+		# returning a json object, containing color data of one table, which can
+		# then be called via an GoogleAPI function call.
+		def get_em_all( table )
 			h = get_col_from_title( table )
-
 			lektorname = {
 				'hf'  => 'Hopf',
 				'whf' => 'Hopf',
@@ -44,9 +36,7 @@ namespace :gapi do
 				'opa' => 'Unknown_opa',
 				'litb'=> 'Lit Berlin',
 				'wla' => 'Lit Wien',
-				'web' => 'Unknown_web'
-			}
-
+				'web' => 'Unknown_web' }
 			lektoremailkuerzel = {
 				'hf'  => 'hopf@lit-verlag.de',
 				'whf' => 'hopf@lit-verlag.de',
@@ -57,22 +47,41 @@ namespace :gapi do
 				'opa' => 'Unknown_opa',
 				'litb'=> 'berlin@lit-verlag.de',
 				'wla' => 'wien@lit-verlag.de',
-				'web' => 'Unknown_web'
-			}
+				'web' => 'Unknown_web' }
+			papier_table = {
+				'o80'  => 'Offset\ 80g' ,
+				'80o'  => 'Offset\ 80g' ,
+				'o 80' => 'Offset\ 80g' ,
+				'o90'	 => 'Offset\ 90g' ,
+				'o 90' => 'Offset\ 90g' ,
+				'90o'	 => 'Offset\ 90g' ,
+				'w90'  => 'Werkdruck\ 90g\ blau' ,
+				'w 90' => 'Werkdruck\ 90g\ blau' ,
+				'90w'  => 'Werkdruck\ 90g\ blau' ,
+				'wg90' => 'Werkdruck\ 90g\ gelb' ,
+				'90wg' => 'Werkdruck\ 90g\ gelb' ,
+				'wg 90'=> 'Werkdruck\ 90g\ gelb' ,
+				'w100' => 'Werkdruck\ 100g' , }
+			format_table = {
+				'A4'			=> '210 x 297',
+				'23'			=> '162 x 230',		# <- strange
+				'23x16'		=> '162 x 230',		# <- strange
+				'23 x 16'	=> '162 x 230',		# <- strange
+				'22x16'		=> '160 x 220',		# <- strange
+				'22 x 16'	=> '160 x 220',		# <- strange
+				'A5'			=> '147 x 210',
+				'21x14'		=> '147 x 210',
+				'21 x 14'	=> '147 x 210',
+				'21'			=> '147 x 210',
+				'A6'			=> '105 x 148' }	# <- almonst never in use }
 
-			(2..table.num_rows).each do |i|
-				# Search a book for each entry in the table.
-				#  (The first line only contains headers)
-				# Create/search Author if not existent.
-				# Create/search gprod (Project) and get status via color.. [gAPI-call].
-				#														   .. this ^ will be fun ..
+			(2..table.num_rows).each do |i| #skip first line: headers
+				gprod = Gprod.new( :projektname	=> table[i,h['Name']] )
 
-				#buch = Buch.new(
-					#:seiten => table[ i, h['Seiten'] ],
-				#)
-				gprod = Gprod.new(
-					:projektname	=> table[ i, h['Name'    ] ],
-				)
+
+												 ##											     ##
+												 # General book-related data. #
+												 ##													 ##
 
 				# Error check isbn entries.
 				short_isbn = table[ i, h['ISBN'] ]
@@ -121,6 +130,8 @@ namespace :gapi do
 				unless lektor.nil?
 					buch[:lektor_id] = lektor[:id]
 				else
+					Rails.logger.info \
+						"[Info] Strange: We needed to create a missing lektor: '"+fox_name+"'"
 					lektor = Lektor.create(
 						:fox_name			=> fox_name.downcase,
 						:name					=> lektorname[fox_name.downcase],
@@ -142,8 +153,9 @@ namespace :gapi do
 						Rails.logger.debug "[Debug] \t Author not existent."
 					end
 				else
-					Rails.logger.fatal "[Fatal] The given email does not belong to the author."\
-									+"\n\t Implement more searches for the Author-ID."
+					Rails.logger.fatal \
+						"[Fatal] The given email does not belong to the author."\
+						+"\n\t Implement more searches for the Author-ID."
 				end
 
 				# Bindung, Externer Druck?
@@ -155,36 +167,67 @@ namespace :gapi do
 				elsif bindung =~ /h/i	 ;		bindung = 'hardcover'				; extern = true
 				else
 					bindung = 'unknown'
-					Rails.logger.error "[Error] Unknown 'bindung': '"+bindung+"'"
+					Rails.logger.error "[Error] Unknown 'bindung': '"+bindung+"'"\
+						+" in row "+i
 				end
 				buch[:bindung_bezeichnung] = bindung
 				gprod[:externer_druck] = extern
 
 				# Auflage
-				auflage = table[ i, h['Auflage' ] ].to_i
-				# Here be error-checks.
+				auflage = table[i,h['Auflage']].to_i
+				# 2 values? What is the meaning of this?
 				gprod[:auflage] = auflage
 
-
 				# Papier
+				papier = papier_table[ table[i,h['Papier']] ]
+				unless papier.nil?
+					buch[:papier_bezeichnung] = papier
+				else
+					Rails.logger.error \
+						"[Error] Unknown 'papier_bezeichnung': '"+papier+"'"+" in row "+i
+				end
 
-				#Rails.logger.info "[Info] \t Saving it:'"+buch[:name].to_s+"'"
-				buch.save
+				# Bemerkungen aka Sonder
+				gprod[:lektor_bemerkungen_public] = table[i,h['Sonder']]
+
+
+														##									 ##
+														# Cover related data. #
+														##									 ##
+
+				# Umschlag Abteilung
+				um_abteil = table[i,h['Umschlag']]
+				if		um_abteil =~ /tx/i;			um_abteil = 'LaTeX'
+				elsif um_abteil =~ /in/i;			um_abteil = 'InDesign'
+				elsif um_abteil =~ /autor/i;	um_abteil = 'Geliefert'
+				else
+					Rails.logger.error \
+						"[Error] Unknown 'umschlag abteilung': '"+um_abteil+"'"+" in row "+i
+					um_abteil = nil 
+				end
+				buch[:umschlag_bezeichnung] = um_abteil
+
+				# Umschlag Format
+				format = format_table[ table[i,h['Format']] ]
+				unless format.nil?
+					buch[:format_bezeichnung] = format
+				else
+					Rails.logger.error \
+						"[Error] Unknown 'Buchformat': '"+format+"'"+" in row "+i
+				end
+
+
+				buch.save! 
 			end
 
 		end
 
-		# Checks for new entries in the specified table.
-		#  If found, adds their content to the database.
-		def update( table )
-		end
-
+		##
 		# Order might be important:
-		#		Do 'LF' and 'EinListe' last, 
-		#	because their entries are always up-to-date and unique.
-		lf_table = spreadsheet.worksheet_by_title( 'LF' )
-		lf_h = get_col_from_title( lf_table )
-		get_em_all( lf_table )
+		#		Do 'LF' and 'EinListe' last, because their entries are always
+		#		up-to-date and unique.
+		table = spreadsheet.worksheet_by_title( 'LF' )
+		get_em_all( table )
 
 	end
 

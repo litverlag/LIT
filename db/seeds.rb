@@ -7,7 +7,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 
-Lektor.create(name:'Guido Bellmann',fox_name:'bel')
+Lektor.create!(name:'Guido Bellmann',fox_name:'bel',emailkuerzel:'bellmann@lit-verlag.de')
 
 #create Departments
 Department.create!([
@@ -18,6 +18,15 @@ Department.create!([
 
 #create default Admin User
 admin = AdminUser.create!(email: 'admin@example.com', \
-													password: 'cibcib', password_confirmation: 'cibcib')
+													password: 'cibcibcib', password_confirmation: 'cibcibcib')
 admin.departments = Department.all.select { |d| d.name == "Superadmin"}
 
+# XXX Test XXX : 
+Buch.create!(
+	:name => 'testbuch',
+	:isbn => '3-123-12345-3',
+	:seiten => 200,
+	:bindung_bezeichnung => 'klebe',
+	:papier_bezeichnung => 'Offset 90g',
+	:umschlag_bezeichnung => 'LaTeX'
+)
