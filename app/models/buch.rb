@@ -46,6 +46,52 @@ class Buch < ActiveRecord::Base
     return all_attri
   end
 
+	##
+	# Computes the backsize
+	def backsize
+		gprod = Gprod.where(id: self[:gprod_id])
+		if gprod[:externer_druck] then return nil end
+		pages = self[:seiten]
+		papertype = self[:papier_bezeichnung]
+		factor = factor_table[ papertype ]
+		sz = pages * factor
+		unless sz.round <= sz
+			return sz.round
+		else
+			return sz.round + 1
+		end
+	end
+
+	factor_table = {
+		'Offset 80g'          => 0.05 ,
+		'Offset 90g'					=> 0.06 ,
+		'Werkdruck 90g blau'  => 0.055,
+		'Werkdruck 100g'      => 0.06 ,
+		'KunstdruckMatt'			=> 0.05 ,
+		'Werkdruck 90g gelb'  => 0.055 }
+
+## Python code for backsize computation.
+# try: # [papertype.lower()[:3]] cause "w90 $", what is this madness..
+#     factor = papierWerteFaktoren[papertype.lower()[:3]][bindung[0].lower()]
+# except KeyError:
+#     print('Catched KeyError: Vermutlich externer Druck.')
+#     print('Bindung:',bindung[0].lower())
+#     exit(-1)
+# backsize = pages * factor
+# # always round up
+# if round(backsize) <= backsize:
+#     backsize = round(backsize)+1
+# else:
+#     # if back is small AND we round up just a little just add 1
+#     if backsize <= 15 and round(backsize) - backsize <= 0.20:
+# 	backsize = round(backsize) + 1
+#     else:
+# 	backsize = round(backsize)
+# 
+# if bindung.lower()[0] in print_here:
+#     print( '%.4f' %backsize , end='' )
+#     return
+
 
 	##
 	# Validations. Hm. This is neat. VALIDATE ALL THE THINGS.

@@ -28,5 +28,12 @@ Buch.create!(
 	:seiten => 200,
 	:bindung_bezeichnung => 'klebe',
 	:papier_bezeichnung => 'Offset 90g',
-	:umschlag_bezeichnung => 'LaTeX'
+	:umschlag_bezeichnung => 'LaTeX',
+	:gprod_id => 1234
+)
+Gprod.create!(
+	:id => 1234
+	:projektname => 'testpj',
+	:projekt_email_adresse => 'sum@fu.lul',
+	:externer_druck => false
 )
