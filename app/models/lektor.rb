@@ -19,4 +19,6 @@ class Lektor < ActiveRecord::Base
     "#{self.name} #{self.fox_name}"
   end
 
+	validates :name, uniqueness: true, allow_nil: false, allow_blank: false
+
  end

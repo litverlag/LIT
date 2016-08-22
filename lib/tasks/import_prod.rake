@@ -27,43 +27,50 @@ namespace :gapi do
 		def get_em_all( table )
 			h = get_col_from_title( table )
 			lektorname = {
-				'hf'  => 'Hopf',
-				'whf' => 'Hopf',
-				'ch'	=> 'Unknown_ch',
-				'hfch'=> 'wtf_hfch',
-				'rai' => 'Rainer',
-				'bel' => 'Bellman',
-				'opa' => 'Unknown_opa',
-				'litb'=> 'Lit Berlin',
-				'wla' => 'Lit Wien',
-				'web' => 'Unknown_web' }
+				'hf'			=> 'Hopf',
+				'whf'			=> 'Hopf',
+				'ch'			=> 'Unknown_ch',
+				'hfch'		=> 'wtf_hfch',
+				'rai'			=> 'Rainer',
+				'rainer'  => 'Rainer',
+				'berlin'  => 'Berlin',
+				'rit'			=> 'Richter',
+				'bel'			=> 'Bellman',
+				'opa'			=> 'Unknown_opa',
+				'litb'		=> 'Lit Berlin',
+				'wien'		=> 'Wien',
+				'wla'			=> 'Lit Wien',
+				'web'			=> 'Unknown_web' }
 			lektoremailkuerzel = {
 				'hf'  => 'hopf@lit-verlag.de',
 				'whf' => 'hopf@lit-verlag.de',
 				'ch'	=> 'Unknown_ch',
 				'hfch'=> 'wtf_is_hfch',
 				'rai' => 'rainer@lit-verlag.de',
+				'rit' => 'richter@lit-verlag.de',
 				'bel' => 'bellmann@lit-verlag.de',
 				'opa' => 'Unknown_opa',
 				'litb'=> 'berlin@lit-verlag.de',
 				'wla' => 'wien@lit-verlag.de',
+				'wien'=> 'wien@lit-verlag.de',
 				'web' => 'Unknown_web' }
 			papier_table = {
-				'o80'  => 'Offset\ 80g' ,
-				'80o'  => 'Offset\ 80g' ,
-				'o 80' => 'Offset\ 80g' ,
-				'o90'	 => 'Offset\ 90g' ,
-				'o 90' => 'Offset\ 90g' ,
-				'90o'	 => 'Offset\ 90g' ,
-				'w90'  => 'Werkdruck\ 90g\ blau' ,
-				'w 90' => 'Werkdruck\ 90g\ blau' ,
-				'90w'  => 'Werkdruck\ 90g\ blau' ,
-				'wg90' => 'Werkdruck\ 90g\ gelb' ,
-				'90wg' => 'Werkdruck\ 90g\ gelb' ,
-				'wg 90'=> 'Werkdruck\ 90g\ gelb' ,
-				'w100' => 'Werkdruck\ 100g' , }
+				'o80'  => 'Offset 80g' ,
+				'80o'  => 'Offset 80g' ,
+				'o 80' => 'Offset 80g' ,
+				'o90'	 => 'Offset 90g' ,
+				'o 90' => 'Offset 90g' ,
+				'90o'	 => 'Offset 90g' ,
+				'w90'  => 'Werkdruck 90g blau' ,
+				'w 90' => 'Werkdruck 90g blau' ,
+				'90w'  => 'Werkdruck 90g blau' ,
+				'wg90' => 'Werkdruck 90g gelb' ,
+				'90wg' => 'Werkdruck 90g gelb' ,
+				'wg 90'=> 'Werkdruck 90g gelb' ,
+				'w100' => 'Werkdruck 100g' , }
 			format_table = {
 				'A4'			=> '210 x 297',
+				'24x17'		=> '170 x 240',		# <- strange
 				'23'			=> '162 x 230',		# <- strange
 				'23x16'		=> '162 x 230',		# <- strange
 				'23 x 16'	=> '162 x 230',		# <- strange
@@ -73,7 +80,7 @@ namespace :gapi do
 				'21x14'		=> '147 x 210',
 				'21 x 14'	=> '147 x 210',
 				'21'			=> '147 x 210',
-				'A6'			=> '105 x 148' }	# <- almonst never in use }
+				'A6'			=> '105 x 148' }	# <- almonst never in use
 
 			(2..table.num_rows).each do |i| #skip first line: headers
 				gprod = Gprod.new( :projektname	=> table[i,h['Name']] )
@@ -118,23 +125,24 @@ namespace :gapi do
 					Rails.logger.debug "[Debug] \t Kein reihenkuerzel gefunden."
 				end
 
-				# Lektor ID
+				# Lektor ID		-->		Buch && Lektor !
 				fox_name = table[ i, h['Lek'] ]
 				lektor = Lektor.where(fox_name: fox_name).first
 				if lektor.nil? # Try again ..
 					lektor = Lektor.where(name: lektorname[fox_name.downcase]).first
 					if lektor.nil? # And again ..
-						lektor = Lektor.where(emailkuerzel: lektormailkuerzel[fox_name.downcase]).first
+						lektor = Lektor.where(emailkuerzel: lektoremailkuerzel[fox_name.downcase]).first
 					end
 				end
 				unless lektor.nil?
 					buch[:lektor_id] = lektor[:id]
+					gprod[:lektor_id] = lektor[:id]
 				else
 					Rails.logger.info \
 						"[Info] Strange: We needed to create a missing lektor: '"+fox_name+"'"
 					lektor = Lektor.create(
 						:fox_name			=> fox_name.downcase,
-						:name					=> lektorname[fox_name.downcase],
+						:name					=> 'Unknown_'+fox_name.downcase,
 						:emailkuerzel => lektoremailkuerzel[fox_name.downcase]
 					)
 				end
@@ -149,6 +157,7 @@ namespace :gapi do
 					autor = Autor.where(email: email).first
 					unless autor.nil?
 						buch[:autor_id] = autor[:id]
+						gprod[:autor_id] = autor[:id]
 					else
 						Rails.logger.debug "[Debug] \t Author not existent."
 					end
@@ -168,7 +177,7 @@ namespace :gapi do
 				else
 					bindung = 'unknown'
 					Rails.logger.error "[Error] Unknown 'bindung': '"+bindung+"'"\
-						+" in row "+i
+						+" in row "+i.to_s
 				end
 				buch[:bindung_bezeichnung] = bindung
 				gprod[:externer_druck] = extern
@@ -184,7 +193,7 @@ namespace :gapi do
 					buch[:papier_bezeichnung] = papier
 				else
 					Rails.logger.error \
-						"[Error] Unknown 'papier_bezeichnung': '"+papier+"'"+" in row "+i
+						"[Error] Unknown 'papier_bezeichnung': '"+table[i,h['Papier']]+"'"+" in row "+i.to_s
 				end
 
 				# Bemerkungen aka Sonder
@@ -202,7 +211,7 @@ namespace :gapi do
 				elsif um_abteil =~ /autor/i;	um_abteil = 'Geliefert'
 				else
 					Rails.logger.error \
-						"[Error] Unknown 'umschlag abteilung': '"+um_abteil+"'"+" in row "+i
+						"[Error] Unknown 'umschlag abteilung': '"+um_abteil+"'"+" in row "+i.to_s
 					um_abteil = nil 
 				end
 				buch[:umschlag_bezeichnung] = um_abteil
@@ -213,11 +222,19 @@ namespace :gapi do
 					buch[:format_bezeichnung] = format
 				else
 					Rails.logger.error \
-						"[Error] Unknown 'Buchformat': '"+format+"'"+" in row "+i
+						"[Error] Unknown 'Buchformat': '"+table[i,h['Format']]+"'"+" in row "+i.to_s
 				end
 
 
-				buch.save! 
+				##
+				# Save 'em.
+				gprod.save
+				buch.save
+
+				##
+				# TODO: Status, .. status_druck _final, .. id's > stati-tables
+				# 
+				;
 			end
 
 		end

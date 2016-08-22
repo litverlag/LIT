@@ -32,7 +32,7 @@ Buch.create!(
 	:gprod_id => 1234
 )
 Gprod.create!(
-	:id => 1234
+	:id => 1234,
 	:projektname => 'testpj',
 	:projekt_email_adresse => 'sum@fu.lul',
 	:externer_druck => false

@@ -1,0 +1,6 @@
+Error:
+	app/assets/stylesheets/status_tag.css.scss:2
+		Undefined variable: secondary-color
+Fix:
+	Added the following line to 'status_tag.css.scss'
+		$secondary-color: #f0f0f0;
