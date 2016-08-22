@@ -54,21 +54,35 @@ namespace :gapi do
 				'wla' => 'wien@lit-verlag.de',
 				'wien'=> 'wien@lit-verlag.de',
 				'web' => 'Unknown_web' }
-			papier_table = {
-				'o80'  => 'Offset 80g' ,
-				'80o'  => 'Offset 80g' ,
-				'o 80' => 'Offset 80g' ,
-				'o90'	 => 'Offset 90g' ,
-				'o 90' => 'Offset 90g' ,
-				'90o'	 => 'Offset 90g' ,
-				'w90'  => 'Werkdruck 90g blau' ,
-				'w 90' => 'Werkdruck 90g blau' ,
-				'90w'  => 'Werkdruck 90g blau' ,
-				'wg90' => 'Werkdruck 90g gelb' ,
-				'90wg' => 'Werkdruck 90g gelb' ,
-				'wg 90'=> 'Werkdruck 90g gelb' ,
-				'w100' => 'Werkdruck 100g' , }
-			format_table = {
+
+			papier_table = { # .. should 've used regex ..
+				'115 matt'=> '' # XXX ??
+
+				'o80'			=> 'Offset 80g' ,
+				'80o'			=> 'Offset 80g' ,
+				'o 80'		=> 'Offset 80g' ,
+				'o80 $'		=> 'Offset 80g' ,
+				'o80 y'		=> 'Offset 80g' ,
+
+				'o90'			=> 'Offset 90g' ,
+				'o 90'		=> 'Offset 90g' ,
+				'90o'			=> 'Offset 90g' ,
+
+				'w90 $'		=> 'Werkdruck 90g blau' ,
+				'w90 y'		=> 'Werkdruck 90g blau' ,
+				'w90'			=> 'Werkdruck 90g blau' ,
+				'w 90'		=> 'Werkdruck 90g blau' ,
+				'90w'			=> 'Werkdruck 90g blau' ,
+
+				'wg90 $'	=> 'Werkdruck 90g gelb' ,
+				'wg90'		=> 'Werkdruck 90g gelb' ,
+				'90wg'		=> 'Werkdruck 90g gelb' ,
+				'wg 90'		=> 'Werkdruck 90g gelb' ,
+
+				'wg100'		=> 'Werkdruck 100g' , 
+				'w100'		=> 'Werkdruck 100g' , }
+
+			format_table = { # .. should 've used regex ..
 				'A4'			=> '210 x 297',
 				'24x17'		=> '170 x 240',		# <- strange
 				'23'			=> '162 x 230',		# <- strange
@@ -77,6 +91,7 @@ namespace :gapi do
 				'22x16'		=> '160 x 220',		# <- strange
 				'22 x 16'	=> '160 x 220',		# <- strange
 				'A5'			=> '147 x 210',
+				'a5'			=> '147 x 210',
 				'21x14'		=> '147 x 210',
 				'21 x 14'	=> '147 x 210',
 				'21'			=> '147 x 210',
@@ -206,7 +221,7 @@ namespace :gapi do
 
 				# Umschlag Abteilung
 				um_abteil = table[i,h['Umschlag']]
-				if		um_abteil =~ /tx/i;			um_abteil = 'LaTeX'
+				if		um_abteil =~ /te?x/i;			um_abteil = 'LaTeX'
 				elsif um_abteil =~ /in/i;			um_abteil = 'InDesign'
 				elsif um_abteil =~ /autor/i;	um_abteil = 'Geliefert'
 				else
@@ -232,9 +247,8 @@ namespace :gapi do
 				buch.save
 
 				##
-				# TODO: Status, .. status_druck _final, .. id's > stati-tables
+				# TODO: project status and id_* linking
 				# 
-				;
 			end
 
 		end
@@ -248,4 +262,8 @@ namespace :gapi do
 
 	end
 
+	desc "Import GoogleSpreadsheet-'Produktionstabellen'-data."
+	task test: :environment do
+		# Hm..
+	end
 end

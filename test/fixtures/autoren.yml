@@ -1,25 +1,22 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  fox_id: MyString
-  name: MyString
-  vorname: MyString
-  anrede: MyString
-  plz: MyString
-  ort: MyString
-  str: MyString
-  tel: MyString
-  fax: MyString
-  institut: MyString
-
-two:
-  fox_id: MyString
-  name: MyString
-  vorname: MyString
-  anrede: MyString
-  plz: MyString
-  ort: MyString
-  str: MyString
-  tel: MyString
-  fax: MyString
-  institut: MyString
+  id: 1443
+  fox_id: iauthm
+  anrede: Mister
+  vorname: Iwrite
+  name: Alotbooks
+  email: longbook@gmx.de
+  str: 
+  plz: 
+  ort: 
+  tel: 
+  fax: 
+  institut: 
+  dienstadresse: 
+  demail: 
+  dstr: 
+  dplz: 
+  dort: 
+  dtel: 
+  dfax: 

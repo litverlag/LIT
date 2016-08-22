@@ -2,9 +2,9 @@
 
 buecher_001:
   id: 980190962
-  autor_id: 
-  lektor_id: 
-  gprod_id: 
+  autor_id: 1443
+  lektor_id: 223
+  gprod_id: 3333
   name: Peggy Sue und der blaue Hund
   isbn: 3-123-33214-6
   issn: MyString

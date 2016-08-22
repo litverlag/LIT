@@ -1,7 +1,8 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-
-two:
-  name: MyString
+  id: 1327
+  name: AwesomeBooks
+  r_code: abs
+  #created_at: 
+  #updated_at: 

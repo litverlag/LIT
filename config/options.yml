@@ -1,5 +1,7 @@
-#Diese Variablen werden im Code verwendet NIEMALS ändern sonst muss man im gesamten Code die symbole ändern, sollen sie geändert werden muss das Array in names: kopiert 
-#werden, dann bleiben die Namen im Code gleich und mann kann die optionen ändern.
+#Diese Variablen werden im Code verwendet NIEMALS ändern sonst muss man im
+# gesamten Code die symbole ändern, sollen sie geändert werden muss das Array
+# in names: kopiert werden, dann bleiben die Namen im Code gleich und mann kann
+# die optionen ändern.
 
 options:
 #Optionen für die Bucheigenschaften

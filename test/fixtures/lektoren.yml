@@ -1,9 +1,17 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  fox_name: MyString
+  id: 123
+  name: Bellmann
+  fox_name: bel
+  titel: The Great
+  position: lolwut
+  emailkuerzel: bellmann@lit-verlag.de
 
 two:
-  name: MyString
-  fox_name: MyString
+  id: 223
+  name: Richter
+  fox_name: rit
+  titel: The Mighty
+  position: noidea
+  emailkuerzel: richter@lit-verlag.de
