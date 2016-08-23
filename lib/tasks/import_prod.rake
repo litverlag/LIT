@@ -1,23 +1,45 @@
-##
-# This script links all the data.
-# We create Gprod objects and search for all the things:
-#   buch | lektor | reihe | autor | ...
-
 namespace :gapi do
+	require 'logger'
+	logger = Logger.new('log/development_rake.log')
+
+	##
+	# A function to map the columns of any 'Lit-produktions-tabelle'.
+	def get_col_from_title( table )
+		# Build index and name table.
+		index = ( 1..table.max_cols ).drop(0)
+		name = table.rows[0]
+		# Zip them.
+		return Hash[*name.zip(index).flatten]
+	end
+
+	##
+	# This function parses a single entry in the 'produktionstabelle' for the
+	# paper_token.
+	def check_papier_entry( entry , logger=nil )
+		tok = ''
+		if		entry =~ /o ?80|80 ?o/i;				tok = 'Offset 80g'
+		elsif entry =~ /o ?90|90 ?o/i;				tok = 'Offset 90g'
+		elsif entry =~ /(w ?90)|(90 ?w)/i;				tok = 'Werkdruck 90g blau'
+		elsif entry =~ /(wg ?90)|(90 ?wg)/i;			tok = 'Werkdruck 90g gelb'
+		elsif entry =~ /wg? ?100|100 ?wg?/i;	tok = 'Werkdruck 100g'
+		else
+			unless logger.nil?
+				logger.error "[Error] Unknown 'papier_bezeichnung': '"\
+											+entry+"'"+" in row "+i.to_s
+			end
+		end
+		return tok
+	end
+
+	##
+	# This script links all the data.
+	# We create Gprod objects and search for all the things:
+	#   buch | lektor | reihe | autor | ...
 	desc "Import GoogleSpreadsheet-'Produktionstabellen'-data."
 	task import: :environment do
 		session = GoogleDrive.saved_session( ".credentials/client_secret.json" )
 		spreadsheet = session.spreadsheet_by_key( "1YWWcaEzdkBLidiXkO-_3fWtne2kMgXuEnw6vcICboRc" )
 
-		##
-		# A function to map the columns of any 'Lit-produktions-tabelle'.
-		def get_col_from_title( table )
-			# Build index and name table.
-			index = ( 1..table.max_cols ).drop(0)
-			name = table.rows[0]
-			# Zip them.
-			return Hash[*name.zip(index).flatten]
-		end
 
 		##
 		# As the ruby GoogleAPI does not support an easy way to access cell
@@ -55,32 +77,6 @@ namespace :gapi do
 				'wien'=> 'wien@lit-verlag.de',
 				'web' => 'Unknown_web' }
 
-			papier_table = { # .. should 've used regex ..
-				'115 matt'=> '' # XXX ??
-
-				'o80'			=> 'Offset 80g' ,
-				'80o'			=> 'Offset 80g' ,
-				'o 80'		=> 'Offset 80g' ,
-				'o80 $'		=> 'Offset 80g' ,
-				'o80 y'		=> 'Offset 80g' ,
-
-				'o90'			=> 'Offset 90g' ,
-				'o 90'		=> 'Offset 90g' ,
-				'90o'			=> 'Offset 90g' ,
-
-				'w90 $'		=> 'Werkdruck 90g blau' ,
-				'w90 y'		=> 'Werkdruck 90g blau' ,
-				'w90'			=> 'Werkdruck 90g blau' ,
-				'w 90'		=> 'Werkdruck 90g blau' ,
-				'90w'			=> 'Werkdruck 90g blau' ,
-
-				'wg90 $'	=> 'Werkdruck 90g gelb' ,
-				'wg90'		=> 'Werkdruck 90g gelb' ,
-				'90wg'		=> 'Werkdruck 90g gelb' ,
-				'wg 90'		=> 'Werkdruck 90g gelb' ,
-
-				'wg100'		=> 'Werkdruck 100g' , 
-				'w100'		=> 'Werkdruck 100g' , }
 
 			format_table = { # .. should 've used regex ..
 				'A4'			=> '210 x 297',
@@ -108,7 +104,7 @@ namespace :gapi do
 				# Error check isbn entries.
 				short_isbn = table[ i, h['ISBN'] ]
 				if short_isbn.nil? or short_isbn.size < 1
-					Rails.logger.debug '[Debug] Strange entry in column '\
+					logger.debug '[Debug] Strange entry in column '\
 									+i.to_s+': '+table[i,h['ISBN']]+"'\tSKIPPED"
 					next
 				end
@@ -117,16 +113,16 @@ namespace :gapi do
 				# Throw some conditional error/debug messages.
 				if (/[0-9]{5}-[0-9]/ =~ short_isbn) == 0				# Normal '12345-6' ISBN?
 					if buch.nil?
-						Rails.logger.fatal "[Fatal] Short ISBN not found: '"\
+						logger.fatal "[Fatal] Short ISBN not found: '"\
 										+short_isbn+"'\tSKIPPED" 
 						next
 					end
 				else
 					if (/[0-9]{3}-[0-9]/ =~ short_isbn) == 0			# Maybe ATE/EGL?
-						Rails.logger.fatal "[Fatal] ATE/EGL short_isbn notation. \tSKIPPED"
+						logger.fatal "[Fatal] ATE/EGL short_isbn notation. \tSKIPPED"
 						next
 					else
-						Rails.logger.debug '[Debug] Strange entry in column '\
+						logger.debug '[Debug] Strange entry in column '\
 										+i.to_s+": '"+table[i,h['ISBN']]+"'\tSKIPPED"
 						next
 					end
@@ -137,7 +133,7 @@ namespace :gapi do
 				unless r_code.empty?
 					buch[:r_code] = r_code
 				else
-					Rails.logger.debug "[Debug] \t Kein reihenkuerzel gefunden."
+					logger.debug "[Debug] \t Kein reihenkuerzel gefunden."
 				end
 
 				# Lektor ID		-->		Buch && Lektor !
@@ -153,7 +149,7 @@ namespace :gapi do
 					buch[:lektor_id] = lektor[:id]
 					gprod[:lektor_id] = lektor[:id]
 				else
-					Rails.logger.info \
+					logger.info \
 						"[Info] Strange: We needed to create a missing lektor: '"+fox_name+"'"
 					lektor = Lektor.create(
 						:fox_name			=> fox_name.downcase,
@@ -174,10 +170,10 @@ namespace :gapi do
 						buch[:autor_id] = autor[:id]
 						gprod[:autor_id] = autor[:id]
 					else
-						Rails.logger.debug "[Debug] \t Author not existent."
+						logger.debug "[Debug] \t Author not existent."
 					end
 				else
-					Rails.logger.fatal \
+					logger.fatal \
 						"[Fatal] The given email does not belong to the author."\
 						+"\n\t Implement more searches for the Author-ID."
 				end
@@ -191,7 +187,7 @@ namespace :gapi do
 				elsif bindung =~ /h/i	 ;		bindung = 'hardcover'				; extern = true
 				else
 					bindung = 'unknown'
-					Rails.logger.error "[Error] Unknown 'bindung': '"+bindung+"'"\
+					logger.error "[Error] Unknown 'bindung': '"+bindung+"'"\
 						+" in row "+i.to_s
 				end
 				buch[:bindung_bezeichnung] = bindung
@@ -203,13 +199,8 @@ namespace :gapi do
 				gprod[:auflage] = auflage
 
 				# Papier
-				papier = papier_table[ table[i,h['Papier']] ]
-				unless papier.nil?
-					buch[:papier_bezeichnung] = papier
-				else
-					Rails.logger.error \
-						"[Error] Unknown 'papier_bezeichnung': '"+table[i,h['Papier']]+"'"+" in row "+i.to_s
-				end
+				papier = check_papier_entry( table[i,h['Papier']], logger )
+				buch[:papier_bezeichnung] = papier unless papier.nil?
 
 				# Bemerkungen aka Sonder
 				gprod[:lektor_bemerkungen_public] = table[i,h['Sonder']]
@@ -225,7 +216,7 @@ namespace :gapi do
 				elsif um_abteil =~ /in/i;			um_abteil = 'InDesign'
 				elsif um_abteil =~ /autor/i;	um_abteil = 'Geliefert'
 				else
-					Rails.logger.error \
+					logger.error \
 						"[Error] Unknown 'umschlag abteilung': '"+um_abteil+"'"+" in row "+i.to_s
 					um_abteil = nil 
 				end
@@ -236,7 +227,7 @@ namespace :gapi do
 				unless format.nil?
 					buch[:format_bezeichnung] = format
 				else
-					Rails.logger.error \
+					logger.error \
 						"[Error] Unknown 'Buchformat': '"+table[i,h['Format']]+"'"+" in row "+i.to_s
 				end
 
@@ -262,8 +253,43 @@ namespace :gapi do
 
 	end
 
+	##
+	# Unittests for the import script.
+	#	
 	desc "Import GoogleSpreadsheet-'Produktionstabellen'-data."
 	task test: :environment do
-		# Hm..
-	end
-end
+    require 'minitest/autorun'
+		class GapiTest < Minitest::Test
+			def test_papier_bezeichnung()
+				papier_table = {
+					'115 matt'=> '', # ??XXX??
+					'o80'			=> 'Offset 80g' ,					# Offset 80
+					'80o'			=> 'Offset 80g' ,
+					'o 80'		=> 'Offset 80g' ,
+					'o80 $'		=> 'Offset 80g' ,
+					'o80 y'		=> 'Offset 80g' ,
+					'o90'			=> 'Offset 90g' ,					# Offset 90
+					'o 90'		=> 'Offset 90g' ,
+					'90o'			=> 'Offset 90g' ,
+					'w90 $'		=> 'Werkdruck 90g blau' , # Werkdruck 90 blau
+					'w90 y'		=> 'Werkdruck 90g blau' ,
+					'w90'			=> 'Werkdruck 90g blau' ,
+					'w 90'		=> 'Werkdruck 90g blau' ,
+					'90w'			=> 'Werkdruck 90g blau' ,
+					'wg90 $'	=> 'Werkdruck 90g gelb' , # Werkdruck 90 gelb
+					'wg90'		=> 'Werkdruck 90g gelb' ,
+					'90wg'		=> 'Werkdruck 90g gelb' ,
+					'wg 90'		=> 'Werkdruck 90g gelb' ,
+					'wg100'		=> 'Werkdruck 100g' ,			# Werkdruck 100
+					'w100'		=> 'Werkdruck 100g' , 
+				}
+				papier_table.to_enum.each do |key, value|
+					assert_equal check_papier_entry(key), value
+				end
+			end # def test_papier_bezeichnung end
+
+		end # class GapiTest end
+
+	end # task gapi:test end
+
+end # namespace end
