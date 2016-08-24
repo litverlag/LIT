@@ -6,3 +6,8 @@ one:
   r_code: abs
   #created_at: 
   #updated_at: 
+
+one:
+  id: 109283
+  name: AwesomeBooks
+  r_code: rumrei

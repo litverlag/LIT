@@ -1,9 +1,9 @@
 namespace :gapi do
 	require 'logger'
-	logger = Logger.new('log/development_rake.log')
 
 	##
-	# A function to map the columns of any 'Lit-produktions-tabelle'.
+	# A function to map the columns of any 'Lit-produktions-tabelle' to their
+	# numeric value.
 	def get_col_from_title( table )
 		# Build index and name table.
 		index = ( 1..table.max_cols ).drop(0)
@@ -14,19 +14,65 @@ namespace :gapi do
 
 	##
 	# This function parses a single entry in the 'produktionstabelle' for the
-	# paper_token.
+	# 'Papier'_token. Order important, need to match more specific ones first.
 	def check_papier_entry( entry , logger=nil )
-		tok = ''
+		tok = nil
 		if		entry =~ /o ?80|80 ?o/i;				tok = 'Offset 80g'
 		elsif entry =~ /o ?90|90 ?o/i;				tok = 'Offset 90g'
-		elsif entry =~ /(w ?90)|(90 ?w)/i;				tok = 'Werkdruck 90g blau'
-		elsif entry =~ /(wg ?90)|(90 ?wg)/i;			tok = 'Werkdruck 90g gelb'
+		elsif entry =~ /(wg ?90)|(90 ?wg)/i;	tok = 'Werkdruck 90g gelb'
+		elsif entry =~ /(w ?90)|(90 ?w)/i;		tok = 'Werkdruck 90g blau'
 		elsif entry =~ /wg? ?100|100 ?wg?/i;	tok = 'Werkdruck 100g'
 		else
-			unless logger.nil?
-				logger.error "[Error] Unknown 'papier_bezeichnung': '"\
-											+entry+"'"+" in row "+i.to_s
-			end
+			logger.error "[Error] Unknown 'papier_bezeichnung': '#{entry}'" unless logger.nil?
+		end
+		return tok
+	end
+
+	##
+	# This function parses a single entry in the 'produktionstabelle' for the
+	# 'Bindungs'_token. Same note as above.
+	def check_bindung_entry( entry , logger=nil )
+		tok = nil
+		extern = nil
+		if		entry =~ /\+/i ;		tok = 'multi'						; extern = true
+		elsif	entry =~ /fhc/i;		tok = 'faden_hardcover'	; extern = true
+		elsif	entry =~ /k/i	 ;		tok = 'klebe'						; extern = false
+		elsif	entry =~ /f/i	 ;		tok = 'faden'						; extern = true
+		elsif entry =~ /h/i	 ;		tok = 'hardcover'				; extern = true
+		else
+			logger.error "[Error] Unknown 'bindung': '#{entry}'" unless logger.nil?
+		end
+		return tok, extern
+	end
+
+	##
+	# This function parses a single entry in the 'produktionstabelle' for the
+	# 'Abteilungs'_token.
+	def check_abteil_entry( entry, logger=nil )
+		tok = nil
+		if		entry =~ /te?x/i;		tok = 'LaTeX'
+		elsif entry =~ /in/i;			tok = 'InDesign'
+		elsif entry =~ /autor/i;	tok = 'Geliefert'
+		else
+			logger.error "[Error] Unknown 'umschlag abteilung': '#{entry}'" unless logger.nil?
+		end
+		return tok
+	end
+
+	##
+	# This function parses a single entry in the 'produktionstabelle' for the
+	# 'Umschlag-format'_token.
+	def check_umformat_entry( entry, logger=nil )
+		tok = nil
+		if		entry =~ /a3/i;			tok = '297 × 420'#'A3'
+		elsif entry =~ /a4/i;			tok = '210 × 297'#'A4'
+		elsif entry =~ /a5|21/i;  tok = '147 × 210'#'A5'
+		elsif entry =~ /a6/i;			tok = '105 × 148'#'A6'
+		elsif entry =~ /24/i;			tok = '170 × 240'#'23'
+		elsif entry =~ /23/i;			tok = '162 × 230'#'23'
+		elsif entry =~ /22/i;			tok = '160 × 220'#'22'
+		else
+			logger.error "[Error] Unknown 'Buchformat': '#{entry}'" unless logger.nil?
 		end
 		return tok
 	end
@@ -47,6 +93,7 @@ namespace :gapi do
 		# returning a json object, containing color data of one table, which can
 		# then be called via an GoogleAPI function call.
 		def get_em_all( table )
+			logger = Logger.new('log/development_rake.log')
 			h = get_col_from_title( table )
 			lektorname = {
 				'hf'			=> 'Hopf',
@@ -77,44 +124,29 @@ namespace :gapi do
 				'wien'=> 'wien@lit-verlag.de',
 				'web' => 'Unknown_web' }
 
-
-			format_table = { # .. should 've used regex ..
-				'A4'			=> '210 x 297',
-				'24x17'		=> '170 x 240',		# <- strange
-				'23'			=> '162 x 230',		# <- strange
-				'23x16'		=> '162 x 230',		# <- strange
-				'23 x 16'	=> '162 x 230',		# <- strange
-				'22x16'		=> '160 x 220',		# <- strange
-				'22 x 16'	=> '160 x 220',		# <- strange
-				'A5'			=> '147 x 210',
-				'a5'			=> '147 x 210',
-				'21x14'		=> '147 x 210',
-				'21 x 14'	=> '147 x 210',
-				'21'			=> '147 x 210',
-				'A6'			=> '105 x 148' }	# <- almonst never in use
-
 			(2..table.num_rows).each do |i| #skip first line: headers
 				gprod = Gprod.new( :projektname	=> table[i,h['Name']] )
 
+				##											     ##
+				# General book-related data.  #
+				##													 ##
 
-												 ##											     ##
-												 # General book-related data. #
-												 ##													 ##
-
+				##
 				# Error check isbn entries.
+				# If we cannot find the ISBN of the book in the database, we bail out.
+				#
 				short_isbn = table[ i, h['ISBN'] ]
 				if short_isbn.nil? or short_isbn.size < 1
-					logger.debug '[Debug] Strange entry in column '\
-									+i.to_s+': '+table[i,h['ISBN']]+"'\tSKIPPED"
+					logger.fatal "[Fatal] Strange entry in column #{i.to_s}: "\
+											 +"'#{table[i,h['ISBN']]}' \tSKIPPED"
 					next
 				end
-				buch = Buch.where( "isbn like '%"+short_isbn+"'" ).first
+				buch = Buch.where( "isbn like '%#{short_isbn}'" ).first
 
 				# Throw some conditional error/debug messages.
 				if (/[0-9]{5}-[0-9]/ =~ short_isbn) == 0				# Normal '12345-6' ISBN?
 					if buch.nil?
-						logger.fatal "[Fatal] Short ISBN not found: '"\
-										+short_isbn+"'\tSKIPPED" 
+						logger.fatal "[Fatal] Short ISBN not found: '#{short_isbn}' \tSKIPPED" 
 						next
 					end
 				else
@@ -122,18 +154,19 @@ namespace :gapi do
 						logger.fatal "[Fatal] ATE/EGL short_isbn notation. \tSKIPPED"
 						next
 					else
-						logger.debug '[Debug] Strange entry in column '\
-										+i.to_s+": '"+table[i,h['ISBN']]+"'\tSKIPPED"
+						logger.fatal "[Fatal] Strange entry in column #{i.to_s}: "\
+												+"'#{table[i,h['ISBN']]}' \tSKIPPED"
 						next
 					end
 				end
 
-				# Reihen code
-				r_code = table[ i, h['Reihe'] ]
-				unless r_code.empty?
-					buch[:r_code] = r_code
-				else
+				# 'Reihen'-code
+				r_code = table[i,h['Reihe']]
+				if r_code.empty?
 					logger.debug "[Debug] \t Kein reihenkuerzel gefunden."
+				else
+					buch[:r_code] = r_code.downcase
+					reihe = Reihe.where(r_code: r_code.downcase)
 				end
 
 				# Lektor ID		-->		Buch && Lektor !
@@ -150,7 +183,7 @@ namespace :gapi do
 					gprod[:lektor_id] = lektor[:id]
 				else
 					logger.info \
-						"[Info] Strange: We needed to create a missing lektor: '"+fox_name+"'"
+						"[Info] Strange: We needed to create a missing lektor: '#{fox_name}'"
 					lektor = Lektor.create(
 						:fox_name			=> fox_name.downcase,
 						:name					=> 'Unknown_'+fox_name.downcase,
@@ -173,29 +206,22 @@ namespace :gapi do
 						logger.debug "[Debug] \t Author not existent."
 					end
 				else
-					logger.fatal \
-						"[Fatal] The given email does not belong to the author."\
-						+"\n\t Implement more searches for the Author-ID."
+					logger.fatal "[Fatal] The given email does not belong to the author."\
+											+"\n\t[!] Implement more searches for the Author-ID. [!]"
 				end
 
+														##									 ##
+														# Cover related data. #
+														##									 ##
+
 				# Bindung, Externer Druck?
-				bindung = table[ i, h['Bi'] ]
-				if		bindung =~ /\+/i ;		bindung = 'multi'						; extern = true
-				elsif	bindung =~ /fhc/i;		bindung = 'faden_hardcover'	; extern = true
-				elsif	bindung =~ /k/i	 ;		bindung = 'klebe'						; extern = false
-				elsif	bindung =~ /f/i	 ;		bindung = 'faden'						; extern = true
-				elsif bindung =~ /h/i	 ;		bindung = 'hardcover'				; extern = true
-				else
-					bindung = 'unknown'
-					logger.error "[Error] Unknown 'bindung': '"+bindung+"'"\
-						+" in row "+i.to_s
-				end
-				buch[:bindung_bezeichnung] = bindung
-				gprod[:externer_druck] = extern
+				bindung, extern = check_bindung_entry( table[i,h['Bi']], logger )
+				buch[:bindung_bezeichnung] = bindung unless bindung.nil?
+				gprod[:externer_druck] = extern unless extern.nil?
 
 				# Auflage
 				auflage = table[i,h['Auflage']].to_i
-				# 2 values? What is the meaning of this?
+				# XXX 2 values? What is the meaning of this?
 				gprod[:auflage] = auflage
 
 				# Papier
@@ -205,31 +231,13 @@ namespace :gapi do
 				# Bemerkungen aka Sonder
 				gprod[:lektor_bemerkungen_public] = table[i,h['Sonder']]
 
-
-														##									 ##
-														# Cover related data. #
-														##									 ##
-
 				# Umschlag Abteilung
-				um_abteil = table[i,h['Umschlag']]
-				if		um_abteil =~ /te?x/i;			um_abteil = 'LaTeX'
-				elsif um_abteil =~ /in/i;			um_abteil = 'InDesign'
-				elsif um_abteil =~ /autor/i;	um_abteil = 'Geliefert'
-				else
-					logger.error \
-						"[Error] Unknown 'umschlag abteilung': '"+um_abteil+"'"+" in row "+i.to_s
-					um_abteil = nil 
-				end
-				buch[:umschlag_bezeichnung] = um_abteil
+				um_abteil = check_abteil_entry( table[i,h['Umschlag']], logger )
+				buch[:umschlag_bezeichnung] = um_abteil unless um_abteil.nil?
 
 				# Umschlag Format
-				format = format_table[ table[i,h['Format']] ]
-				unless format.nil?
-					buch[:format_bezeichnung] = format
-				else
-					logger.error \
-						"[Error] Unknown 'Buchformat': '"+table[i,h['Format']]+"'"+" in row "+i.to_s
-				end
+				format = check_umformat_entry( table[i,h['Format']], logger )
+				buch[:format_bezeichnung] = format unless format.nil?
 
 
 				##
@@ -237,12 +245,22 @@ namespace :gapi do
 				gprod.save
 				buch.save
 
-				##
-				# TODO: project status and id_* linking
-				# 
+													##											 ##
+													# Linking all the things. #
+													##											 ##
+
+				# buecher_reihen
+				buch.reihe_ids= reihe['id'] unless reihe.nil?
+
+				# autoren_reihen
+				reihe.autor_ids= autor['id'] unless autor.nil? or reihe.nil?
+
+				# autoren_buecher
+				autor.buch_ids= buch['id'] unless autor.nil?
+
 			end
 
-		end
+		end # end import-task
 
 		##
 		# Order might be important:
@@ -262,7 +280,7 @@ namespace :gapi do
 		class GapiTest < Minitest::Test
 			def test_papier_bezeichnung()
 				papier_table = {
-					'115 matt'=> '', # ??XXX??
+					'115 matt'=> nil, # ??XXX??
 					'o80'			=> 'Offset 80g' ,					# Offset 80
 					'80o'			=> 'Offset 80g' ,
 					'o 80'		=> 'Offset 80g' ,
@@ -284,10 +302,34 @@ namespace :gapi do
 					'w100'		=> 'Werkdruck 100g' , 
 				}
 				papier_table.to_enum.each do |key, value|
-					assert_equal check_papier_entry(key), value
+					tok = check_papier_entry(key)
+					puts "testing '#{key}' vs '#{value}', is '#{tok}'" if tok != value 
+					assert_equal tok, value
 				end
 			end # def test_papier_bezeichnung end
 
+			def test_format_bezeichnung()
+				format_table = {
+					'A4'			=> '210 × 297',
+					'24x17'		=> '170 × 240',
+					'23'			=> '162 × 230',
+					'23x16'		=> '162 × 230',
+					'23 x 16'	=> '162 × 230',
+					'22x16'		=> '160 × 220',
+					'22 x 16'	=> '160 × 220',
+					'A5'			=> '147 × 210',
+					'a5'			=> '147 × 210',
+					'21x14'		=> '147 × 210',
+					'21 x 14'	=> '147 × 210',
+					'21'			=> '147 × 210',
+					'A6'			=> '105 × 148',
+				}
+				format_table.to_enum.each do |key, value|
+					tok = check_umformat_entry(key)
+					#puts "key: '#{key}' should be #{value} and is #{tok}"
+					assert_equal tok, value
+				end
+			end
 		end # class GapiTest end
 
 	end # task gapi:test end
