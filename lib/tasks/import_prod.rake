@@ -23,7 +23,7 @@ namespace :gapi do
 		elsif entry =~ /(w ?90)|(90 ?w)/i;		tok = 'Werkdruck 90g blau'
 		elsif entry =~ /wg? ?100|100 ?wg?/i;	tok = 'Werkdruck 100g'
 		else
-			logger.error "[Error] Unknown 'papier_bezeichnung': '#{entry}'" unless logger.nil?
+			logger.error "Unknown 'papier_bezeichnung': '#{entry}'" unless logger.nil?
 		end
 		return tok
 	end
@@ -40,7 +40,7 @@ namespace :gapi do
 		elsif	entry =~ /f/i	 ;		tok = 'faden'						; extern = true
 		elsif entry =~ /h/i	 ;		tok = 'hardcover'				; extern = true
 		else
-			logger.error "[Error] Unknown 'bindung': '#{entry}'" unless logger.nil?
+			logger.error "Unknown 'bindung': '#{entry}'" unless logger.nil?
 		end
 		return tok, extern
 	end
@@ -54,7 +54,7 @@ namespace :gapi do
 		elsif entry =~ /in/i;			tok = 'InDesign'
 		elsif entry =~ /autor/i;	tok = 'Geliefert'
 		else
-			logger.error "[Error] Unknown 'umschlag abteilung': '#{entry}'" unless logger.nil?
+			logger.error "Unknown 'umschlag abteilung': '#{entry}'" unless logger.nil?
 		end
 		return tok
 	end
@@ -72,7 +72,7 @@ namespace :gapi do
 		elsif entry =~ /23/i;			tok = '162 × 230'#'23'
 		elsif entry =~ /22/i;			tok = '160 × 220'#'22'
 		else
-			logger.error "[Error] Unknown 'Buchformat': '#{entry}'" unless logger.nil?
+			logger.error "Unknown 'Buchformat': '#{entry}'" unless logger.nil?
 		end
 		return tok
 	end
@@ -95,6 +95,7 @@ namespace :gapi do
 		def get_em_all( table )
 			logger = Logger.new('log/development_rake.log')
 			h = get_col_from_title( table )
+
 			lektorname = {
 				'hf'			=> 'Hopf',
 				'whf'			=> 'Hopf',
@@ -134,10 +135,9 @@ namespace :gapi do
 				##
 				# Error check isbn entries.
 				# If we cannot find the ISBN of the book in the database, we bail out.
-				#
 				short_isbn = table[ i, h['ISBN'] ]
 				if short_isbn.nil? or short_isbn.size < 1
-					logger.fatal "[Fatal] Strange entry in column #{i.to_s}: "\
+					logger.fatal "Strange entry in column #{i.to_s}: "\
 											 +"'#{table[i,h['ISBN']]}' \tSKIPPED"
 					next
 				end
@@ -146,16 +146,15 @@ namespace :gapi do
 				# Throw some conditional error/debug messages.
 				if (/[0-9]{5}-[0-9]/ =~ short_isbn) == 0				# Normal '12345-6' ISBN?
 					if buch.nil?
-						logger.fatal "[Fatal] Short ISBN not found: '#{short_isbn}' \tSKIPPED" 
+						logger.fatal "Short ISBN not found: '#{short_isbn}' \tSKIPPED" 
 						next
 					end
 				else
 					if (/[0-9]{3}-[0-9]/ =~ short_isbn) == 0			# Maybe ATE/EGL?
-						logger.fatal "[Fatal] ATE/EGL short_isbn notation. \tSKIPPED"
+						logger.fatal "ATE/EGL short_isbn notation. \tSKIPPED"
 						next
 					else
-						logger.fatal "[Fatal] Strange entry in column #{i.to_s}: "\
-												+"'#{table[i,h['ISBN']]}' \tSKIPPED"
+						logger.fatal "Strange entry in column #{i.to_s}: '#{table[i,h['ISBN']]}' \tSKIPPED"
 						next
 					end
 				end
@@ -163,7 +162,7 @@ namespace :gapi do
 				# 'Reihen'-code
 				r_code = table[i,h['Reihe']]
 				if r_code.empty?
-					logger.debug "[Debug] \t Kein reihenkuerzel gefunden."
+					logger.debug "\t Kein reihenkuerzel gefunden."
 				else
 					buch[:r_code] = r_code.downcase
 					reihe = Reihe.where(r_code: r_code.downcase)
@@ -183,7 +182,7 @@ namespace :gapi do
 					gprod[:lektor_id] = lektor[:id]
 				else
 					logger.info \
-						"[Info] Strange: We needed to create a missing lektor: '#{fox_name}'"
+						"Strange: We needed to create a missing lektor: '#{fox_name}'"
 					lektor = Lektor.create(
 						:fox_name			=> fox_name.downcase,
 						:name					=> 'Unknown_'+fox_name.downcase,
@@ -203,16 +202,16 @@ namespace :gapi do
 						buch[:autor_id] = autor[:id]
 						gprod[:autor_id] = autor[:id]
 					else
-						logger.debug "[Debug] \t Author not existent."
+						logger.debug "\t Author not existent."
 					end
 				else
-					logger.fatal "[Fatal] The given email does not belong to the author."\
+					logger.fatal "The given email does not belong to the author."\
 											+"\n\t[!] Implement more searches for the Author-ID. [!]"
 				end
 
-														##									 ##
-														# Cover related data. #
-														##									 ##
+				##									 ##
+				# Cover related data. #
+				##									 ##
 
 				# Bindung, Externer Druck?
 				bindung, extern = check_bindung_entry( table[i,h['Bi']], logger )
@@ -241,13 +240,13 @@ namespace :gapi do
 
 
 				##
-				# Save 'em.
+				# Save 'em, so they get a computed ID, which we need for linking.
 				gprod.save
 				buch.save
 
-													##											 ##
-													# Linking all the things. #
-													##											 ##
+				##											 ##
+				# Linking all the things. #
+				##											 ##
 
 				# buecher_reihen
 				buch.reihe_ids= reihe['id'] unless reihe.nil?
@@ -326,10 +325,11 @@ namespace :gapi do
 				}
 				format_table.to_enum.each do |key, value|
 					tok = check_umformat_entry(key)
-					#puts "key: '#{key}' should be #{value} and is #{tok}"
+					puts "key: '#{key}' should be #{value} and is #{tok}" if tok != value
 					assert_equal tok, value
 				end
-			end
+			end # def test_format_bezeichnung end
+
 		end # class GapiTest end
 
 	end # task gapi:test end
