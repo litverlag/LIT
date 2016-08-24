@@ -165,7 +165,7 @@ namespace :gapi do
 					logger.debug "\t Kein reihenkuerzel gefunden."
 				else
 					buch[:r_code] = r_code.downcase
-					reihe = Reihe.where(r_code: r_code.downcase)
+					reihe = Reihe.where(r_code: r_code.downcase).first
 				end
 
 				# Lektor ID		-->		Buch && Lektor !
