@@ -162,10 +162,10 @@ namespace :gapi do
 				# 'Reihen'-code
 				r_code = table[i,h['Reihe']]
 				if r_code.empty?
-					logger.debug "\t Kein reihenkuerzel gefunden."
+					logger.debug "\t Kein reihenkuerzel gefunden, das feld ist leer."
 				else
 					buch[:r_code] = r_code.downcase
-					reihe = Reihe.where(r_code: r_code.downcase)
+					reihe = Reihe.where(r_code: r_code.downcase).first
 				end
 
 				# Lektor ID		-->		Buch && Lektor !
@@ -198,6 +198,7 @@ namespace :gapi do
 				gprod[:projekt_email_adresse] = email
 				unless email == lektor[:emailkuerzel] # email from Table does not belong to author.
 					autor = Autor.where(email: email).first
+					autor = Autor.where("name like '#{gprod['projektname']}'").first if autor.nil?
 					unless autor.nil?
 						buch[:autor_id] = autor[:id]
 						gprod[:autor_id] = autor[:id]
