@@ -1,5 +1,11 @@
 namespace :gapi do
 	require 'logger'
+	load './gapi_get_color_vals.rb'
+	unless COLORS
+		puts "Fatal error, could not get Color values from the ./gapi_get_color_vals.rb script."
+		puts "Exiting, this makes no sense without status information."
+		exit
+	end
 
 	##
 	# A function to map the columns of any 'Lit-produktions-tabelle' to their
@@ -78,6 +84,95 @@ namespace :gapi do
 	end
 
 	##
+	# This function parses a single entry in the 'produktionstabelle' for the
+	# 'Prio/Sond'_token.
+	## 
+	# We could easily get the number of  'Pflicht-/Sonder-/Vorab-exemplare' as
+	# integer.  ( -> ...match(entry)[2].to_i )
+	## 
+	# FIXME: 
+	#  * Who cares about SONDER ? -> 'abteil'_bemerkungen
+	#  * Is it possible to have more that one Pflicht-/Sonder-/Vorab-exemplare ??
+	#  * Fr:N - no description in Litiki ???
+	## 
+	def check_prio_entry( entry, logger=nil )
+		tok = nil
+		sonder = nil
+		if		entry =~ /z/i;				tok			= 'Z'
+		elsif	entry =~ /a/i;				tok			= 'A'
+		elsif entry =~ /b/i;				tok			= 'B'
+		elsif entry =~ /c/i;				tok			= 'C'
+		else
+			logger.error "Unknown 'Prio/Sonder': '#{entry}'" unless logger.nil?
+		end
+		if		entry =~ /pf/i;				sonder  = 'Pflichtexemplare: '+ /(pf).*?(\d+)/.match(entry)[2]
+		elsif entry =~ /sonder/i;		sonder  = 'Sonderexemplare: '+ /(sonder).*?(\d+)/.match(entry)[2]
+		elsif entry =~ /vorab/i;		sonder  = 'Vorabexemplare: '+ /(vorab).*?(\d+)/.match(entry)[2]
+		elsif entry =~ /m/i;				sonder  = 'Monographie'
+		elsif entry =~ /sb/i;				sonder  = 'Sammelband mit Beiträgerversand'
+		elsif entry =~ /s/i;				sonder  = 'Sammelband'
+		end
+		return tok, sonder
+	end
+
+	## EMPTY PROTOTYPE
+	# This function parses a single entry in the 'produktionstabelle' for the
+	# 'xxx'_token.
+	def check_prio_entry( entry, logger=nil )
+		tok = nil
+		if		entry =~ //i;		tok = nil
+		elsif entry =~ //i;		tok = nil
+		else
+			logger.error "Unknown 'xxx': '#{entry}'" unless logger.nil?
+		end
+		return tok
+	end
+
+	##
+	# Interprets a color based on the name of the column it was found.
+	#  Keine so gute idee.
+	def understand_color( color, col_name )
+		if col_name = 'ID'
+			return nil
+		elsif col_name = 'st'
+		elsif col_name = 'Name'
+		elsif col_name = 'ISBN'
+			return nil
+		elsif col_name = 'Auflage'
+			return nil
+		elsif col_name = 'Prio/Sond'
+			return nil
+		elsif col_name = 'Druck'
+			return nil
+		elsif col_name = 'Papier'
+			# green: Druckmuster ist fertig.
+		elsif col_name = 'Format'
+			# green: klappentext da
+			# white: -
+			# pink: klappentext angefordert, noch nicht da
+			# dark-green: kein klappentext gewünscht
+		elsif col_name = 'Titelei'
+		elsif col_name = 'Satz'
+		elsif col_name = 'Umschlag'
+			# white: -
+			# yellow: zur freigabe versendet
+			# turquoise: freigegeben aber keine seitenzahl
+			# brown: begonnen, aber nicht versendet
+		elsif col_name = 'Bi'
+			return nil
+		elsif col_name = 'MsEin'
+			return nil
+		elsif col_name = 'SollF'
+			# red maybe?
+		elsif col_name = 'Lek'
+			return nil
+		elsif col_name = ''
+		elsif col_name = ''
+		elsif col_name = ''
+		end
+	end
+
+	##
 	# This script links all the data.
 	# We create Gprod objects and search for all the things:
 	#   buch | lektor | reihe | autor | ...
@@ -127,10 +222,6 @@ namespace :gapi do
 
 			(2..table.num_rows).each do |i| #skip first line: headers
 				gprod = Gprod.new( :projektname	=> table[i,h['Name']] )
-
-				##											     ##
-				# General book-related data.  #
-				##													 ##
 
 				##
 				# Error check isbn entries.
@@ -210,9 +301,9 @@ namespace :gapi do
 											+"\n\t[!] Implement more searches for the Author-ID. [!]"
 				end
 
-				##									 ##
-				# Cover related data. #
-				##									 ##
+				##															 ##
+				# Better Code layout beginns here #
+				##															 ##
 
 				# Bindung, Externer Druck?
 				bindung, extern = check_bindung_entry( table[i,h['Bi']], logger )
@@ -221,7 +312,7 @@ namespace :gapi do
 
 				# Auflage
 				auflage = table[i,h['Auflage']].to_i
-				# XXX 2 values? What is the meaning of this?
+				# FIXME: 2 values? What is the meaning of this?
 				gprod[:auflage] = auflage
 
 				# Papier
@@ -239,6 +330,10 @@ namespace :gapi do
 				format = check_umformat_entry( table[i,h['Format']], logger )
 				buch[:format_bezeichnung] = format unless format.nil?
 
+				# Prio/Sond
+				prio = check_prio_entry( table[i,h['Prio/Sond']], logger )
+				gprod[:prio] = prio unless prio.nil?
+
 
 				##
 				# Save 'em, so they get a computed ID, which we need for linking.
@@ -251,16 +346,28 @@ namespace :gapi do
 
 				# buecher_reihen
 				buch.reihe_ids= reihe['id'] unless reihe.nil?
-
 				# autoren_reihen
 				reihe.autor_ids= autor['id'] unless autor.nil? or reihe.nil?
-
 				# autoren_buecher
 				autor.buch_ids= buch['id'] unless autor.nil?
 
-			end
+				##								 ##
+				# Color information #
+				##								 ##
+				# ..
 
-		end # end import-task
+				##				### Maybe not ###
+				# Iterate through the columns and act according to the color.
+				#
+				#(2..table.num_cols).each do |i| #skip first line: headers
+					#cinfo = understand_color( COLORS[i+1][j], )
+					#next if cinfo == nil
+					#;
+				#end # end column iteration
+
+			end # end row iteration
+
+		end # end get_em_all function
 
 		##
 		# Order might be important:
@@ -269,7 +376,7 @@ namespace :gapi do
 		table = spreadsheet.worksheet_by_title( 'LF' )
 		get_em_all( table )
 
-	end
+	end # end import-task
 
 	##
 	# Unittests for the import script.
