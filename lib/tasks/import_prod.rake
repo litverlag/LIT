@@ -1,26 +1,22 @@
 namespace :gapi do
 	require 'logger'
-	load './gapi_get_color_vals.rb'
+	load 'lib/tasks/gapi_get_color_vals.rb'
 	unless COLORS
 		puts "Fatal error, could not get Color values from the ./gapi_get_color_vals.rb script."
 		puts "Exiting, this makes no sense without status information."
 		exit
 	end
 
-	##
-	# A function to map the columns of any 'Lit-produktions-tabelle' to their
-	# numeric value.
+	# Map the header of each column to the column number.
 	def get_col_from_title( table )
-		# Build index and name table.
 		index = ( 1..table.max_cols ).drop(0)
 		name = table.rows[0]
-		# Zip them.
 		return Hash[*name.zip(index).flatten]
 	end
 
-	##
-	# This function parses a single entry in the 'produktionstabelle' for the
-	# 'Papier'_token. Order important, need to match more specific ones first.
+
+	# Now some functions parsing a single entrys in the 'produktionstabelle'.
+
 	def check_papier_entry( entry , logger=nil )
 		tok = nil
 		if		entry =~ /o ?80|80 ?o/i;				tok = 'Offset 80g'
@@ -34,9 +30,6 @@ namespace :gapi do
 		return tok
 	end
 
-	##
-	# This function parses a single entry in the 'produktionstabelle' for the
-	# 'Bindungs'_token. Same note as above.
 	def check_bindung_entry( entry , logger=nil )
 		tok = nil
 		extern = nil
@@ -51,9 +44,6 @@ namespace :gapi do
 		return tok, extern
 	end
 
-	##
-	# This function parses a single entry in the 'produktionstabelle' for the
-	# 'Abteilungs'_token.
 	def check_abteil_entry( entry, logger=nil )
 		tok = nil
 		if		entry =~ /te?x/i;		tok = 'LaTeX'
@@ -65,9 +55,6 @@ namespace :gapi do
 		return tok
 	end
 
-	##
-	# This function parses a single entry in the 'produktionstabelle' for the
-	# 'Umschlag-format'_token.
 	def check_umformat_entry( entry, logger=nil )
 		tok = nil
 		if		entry =~ /a3/i;			tok = '297 × 420'#'A3'
@@ -83,15 +70,8 @@ namespace :gapi do
 		return tok
 	end
 
-	##
-	# This function parses a single entry in the 'produktionstabelle' for the
-	# 'Prio/Sond'_token.
-	## 
-	# We could easily get the number of  'Pflicht-/Sonder-/Vorab-exemplare' as
-	# integer.  ( -> ...match(entry)[2].to_i )
 	## 
 	# FIXME: 
-	#  * Who cares about SONDER ? -> 'abteil'_bemerkungen
 	#  * Is it possible to have more that one Pflicht-/Sonder-/Vorab-exemplare ??
 	#  * Fr:N - no description in Litiki ???
 	## 
@@ -108,6 +88,7 @@ namespace :gapi do
 		if		entry =~ /pf/i;				sonder  = 'Pflichtexemplare: '+ /(pf).*?(\d+)/.match(entry)[2]
 		elsif entry =~ /sonder/i;		sonder  = 'Sonderexemplare: '+ /(sonder).*?(\d+)/.match(entry)[2]
 		elsif entry =~ /vorab/i;		sonder  = 'Vorabexemplare: '+ /(vorab).*?(\d+)/.match(entry)[2]
+		elsif entry =~ /fr/i;				sonder  = 'Freiexemplare: '+ /(fr).*?(\d+)/.match(entry)[2]
 		elsif entry =~ /m/i;				sonder  = 'Monographie'
 		elsif entry =~ /sb/i;				sonder  = 'Sammelband mit Beiträgerversand'
 		elsif entry =~ /s/i;				sonder  = 'Sammelband'
@@ -115,10 +96,33 @@ namespace :gapi do
 		return tok, sonder
 	end
 
-	## EMPTY PROTOTYPE
-	# This function parses a single entry in the 'produktionstabelle' for the
-	# 'xxx'_token.
-	def check_prio_entry( entry, logger=nil )
+	def check_druck_entry( entry, logger=nil )
+		tok = nil, bild = nil
+		if		entry =~ /^\s*x\s*$/i;		tok = 'Digitaldruck'
+		elsif entry =~ /x1/i;						bild = 'x1'
+		elsif entry =~ /x2/i;						bild = 'x2'
+		elsif entry =~ /x3/i;						bild = 'x3'
+		else
+			logger.error "Unknown 'druck': '#{entry}'" unless logger.nil?
+		end
+		return tok, bild
+	end
+
+	##
+	# FIXME: undocumented entries.. satz? ok?
+	def check_korrektorat_entry( entry, logger=nil )
+		tok = nil
+		if		entry =~ /0/i;			tok = 'Fertig'
+		elsif entry =~ /satz/i;		tok = nil
+		elsif entry =~ /ok/i;			tok = nil
+		else
+			logger.error "Unknown 'korrektorat': '#{entry}'" unless logger.nil?
+		end
+		return tok
+	end
+
+	## EMPTY PROTOTYPE, replace xxx with column name.
+	def check_xxx_entry( entry, logger=nil )
 		tok = nil
 		if		entry =~ //i;		tok = nil
 		elsif entry =~ //i;		tok = nil
@@ -129,64 +133,12 @@ namespace :gapi do
 	end
 
 	##
-	# Interprets a color based on the name of the column it was found.
-	#  Keine so gute idee.
-	def understand_color( color, col_name )
-		if col_name = 'ID'
-			return nil
-		elsif col_name = 'st'
-		elsif col_name = 'Name'
-		elsif col_name = 'ISBN'
-			return nil
-		elsif col_name = 'Auflage'
-			return nil
-		elsif col_name = 'Prio/Sond'
-			return nil
-		elsif col_name = 'Druck'
-			return nil
-		elsif col_name = 'Papier'
-			# green: Druckmuster ist fertig.
-		elsif col_name = 'Format'
-			# green: klappentext da
-			# white: -
-			# pink: klappentext angefordert, noch nicht da
-			# dark-green: kein klappentext gewünscht
-		elsif col_name = 'Titelei'
-		elsif col_name = 'Satz'
-		elsif col_name = 'Umschlag'
-			# white: -
-			# yellow: zur freigabe versendet
-			# turquoise: freigegeben aber keine seitenzahl
-			# brown: begonnen, aber nicht versendet
-		elsif col_name = 'Bi'
-			return nil
-		elsif col_name = 'MsEin'
-			return nil
-		elsif col_name = 'SollF'
-			# red maybe?
-		elsif col_name = 'Lek'
-			return nil
-		elsif col_name = ''
-		elsif col_name = ''
-		elsif col_name = ''
-		end
-	end
-
-	##
-	# This script links all the data.
-	# We create Gprod objects and search for all the things:
-	#   buch | lektor | reihe | autor | ...
+	# A task importing all data from the google 'Prod' tables.
 	desc "Import GoogleSpreadsheet-'Produktionstabellen'-data."
 	task import: :environment do
 		session = GoogleDrive.saved_session( ".credentials/client_secret.json" )
 		spreadsheet = session.spreadsheet_by_key( "1YWWcaEzdkBLidiXkO-_3fWtne2kMgXuEnw6vcICboRc" )
 
-
-		##
-		# As the ruby GoogleAPI does not support an easy way to access cell
-		# formatting.. my prefered option is to write a javascript function,
-		# returning a json object, containing color data of one table, which can
-		# then be called via an GoogleAPI function call.
 		def get_em_all( table )
 			logger = Logger.new('log/development_rake.log')
 			h = get_col_from_title( table )
@@ -224,28 +176,26 @@ namespace :gapi do
 				gprod = Gprod.new( :projektname	=> table[i,h['Name']] )
 
 				##
-				# Error check isbn entries.
 				# If we cannot find the ISBN of the book in the database, we bail out.
 				short_isbn = table[ i, h['ISBN'] ]
 				if short_isbn.nil? or short_isbn.size < 1
 					logger.fatal "Strange entry in column #{i.to_s}: "\
-											 +"'#{table[i,h['ISBN']]}' \tSKIPPED"
+											 +"'#{short_isbn}' \tSKIPPED"
 					next
 				end
 				buch = Buch.where( "isbn like '%#{short_isbn}'" ).first
 
-				# Throw some conditional error/debug messages.
-				if (/[0-9]{5}-[0-9]/ =~ short_isbn) == 0				# Normal '12345-6' ISBN?
+				if (/[0-9]{5}-[0-9]/ =~ short_isbn) == 0
 					if buch.nil?
 						logger.fatal "Short ISBN not found: '#{short_isbn}' \tSKIPPED" 
 						next
 					end
 				else
-					if (/[0-9]{3}-[0-9]/ =~ short_isbn) == 0			# Maybe ATE/EGL?
-						logger.fatal "ATE/EGL short_isbn notation. \tSKIPPED"
+					if (/[0-9]{3}-[0-9]/ =~ short_isbn) == 0
+						logger.fatal "ATE/EGL short_isbn notation not implemented '#{short_isbn}' \tSKIPPED"
 						next
 					else
-						logger.fatal "Strange entry in column #{i.to_s}: '#{table[i,h['ISBN']]}' \tSKIPPED"
+						logger.fatal "Strange entry in column #{i.to_s}: '#{short_isbn}' \tSKIPPED"
 						next
 					end
 				end
@@ -305,65 +255,46 @@ namespace :gapi do
 				# Better Code layout beginns here #
 				##															 ##
 
-				# Bindung, Externer Druck?
 				bindung, extern = check_bindung_entry( table[i,h['Bi']], logger )
 				buch[:bindung_bezeichnung] = bindung unless bindung.nil?
 				gprod[:externer_druck] = extern unless extern.nil?
 
-				# Auflage
 				auflage = table[i,h['Auflage']].to_i
 				# FIXME: 2 values? What is the meaning of this?
 				gprod[:auflage] = auflage
 
-				# Papier
 				papier = check_papier_entry( table[i,h['Papier']], logger )
 				buch[:papier_bezeichnung] = papier unless papier.nil?
 
-				# Bemerkungen aka Sonder
 				gprod[:lektor_bemerkungen_public] = table[i,h['Sonder']]
 
-				# Umschlag Abteilung
 				um_abteil = check_abteil_entry( table[i,h['Umschlag']], logger )
 				buch[:umschlag_bezeichnung] = um_abteil unless um_abteil.nil?
 
-				# Umschlag Format
 				format = check_umformat_entry( table[i,h['Format']], logger )
 				buch[:format_bezeichnung] = format unless format.nil?
 
-				# Prio/Sond
-				prio = check_prio_entry( table[i,h['Prio/Sond']], logger )
+				prio, sonder = check_prio_entry( table[i,h['Prio/Sond']], logger )
 				gprod[:prio] = prio unless prio.nil?
+				gprod[:lektor_bemerkungen_public] = sonder unless sonder.nil?
 
+				druck, bilder = check_druck_entry( table[i,h['Druck']], logger )
+				gprod[:druck_art] = druck unless druck.nil?
+				gprod[:bilder] = bilder unless bilder.nil?
 
 				##
 				# Save 'em, so they get a computed ID, which we need for linking.
+				# buecher_reihen, autoren_reihen, autoren_buecher
 				gprod.save
 				buch.save
 
-				##											 ##
-				# Linking all the things. #
-				##											 ##
-
-				# buecher_reihen
 				buch.reihe_ids= reihe['id'] unless reihe.nil?
-				# autoren_reihen
 				reihe.autor_ids= autor['id'] unless autor.nil? or reihe.nil?
-				# autoren_buecher
 				autor.buch_ids= buch['id'] unless autor.nil?
 
 				##								 ##
 				# Color information #
 				##								 ##
-				# ..
-
-				##				### Maybe not ###
-				# Iterate through the columns and act according to the color.
-				#
-				#(2..table.num_cols).each do |i| #skip first line: headers
-					#cinfo = understand_color( COLORS[i+1][j], )
-					#next if cinfo == nil
-					#;
-				#end # end column iteration
 
 			end # end row iteration
 
@@ -378,9 +309,7 @@ namespace :gapi do
 
 	end # end import-task
 
-	##
-	# Unittests for the import script.
-	#	
+	# Unit-testing task.
 	desc "Import GoogleSpreadsheet-'Produktionstabellen'-data."
 	task test: :environment do
     require 'minitest/autorun'
@@ -413,7 +342,7 @@ namespace :gapi do
 					puts "testing '#{key}' vs '#{value}', is '#{tok}'" if tok != value 
 					assert_equal tok, value
 				end
-			end # def test_papier_bezeichnung end
+			end
 
 			def test_format_bezeichnung()
 				format_table = {
@@ -436,10 +365,10 @@ namespace :gapi do
 					puts "key: '#{key}' should be #{value} and is #{tok}" if tok != value
 					assert_equal tok, value
 				end
-			end # def test_format_bezeichnung end
+			end
 
-		end # class GapiTest end
+		end # unittest class
 
-	end # task gapi:test end
+	end # unittest task
 
 end # namespace end

@@ -8,6 +8,9 @@
 
 
 Lektor.create!(name:'Guido Bellmann',fox_name:'bel',emailkuerzel:'bellmann@lit-verlag.de')
+bellmann = AdminUser.create!(email: 'bellmann@lit-verlag.de', \
+													password: 'ilikewine', password_confirmation: 'ilikewine')
+#bellmann.departments = Department.all.select { |d| d.name == "Superadmin"}
 
 #create Departments
 Department.create!([
