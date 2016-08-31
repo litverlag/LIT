@@ -1,11 +1,14 @@
+$COLORS = nil
+$COLOR_D = nil
+load 'lib/tasks/gapi_get_color_vals.rb'
+if $COLORS.nil? or $COLOR_D.nil?
+	puts "Fatal error, could not get Color values from the ./gapi_get_color_vals.rb script."
+	puts "Exiting, this makes no sense without status information."
+	exit
+end
+
 namespace :gapi do
 	require 'logger'
-	load 'lib/tasks/gapi_get_color_vals.rb'
-	unless COLORS
-		puts "Fatal error, could not get Color values from the ./gapi_get_color_vals.rb script."
-		puts "Exiting, this makes no sense without status information."
-		exit
-	end
 
 	# Map the header of each column to the column number.
 	def get_col_from_title( table )
@@ -33,7 +36,7 @@ namespace :gapi do
 	def check_bindung_entry( entry , logger=nil )
 		tok = nil
 		extern = nil
-		if		entry =~ /\+/i ;		tok = 'multi'						; extern = true
+		if		entry =~ /\+/i ;		tok = 'multi: '	+ entry	; extern = true
 		elsif	entry =~ /fhc/i;		tok = 'faden_hardcover'	; extern = true
 		elsif	entry =~ /k/i	 ;		tok = 'klebe'						; extern = false
 		elsif	entry =~ /f/i	 ;		tok = 'faden'						; extern = true
@@ -44,10 +47,11 @@ namespace :gapi do
 		return tok, extern
 	end
 
-	def check_abteil_entry( entry, logger=nil )
+	def check_um_abteil_entry( entry, logger=nil )
 		tok = nil
 		if		entry =~ /te?x/i;		tok = 'LaTeX'
 		elsif entry =~ /in/i;			tok = 'InDesign'
+		elsif entry =~ /neu/i;		tok = 'Neue Reihe'
 		elsif entry =~ /autor/i;	tok = 'Geliefert'
 		else
 			logger.error "Unknown 'umschlag abteilung': '#{entry}'" unless logger.nil?
@@ -70,29 +74,28 @@ namespace :gapi do
 		return tok
 	end
 
-	## 
-	# FIXME: 
-	#  * Is it possible to have more that one Pflicht-/Sonder-/Vorab-exemplare ??
-	#  * Fr:N - no description in Litiki ???
-	## 
 	def check_prio_entry( entry, logger=nil )
 		tok = nil
-		sonder = nil
+		sonder = ''
+
 		if		entry =~ /z/i;				tok			= 'Z'
-		elsif	entry =~ /a/i;				tok			= 'A'
+		elsif	entry =~ /a/i;				tok			= /(a+)/i.match(entry)[1].upcase
 		elsif entry =~ /b/i;				tok			= 'B'
 		elsif entry =~ /c/i;				tok			= 'C'
 		else
 			logger.error "Unknown 'Prio/Sonder': '#{entry}'" unless logger.nil?
 		end
-		if		entry =~ /pf/i;				sonder  = 'Pflichtexemplare: '+ /(pf).*?(\d+)/.match(entry)[2]
-		elsif entry =~ /sonder/i;		sonder  = 'Sonderexemplare: '+ /(sonder).*?(\d+)/.match(entry)[2]
-		elsif entry =~ /vorab/i;		sonder  = 'Vorabexemplare: '+ /(vorab).*?(\d+)/.match(entry)[2]
-		elsif entry =~ /fr/i;				sonder  = 'Freiexemplare: '+ /(fr).*?(\d+)/.match(entry)[2]
-		elsif entry =~ /m/i;				sonder  = 'Monographie'
-		elsif entry =~ /sb/i;				sonder  = 'Sammelband mit Beiträgerversand'
-		elsif entry =~ /s/i;				sonder  = 'Sammelband'
+
+		if entry =~ /pf/i;			sonder += 'Pflichtexemplare: '+ /(pf).*?(\d+)/.match(entry)[2] +"\n"
+		if entry =~ /sonder/i;	sonder += 'Sonderexemplare: '+ /(sonder).*?(\d+)/.match(entry)[2] +"\n"
+		if entry =~ /vorab/i;		sonder += 'Vorabexemplare: '+ /(vorab).*?(\d+)/.match(entry)[2] +"\n"
+		if entry =~ /fr/i;			sonder += 'Freiexemplare: '+ /(fr).*?(\d+)/.match(entry)[2] +"\n"
+
+		if		entry =~ /m/i;			sonder += 'Monographie'
+		elsif entry =~ /sb/i;			sonder += 'Sammelband mit Beiträgerversand'
+		elsif entry =~ /s/i;			sonder += 'Sammelband'
 		end
+		sonder = nil if sonder.empty?
 		return tok, sonder
 	end
 
@@ -109,7 +112,7 @@ namespace :gapi do
 	end
 
 	##
-	# FIXME: undocumented entries.. satz? ok?
+	# TODO: finish this
 	def check_korrektorat_entry( entry, logger=nil )
 		tok = nil
 		if		entry =~ /0/i;			tok = 'Fertig'
@@ -119,6 +122,16 @@ namespace :gapi do
 			logger.error "Unknown 'korrektorat': '#{entry}'" unless logger.nil?
 		end
 		return tok
+	end
+
+	def check_auflage_entry( entry, logger=nil )
+		match = /\s*?(\d+)\s*?\((\d+)\)/.match(entry)
+		auflage = match[1].to_i unless match[1].nil?
+		abnahme = match[2].to_i unless match[1].nil?
+		if auflage.nil? and abnahme.nil?
+			logger.error "Unknown 'auflage': '#{entry}'" unless logger.nil?
+		end
+		return auflage, abnahme
 	end
 
 	## EMPTY PROTOTYPE, replace xxx with column name.
@@ -259,16 +272,17 @@ namespace :gapi do
 				buch[:bindung_bezeichnung] = bindung unless bindung.nil?
 				gprod[:externer_druck] = extern unless extern.nil?
 
-				auflage = table[i,h['Auflage']].to_i
-				# FIXME: 2 values? What is the meaning of this?
-				gprod[:auflage] = auflage
+				auflage, abnahme = check_auflage_entry( table[i,h['Auflage']].to_i, logger )
+				gprod[:auflage] = auflage unless auflage.nil?
+				gprod[:auflage_chef] = abnahme unless abnahme.nil?
+				# Note: I don't know if this ^^  is correctly assigned.
 
 				papier = check_papier_entry( table[i,h['Papier']], logger )
 				buch[:papier_bezeichnung] = papier unless papier.nil?
 
 				gprod[:lektor_bemerkungen_public] = table[i,h['Sonder']]
 
-				um_abteil = check_abteil_entry( table[i,h['Umschlag']], logger )
+				um_abteil = check_um_abteil_entry( table[i,h['Umschlag']], logger )
 				buch[:umschlag_bezeichnung] = um_abteil unless um_abteil.nil?
 
 				format = check_umformat_entry( table[i,h['Format']], logger )
@@ -284,7 +298,6 @@ namespace :gapi do
 
 				##
 				# Save 'em, so they get a computed ID, which we need for linking.
-				# buecher_reihen, autoren_reihen, autoren_buecher
 				gprod.save
 				buch.save
 
@@ -295,16 +308,36 @@ namespace :gapi do
 				##								 ##
 				# Color information #
 				##								 ##
+				#
+
+				papier_color = $COLOR_D[ $COLORS[i][h['Papier']] ]
+				papier_color_table = {
+					'yellow'			=> I18n.t('scopes_names.verschickt_filter'),
+					'brown'				=> I18n.t('scopes_names.bearbeitung_filter'),
+					'green'				=> I18n.t('scopes_names.fertig_filter'),
+					'dark green'	=> I18n.t('scopes_names.fertig_filter')
+				}
+				gprod.statuspreps['status'] = papier_color_table[papier_color]
+
+				titelei_color = $COLOR_D[ $COLORS[i][h['Titelei']] ]
+				titelei_color_table = {
+					'yellow'			=> I18n.t('scopes_names.verschickt_filter'),
+					'brown'				=> I18n.t('scopes_names.bearbeitung_filter'),
+					'green'				=> I18n.t('scopes_names.fertig_filter'),
+					'dark green'	=> I18n.t('scopes_names.fertig_filter')
+				}
+				gprod.statustitelei['status'] = papier_color_table[titelei_color]
 
 			end # end row iteration
 
 		end # end get_em_all function
 
 		##
-		# Order might be important:
-		#		Do 'LF' and 'EinListe' last, because their entries are always
-		#		up-to-date and unique.
+		#	Do 'LF' and 'EinListe' last, because their entries are always up-to-date
+		#	and unique.
 		table = spreadsheet.worksheet_by_title( 'LF' )
+		get_em_all( table )
+		table = spreadsheet.worksheet_by_title( 'EinListe' )
 		get_em_all( table )
 
 	end # end import-task
@@ -314,6 +347,7 @@ namespace :gapi do
 	task test: :environment do
     require 'minitest/autorun'
 		class GapiTest < Minitest::Test
+
 			def test_papier_bezeichnung()
 				papier_table = {
 					'115 matt'=> nil, # ??XXX??
@@ -344,7 +378,7 @@ namespace :gapi do
 				end
 			end
 
-			def test_format_bezeichnung()
+			def test_umformat_bezeichnung()
 				format_table = {
 					'A4'			=> '210 × 297',
 					'24x17'		=> '170 × 240',
@@ -366,6 +400,71 @@ namespace :gapi do
 					assert_equal tok, value
 				end
 			end
+
+			def test_auflage_entry()
+				table = {
+					'123(32)'	=> 123,
+					'103(60)' => 103,
+					'100'			=> 100,
+					'149(1)'	=> 149,
+				}
+				table.to_enum.each do |key, value|
+					a1, a2 = check_auflage_entry(key)
+					puts "'#{key}' should be '#{value}' but its '#{a1}'" if a1 != value
+					assert_equal a1, value
+					assert_equal a2, value unless a2.nil?
+				end
+			end
+
+			def test_druck_entry()
+				table = {
+					'ex x1' => [nil,'x1'],
+					' x'		=> ['Digitaldruck',nil],
+					'x1'		=> [nil,'x1'],
+					'F1'		=> [nil,nil],
+				}
+				table.to_enum.each do |key, value|
+					tok = check_druck_entry(key)
+					assert_equal tok , value
+				end
+			end
+
+			def test_prio_entry()
+				table = {
+					'A' => ['A',nil],
+					'a' => ['A',nil],
+					'ASB' => ['A','Sammelband mit Beiträgerversand'],
+					'A:SB' => ['A','Sammelband mit Beiträgerversand'],
+					'B Fr:30' => ['B',"Freiexemplare: 30\n"],
+					'A pf8 Fr:25' => ['A',"Pflichtexemplare: 8\nFreiexemplare: 25\n"],
+				}
+				table.to_enum.each do |key, value|
+					tok = check_prio_entry(key)
+					assert_equal tok, value
+				end
+			end
+
+			def test_bindung_entry()
+				table = {
+					'f' => ['faden',true],
+					'K' => ['klebe',false],
+					'fhc' => ['faden_hardcover',true],
+					'k' => ['klebe',false],
+				}
+				table.to_enum.each do |key, value|
+					tok = check_bindung_entry(key)
+					assert_equal tok, value
+				end
+			end
+
+#			def test_xxx_entry()
+#				table = {
+#				}
+#				table.to_enum.each do |key, value|
+#					tok = check_xxx_entry(key)
+#					assert_equal tok, value
+#				end
+#			end
 
 		end # unittest class
 

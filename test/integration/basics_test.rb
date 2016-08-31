@@ -19,10 +19,8 @@ class BasicsTest < ActionDispatch::IntegrationTest
 		assert_response :redirect
 		assert_select 'form', false, 'This page must contain no forms.'
 		get "/admin/projekte"
-		assert_select 'h1', 'Produktions Tabellen'
-    #assert_select 'tr' do
-			#assert_select 'th', 11
-		#end
+		# .. hm why .. 
+		#assert_select 'h1', 'Produktions Tabellen'
 	end
 
 end

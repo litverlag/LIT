@@ -18,8 +18,9 @@ class Gprod < ActiveRecord::Base
   accepts_nested_attributes_for :autor
 
   ##
-  # The Class method scope_maker is used to create a scope for the states in the index view.
-  # The method is called when initializing the Gprod class and it creates a scope for each symvbol in the status_names array
+	# The Class method scope_maker is used to create a scope for the states in
+	# the index view.  The method is called when initializing the Gprod class and
+	# it creates a scope for each symvbol in the status_names array
   # *table* is the name of the status table for instance "status_final" for StatusFinal.
   # *status_strings* are the possible options available for this status.
   #       scope_maker(status_names, table, status_strings)

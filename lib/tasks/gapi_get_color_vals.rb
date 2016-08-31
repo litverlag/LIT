@@ -83,9 +83,21 @@ begin
     end
   else
     # The structure of the result will depend upon what the Apps Script function
-    # returns. Here, the function returns an Apps Script Object with String keys
-    # and values, and so the result is treated as a Ruby hash (folderSet).
-    COLORS = resp.response['result']
+    # returns. 
+    $COLORS = resp.response['result']
+		$COLOR_D = {
+			'#ffffff' => 'white',
+			'#ff0000' => 'red',
+			'#00ff00' => 'green',
+			'#38761d' => 'dark green',
+			'#00ffff' => 'turquois',
+			'#b45f06' => 'brown',
+			'#ff00ff' => 'pink',
+			'#ead1dc' => 'light pink',
+			'#ffff00' => 'yellow',
+			'#fff2cc' => 'chamois',
+		}
+		puts $COLORS
   end
 rescue Google::Apis::ClientError
   # The API encountered a problem before the script started executing.
