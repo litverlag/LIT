@@ -61,7 +61,6 @@ request = Google::Apis::ScriptV1::ExecutionRequest.new(
 )
 
 begin
-	puts 'AAAAAAAAAAAAAAAAAAAAAAA, Where r u? :('
   # Make the API request.
   resp = service.run_script($SCRIPT_ID, request)
 

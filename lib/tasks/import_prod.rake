@@ -342,7 +342,7 @@ namespace :gapi do
 					'turquois'		=> I18n.t('scopes_names.problem_filter'),
 				}
 
-				papier_color = $COLOR_D[ $COLORS[i,h['Papier']] ]
+				papier_color = $COLOR_D[ $COLORS[i-1][h['Papier']-1]]
 				if papier_color.nil?
 					logger.error "Could not determine paper color for column: #{i}"
 				elsif gprod.statuspreps.nil?
@@ -351,7 +351,7 @@ namespace :gapi do
 					gprod.statuspreps['status'] = general_color_table[papier_color]
 				end
 
-				titelei_color = $COLOR_D[ $COLORS[i,h['Titelei']] ]
+				titelei_color = $COLOR_D[ $COLORS[i-1][h['Titelei']-1]]
 				if titelei_color.nil?
 					logger.error "Could not determine titelei color for column: #{i}"
 				elsif gprod.statustitelei.nil?
@@ -362,7 +362,7 @@ namespace :gapi do
 
 				# TODO: Oh my.. there is no class/status/anything for 'klappentexte'
 				#				Need to add this soon..
-				format_color = $COLOR_D[ $COLORS[i,h['Format']] ]
+				format_color = $COLOR_D[ $COLORS[i-1][h['Format']-1]]
 				if ['green','brown','pink'].include? format_color
 					buch[:klappentext] = true
 				elsif ['dark green'].include? format_color
@@ -370,9 +370,9 @@ namespace :gapi do
 				end
 
 				#	TODO:	Same here ^
-				#seiten_color = $COLOR_D[ $COLORS[i,h['Seiten']] ]
+				#seiten_color = $COLOR_D[ $COLORS[i-1][h['Seiten']-1]]
 
-				umschlag_color = $COLOR_D[ $COLORS[i,h['Umschlag']] ]
+				umschlag_color = $COLOR_D[ $COLORS[i-1][h['Umschlag']-1]]
 				if umschlag_color.nil?
 					logger.error "Could not determine 'Umschlag' color for column: #{i}"
 				elsif gprod.statusumschl.nil?
@@ -381,14 +381,14 @@ namespace :gapi do
 					gprod.statusumschl['status'] = umschlag_color_table[umschlag_color]
 				end
 
-				name_color = $COLOR_D[ $COLORS[i,h['Name']] ]
+				name_color = $COLOR_D[ $COLORS[i-1][h['Name']-1]]
 				if name_color.nil?
 					logger.error "Could not determine 'Name' color for column: #{i}"
 				else
 					gprods[:satzproduktion] = true if name_color == 'light pink'
 				end
 
-				satz_color = $COLOR_D[ $COLORS[i,h['Satz']] ]
+				satz_color = $COLOR_D[ $COLORS[i-1][h['Satz']-1]]
 				if satz_color.nil?
 					logger.error "Could not determine 'Satz' color for column: #{i}"
 				elsif gprod.statussatz.nil?
@@ -550,6 +550,24 @@ namespace :gapi do
 #					assert_equal value, tok
 #				end
 #			end
+
+			def test_api_call()
+
+				session = GoogleDrive.saved_session( ".credentials/client_secret.json" )
+				spreadsheet = session.spreadsheet_by_key( "1YWWcaEzdkBLidiXkO-_3fWtne2kMgXuEnw6vcICboRc" )
+				table = spreadsheet.worksheet_by_title( 'EinListe' )
+				h = get_col_from_title( table )
+
+				$TABLE = 'EinListe'
+				load 'lib/tasks/gapi_get_color_vals.rb'
+
+				puts $COLORS[1][1]
+				i = 1
+				assert_equal '#b7e1cd', $COLORS[0][0]
+				#puts "line number <#{i}>, header number <#{h['ID']}>, contains '#{table[i,h['ID']]}'"
+				#puts "and color #{$COLORS[i-1][h['ID']-1]}"
+
+			end
 
 		end # unittest class
 
