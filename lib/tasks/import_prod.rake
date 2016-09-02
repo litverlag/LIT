@@ -125,6 +125,7 @@ namespace :gapi do
 	end
 
 	def check_auflage_entry( entry, logger=nil )
+		return entry, nil if entry.class == Fixnum
 		match = /\s*?(\d+)\s*?\((\d+)\)/.match(entry)
 		unless match.nil?
 			auflage = match[1].to_i
