@@ -342,13 +342,18 @@ namespace :gapi do
 					'turquois'		=> I18n.t('scopes_names.problem_filter'),
 				}
 
-				papier_color = $COLOR_D[ $COLORS[i][h['Papier']] ]
-				if papier_color.nil?
-					logger.error "Could not determine paper color for column: #{i}"
-				elsif gprod.statuspreps.nil?
-					gprod.statuspreps = StatusPreps.create(status: general_color_table[papier_color])
-				else
-					gprod.statuspreps['status'] = general_color_table[papier_color]
+				begin
+					papier_color = $COLOR_D[ $COLORS[i][h['Papier']] ]
+					if papier_color.nil?
+						logger.error "Could not determine paper color for column: #{i}"
+					elsif gprod.statuspreps.nil?
+						gprod.statuspreps = StatusPreps.create(status: general_color_table[papier_color])
+					else
+						gprod.statuspreps['status'] = general_color_table[papier_color]
+					end
+				rescue NoMethodError
+					puts "Strange 'NoMethodError', papier_color = #{papier_color}, "
+					puts "$COLOR_D = #{$COLOR_D}, .. ?"
 				end
 
 				titelei_color = $COLOR_D[ $COLORS[i][h['Titelei']] ]
