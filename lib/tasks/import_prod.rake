@@ -1,12 +1,3 @@
-$COLORS = nil
-$COLOR_D = nil
-load 'lib/tasks/gapi_get_color_vals.rb'
-if $COLORS.nil? or $COLOR_D.nil?
-	puts "Fatal error, could not get Color values from the ./gapi_get_color_vals.rb script."
-	puts "Exiting, this makes no sense without status information."
-	exit
-end
-
 namespace :gapi do
 	require 'logger'
 
@@ -86,10 +77,18 @@ namespace :gapi do
 			logger.error "Unknown 'Prio/Sonder': '#{entry}'" unless logger.nil?
 		end
 
-		if entry =~ /pf/i;			sonder += 'Pflichtexemplare: '+ /(pf).*?(\d+)/.match(entry)[2] +"\n"
-		if entry =~ /sonder/i;	sonder += 'Sonderexemplare: '+ /(sonder).*?(\d+)/.match(entry)[2] +"\n"
-		if entry =~ /vorab/i;		sonder += 'Vorabexemplare: '+ /(vorab).*?(\d+)/.match(entry)[2] +"\n"
-		if entry =~ /fr/i;			sonder += 'Freiexemplare: '+ /(fr).*?(\d+)/.match(entry)[2] +"\n"
+		if entry =~ /pf/i
+			sonder += 'Pflichtexemplare: '+ /(pf).*?(\d+)/i.match(entry)[2] +"\n"
+		end
+		if entry =~ /sonder/i
+			sonder += 'Sonderexemplare: '+ /(sonder).*?(\d+)/i.match(entry)[2] +"\n"
+		end
+		if entry =~ /vorab/i
+			sonder += 'Vorabexemplare: '+ /(vorab).*?(\d+)/i.match(entry)[2] +"\n"
+		end
+		if entry =~ /fr/i
+			sonder += 'Freiexemplare: '+ /(fr).*?(\d+)/i.match(entry)[2] +"\n"
+		end
 
 		if		entry =~ /m/i;			sonder += 'Monographie'
 		elsif entry =~ /sb/i;			sonder += 'Sammelband mit Beiträgerversand'
@@ -100,7 +99,8 @@ namespace :gapi do
 	end
 
 	def check_druck_entry( entry, logger=nil )
-		tok = nil, bild = nil
+		tok = nil
+		bild = nil
 		if		entry =~ /^\s*x\s*$/i;		tok = 'Digitaldruck'
 		elsif entry =~ /x1/i;						bild = 'x1'
 		elsif entry =~ /x2/i;						bild = 'x2'
@@ -126,8 +126,13 @@ namespace :gapi do
 
 	def check_auflage_entry( entry, logger=nil )
 		match = /\s*?(\d+)\s*?\((\d+)\)/.match(entry)
-		auflage = match[1].to_i unless match[1].nil?
-		abnahme = match[2].to_i unless match[1].nil?
+		unless match.nil?
+			auflage = match[1].to_i
+			abnahme = match[2].to_i
+		else
+			match = /.*?(\d+)/.match(entry)
+			auflage = match[1].to_i unless match.nil?
+		end
 		if auflage.nil? and abnahme.nil?
 			logger.error "Unknown 'auflage': '#{entry}'" unless logger.nil?
 		end
@@ -155,6 +160,16 @@ namespace :gapi do
 		def get_em_all( table )
 			logger = Logger.new('log/development_rake.log')
 			h = get_col_from_title( table )
+
+			$TABLE = table
+			$COLORS = nil
+			$COLOR_D = nil
+			load 'lib/tasks/gapi_get_color_vals.rb'
+			if $COLORS.nil? or $COLOR_D.nil?
+				puts "Fatal error, could not get Color values from the ./gapi_get_color_vals.rb script."
+				puts "Exiting, this makes no sense without status information."
+				exit
+			end
 
 			lektorname = {
 				'hf'			=> 'Hopf',
@@ -264,6 +279,15 @@ namespace :gapi do
 											+"\n\t[!] Implement more searches for the Author-ID. [!]"
 				end
 
+				seiten = /\s*(\d*)\s*W?\s*(\d*)/i.match(table[i,h['Seiten']])
+				if not seiten.nil? or not seiten[2].nil?
+					buch[:seiten] = seiten[2].to_i
+				elsif seiten
+					buch[:seiten] = seiten[1].to_i
+				else
+					logger.error "Could not undertstand 'Seiten' entry: '#{table[i,h['Seiten']]}'"
+				end
+
 				##															 ##
 				# Better Code layout beginns here #
 				##															 ##
@@ -296,6 +320,53 @@ namespace :gapi do
 				gprod[:druck_art] = druck unless druck.nil?
 				gprod[:bilder] = bilder unless bilder.nil?
 
+				##								 ##
+				# Color information #
+				##								 ##
+				#
+
+				general_color_table = {
+					'yellow'			=> I18n.t('scopes_names.verschickt_filter'),
+					'brown'				=> I18n.t('scopes_names.bearbeitung_filter'),
+					'green'				=> I18n.t('scopes_names.fertig_filter'),
+					'dark green'	=> I18n.t('scopes_names.fertig_filter'),
+					'pink'				=> I18n.t('scopes_names.problem_filter'),
+				}
+				umschlag_color_table = {
+					'yellow'			=> I18n.t('scopes_names.verschickt_filter'),
+					'brown'				=> I18n.t('scopes_names.bearbeitung_filter'),
+					'green'				=> I18n.t('scopes_names.fertig_filter'),
+					'dark green'	=> I18n.t('scopes_names.fertig_filter'),
+					'turquois'		=> I18n.t('scopes_names.problem_filter'),
+				}
+
+				papier_color = $COLOR_D[ $COLORS[i][h['Papier']] ]
+				gprod.statuspreps['status'] = general_color_table[papier_color]
+
+				titelei_color = $COLOR_D[ $COLORS[i][h['Titelei']] ]
+				gprod.statustitelei['status'] = general_color_table[titelei_color]
+
+				# TODO: Oh my.. there is no class/status/anything for 'klappentexte'
+				#				Need to add this soon..
+				format_color = $COLOR_D[ $COLORS[i][h['Format']] ]
+				if ['green','brown','pink'].include? format_color
+					buch[:klappentext] = true
+				elsif ['dark green'].include? format_color
+					buch[:klappentext] = false
+				end
+
+				#	TODO:	Same here ^
+				#seiten_color = $COLOR_D[ $COLORS[i][h['Seiten']] ]
+
+				umschlag_color = $COLOR_D[ $COLORS[i][h['Umschlag']] ]
+				gprod.statusumschl['status'] = umschlag_color_table[umschlag_color]
+
+				name_color = $COLOR_D[ $COLORS[i][h['Name']] ]
+				gprods[:satzproduktion] = true if name_color == 'light pink'
+
+				satz_color = $COLOR_D[ $COLORS[i][h['Satz']] ]
+				gprod.statussatz['status'] = general_color_table[satz_color]
+
 				##
 				# Save 'em, so they get a computed ID, which we need for linking.
 				gprod.save
@@ -305,28 +376,10 @@ namespace :gapi do
 				reihe.autor_ids= autor['id'] unless autor.nil? or reihe.nil?
 				autor.buch_ids= buch['id'] unless autor.nil?
 
-				##								 ##
-				# Color information #
-				##								 ##
-				#
-
-				papier_color = $COLOR_D[ $COLORS[i][h['Papier']] ]
-				papier_color_table = {
-					'yellow'			=> I18n.t('scopes_names.verschickt_filter'),
-					'brown'				=> I18n.t('scopes_names.bearbeitung_filter'),
-					'green'				=> I18n.t('scopes_names.fertig_filter'),
-					'dark green'	=> I18n.t('scopes_names.fertig_filter')
-				}
-				gprod.statuspreps['status'] = papier_color_table[papier_color]
-
-				titelei_color = $COLOR_D[ $COLORS[i][h['Titelei']] ]
-				titelei_color_table = {
-					'yellow'			=> I18n.t('scopes_names.verschickt_filter'),
-					'brown'				=> I18n.t('scopes_names.bearbeitung_filter'),
-					'green'				=> I18n.t('scopes_names.fertig_filter'),
-					'dark green'	=> I18n.t('scopes_names.fertig_filter')
-				}
-				gprod.statustitelei['status'] = papier_color_table[titelei_color]
+				gprod.save
+				buch.save
+				# Save 'em again.
+				##
 
 			end # end row iteration
 
@@ -335,9 +388,9 @@ namespace :gapi do
 		##
 		#	Do 'LF' and 'EinListe' last, because their entries are always up-to-date
 		#	and unique.
-		table = spreadsheet.worksheet_by_title( 'LF' )
-		get_em_all( table )
 		table = spreadsheet.worksheet_by_title( 'EinListe' )
+		get_em_all( table )
+		table = spreadsheet.worksheet_by_title( 'LF' )
 		get_em_all( table )
 
 	end # end import-task
@@ -374,7 +427,7 @@ namespace :gapi do
 				papier_table.to_enum.each do |key, value|
 					tok = check_papier_entry(key)
 					puts "testing '#{key}' vs '#{value}', is '#{tok}'" if tok != value 
-					assert_equal tok, value
+					assert_equal value, tok
 				end
 			end
 
@@ -397,22 +450,21 @@ namespace :gapi do
 				format_table.to_enum.each do |key, value|
 					tok = check_umformat_entry(key)
 					puts "key: '#{key}' should be #{value} and is #{tok}" if tok != value
-					assert_equal tok, value
+					assert_equal value, tok
 				end
 			end
 
 			def test_auflage_entry()
 				table = {
-					'123(32)'	=> 123,
-					'103(60)' => 103,
-					'100'			=> 100,
-					'149(1)'	=> 149,
+					'123(32)'	=> [123,32],
+					'103(60)' => [103,60],
+					'100'			=> [100,nil],
+					'149(1)'	=> [149,1],
 				}
 				table.to_enum.each do |key, value|
-					a1, a2 = check_auflage_entry(key)
-					puts "'#{key}' should be '#{value}' but its '#{a1}'" if a1 != value
-					assert_equal a1, value
-					assert_equal a2, value unless a2.nil?
+					tok = check_auflage_entry(key)
+					puts "'#{key}' should be '#{value}' but its '#{tok}'" if tok != value
+					assert_equal value, tok
 				end
 			end
 
@@ -425,7 +477,8 @@ namespace :gapi do
 				}
 				table.to_enum.each do |key, value|
 					tok = check_druck_entry(key)
-					assert_equal tok , value
+					puts "'#{key}' should be '#{value}' but its '#{tok}'" if tok != value
+					assert_equal value, tok
 				end
 			end
 
@@ -440,7 +493,7 @@ namespace :gapi do
 				}
 				table.to_enum.each do |key, value|
 					tok = check_prio_entry(key)
-					assert_equal tok, value
+					assert_equal value, tok
 				end
 			end
 
@@ -453,7 +506,7 @@ namespace :gapi do
 				}
 				table.to_enum.each do |key, value|
 					tok = check_bindung_entry(key)
-					assert_equal tok, value
+					assert_equal value, tok
 				end
 			end
 
@@ -462,7 +515,7 @@ namespace :gapi do
 #				}
 #				table.to_enum.each do |key, value|
 #					tok = check_xxx_entry(key)
-#					assert_equal tok, value
+#					assert_equal value, tok
 #				end
 #			end
 

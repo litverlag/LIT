@@ -57,7 +57,7 @@ SCRIPT_ID = 'M9BEz7TKhFSreJFaUhoqlQzuvAMBXjVEc'
 request = Google::Apis::ScriptV1::ExecutionRequest.new(
   function:		'get_color_matrix',
 	devMode:		true,
-	parameters: ['EinListe',],
+	parameters: [$TABLE,],
 )
 
 begin
@@ -97,7 +97,6 @@ begin
 			'#ffff00' => 'yellow',
 			'#fff2cc' => 'chamois',
 		}
-		puts $COLORS
   end
 rescue Google::Apis::ClientError
   # The API encountered a problem before the script started executing.
