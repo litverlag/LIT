@@ -376,7 +376,7 @@ namespace :gapi do
 				if umschlag_color.nil?
 					logger.error "Could not determine 'Umschlag' color for column: #{i}"
 				elsif gprod.statusumschl.nil?
-					gprod.statusumschl = StatusTitelei.create(status: umschlag_color_table[umschlag_color])
+					gprod.statusumschl = StatusUmschl.create(status: umschlag_color_table[umschlag_color])
 				else
 					gprod.statusumschl['status'] = umschlag_color_table[umschlag_color]
 				end
