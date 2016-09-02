@@ -77,17 +77,17 @@ namespace :gapi do
 			logger.error "Unknown 'Prio/Sonder': '#{entry}'" unless logger.nil?
 		end
 
-		if entry =~ /pf/i
-			sonder += 'Pflichtexemplare: '+ /(pf).*?(\d+)/i.match(entry)[2] +"\n"
+		unless (tmp = /(pf).*?(\d+)/i.match(entry)).nil?
+			sonder += 'Pflichtexemplare: '+ tmp[2] +"\n" unless tmp[2].nil?
 		end
-		if entry =~ /sonder/i
-			sonder += 'Sonderexemplare: '+ /(sonder).*?(\d+)/i.match(entry)[2] +"\n"
+		unless (tmp = /(sonder).*?(\d+)/i.match(entry)).nil?
+			sonder += 'Sonderexemplare: '+ tmp[2] +"\n" unless tmp[2].nil?
 		end
-		if entry =~ /vorab/i
-			sonder += 'Vorabexemplare: '+ /(vorab).*?(\d+)/i.match(entry)[2] +"\n"
+		unless (tmp = /(vorab).*?(\d+)/i.match(entry)).nil?
+			sonder += 'Vorabexemplare: '+ tmp[2] +"\n" unless tmp[2].nil?
 		end
-		if entry =~ /fr/i
-			sonder += 'Freiexemplare: '+ /(fr).*?(\d+)/i.match(entry)[2] +"\n"
+		unless (tmp = /(fr).*?(\d+)/i.match(entry)).nil?
+			sonder += 'Freiexemplare: '+ tmp[2] +"\n" unless tmp[2].nil?
 		end
 
 		if		entry =~ /m/i;			sonder += 'Monographie'
