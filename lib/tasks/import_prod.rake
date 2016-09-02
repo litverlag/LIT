@@ -342,21 +342,16 @@ namespace :gapi do
 					'turquois'		=> I18n.t('scopes_names.problem_filter'),
 				}
 
-				begin
-					papier_color = $COLOR_D[ $COLORS[i][h['Papier']] ]
-					if papier_color.nil?
-						logger.error "Could not determine paper color for column: #{i}"
-					elsif gprod.statuspreps.nil?
-						gprod.statuspreps = StatusPreps.create(status: general_color_table[papier_color])
-					else
-						gprod.statuspreps['status'] = general_color_table[papier_color]
-					end
-				rescue NoMethodError
-					puts "Strange 'NoMethodError', papier_color = #{papier_color}, "
-					puts "$COLOR_D = #{$COLOR_D}, .. ?"
+				papier_color = $COLOR_D[ $COLORS[i,h['Papier']] ]
+				if papier_color.nil?
+					logger.error "Could not determine paper color for column: #{i}"
+				elsif gprod.statuspreps.nil?
+					gprod.statuspreps = StatusPreps.create(status: general_color_table[papier_color])
+				else
+					gprod.statuspreps['status'] = general_color_table[papier_color]
 				end
 
-				titelei_color = $COLOR_D[ $COLORS[i][h['Titelei']] ]
+				titelei_color = $COLOR_D[ $COLORS[i,h['Titelei']] ]
 				if titelei_color.nil?
 					logger.error "Could not determine titelei color for column: #{i}"
 				elsif gprod.statustitelei.nil?
@@ -367,7 +362,7 @@ namespace :gapi do
 
 				# TODO: Oh my.. there is no class/status/anything for 'klappentexte'
 				#				Need to add this soon..
-				format_color = $COLOR_D[ $COLORS[i][h['Format']] ]
+				format_color = $COLOR_D[ $COLORS[i,h['Format']] ]
 				if ['green','brown','pink'].include? format_color
 					buch[:klappentext] = true
 				elsif ['dark green'].include? format_color
@@ -375,9 +370,9 @@ namespace :gapi do
 				end
 
 				#	TODO:	Same here ^
-				#seiten_color = $COLOR_D[ $COLORS[i][h['Seiten']] ]
+				#seiten_color = $COLOR_D[ $COLORS[i,h['Seiten']] ]
 
-				umschlag_color = $COLOR_D[ $COLORS[i][h['Umschlag']] ]
+				umschlag_color = $COLOR_D[ $COLORS[i,h['Umschlag']] ]
 				if umschlag_color.nil?
 					logger.error "Could not determine 'Umschlag' color for column: #{i}"
 				elsif gprod.statusumschl.nil?
@@ -386,14 +381,14 @@ namespace :gapi do
 					gprod.statusumschl['status'] = umschlag_color_table[umschlag_color]
 				end
 
-				name_color = $COLOR_D[ $COLORS[i][h['Name']] ]
+				name_color = $COLOR_D[ $COLORS[i,h['Name']] ]
 				if name_color.nil?
 					logger.error "Could not determine 'Name' color for column: #{i}"
 				else
 					gprods[:satzproduktion] = true if name_color == 'light pink'
 				end
 
-				satz_color = $COLOR_D[ $COLORS[i][h['Satz']] ]
+				satz_color = $COLOR_D[ $COLORS[i,h['Satz']] ]
 				if satz_color.nil?
 					logger.error "Could not determine 'Satz' color for column: #{i}"
 				elsif gprod.statussatz.nil?
