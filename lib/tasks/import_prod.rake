@@ -326,6 +326,7 @@ namespace :gapi do
 				#
 
 				general_color_table = {
+					'white'				=> I18n.t("scopes_names.neu_filter"),
 					'yellow'			=> I18n.t('scopes_names.verschickt_filter'),
 					'brown'				=> I18n.t('scopes_names.bearbeitung_filter'),
 					'green'				=> I18n.t('scopes_names.fertig_filter'),
@@ -333,6 +334,7 @@ namespace :gapi do
 					'pink'				=> I18n.t('scopes_names.problem_filter'),
 				}
 				umschlag_color_table = {
+					'white'				=> I18n.t("scopes_names.neu_filter"),
 					'yellow'			=> I18n.t('scopes_names.verschickt_filter'),
 					'brown'				=> I18n.t('scopes_names.bearbeitung_filter'),
 					'green'				=> I18n.t('scopes_names.fertig_filter'),
@@ -341,10 +343,22 @@ namespace :gapi do
 				}
 
 				papier_color = $COLOR_D[ $COLORS[i][h['Papier']] ]
-				gprod.statuspreps['status'] = general_color_table[papier_color]
+				if papier_color.nil?
+					logger.error "Could not determine paper color for column: #{i}"
+				elsif gprod.statuspreps.nil?
+					gprod.statuspreps = StatusPreps.create(status: general_color_table[papier_color])
+				else
+					gprod.statuspreps['status'] = general_color_table[papier_color]
+				end
 
 				titelei_color = $COLOR_D[ $COLORS[i][h['Titelei']] ]
-				gprod.statustitelei['status'] = general_color_table[titelei_color]
+				if titelei_color.nil?
+					logger.error "Could not determine titelei color for column: #{i}"
+				elsif gprod.statustitelei.nil?
+					gprod.statustitelei = StatusTitelei.create(status: general_color_table[titelei_color])
+				else
+					gprod.statustitelei['status'] = general_color_table[titelei_color]
+				end
 
 				# TODO: Oh my.. there is no class/status/anything for 'klappentexte'
 				#				Need to add this soon..
@@ -359,13 +373,29 @@ namespace :gapi do
 				#seiten_color = $COLOR_D[ $COLORS[i][h['Seiten']] ]
 
 				umschlag_color = $COLOR_D[ $COLORS[i][h['Umschlag']] ]
-				gprod.statusumschl['status'] = umschlag_color_table[umschlag_color]
+				if umschlag_color.nil?
+					logger.error "Could not determine 'Umschlag' color for column: #{i}"
+				elsif gprod.statusumschl.nil?
+					gprod.statusumschl = StatusTitelei.create(status: umschlag_color_table[umschlag_color])
+				else
+					gprod.statusumschl['status'] = umschlag_color_table[umschlag_color]
+				end
 
 				name_color = $COLOR_D[ $COLORS[i][h['Name']] ]
-				gprods[:satzproduktion] = true if name_color == 'light pink'
+				if name_color.nil?
+					logger.error "Could not determine 'Name' color for column: #{i}"
+				else
+					gprods[:satzproduktion] = true if name_color == 'light pink'
+				end
 
 				satz_color = $COLOR_D[ $COLORS[i][h['Satz']] ]
-				gprod.statussatz['status'] = general_color_table[satz_color]
+				if satz_color.nil?
+					logger.error "Could not determine 'Satz' color for column: #{i}"
+				elsif gprod.statussatz.nil?
+					gprod.statussatz = StatusSatz.create(status: general_color_table[satz_color])
+				else
+					gprod.statussatz['status'] = general_color_table[satz_color]
+				end
 
 				##
 				# Save 'em, so they get a computed ID, which we need for linking.
