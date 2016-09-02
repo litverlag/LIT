@@ -385,7 +385,7 @@ namespace :gapi do
 				if name_color.nil?
 					logger.error "Could not determine 'Name' color for column: #{i}"
 				else
-					gprods[:satzproduktion] = true if name_color == 'light pink'
+					gprod[:satzproduktion] = true if name_color == 'light pink'
 				end
 
 				satz_color = $COLOR_D[ $COLORS[i-1][h['Satz']-1]]
