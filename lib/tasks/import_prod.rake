@@ -161,7 +161,6 @@ namespace :gapi do
 			logger = Logger.new('log/development_rake.log')
 			h = get_col_from_title( table )
 
-			$TABLE = table
 			$COLORS = nil
 			$COLOR_D = nil
 			load 'lib/tasks/gapi_get_color_vals.rb'
@@ -388,8 +387,10 @@ namespace :gapi do
 		##
 		#	Do 'LF' and 'EinListe' last, because their entries are always up-to-date
 		#	and unique.
+		$TABLE = 'EinListe'
 		table = spreadsheet.worksheet_by_title( 'EinListe' )
 		get_em_all( table )
+		$TABLE = 'LF'
 		table = spreadsheet.worksheet_by_title( 'LF' )
 		get_em_all( table )
 
