@@ -396,12 +396,13 @@ namespace :gapi do
 					gprod.statussatz['status'] = general_color_table[satz_color]
 				end
 
+				gprod.buch = buch
+
 				##
 				# Save 'em, so they get a computed ID, which we need for linking.
 				gprod.save
 				buch.save
 
-				gprod.buch = buch unless buch.nil?
 				buch.reihe_ids= reihe['id'] unless reihe.nil?
 				reihe.autor_ids= autor['id'] unless autor.nil? or reihe.nil?
 				autor.buch_ids= buch['id'] unless autor.nil?
