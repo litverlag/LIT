@@ -1,9 +1,12 @@
 ##
 # # /app/models/Gprod.rb
-# This class represents a whole project for the production it starts with a lektor creating a projekt inherited
-# from Gprod. If he releases the project for the first departments they can access the Gprod class and change attributes in their Views.
-# Gprod is of course associated with, Buch , Lektor and Autor, but it has also an association with a state (status) for each departement. The states are
-# saved in additional tables where they are also logged, but for further information look in the corresponding files,
+# This class represents a whole project for the production it starts with a
+# lektor creating a projekt inherited from Gprod. If he releases the project
+# for the first departments they can access the Gprod class and change
+# attributes in their Views.  Gprod is of course associated with, Buch , Lektor
+# and Autor, but it has also an association with a state (status) for each
+# departement. The states are saved in additional tables where they are also
+# logged, but for further information look in the corresponding files,
 class Gprod < ActiveRecord::Base
 
   include StatusLogic
@@ -28,13 +31,17 @@ class Gprod < ActiveRecord::Base
     scope :alle_filter, -> {}
     status_names.length.times do |i|
       scope (status_names[i]), -> {
-        #this SQL interrogation is possible only using the INNER JOIN in default scope (in every Abteilung)
+				#this SQL interrogation is possible only using the INNER JOIN in
+				#default scope (in every Abteilung)
+
         Gprod.where("#{table}.status = ?", status_strings[i])
       }
     end
   end
   
-  #status_names array must be written in the same order of the status_strings array (see models/concerns/global_variables) + table name + symbol for StatusOptionsAdapter
+	#status_names array must be written in the same order of the status_strings
+	#array (see models/concerns/global_variables) + table name + symbol for
+	#StatusOptionsAdapter
   scope_maker([:neu_filter, :bearbeitung_filter, :fertig_filter, :problem_filter], "status_final", StatusOptionsAdapter.option(:statusfinal))
 
 

@@ -25,7 +25,7 @@ ActiveAdmin.register Projekt do
 		#
 		# Rouven asks: Who wrote this? please mail me rouvenglauert@gmail.com
 		#
-		# Mr.GRN-5 asks: Who is Rouven?
+		# GRN-5 asks: Who is Rouven?
 
     def scoped_collection
       if current_admin_user.departments.where("name = ?", 'Lektor').any?
@@ -65,9 +65,11 @@ ActiveAdmin.register Projekt do
 
     def edit
       puts "____________________________EDIT___PROJEKT________________________"
-      #Find the new projekt associated with the current Lektor or if superadmin you can access all projects
+			#Find the new projekt associated with the current Lektor or if superadmin
+			# you can access all projects.
       @projekt = Projekt.find_projekt_by_id(permitted_params[:id],current_admin_user)
-      #This methods are used to check if the Author can actually release project for the departments
+			#This methods are used to check if the Author can actually release
+			# project for the departments.
       @department = "projekt"
       @array_of_format_bezeichungen = ChoosableOption.instance.format_bezeichnung :all
       @array_of_umschlag_bezeichnungen = ChoosableOption.instance.umschlag_bezeichnung :all

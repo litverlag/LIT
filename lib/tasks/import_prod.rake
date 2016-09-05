@@ -401,6 +401,7 @@ namespace :gapi do
 				gprod.save
 				buch.save
 
+				gprod.buch = buch unless buch.nil?
 				buch.reihe_ids= reihe['id'] unless reihe.nil?
 				reihe.autor_ids= autor['id'] unless autor.nil? or reihe.nil?
 				autor.buch_ids= buch['id'] unless autor.nil?
@@ -416,7 +417,9 @@ namespace :gapi do
 
 		##
 		#	Do 'LF' and 'EinListe' last, because their entries are always up-to-date
-		#	and unique.
+		#	and unique. 
+		#	We need to set $TABLE as its used as argument for the javascript function
+		#	call in the google-script API script, getting the color values.
 		$TABLE = 'EinListe'
 		table = spreadsheet.worksheet_by_title( 'EinListe' )
 		get_em_all( table )
