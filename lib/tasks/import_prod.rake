@@ -143,9 +143,13 @@ namespace :gapi do
 
 	def check_date_entry( entry, logger=nil )
 		unless entry.empty?
-			date = Date.parse(entry) 
+			begin
+				date = Date.parse(entry) 
+			rescue
+				logger.debug "Invalid date: '#{entry}'" unless logger.nil?
+			end
 		else
-			logger.error "Empty 'MsEin': '#{entry}'" unless logger.nil?
+			logger.error "Empty date: '#{entry}'" unless logger.nil?
 		end
 		return date
 	end
@@ -565,6 +569,7 @@ namespace :gapi do
 				table = {
 					'12.12.2013'	=> Date.parse('12.12.2013'),
 					'2.12.2003'		=> Date.parse('2.12.2003'),
+					'lolwut'			=> nil,
 					''						=> nil,
 				}
 				table.to_enum.each do |key, value|
