@@ -6,37 +6,24 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-
-Lektor.create!(name:'Guido Bellmann',fox_name:'bel',emailkuerzel:'bellmann@lit-verlag.de')
-bellmann = AdminUser.create!(email: 'bellmann@lit-verlag.de', \
-													password: 'ilikewine', password_confirmation: 'ilikewine')
-#bellmann.departments = Department.all.select { |d| d.name == "Superadmin"}
-
-#create Departments
 Department.create!([
 	{name:'Superadmin'},{name:'Umschlag'},{name:'Satz'},{name:'Titelei'},
 	{name:'PrePs'},{name:'Rechnung'},{name:'Bildprüfung'},{name:'Pod'},
 	{name:'Binderei'},{name:'Lektor'}
 ])
 
-#create default Admin User
-admin = AdminUser.create!(email: 'admin@example.com', \
+admin = AdminUser.create!(email: 'admin@example.com',
 													password: 'cibcibcib', password_confirmation: 'cibcibcib')
 admin.departments = Department.all.select { |d| d.name == "Superadmin"}
 
-# XXX Test XXX : 
-Buch.create!(
-	:name => 'testbuch',
-	:isbn => '3-123-12345-3',
-	:seiten => 200,
-	:bindung_bezeichnung => 'klebe',
-	:papier_bezeichnung => 'Offset 90g',
-	:umschlag_bezeichnung => 'LaTeX',
-	:gprod_id => 1234
-)
-Gprod.create!(
-	:id => 1234,
-	:projektname => 'testpj',
-	:projekt_email_adresse => 'sum@fu.lul',
-	:externer_druck => false
-)
+
+#Test:
+Lektor.create!(name:'Guido Bellmann',fox_name:'bel',
+							 emailkuerzel:'bellmann@lit-verlag.de')
+Gprod.create!( :id => 1234, :projektname => 'testpj', 
+							:projekt_email_adresse => 'sum@fu.lul', 
+							:externer_druck => false)
+Buch.create!( :name => 'testbuch', :isbn => '3-123-12345-3', :seiten => 200, 
+						 :bindung_bezeichnung => 'klebe', 
+						 :papier_bezeichnung => 'Offset 90g', 
+						 :umschlag_bezeichnung => 'LaTeX', :gprod_id => 1234)

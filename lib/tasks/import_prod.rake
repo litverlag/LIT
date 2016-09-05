@@ -298,8 +298,7 @@ namespace :gapi do
 
 				auflage, abnahme = check_auflage_entry( table[i,h['Auflage']].to_i, logger )
 				gprod[:auflage] = auflage unless auflage.nil?
-				gprod[:auflage_chef] = abnahme unless abnahme.nil?
-				# Note: I don't know if this ^^  is correctly assigned.
+				gprod[:gesicherte_abnahme] = abnahme unless abnahme.nil?
 
 				papier = check_papier_entry( table[i,h['Papier']], logger )
 				buch[:papier_bezeichnung] = papier unless papier.nil?
@@ -552,7 +551,6 @@ namespace :gapi do
 #			end
 
 			def test_api_call()
-
 				session = GoogleDrive.saved_session( ".credentials/client_secret.json" )
 				spreadsheet = session.spreadsheet_by_key( "1YWWcaEzdkBLidiXkO-_3fWtne2kMgXuEnw6vcICboRc" )
 				table = spreadsheet.worksheet_by_title( 'EinListe' )
@@ -561,12 +559,16 @@ namespace :gapi do
 				$TABLE = 'EinListe'
 				load 'lib/tasks/gapi_get_color_vals.rb'
 
-				puts $COLORS[1][1]
-				i = 1
 				assert_equal '#b7e1cd', $COLORS[0][0]
+
+				##
+				# Uncomment the following and run 'bin/rake gapi:test' to see that i
+				# did everything right.
+				##
+
+				#i = 1
 				#puts "line number <#{i}>, header number <#{h['ID']}>, contains '#{table[i,h['ID']]}'"
 				#puts "and color #{$COLORS[i-1][h['ID']-1]}"
-
 			end
 
 		end # unittest class
