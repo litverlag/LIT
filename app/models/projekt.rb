@@ -23,8 +23,12 @@ class Projekt < Gprod
 		if departName.include? "Superadmin"
 			@projekt = Gprod.find(id)
 		elsif !current_admin_user.lektor.nil?
-			# XXX Maybe bug here  vvv not all admin_users have a lektor ..
 			@projekt = current_admin_user.lektor.gprod.find(id)
+			# XXX Maybe bug here  vvv not all admin_users have a lektor ..
+			#     .. so where is the 'else' ??
+		else
+			# XXX testing the else .. seems legit
+			@projekt = Gprod.find(id)
 		end
 
 	end

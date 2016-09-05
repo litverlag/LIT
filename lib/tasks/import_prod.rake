@@ -1,5 +1,6 @@
 namespace :gapi do
 	require 'logger'
+	require 'date'
 
 	# Map the header of each column to the column number.
 	def get_col_from_title( table )
@@ -140,16 +141,25 @@ namespace :gapi do
 		return auflage, abnahme
 	end
 
-	## EMPTY PROTOTYPE, replace xxx with column name.
-	def check_xxx_entry( entry, logger=nil )
-		tok = nil
-		if		entry =~ //i;		tok = nil
-		elsif entry =~ //i;		tok = nil
+	def check_date_entry( entry, logger=nil )
+		unless entry.empty?
+			date = Date.parse(entry) 
 		else
-			logger.error "Unknown 'xxx': '#{entry}'" unless logger.nil?
+			logger.error "Empty 'MsEin': '#{entry}'" unless logger.nil?
 		end
-		return tok
+		return date
 	end
+
+	## EMPTY PROTOTYPE, replace xxx with column name.
+#	def check_xxx_entry( entry, logger=nil )
+#		tok = nil
+#		if		entry =~ //i;		tok = nil
+#		elsif entry =~ //i;		tok = nil
+#		else
+#			logger.error "Unknown 'xxx': '#{entry}'" unless logger.nil?
+#		end
+#		return tok
+#	end
 
 	##
 	# A task importing all data from the google 'Prod' tables.
@@ -318,6 +328,12 @@ namespace :gapi do
 				druck, bilder = check_druck_entry( table[i,h['Druck']], logger )
 				gprod[:druck_art] = druck unless druck.nil?
 				gprod[:bilder] = bilder unless bilder.nil?
+
+				msein = check_date_entry( table[i,h['MsEin']], logger )
+				gprod.manusskript_eingang_date = msein unless msein.nil?
+
+				sollf = check_date_entry( table[i,h['SollF']], logger )
+				gprod.final_deadline = sollf unless sollf.nil?
 
 				##								 ##
 				# Color information #
@@ -541,6 +557,18 @@ namespace :gapi do
 				}
 				table.to_enum.each do |key, value|
 					tok = check_bindung_entry(key)
+					assert_equal value, tok
+				end
+			end
+
+			def test_date_entry()
+				table = {
+					'12.12.2013'	=> Date.parse('12.12.2013'),
+					'2.12.2003'		=> Date.parse('2.12.2003'),
+					''						=> nil,
+				}
+				table.to_enum.each do |key, value|
+					tok = check_date_entry(key)
 					assert_equal value, tok
 				end
 			end
