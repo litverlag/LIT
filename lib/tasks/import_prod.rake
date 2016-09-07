@@ -177,12 +177,32 @@ namespace :gapi do
 #		return tok
 #	end
 
+	def find_buch_by_shortisbn(short_isbn, logger)
+		if short_isbn.nil? or short_isbn.empty?
+			logger.fatal "ISBN: empty? '#{short_isbn}'"
+			return nil
+		end
+
+		buch = Buch.where( "isbn like '%#{short_isbn}'" ).first
+		if buch.nil?
+			if (/[0-9]{5}-[0-9]/ =~ short_isbn) == 0
+				logger.fatal "ISBN: not found: '#{short_isbn}'"
+			elsif (/[0-9]{3}-[0-9]/ =~ short_isbn) == 0
+				logger.fatal "ISBN: ATE/EGL not implemented: '#{short_isbn}'"
+			else
+				logger.fatal "ISBN: not understood: '#{short_isbn}'"
+			end
+		end
+		return buch
+	end
+
 	##
-	# A task importing all data from the google 'Prod' tables.
+	# A task importing ALL data from the google 'Prod' tables.
 	desc "Import GoogleSpreadsheet-'Produktionstabellen'-data."
 	task import: :environment do
 		session = GoogleDrive.saved_session( ".credentials/client_secret.json" )
 		spreadsheet = session.spreadsheet_by_key( "1YWWcaEzdkBLidiXkO-_3fWtne2kMgXuEnw6vcICboRc" )
+
 
 		def rake_umschlag_table( table )
 			logger = Logger.new('log/development_rake.log')
@@ -245,25 +265,8 @@ namespace :gapi do
 
 				##
 				# If we cannot find the ISBN of the book in the database, we bail out.
-				short_isbn = table[ i, h['ISBN'] ]
-				if short_isbn.nil? or short_isbn.size < 1
-					logger.fatal "ISBN: empty? #{i.to_s}: '#{short_isbn}'"
-					next
-				end
-				buch = Buch.where( "isbn like '%#{short_isbn}'" ).first
-
-				if buch.nil?
-					if (/[0-9]{5}-[0-9]/ =~ short_isbn) == 0
-						logger.fatal "ISBN: not found: '#{short_isbn}'"
-					elsif (/[0-9]{3}-[0-9]/ =~ short_isbn) == 0
-						logger.fatal "ISBN: ATE/EGL not implemented: '#{short_isbn}'"
-					else
-						logger.fatal "ISBN: not understood row[#{i.to_s}]: '#{short_isbn}'"
-					end
-
-					next
-
-				end
+				buch = find_buch_by_shortisbn(table[i,h['ISBN']], logger)
+				next if buch.nil?
 
 				# 'Reihen'-code
 				r_code = table[i,h['Reihe']]
@@ -373,7 +376,7 @@ namespace :gapi do
 
 				papier_color = $COLOR_D[ $COLORS[i-1][h['Papier']-1]]
 				if papier_color.nil?
-					logger.error "Could not determine paper color for column: #{i}"
+					logger.error "Color: 'paper' column: #{i}"
 				elsif gprod.statuspreps.nil?
 					gprod.statuspreps = StatusPreps.create(status: general_color_table[papier_color])
 				else
@@ -382,7 +385,7 @@ namespace :gapi do
 
 				titelei_color = $COLOR_D[ $COLORS[i-1][h['Titelei']-1]]
 				if titelei_color.nil?
-					logger.error "Could not determine titelei color for column: #{i}"
+					logger.error "Color: 'titelei' column: #{i}"
 				elsif gprod.statustitelei.nil?
 					gprod.statustitelei = StatusTitelei.create(status: general_color_table[titelei_color])
 				else
@@ -403,7 +406,7 @@ namespace :gapi do
 
 				umschlag_color = $COLOR_D[ $COLORS[i-1][h['Umschlag']-1]]
 				if umschlag_color.nil?
-					logger.error "Could not determine 'Umschlag' color for column: #{i-1}"
+					logger.error "Color: 'Umschlag' column: #{i-1}"
 				elsif gprod.statusumschl.nil?
 					gprod.statusumschl = StatusUmschl.create(status: umschlag_color_table[umschlag_color])
 				else
@@ -412,14 +415,14 @@ namespace :gapi do
 
 				name_color = $COLOR_D[ $COLORS[i-1][h['Name']-1]]
 				if name_color.nil?
-					logger.error "Could not determine 'Name' color for column: #{i-1}"
+					logger.error "Color: 'Name' column: #{i-1}"
 				else
 					gprod[:satzproduktion] = true if name_color == 'light pink'
 				end
 
 				satz_color = $COLOR_D[ $COLORS[i-1][h['Satz']-1]]
 				if satz_color.nil?
-					logger.error "Could not determine 'Satz' color for column: #{i-1}"
+					logger.error "Color: 'Satz' column: #{i-1}"
 				elsif gprod.statussatz.nil?
 					gprod.statussatz = StatusSatz.create(status: general_color_table[satz_color])
 				else
@@ -428,7 +431,7 @@ namespace :gapi do
 
 				druck_color = $COLOR_D[ $COLORS[i-1][h['Druck']-1]]
 				if druck_color.nil?
-					logger.error  "Could not determine 'Druck' color for column: #{i-1}"
+					logger.error  "Color: 'Druck' column: #{i-1}"
 				elsif druck_color == 'green'
 					if gprod.statusdruck.nil?
 						gprod.statusdruck = StatusDruck.create(status: I18n.t('scopes_names.fertig_filter'))
@@ -456,21 +459,56 @@ namespace :gapi do
 				logger.fatal "Gprod without buch: #{gprod['id']}" if gprod.buch == nil
 
 			end # end row iteration
-
 		end # end rake_umschlag_table function
 
-		def rake_bi_table
+
+		def rake_bi_table(table)
+			logger = Logger.new('log/development_rake.log')
+			h = get_col_from_title(table)
+			$COLORS = nil
+			$COLOR_D = nil
+			load 'lib/tasks/gapi_get_color_vals.rb'
+			if $COLORS.nil? or $COLOR_D.nil?
+				puts "Fatal error, could not get Color values from the"+
+							"./gapi_get_color_vals.rb script."
+				puts "Exiting, this makes no sense without status information."
+				exit
+			end
+			general_color_table = {
+				'white'				=> I18n.t('scopes_names.neu_filter'),
+				'yellow'			=> I18n.t('scopes_names.verschickt_filter'),
+				'brown'				=> I18n.t('scopes_names.bearbeitung_filter'),
+				'green'				=> I18n.t('scopes_names.fertig_filter'),
+				'pink'				=> I18n.t('scopes_names.problem_filter'), }
+
+			(2..table.num_rows).each do |i| #skip first line: headers
+
+				buch = find_buch_by_shortisbn(table[i,h['ISBN']], logger)
+				next if buch.nil?
+				gprod = buch.gprod
+				if gprod.statusdruck.nil?
+					gprod.statusdruck = StatusDruck.create(status: 
+																		I18n.t("scopes_names.fertig_filter"))
+				else
+					gprod.statusdruck['status'] = I18n.t("scopes_names.fertig_filter")
+				end
+
+			end
 		end # end rake_bi_table
 
+
 		##
-		#	We need to set $TABLE as its used as argument for the javascript function
-		#	call in the google-script API script, getting the color values.
+		#	We need to set $TABLE which is used as argument for the javascript
+		#	function call in the google-script API script, getting the color values.
 		$TABLE = 'EinListe'
 		table = spreadsheet.worksheet_by_title( 'EinListe' )
 		rake_umschlag_table( table )
 		$TABLE = 'LF'
 		table = spreadsheet.worksheet_by_title( 'LF' )
 		rake_umschlag_table( table )
+		$TABLE = 'Bi'
+		table = spreadsheet.worksheet_by_title( 'Bi' )
+		rake_bi_table( table )
 
 	end # end import-task
 
