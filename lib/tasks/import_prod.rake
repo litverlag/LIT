@@ -157,6 +157,15 @@ namespace :gapi do
 		return date
 	end
 
+	def check_email_entry( entry, logger=nil )
+		m = /.*?([\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+).*?/i.match(entry)
+		if m.nil? or m[1].nil?
+			logger.error "Unknown 'email': '#{entry}'" unless logger.nil?
+			return nil
+		end
+		return m[1]
+	end
+
 	## EMPTY PROTOTYPE, replace xxx with column name.
 #	def check_xxx_entry( entry, logger=nil )
 #		tok = nil
@@ -175,7 +184,7 @@ namespace :gapi do
 		session = GoogleDrive.saved_session( ".credentials/client_secret.json" )
 		spreadsheet = session.spreadsheet_by_key( "1YWWcaEzdkBLidiXkO-_3fWtne2kMgXuEnw6vcICboRc" )
 
-		def lf_and_ein( table )
+		def rake_umschlag_table( table )
 			logger = Logger.new('log/development_rake.log')
 			h = get_col_from_title( table )
 
@@ -188,6 +197,20 @@ namespace :gapi do
 				exit
 			end
 
+			general_color_table = {
+				'white'				=> I18n.t("scopes_names.neu_filter"),
+				'yellow'			=> I18n.t('scopes_names.verschickt_filter'),
+				'brown'				=> I18n.t('scopes_names.bearbeitung_filter'),
+				'green'				=> I18n.t('scopes_names.fertig_filter'),
+				'dark green'	=> I18n.t('scopes_names.fertig_filter'),
+				'pink'				=> I18n.t('scopes_names.problem_filter'), }
+			umschlag_color_table = {
+				'white'				=> I18n.t("scopes_names.neu_filter"),
+				'yellow'			=> I18n.t('scopes_names.verschickt_filter'),
+				'brown'				=> I18n.t('scopes_names.bearbeitung_filter'),
+				'green'				=> I18n.t('scopes_names.fertig_filter'),
+				'dark green'	=> I18n.t('scopes_names.fertig_filter'),
+				'turquois'		=> I18n.t('scopes_names.problem_filter'), }
 			lektorname = {
 				'hf'			=> 'Hopf',
 				'whf'			=> 'Hopf',
@@ -276,7 +299,7 @@ namespace :gapi do
 				gprod[:lektor_id] = lektor[:id]
 
 				# Autor ID and Projekt E-Mail
-				email = table[ i, h['email'] ]
+				email = check_email_entry(table[i,h['email']])
 				if email.nil? or email.empty?
 					# This will log a fatal error below.
 					email = lektor[:emailkuerzel]				
@@ -347,23 +370,6 @@ namespace :gapi do
 				# Color information #
 				##								 ##
 				#
-
-				general_color_table = {
-					'white'				=> I18n.t("scopes_names.neu_filter"),
-					'yellow'			=> I18n.t('scopes_names.verschickt_filter'),
-					'brown'				=> I18n.t('scopes_names.bearbeitung_filter'),
-					'green'				=> I18n.t('scopes_names.fertig_filter'),
-					'dark green'	=> I18n.t('scopes_names.fertig_filter'),
-					'pink'				=> I18n.t('scopes_names.problem_filter'),
-				}
-				umschlag_color_table = {
-					'white'				=> I18n.t("scopes_names.neu_filter"),
-					'yellow'			=> I18n.t('scopes_names.verschickt_filter'),
-					'brown'				=> I18n.t('scopes_names.bearbeitung_filter'),
-					'green'				=> I18n.t('scopes_names.fertig_filter'),
-					'dark green'	=> I18n.t('scopes_names.fertig_filter'),
-					'turquois'		=> I18n.t('scopes_names.problem_filter'),
-				}
 
 				papier_color = $COLOR_D[ $COLORS[i-1][h['Papier']-1]]
 				if papier_color.nil?
@@ -451,17 +457,20 @@ namespace :gapi do
 
 			end # end row iteration
 
-		end # end lf_and_ein function
+		end # end rake_umschlag_table function
+
+		def rake_bi_table
+		end # end rake_bi_table
 
 		##
 		#	We need to set $TABLE as its used as argument for the javascript function
 		#	call in the google-script API script, getting the color values.
 		$TABLE = 'EinListe'
 		table = spreadsheet.worksheet_by_title( 'EinListe' )
-		lf_and_ein( table )
+		rake_umschlag_table( table )
 		$TABLE = 'LF'
 		table = spreadsheet.worksheet_by_title( 'LF' )
-		lf_and_ein( table )
+		rake_umschlag_table( table )
 
 	end # end import-task
 
@@ -591,6 +600,19 @@ namespace :gapi do
 				}
 				table.to_enum.each do |key, value|
 					tok = check_date_entry(key)
+					assert_equal value, tok
+				end
+			end
+
+			def test_email_entry()
+				table = {
+					'Fernando Enns <fernando.enns@uni-hamburg.de>' => 
+																							'fernando.enns@uni-hamburg.de',
+					'<fernando.enns@uni-hamburg.de>' => 'fernando.enns@uni-hamburg.de',
+					'fernando.enns@uni-hamburg.de'   => 'fernando.enns@uni-hamburg.de',
+				}
+				table.to_enum.each do |key, value|
+					tok = check_email_entry(key)
 					assert_equal value, tok
 				end
 			end
