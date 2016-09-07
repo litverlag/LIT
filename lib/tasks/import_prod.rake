@@ -224,25 +224,22 @@ namespace :gapi do
 				# If we cannot find the ISBN of the book in the database, we bail out.
 				short_isbn = table[ i, h['ISBN'] ]
 				if short_isbn.nil? or short_isbn.size < 1
-					logger.fatal "Strange entry in column #{i.to_s}: "\
-											 +"'#{short_isbn}' \tSKIPPED"
+					logger.fatal "ISBN: empty? #{i.to_s}: '#{short_isbn}'"
 					next
 				end
 				buch = Buch.where( "isbn like '%#{short_isbn}'" ).first
 
-				if (/[0-9]{5}-[0-9]/ =~ short_isbn) == 0
-					if buch.nil?
-						logger.fatal "Short ISBN not found: '#{short_isbn}' \tSKIPPED" 
-						next
-					end
-				else
-					if (/[0-9]{3}-[0-9]/ =~ short_isbn) == 0
-						logger.fatal "ATE/EGL short_isbn notation not implemented '#{short_isbn}' \tSKIPPED"
-						next
+				if buch.nil?
+					if (/[0-9]{5}-[0-9]/ =~ short_isbn) == 0
+						logger.fatal "ISBN: not found: '#{short_isbn}'"
+					elsif (/[0-9]{3}-[0-9]/ =~ short_isbn) == 0
+						logger.fatal "ISBN: ATE/EGL not implemented: '#{short_isbn}'"
 					else
-						logger.fatal "Strange entry in column #{i.to_s}: '#{short_isbn}' \tSKIPPED"
-						next
+						logger.fatal "ISBN: not understood row[#{i.to_s}]: '#{short_isbn}'"
 					end
+
+					next
+
 				end
 
 				# 'Reihen'-code
@@ -257,32 +254,35 @@ namespace :gapi do
 				# Lektor ID		-->		Buch && Lektor !
 				fox_name = table[ i, h['Lek'] ]
 				lektor = Lektor.where(fox_name: fox_name).first
-				if lektor.nil? # Try again ..
+
+				if lektor.nil?
 					lektor = Lektor.where(name: lektorname[fox_name.downcase]).first
-					if lektor.nil? # And again ..
-						lektor = Lektor.where(emailkuerzel: lektoremailkuerzel[fox_name.downcase]).first
-					end
 				end
-				unless lektor.nil?
-					buch[:lektor_id] = lektor[:id]
-					gprod[:lektor_id] = lektor[:id]
-				else
+				if lektor.nil?
+					lektor = Lektor.where(emailkuerzel: 
+																lektoremailkuerzel[fox_name.downcase]).first
+				end
+
+				if lektor.nil?
 					logger.info \
 						"Strange: We needed to create a missing lektor: '#{fox_name}'"
-					lektor = Lektor.create(
+					lektor = Lektor.create!(
 						:fox_name			=> fox_name.downcase,
 						:name					=> 'Unknown_'+fox_name.downcase,
 						:emailkuerzel => lektoremailkuerzel[fox_name.downcase]
 					)
 				end
+				buch[:lektor_id] = lektor[:id]
+				gprod[:lektor_id] = lektor[:id]
 
 				# Autor ID and Projekt E-Mail
 				email = table[ i, h['email'] ]
 				if email.nil? or email.empty?
-					email = lektor[:emailkuerzel]				# This will log a fatal error below.
+					# This will log a fatal error below.
+					email = lektor[:emailkuerzel]				
 				end
 				gprod[:projekt_email_adresse] = email
-				unless email == lektor[:emailkuerzel] # email from Table does not belong to author.
+				unless email == lektor[:emailkuerzel] 
 					autor = Autor.where(email: email).first
 					autor = Autor.where("name like '%#{gprod['projektname']}%'").first if autor.nil?
 					unless autor.nil?
@@ -292,6 +292,7 @@ namespace :gapi do
 						logger.error "Author not found, any ideas? [1]"
 					end
 				else
+					# email from Table does not belong to author.
 					logger.error "Author not found, any ideas? [1]"
 				end
 
@@ -430,21 +431,23 @@ namespace :gapi do
 					end
 				end
 
-				gprod.buch = buch
-
 				##
 				# Save 'em, so they get a computed ID, which we need for linking.
-				gprod.save
-				buch.save
+				gprod.save!
+				buch.save!
+
+				gprod.buch = buch
 
 				buch.reihe_ids= reihe['id'] unless reihe.nil?
 				reihe.autor_ids= autor['id'] unless autor.nil? or reihe.nil?
 				autor.buch_ids= buch['id'] unless autor.nil?
 
-				gprod.save
-				buch.save
+				gprod.save!
+				buch.save!
 				# Save 'em again.
 				##
+
+				logger.fatal "Gprod without buch: #{gprod['id']}" if gprod.buch == nil
 
 			end # end row iteration
 
