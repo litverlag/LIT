@@ -175,7 +175,7 @@ namespace :gapi do
 		session = GoogleDrive.saved_session( ".credentials/client_secret.json" )
 		spreadsheet = session.spreadsheet_by_key( "1YWWcaEzdkBLidiXkO-_3fWtne2kMgXuEnw6vcICboRc" )
 
-		def get_em_all( table )
+		def lf_and_ein( table )
 			logger = Logger.new('log/development_rake.log')
 			h = get_col_from_title( table )
 
@@ -451,19 +451,17 @@ namespace :gapi do
 
 			end # end row iteration
 
-		end # end get_em_all function
+		end # end lf_and_ein function
 
 		##
-		#	Do 'LF' and 'EinListe' last, because their entries are always up-to-date
-		#	and unique. 
 		#	We need to set $TABLE as its used as argument for the javascript function
 		#	call in the google-script API script, getting the color values.
 		$TABLE = 'EinListe'
 		table = spreadsheet.worksheet_by_title( 'EinListe' )
-		get_em_all( table )
+		lf_and_ein( table )
 		$TABLE = 'LF'
 		table = spreadsheet.worksheet_by_title( 'LF' )
-		get_em_all( table )
+		lf_and_ein( table )
 
 	end # end import-task
 

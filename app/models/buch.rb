@@ -94,32 +94,32 @@ class Buch < ActiveRecord::Base
 
 
 	##
-	# Validations. Hm. This is neat. VALIDATE ALL THE THINGS.
-	# Example of short(implicit) and long(explicit) format.
+	# Example of implicit and explicit format.
 	#validates :isbn, format: /\d{0,3}-?\d-\d{3}-\d+-\d/
 	#validates :isbn, format: { with: /\d{0,3}-?\d-\d{3}-\d+-\d/, on: :create }
 
 	validates :isbn, format: /\d{0,3}-?\d-\d{3}-\d+-\d/, uniqueness: true, 
 		allow_nil: true, allow_blank: true
 
-	validates :bindung_bezeichnung, inclusion: { 
-		in: %w(faden_hardcover klebe faden hardcover multi unknown), 
-		message: "'%{value}' ist keine zulässige Bindung.", 
-		allow_nil: true, allow_blank: true }
-
 	# FIXME: What token should we allow? Ask chef!
+	#
+	#validates :bindung_bezeichnung, inclusion: { 
+	#	in: %w(faden_hardcover klebe faden hardcover multi unknown), 
+	#	message: "'%{value}' ist keine zulässige Bindung.", 
+	#	allow_nil: true, allow_blank: true }
+
 	#validates :papier_bezeichnung, inclusion: { 
-		#in: %w(Offset\ 80g Offset\ 90g Werkdruck\ 100g Werkdruck\ 90g\ blau Werkdruck\ 90g\ gelb),
-		#MAYBE: in: %w(o80 o90 w90 wg100),
-		#message: "'%{value}' is keine zulässige Papierbezeichnung.",	
-		#allow_nil: true, allow_blank: true }
+	#	in: %w(Offset\ 80g Offset\ 90g Werkdruck\ 100g Werkdruck\ 90g\ blau Werkdruck\ 90g\ gelb),
+	#	MAYBE: in: %w(o80 o90 w90 wg100),
+	#	message: "'%{value}' is keine zulässige Papierbezeichnung.",	
+	#	allow_nil: true, allow_blank: true }
 
-	validates :umschlag_bezeichnung, inclusion: { 
-		in: %w(LaTeX InDesign Geliefert),
-		message: "'%{value}' is keine Umschlag-Abteilung.",	
-		allow_nil: true, allow_blank: true }
-
-	validates :format_bezeichnung, format: /(^A[345]$)|(^\d+ ?x ?\d+$)|(^$)/,
-		allow_nil: true, allow_blank: true
+	#validates :umschlag_bezeichnung, inclusion: { 
+	#	in: %w(LaTeX InDesign Geliefert),
+	#	message: "'%{value}' is keine Umschlag-Abteilung.",	
+	#	allow_nil: true, allow_blank: true }
+  #
+	#validates :format_bezeichnung, format: /(^A[345]$)|(^\d+ ?x ?\d+$)|(^$)/,
+	#	allow_nil: true, allow_blank: true
 
 end                                                   
