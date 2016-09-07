@@ -14,7 +14,7 @@ namespace :gapi do
 
 	def check_papier_entry( entry , logger=nil )
 		tok = nil
-		if		entry =~ /o ?80|80 ?o/i;				tok = 'Offset 80g'
+		if		entry =~ /o? ?80|80 ?o/i;				tok = 'Offset 80g'
 		elsif entry =~ /o ?90|90 ?o/i;				tok = 'Offset 90g'
 		elsif entry =~ /(wg ?90)|(90 ?wg)/i;	tok = 'Werkdruck 90g gelb'
 		elsif entry =~ /(w ?90)|(90 ?w)/i;		tok = 'Werkdruck 90g blau'
@@ -60,6 +60,7 @@ namespace :gapi do
 		elsif entry =~ /24/i;			tok = '170 × 240'#'23'
 		elsif entry =~ /23/i;			tok = '162 × 230'#'23'
 		elsif entry =~ /22/i;			tok = '160 × 220'#'22'
+		elsif entry =~ /sonder/i; tok = entry
 		else
 			logger.error "Unknown 'Buchformat': '#{entry}'" unless logger.nil?
 		end
@@ -100,16 +101,21 @@ namespace :gapi do
 	end
 
 	def check_druck_entry( entry, logger=nil )
+		return [nil,nil,nil] if entry.empty?
+		ext = nil
 		tok = nil
 		bild = nil
-		if		entry =~ /^\s*x\s*$/i;		tok = 'Digitaldruck'
-		elsif entry =~ /x1/i;						bild = 'x1'
+		if		entry =~ /^\s*x\s*$/i;		tok = 'Digitaldruck'	end
+		if		entry =~ /x1/i;						bild = 'x1'
 		elsif entry =~ /x2/i;						bild = 'x2'
 		elsif entry =~ /x3/i;						bild = 'x3'
-		else
+		elsif entry =~ /x3/i;						bild = 'x3'
+		end
+		if		entry =~ /ex/i;						ext = true						end
+		if ext.nil? and tok.nil? and bild.nil?
 			logger.error "Unknown 'druck': '#{entry}'" unless logger.nil?
 		end
-		return tok, bild
+		return ext, tok, bild
 	end
 
 	##
@@ -142,14 +148,11 @@ namespace :gapi do
 	end
 
 	def check_date_entry( entry, logger=nil )
-		unless entry.empty?
-			begin
-				date = Date.parse(entry) 
-			rescue
-				logger.debug "Invalid date: '#{entry}'" unless logger.nil?
-			end
-		else
-			logger.error "Empty date: '#{entry}'" unless logger.nil?
+		return nil if entry =~ /author/i or entry.empty?
+		begin
+			date = Date.parse(entry) 
+		rescue
+			logger.debug "Invalid date: '#{entry}'" unless logger.nil?
 		end
 		return date
 	end
@@ -221,25 +224,22 @@ namespace :gapi do
 				# If we cannot find the ISBN of the book in the database, we bail out.
 				short_isbn = table[ i, h['ISBN'] ]
 				if short_isbn.nil? or short_isbn.size < 1
-					logger.fatal "Strange entry in column #{i.to_s}: "\
-											 +"'#{short_isbn}' \tSKIPPED"
+					logger.fatal "ISBN: empty? #{i.to_s}: '#{short_isbn}'"
 					next
 				end
 				buch = Buch.where( "isbn like '%#{short_isbn}'" ).first
 
-				if (/[0-9]{5}-[0-9]/ =~ short_isbn) == 0
-					if buch.nil?
-						logger.fatal "Short ISBN not found: '#{short_isbn}' \tSKIPPED" 
-						next
-					end
-				else
-					if (/[0-9]{3}-[0-9]/ =~ short_isbn) == 0
-						logger.fatal "ATE/EGL short_isbn notation not implemented '#{short_isbn}' \tSKIPPED"
-						next
+				if buch.nil?
+					if (/[0-9]{5}-[0-9]/ =~ short_isbn) == 0
+						logger.fatal "ISBN: not found: '#{short_isbn}'"
+					elsif (/[0-9]{3}-[0-9]/ =~ short_isbn) == 0
+						logger.fatal "ISBN: ATE/EGL not implemented: '#{short_isbn}'"
 					else
-						logger.fatal "Strange entry in column #{i.to_s}: '#{short_isbn}' \tSKIPPED"
-						next
+						logger.fatal "ISBN: not understood row[#{i.to_s}]: '#{short_isbn}'"
 					end
+
+					next
+
 				end
 
 				# 'Reihen'-code
@@ -254,43 +254,46 @@ namespace :gapi do
 				# Lektor ID		-->		Buch && Lektor !
 				fox_name = table[ i, h['Lek'] ]
 				lektor = Lektor.where(fox_name: fox_name).first
-				if lektor.nil? # Try again ..
+
+				if lektor.nil?
 					lektor = Lektor.where(name: lektorname[fox_name.downcase]).first
-					if lektor.nil? # And again ..
-						lektor = Lektor.where(emailkuerzel: lektoremailkuerzel[fox_name.downcase]).first
-					end
 				end
-				unless lektor.nil?
-					buch[:lektor_id] = lektor[:id]
-					gprod[:lektor_id] = lektor[:id]
-				else
+				if lektor.nil?
+					lektor = Lektor.where(emailkuerzel: 
+																lektoremailkuerzel[fox_name.downcase]).first
+				end
+
+				if lektor.nil?
 					logger.info \
 						"Strange: We needed to create a missing lektor: '#{fox_name}'"
-					lektor = Lektor.create(
+					lektor = Lektor.create!(
 						:fox_name			=> fox_name.downcase,
 						:name					=> 'Unknown_'+fox_name.downcase,
 						:emailkuerzel => lektoremailkuerzel[fox_name.downcase]
 					)
 				end
+				buch[:lektor_id] = lektor[:id]
+				gprod[:lektor_id] = lektor[:id]
 
 				# Autor ID and Projekt E-Mail
 				email = table[ i, h['email'] ]
 				if email.nil? or email.empty?
-					email = lektor[:emailkuerzel]				# This will log a fatal error below.
+					# This will log a fatal error below.
+					email = lektor[:emailkuerzel]				
 				end
 				gprod[:projekt_email_adresse] = email
-				unless email == lektor[:emailkuerzel] # email from Table does not belong to author.
+				unless email == lektor[:emailkuerzel] 
 					autor = Autor.where(email: email).first
-					autor = Autor.where("name like '#{gprod['projektname']}'").first if autor.nil?
+					autor = Autor.where("name like '%#{gprod['projektname']}%'").first if autor.nil?
 					unless autor.nil?
 						buch[:autor_id] = autor[:id]
 						gprod[:autor_id] = autor[:id]
 					else
-						logger.debug "\t Author not existent."
+						logger.error "Author not found, any ideas? [1]"
 					end
 				else
-					logger.fatal "The given email does not belong to the author."\
-											+"\n\t[!] Implement more searches for the Author-ID. [!]"
+					# email from Table does not belong to author.
+					logger.error "Author not found, any ideas? [1]"
 				end
 
 				seiten = /\s*(\d*)\s*W?\s*(\d*)/i.match(table[i,h['Seiten']])
@@ -329,7 +332,8 @@ namespace :gapi do
 				gprod[:prio] = prio unless prio.nil?
 				gprod[:lektor_bemerkungen_public] = sonder unless sonder.nil?
 
-				druck, bilder = check_druck_entry( table[i,h['Druck']], logger )
+				extern, druck, bilder = check_druck_entry( table[i,h['Druck']], logger )
+				gprod[:externer_druck] = extern unless extern.nil?
 				gprod[:druck_art] = druck unless druck.nil?
 				gprod[:bilder] = bilder unless bilder.nil?
 
@@ -393,7 +397,7 @@ namespace :gapi do
 
 				umschlag_color = $COLOR_D[ $COLORS[i-1][h['Umschlag']-1]]
 				if umschlag_color.nil?
-					logger.error "Could not determine 'Umschlag' color for column: #{i}"
+					logger.error "Could not determine 'Umschlag' color for column: #{i-1}"
 				elsif gprod.statusumschl.nil?
 					gprod.statusumschl = StatusUmschl.create(status: umschlag_color_table[umschlag_color])
 				else
@@ -402,35 +406,48 @@ namespace :gapi do
 
 				name_color = $COLOR_D[ $COLORS[i-1][h['Name']-1]]
 				if name_color.nil?
-					logger.error "Could not determine 'Name' color for column: #{i}"
+					logger.error "Could not determine 'Name' color for column: #{i-1}"
 				else
 					gprod[:satzproduktion] = true if name_color == 'light pink'
 				end
 
 				satz_color = $COLOR_D[ $COLORS[i-1][h['Satz']-1]]
 				if satz_color.nil?
-					logger.error "Could not determine 'Satz' color for column: #{i}"
+					logger.error "Could not determine 'Satz' color for column: #{i-1}"
 				elsif gprod.statussatz.nil?
 					gprod.statussatz = StatusSatz.create(status: general_color_table[satz_color])
 				else
 					gprod.statussatz['status'] = general_color_table[satz_color]
 				end
 
-				gprod.buch = buch
+				druck_color = $COLOR_D[ $COLORS[i-1][h['Druck']-1]]
+				if druck_color.nil?
+					logger.error  "Could not determine 'Druck' color for column: #{i-1}"
+				elsif druck_color == 'green'
+					if gprod.statusdruck.nil?
+						gprod.statusdruck = StatusDruck.create(status: I18n.t('scopes_names.fertig_filter'))
+					else
+						gprod.statusdruck['status'] = I18n.t('scopes_names.fertig_filter')
+					end
+				end
 
 				##
 				# Save 'em, so they get a computed ID, which we need for linking.
-				gprod.save
-				buch.save
+				gprod.save!
+				buch.save!
+
+				gprod.buch = buch
 
 				buch.reihe_ids= reihe['id'] unless reihe.nil?
 				reihe.autor_ids= autor['id'] unless autor.nil? or reihe.nil?
 				autor.buch_ids= buch['id'] unless autor.nil?
 
-				gprod.save
-				buch.save
+				gprod.save!
+				buch.save!
 				# Save 'em again.
 				##
+
+				logger.fatal "Gprod without buch: #{gprod['id']}" if gprod.buch == nil
 
 			end # end row iteration
 
@@ -460,6 +477,7 @@ namespace :gapi do
 				papier_table = {
 					'115 matt'=> nil, # ??XXX??
 					'o80'			=> 'Offset 80g' ,					# Offset 80
+					'80'			=> 'Offset 80g',
 					'80o'			=> 'Offset 80g' ,
 					'o 80'		=> 'Offset 80g' ,
 					'o80 $'		=> 'Offset 80g' ,
@@ -501,6 +519,7 @@ namespace :gapi do
 					'21 x 14'	=> '147 × 210',
 					'21'			=> '147 × 210',
 					'A6'			=> '105 × 148',
+					'sonder12'=> 'sonder12',
 				}
 				format_table.to_enum.each do |key, value|
 					tok = check_umformat_entry(key)
@@ -525,10 +544,10 @@ namespace :gapi do
 
 			def test_druck_entry()
 				table = {
-					'ex x1' => [nil,'x1'],
-					' x'		=> ['Digitaldruck',nil],
-					'x1'		=> [nil,'x1'],
-					'F1'		=> [nil,nil],
+					'ex x1' => [true,nil,'x1'],
+					' x'		=> [nil,'Digitaldruck',nil],
+					'x1'		=> [nil,nil,'x1'],
+					'F1'		=> [nil,nil,nil],
 				}
 				table.to_enum.each do |key, value|
 					tok = check_druck_entry(key)
