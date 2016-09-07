@@ -50,7 +50,8 @@ class Gprod < ActiveRecord::Base
   validates :projektname, presence: true
 	validates :projekt_email_adresse, format: 
 		{ with: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i, 
-		  message: "'%{value}' does not match; %{attribute}; %{model}", }
+		  message: "'%{value}' does not match; %{attribute}; %{model}", 
+			allow_nil: true, allow_blank: true }
 
   has_one :statusfinal, class_name: StatusFinal
   accepts_nested_attributes_for :statusfinal
