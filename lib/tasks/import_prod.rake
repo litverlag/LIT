@@ -281,16 +281,16 @@ namespace :gapi do
 			lektoremailkuerzel = {
 				'hf'  => 'hopf@lit-verlag.de',
 				'whf' => 'hopf@lit-verlag.de',
-				'ch'	=> 'Unknown_ch',
-				'hfch'=> 'wtf_is_hfch',
+				'ch'	=> 'Unknown_ch@invalid.com',
+				'hfch'=> 'wtf_is_hfch@invalid.com',
 				'rai' => 'rainer@lit-verlag.de',
 				'rit' => 'richter@lit-verlag.de',
 				'bel' => 'bellmann@lit-verlag.de',
-				'opa' => 'Unknown_opa',
+				'opa' => 'Unknown_opa@invalid.com',
 				'litb'=> 'berlin@lit-verlag.de',
 				'wla' => 'wien@lit-verlag.de',
 				'wien'=> 'wien@lit-verlag.de',
-				'web' => 'Unknown_web' }
+				'web' => 'Unknown_web@invalid.com' }
 
 			(2..table.num_rows).each do |i| #skip first line: headers
 				gprod = Gprod.new( :projektname	=> table[i,h['Name']] ) rescue nil
@@ -676,6 +676,7 @@ namespace :gapi do
 																							'fernando.enns@uni-hamburg.de',
 					'<fernando.enns@uni-hamburg.de>' => 'fernando.enns@uni-hamburg.de',
 					'fernando.enns@uni-hamburg.de'   => 'fernando.enns@uni-hamburg.de',
+					'opa'   => nil,
 				}
 				table.to_enum.each do |key, value|
 					tok = check_email_entry(key)
