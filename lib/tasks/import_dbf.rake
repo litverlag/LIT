@@ -54,15 +54,16 @@ namespace :dbf do
 		lektoremailkuerzel = {
 			'hf'  => 'hopf@lit-verlag.de',
 			'whf' => 'hopf@lit-verlag.de',
-			'ch'	=> 'Unknown_ch',
-			'hfch'=> 'wtf_hfch',
+			'ch'	=> 'Unknown_ch@invalid.com',
+			'hfch'=> 'wtf_is_hfch@invalid.com',
 			'rai' => 'rainer@lit-verlag.de',
+			'rit' => 'richter@lit-verlag.de',
 			'bel' => 'bellmann@lit-verlag.de',
-			'opa' => 'Unknown_opa',
+			'opa' => 'Unknown_opa@invalid.com',
 			'litb'=> 'berlin@lit-verlag.de',
 			'wla' => 'wien@lit-verlag.de',
-			'web' => 'Unknown_web'
-		}
+			'wien'=> 'wien@lit-verlag.de',
+			'web' => 'Unknown_web@invalid.com' }
 
     reihen_path = File.join(path, "reihen", "REIHEN.DBF")
     cip_path = File.join(path, "cip", "CIPM.DBF")
