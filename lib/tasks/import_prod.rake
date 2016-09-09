@@ -430,8 +430,8 @@ namespace :gapi do
 				gprod.save!
 				buch.save!
 
-				gprod.buch = buch
-				buch.gprod = gprod # we rly need this?
+				gprod.buch = buch if gprod.buch.nil?
+				buch.gprod = gprod if gprod.buch.nil? # we rly need this? 
 
 				buch.reihe_ids= reihe['id'] unless reihe.nil?
 				reihe.autor_ids= autor['id'] unless autor.nil? or reihe.nil?
