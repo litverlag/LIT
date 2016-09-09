@@ -197,7 +197,7 @@ namespace :gapi do
 		return buch
 	end
 
-	def find_buch_by_ate(isbn)
+	def find_buch_by_ate(isbn, logger)
 		m = /.*(\d+-\d+-\d)[!\d]/.match(isbn)
 		isbn = m[1] unless m.nil?
 		return Buch.where( "isbn like '%#{isbn}'" ).first
