@@ -306,7 +306,7 @@ namespace :gapi do
 
 				# 'Reihen'-code
 				r_code = table[i,h['Reihe']] rescue nil
-				if r_code.empty?
+				if r_code.nil? or r_code.empty?
 					logger.debug "\t Kein reihenkuerzel gefunden, das feld ist leer."
 				else
 					buch[:r_code] = r_code.downcase
@@ -315,7 +315,7 @@ namespace :gapi do
 
 				# Lektor ID		-->		Buch && Lektor !
 				fox_name = table[ i, h['Lek'] ] rescue nil
-				lektor = Lektor.where(fox_name: fox_name).first
+				lektor = Lektor.where(fox_name: fox_name).first unless fox_name.nil?
 
 				if lektor.nil?
 					lektor = Lektor.where(name: lektorname[fox_name.downcase]).first

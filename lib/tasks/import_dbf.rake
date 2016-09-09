@@ -63,7 +63,8 @@ namespace :dbf do
 			'litb'=> 'berlin@lit-verlag.de',
 			'wla' => 'wien@lit-verlag.de',
 			'wien'=> 'wien@lit-verlag.de',
-			'web' => 'Unknown_web@invalid.com' }
+			'web' => 'Unknown_web@invalid.com'
+		}
 
     reihen_path = File.join(path, "reihen", "REIHEN.DBF")
     cip_path = File.join(path, "cip", "CIPM.DBF")
