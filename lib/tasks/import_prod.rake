@@ -198,18 +198,18 @@ namespace :gapi do
 
 	def color_from(row, dict, rowname, abteil, status, table, logger)
 
-		color = $COLOR_D[ $COLORS[i-1][h[rowname]-1]]
+		color = $COLOR_D[ $COLORS[row-1][dict[rowname]-1]]
 
 		if color.nil?
 			# Log error, and status = 'neu'
-			logger.error "Color: '#{rowname}' column: #{i-1}"
+			logger.error "Color: '#{rowname}' column: #{row-1}"
 			if status.nil?
-				status = abteil.create(status: I18n.t("scopes_names.neu_filter"))
+				status = abteil.create!(status: I18n.t("scopes_names.neu_filter"))
 			else
 				status['status'] = I18n.t("scopes_names.neu_filter")
 			end
 		elsif status.nil?
-			status = abteil.create(status: table[color])
+			status = abteil.create!(status: table[color])
 		else
 			status['status'] = table[color]
 		end
@@ -431,6 +431,7 @@ namespace :gapi do
 				buch.save!
 
 				gprod.buch = buch
+				buch.gprod = gprod # we rly need this?
 
 				buch.reihe_ids= reihe['id'] unless reihe.nil?
 				reihe.autor_ids= autor['id'] unless autor.nil? or reihe.nil?
@@ -471,6 +472,10 @@ namespace :gapi do
 				buch = find_buch_by_shortisbn(table[i,h['ISBN']], logger)
 				next if buch.nil?
 				gprod = buch.gprod
+				if gprod.nil?
+					logger.fatal "Buch without gprod -- isbn[#{buch['isbn']}]"
+					next
+				end
 				if gprod.statusdruck.nil?
 					gprod.statusdruck = StatusDruck.create(status: 
 																		I18n.t("scopes_names.fertig_filter"))
