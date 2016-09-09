@@ -57,7 +57,8 @@
                 <% end %>
               </tr>
           <% end %>
-      <% end %>
+      <% end unless @projekt.buch.nil? %>
+			<%# this ^ should fix some errors due to incomplete data %>
       </tbody>
     </table>
   </div>

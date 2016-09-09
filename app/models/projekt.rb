@@ -24,10 +24,8 @@ class Projekt < Gprod
 			@projekt = Gprod.find(id)
 		elsif !current_admin_user.lektor.nil?
 			@projekt = current_admin_user.lektor.gprod.find(id)
-			# XXX Maybe bug here  vvv not all admin_users have a lektor ..
-			#     .. so where is the 'else' ??
+			# Not all admin_users have a lektor ..
 		else
-			# XXX testing the else .. seems legit
 			@projekt = Gprod.find(id)
 		end
 
