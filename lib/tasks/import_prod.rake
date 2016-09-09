@@ -186,14 +186,21 @@ namespace :gapi do
 		buch = Buch.where( "isbn like '%#{short_isbn}'" ).first
 		if buch.nil?
 			if (/[0-9]{5}-[0-9]/ =~ short_isbn) == 0
-				logger.fatal "ISBN: not found: '#{short_isbn}'"
+				logger.fatal "ISBN -- not found: '#{short_isbn}'"
 			elsif (/[0-9]{3}-[0-9]/ =~ short_isbn) == 0
-				logger.fatal "ISBN: ATE/EGL not implemented: '#{short_isbn}'"
+				buch = find_buch_by_ate(short_isbn, logger)
+				logger.fatal "ISBN -- ATE/EGL not found: '#{short_isbn}'" if buch.nil?
 			else
-				logger.fatal "ISBN: not understood: '#{short_isbn}'"
+				logger.fatal "ISBN -- unknown format aka not found: '#{short_isbn}'"
 			end
 		end
 		return buch
+	end
+
+	def find_buch_by_ate(isbn)
+		m = /.*(\d+-\d+-\d)[!\d]/.match(isbn)
+		isbn = m[1] unless m.nil?
+		return Buch.where( "isbn like '%#{isbn}'" ).first
 	end
 
 	def color_from(row, dict, rowname, abteil, status, table, logger)
