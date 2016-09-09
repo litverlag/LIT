@@ -80,16 +80,16 @@ namespace :gapi do
 		end
 
 		unless (tmp = /(pf).*?(\d+)/i.match(entry)).nil?
-			sonder += 'Pflichtexemplare: '+ tmp[2] +"\n" unless tmp[2].nil?
+			sonder += "Pflichtexemplare: #{tmp[2]}\n" unless tmp[2].nil?
 		end
 		unless (tmp = /(sonder).*?(\d+)/i.match(entry)).nil?
-			sonder += 'Sonderexemplare: '+ tmp[2] +"\n" unless tmp[2].nil?
+			sonder += "Sonderexemplare: #{tmp[2]}\n" unless tmp[2].nil?
 		end
 		unless (tmp = /(vorab).*?(\d+)/i.match(entry)).nil?
-			sonder += 'Vorabexemplare: '+ tmp[2] +"\n" unless tmp[2].nil?
+			sonder += "Vorabexemplare: #{tmp[2]}\n" unless tmp[2].nil?
 		end
 		unless (tmp = /(fr).*?(\d+)/i.match(entry)).nil?
-			sonder += 'Freiexemplare: '+ tmp[2] +"\n" unless tmp[2].nil?
+			sonder += "Freiexemplare: #{tmp[2]}\n" unless tmp[2].nil?
 		end
 
 		if		entry =~ /m/i;			sonder += 'Monographie'
@@ -194,6 +194,25 @@ namespace :gapi do
 			end
 		end
 		return buch
+	end
+
+	def color_from(row, dict, rowname, abteil, status, table, logger)
+
+		color = $COLOR_D[ $COLORS[i-1][h[rowname]-1]]
+
+		if color.nil?
+			# Log error, and status = 'neu'
+			logger.error "Color: '#{rowname}' column: #{i-1}"
+			if status.nil?
+				status = abteil.create(status: I18n.t("scopes_names.neu_filter"))
+			else
+				status['status'] = I18n.t("scopes_names.neu_filter")
+			end
+		elsif status.nil?
+			status = abteil.create(status: table[color])
+		else
+			status['status'] = table[color]
+		end
 	end
 
 	##
@@ -374,23 +393,10 @@ namespace :gapi do
 				##								 ##
 				#
 
-				papier_color = $COLOR_D[ $COLORS[i-1][h['Papier']-1]]
-				if papier_color.nil?
-					logger.error "Color: 'paper' column: #{i}"
-				elsif gprod.statuspreps.nil?
-					gprod.statuspreps = StatusPreps.create(status: general_color_table[papier_color])
-				else
-					gprod.statuspreps['status'] = general_color_table[papier_color]
-				end
-
-				titelei_color = $COLOR_D[ $COLORS[i-1][h['Titelei']-1]]
-				if titelei_color.nil?
-					logger.error "Color: 'titelei' column: #{i}"
-				elsif gprod.statustitelei.nil?
-					gprod.statustitelei = StatusTitelei.create(status: general_color_table[titelei_color])
-				else
-					gprod.statustitelei['status'] = general_color_table[titelei_color]
-				end
+				color_from(i, h, 'Papier', StatusPreps, gprod.statuspreps,
+									 general_color_table, logger)
+				color_from(i, h, 'Titelei', StatusTitelei, gprod.statustitelei,
+									 general_color_table, logger)
 
 				# TODO: Oh my.. there is no class/status/anything for 'klappentexte'
 				#				Need to add this soon..
@@ -404,14 +410,8 @@ namespace :gapi do
 				#	TODO:	Same here ^
 				#seiten_color = $COLOR_D[ $COLORS[i-1][h['Seiten']-1]]
 
-				umschlag_color = $COLOR_D[ $COLORS[i-1][h['Umschlag']-1]]
-				if umschlag_color.nil?
-					logger.error "Color: 'Umschlag' column: #{i-1}"
-				elsif gprod.statusumschl.nil?
-					gprod.statusumschl = StatusUmschl.create(status: umschlag_color_table[umschlag_color])
-				else
-					gprod.statusumschl['status'] = umschlag_color_table[umschlag_color]
-				end
+				color_from(i, h, 'Umschlag', StatusUmschl, gprod.statusumschl,
+									 umschlag_color_table, logger)
 
 				name_color = $COLOR_D[ $COLORS[i-1][h['Name']-1]]
 				if name_color.nil?
@@ -420,25 +420,10 @@ namespace :gapi do
 					gprod[:satzproduktion] = true if name_color == 'light pink'
 				end
 
-				satz_color = $COLOR_D[ $COLORS[i-1][h['Satz']-1]]
-				if satz_color.nil?
-					logger.error "Color: 'Satz' column: #{i-1}"
-				elsif gprod.statussatz.nil?
-					gprod.statussatz = StatusSatz.create(status: general_color_table[satz_color])
-				else
-					gprod.statussatz['status'] = general_color_table[satz_color]
-				end
-
-				druck_color = $COLOR_D[ $COLORS[i-1][h['Druck']-1]]
-				if druck_color.nil?
-					logger.error  "Color: 'Druck' column: #{i-1}"
-				elsif druck_color == 'green'
-					if gprod.statusdruck.nil?
-						gprod.statusdruck = StatusDruck.create(status: I18n.t('scopes_names.fertig_filter'))
-					else
-						gprod.statusdruck['status'] = I18n.t('scopes_names.fertig_filter')
-					end
-				end
+				color_from(i, h, 'Satz', StatusSatz, gprod.statussatz,
+									 general_color_table, logger)
+				color_from(i, h, 'Druck', StatusDruck, gprod.statusdruck,
+									 general_color_table, logger)
 
 				##
 				# Save 'em, so they get a computed ID, which we need for linking.
