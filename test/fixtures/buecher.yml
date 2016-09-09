@@ -33,3 +33,17 @@ buecher_001:
   updated_at: '2016-08-19 14:32:31'
   sw: 
   r_code: rumrei
+
+buecher_002:
+  id: 98019090
+  autor_id:
+  lektor_id:
+  gprod_id:
+  name: Peggy Sue und der blaue Hund
+  isbn: 3-123-33214-6
+  issn: 
+  titel1: MyText
+  format_bezeichnung:
+  umschlag_bezeichnung:
+  papier_bezeichnung:
+  bindung_bezeichnung:
