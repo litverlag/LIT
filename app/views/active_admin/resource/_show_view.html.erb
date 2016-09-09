@@ -1,5 +1,7 @@
 <!-- this is the show view for every department -->
 
+<%# Uncommenting the 2 comments below will supress error messages. But also
+	  functionality. %>
 
 <!-- all related status models -->
 <% @stat = ["statusbildpr", "statusbinderei", "statusdruck", "statusfinal", "statusoffsch",
@@ -7,7 +9,7 @@
 
 <div class="status_container">
 <% @stat.each do |stat| %>
-	<% if ShowSettings.instance.is_visible?(@department, stat) %>
+	<% if ShowSettings.instance.is_visible?(@department, stat) #and not @projekt.send(stat).nil? %>
 			<%= status_bar(@projekt, @projekt.send(stat).status , (I18n.t("status_names.#{stat}"))) %>
 	<% end %>
 <% end %>
@@ -53,7 +55,7 @@
                 <% end %>
               </tr>
           <% end %>
-      <% end %>
+      <% end #unless @projekt.buch.nil? %>
       </tbody>
     </table>
   </div>

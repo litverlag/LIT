@@ -16,7 +16,7 @@
       def create
         if @user = AdminUser.create(permitted_params[:admin_user])
           redirect_to collection_path
-          flash[:notice] = I18n.t 'flash_notice.revised_succes.user_create'
+          flash[:notice] = I18n.t 'flash_notice.revised_success.user_create'
         else
           render 'new'
         end
@@ -38,7 +38,7 @@
 
         if @user.update_attributes(permitted_params[:admin_user])
           redirect_to collection_path
-          flash[:notice] = I18n.t 'flash_notice.revised_succes.user_update'
+          flash[:notice] = I18n.t 'flash_notice.revised_success.user_update'
         else
           redirect_to edit_admin_admin_user_url(@user)
           flash[:alert] = I18n.t 'flash_notice.revised_failure.user_update'

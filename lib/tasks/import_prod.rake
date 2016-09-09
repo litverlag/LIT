@@ -186,21 +186,28 @@ namespace :gapi do
 		buch = Buch.where( "isbn like '%#{short_isbn}'" ).first
 		if buch.nil?
 			if (/[0-9]{5}-[0-9]/ =~ short_isbn) == 0
-				logger.fatal "ISBN: not found: '#{short_isbn}'"
+				logger.fatal "ISBN -- not found: '#{short_isbn}'"
 			elsif (/[0-9]{3}-[0-9]/ =~ short_isbn) == 0
-				logger.fatal "ISBN: ATE/EGL not implemented: '#{short_isbn}'"
+				buch = find_buch_by_ate(short_isbn, logger)
+				logger.fatal "ISBN -- ATE/EGL not found: '#{short_isbn}'" if buch.nil?
 			else
-				logger.fatal "ISBN: not understood: '#{short_isbn}'"
+				logger.fatal "ISBN -- unknown format aka not found: '#{short_isbn}'"
 			end
 		end
 		return buch
+	end
+
+	def find_buch_by_ate(isbn)
+		m = /.*(\d+-\d+-\d)[!\d]/.match(isbn)
+		isbn = m[1] unless m.nil?
+		return Buch.where( "isbn like '%#{isbn}'" ).first
 	end
 
 	def color_from(row, dict, rowname, abteil, status, table, logger)
 
 		color = $COLOR_D[ $COLORS[row-1][dict[rowname]-1]]
 
-		if color.nil?
+		if color.nil? or table[color.to_s].nil?
 			# Log error, and status = 'neu'
 			logger.error "Color: '#{rowname}' column: #{row-1}"
 			if status.nil?
@@ -208,11 +215,15 @@ namespace :gapi do
 			else
 				status['status'] = I18n.t("scopes_names.neu_filter")
 			end
+
 		elsif status.nil?
 			status = abteil.create!(status: table[color])
+
 		else
 			status['status'] = table[color]
 		end
+
+		return status
 	end
 
 	##
@@ -393,10 +404,12 @@ namespace :gapi do
 				##								 ##
 				#
 
-				color_from(i, h, 'Papier', StatusPreps, gprod.statuspreps,
+				status = color_from(i, h, 'Papier', StatusPreps, gprod.statuspreps,
 									 general_color_table, logger)
-				color_from(i, h, 'Titelei', StatusTitelei, gprod.statustitelei,
+				gprod.statuspreps = status
+				status = color_from(i, h, 'Titelei', StatusTitelei, gprod.statustitelei,
 									 general_color_table, logger)
+				status = gprod.statustitelei = status
 
 				# TODO: Oh my.. there is no class/status/anything for 'klappentexte'
 				#				Need to add this soon..
@@ -410,8 +423,9 @@ namespace :gapi do
 				#	TODO:	Same here ^
 				#seiten_color = $COLOR_D[ $COLORS[i-1][h['Seiten']-1]]
 
-				color_from(i, h, 'Umschlag', StatusUmschl, gprod.statusumschl,
+				status = color_from(i, h, 'Umschlag', StatusUmschl, gprod.statusumschl,
 									 umschlag_color_table, logger)
+				gprod.statusumschl = status
 
 				name_color = $COLOR_D[ $COLORS[i-1][h['Name']-1]]
 				if name_color.nil?
@@ -420,18 +434,20 @@ namespace :gapi do
 					gprod[:satzproduktion] = true if name_color == 'light pink'
 				end
 
-				color_from(i, h, 'Satz', StatusSatz, gprod.statussatz,
+				status = color_from(i, h, 'Satz', StatusSatz, gprod.statussatz,
 									 general_color_table, logger)
-				color_from(i, h, 'Druck', StatusDruck, gprod.statusdruck,
+				gprod.statussatz = status
+				status = color_from(i, h, 'Druck', StatusDruck, gprod.statusdruck,
 									 general_color_table, logger)
+				gprod.statusdruck = status
 
 				##
 				# Save 'em, so they get a computed ID, which we need for linking.
 				gprod.save!
 				buch.save!
 
-				gprod.buch = buch
-				buch.gprod = gprod # we rly need this?
+				gprod.buch = buch if gprod.buch.nil?
+				buch.gprod = gprod if gprod.buch.nil? # we rly need this? 
 
 				buch.reihe_ids= reihe['id'] unless reihe.nil?
 				reihe.autor_ids= autor['id'] unless autor.nil? or reihe.nil?
@@ -483,6 +499,8 @@ namespace :gapi do
 					gprod.statusdruck['status'] = I18n.t("scopes_names.fertig_filter")
 				end
 
+				gprod.save!
+
 			end
 		end # end rake_bi_table
 
@@ -490,12 +508,20 @@ namespace :gapi do
 		##
 		#	We need to set $TABLE which is used as argument for the javascript
 		#	function call in the google-script API script, getting the color values.
+
+		$TABLE = 'Archiv'
+		table = spreadsheet.worksheet_by_title( 'Archiv' )
+		rake_umschlag_table( table )
+		$TABLE = 'UmArchiv'
+		table = spreadsheet.worksheet_by_title( 'UmArchiv' )
+		rake_umschlag_table( table )
 		$TABLE = 'EinListe'
 		table = spreadsheet.worksheet_by_title( 'EinListe' )
 		rake_umschlag_table( table )
 		$TABLE = 'LF'
 		table = spreadsheet.worksheet_by_title( 'LF' )
 		rake_umschlag_table( table )
+
 		$TABLE = 'Bi'
 		table = spreadsheet.worksheet_by_title( 'Bi' )
 		rake_bi_table( table )
@@ -654,7 +680,7 @@ namespace :gapi do
 #				end
 #			end
 
-			def test_api_call()
+			def test_not_important_api_call()
 				session = GoogleDrive.saved_session( ".credentials/client_secret.json" )
 				spreadsheet = session.spreadsheet_by_key( "1YWWcaEzdkBLidiXkO-_3fWtne2kMgXuEnw6vcICboRc" )
 				table = spreadsheet.worksheet_by_title( 'EinListe' )
@@ -663,7 +689,7 @@ namespace :gapi do
 				$TABLE = 'EinListe'
 				load 'lib/tasks/gapi_get_color_vals.rb'
 
-				assert_equal '#b7e1cd', $COLORS[0][0]
+				assert_equal '#ffffff', $COLORS[0][0]
 
 				##
 				# Uncomment the following and run 'bin/rake gapi:test' to see that i
