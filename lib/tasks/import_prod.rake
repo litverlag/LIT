@@ -291,15 +291,19 @@ namespace :gapi do
 				'web' => 'Unknown_web' }
 
 			(2..table.num_rows).each do |i| #skip first line: headers
-				gprod = Gprod.new( :projektname	=> table[i,h['Name']] )
+				gprod = Gprod.new( :projektname	=> table[i,h['Name']] ) rescue nil
+				if gprod.nil?
+					logger.fatal "Table entry 'Name' not found. Someone messed it up?"
+					next
+				end
 
 				##
 				# If we cannot find the ISBN of the book in the database, we bail out.
-				buch = find_buch_by_shortisbn(table[i,h['ISBN']], logger)
+				buch = find_buch_by_shortisbn(table[i,h['ISBN']], logger) rescue nil
 				next if buch.nil?
 
 				# 'Reihen'-code
-				r_code = table[i,h['Reihe']]
+				r_code = table[i,h['Reihe']] rescue nil
 				if r_code.empty?
 					logger.debug "\t Kein reihenkuerzel gefunden, das feld ist leer."
 				else
@@ -308,7 +312,7 @@ namespace :gapi do
 				end
 
 				# Lektor ID		-->		Buch && Lektor !
-				fox_name = table[ i, h['Lek'] ]
+				fox_name = table[ i, h['Lek'] ] rescue nil
 				lektor = Lektor.where(fox_name: fox_name).first
 
 				if lektor.nil?
@@ -332,7 +336,7 @@ namespace :gapi do
 				gprod[:lektor_id] = lektor[:id]
 
 				# Autor ID and Projekt E-Mail
-				email = check_email_entry(table[i,h['email']])
+				email = check_email_entry(table[i,h['email']]) rescue nil
 				if email.nil? or email.empty?
 					# This will log a fatal error below.
 					email = lektor[:emailkuerzel]				
@@ -352,7 +356,7 @@ namespace :gapi do
 					logger.error "Author not found, any ideas? [1]"
 				end
 
-				seiten = /\s*(\d*)\s*W?\s*(\d*)/i.match(table[i,h['Seiten']])
+				seiten = /\s*(\d*)\s*W?\s*(\d*)/i.match(table[i,h['Seiten']]) rescue nil
 				if not seiten.nil? or not seiten[2].nil?
 					buch[:seiten] = seiten[2].to_i
 				elsif seiten
@@ -365,38 +369,38 @@ namespace :gapi do
 				# Better Code layout beginns here #
 				##															 ##
 
-				bindung, extern = check_bindung_entry( table[i,h['Bi']], logger )
+				bindung, extern = check_bindung_entry( table[i,h['Bi']], logger ) rescue nil
 				buch[:bindung_bezeichnung] = bindung unless bindung.nil?
 				gprod[:externer_druck] = extern unless extern.nil?
 
-				auflage, abnahme = check_auflage_entry( table[i,h['Auflage']].to_i, logger )
+				auflage, abnahme = check_auflage_entry( table[i,h['Auflage']].to_i, logger ) rescue nil
 				gprod[:auflage] = auflage unless auflage.nil?
 				gprod[:gesicherte_abnahme] = abnahme unless abnahme.nil?
 
-				papier = check_papier_entry( table[i,h['Papier']], logger )
+				papier = check_papier_entry( table[i,h['Papier']], logger ) rescue nil
 				buch[:papier_bezeichnung] = papier unless papier.nil?
 
-				gprod[:lektor_bemerkungen_public] = table[i,h['Sonder']]
+				gprod[:lektor_bemerkungen_public] = table[i,h['Sonder']] rescue nil
 
-				um_abteil = check_um_abteil_entry( table[i,h['Umschlag']], logger )
+				um_abteil = check_um_abteil_entry( table[i,h['Umschlag']], logger ) rescue nil
 				buch[:umschlag_bezeichnung] = um_abteil unless um_abteil.nil?
 
-				format = check_umformat_entry( table[i,h['Format']], logger )
+				format = check_umformat_entry( table[i,h['Format']], logger ) rescue nil
 				buch[:format_bezeichnung] = format unless format.nil?
 
-				prio, sonder = check_prio_entry( table[i,h['Prio/Sond']], logger )
+				prio, sonder = check_prio_entry( table[i,h['Prio/Sond']], logger ) rescue nil
 				gprod[:prio] = prio unless prio.nil?
 				gprod[:lektor_bemerkungen_public] = sonder unless sonder.nil?
 
-				extern, druck, bilder = check_druck_entry( table[i,h['Druck']], logger )
+				extern, druck, bilder = check_druck_entry( table[i,h['Druck']], logger ) rescue nil
 				gprod[:externer_druck] = extern unless extern.nil?
 				gprod[:druck_art] = druck unless druck.nil?
 				gprod[:bilder] = bilder unless bilder.nil?
 
-				msein = check_date_entry( table[i,h['MsEin']], logger )
+				msein = check_date_entry( table[i,h['MsEin']], logger ) rescue nil
 				gprod.manusskript_eingang_date = msein unless msein.nil?
 
-				sollf = check_date_entry( table[i,h['SollF']], logger )
+				sollf = check_date_entry( table[i,h['SollF']], logger ) rescue nil
 				gprod.final_deadline = sollf unless sollf.nil?
 
 				##								 ##
@@ -485,7 +489,7 @@ namespace :gapi do
 
 			(2..table.num_rows).each do |i| #skip first line: headers
 
-				buch = find_buch_by_shortisbn(table[i,h['ISBN']], logger)
+				buch = find_buch_by_shortisbn(table[i,h['ISBN']], logger) rescue nil
 				next if buch.nil?
 				gprod = buch.gprod
 				if gprod.nil?
