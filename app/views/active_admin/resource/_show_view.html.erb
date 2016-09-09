@@ -7,12 +7,8 @@
 
 <div class="status_container">
 <% @stat.each do |stat| %>
-	<% begin %>
-		<% if ShowSettings.instance.is_visible?(@department, stat) %>
-				<%= status_bar(@projekt, @projekt.send(stat).status , (I18n.t("status_names.#{stat}"))) %>
-		<% end %>
-	<% rescue %>
-		<%= status_bar(@projekt, nil, (I18n.t("status_names.#{stat}")))%>
+	<% if ShowSettings.instance.is_visible?(@department, stat) %>
+			<%= status_bar(@projekt, @projekt.send(stat).status , (I18n.t("status_names.#{stat}"))) %>
 	<% end %>
 <% end %>
 </div>
@@ -58,7 +54,6 @@
               </tr>
           <% end %>
       <% end unless @projekt.buch.nil? %>
-			<%# this ^ should fix some errors due to incomplete data %>
       </tbody>
     </table>
   </div>
