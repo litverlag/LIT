@@ -515,6 +515,7 @@ namespace :gapi do
 		#	We need to set $TABLE which is used as argument for the javascript
 		#	function call in the google-script API script, getting the color values.
 
+		logger = Logger.new('log/development_rake.log')
 		logger.fatal "--- Archiv rake beginns ---"
 		$TABLE = 'Archiv'
 		table = spreadsheet.worksheet_by_title( 'Archiv' )
