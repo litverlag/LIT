@@ -364,7 +364,7 @@ namespace :gapi do
 				elsif seiten
 					buch[:seiten] = seiten[1].to_i
 				else
-					logger.error "Could not undertstand 'Seiten' entry: '#{table[i,h['Seiten']]}'"
+					logger.error "Could not undertstand 'Seiten' entry: col[#{i}]"
 				end
 
 				##															 ##
@@ -419,7 +419,7 @@ namespace :gapi do
 
 				# TODO: Oh my.. there is no class/status/anything for 'klappentexte'
 				#				Need to add this soon..
-				format_color = $COLOR_D[ $COLORS[i-1][h['Format']-1]]
+				format_color = $COLOR_D[ $COLORS[i-1][h['Format']-1]] rescue nil
 				if ['green','brown','pink'].include? format_color
 					buch[:klappentext] = true
 				elsif ['dark green'].include? format_color
@@ -515,19 +515,24 @@ namespace :gapi do
 		#	We need to set $TABLE which is used as argument for the javascript
 		#	function call in the google-script API script, getting the color values.
 
+		logger.fatal "--- Archiv rake beginns ---"
 		$TABLE = 'Archiv'
 		table = spreadsheet.worksheet_by_title( 'Archiv' )
 		rake_umschlag_table( table )
+		logger.fatal "--- UmArchiv rake beginns ---"
 		$TABLE = 'UmArchiv'
 		table = spreadsheet.worksheet_by_title( 'UmArchiv' )
 		rake_umschlag_table( table )
+		logger.fatal "--- EinListe rake beginns ---"
 		$TABLE = 'EinListe'
 		table = spreadsheet.worksheet_by_title( 'EinListe' )
 		rake_umschlag_table( table )
+		logger.fatal "--- LF rake beginns ---"
 		$TABLE = 'LF'
 		table = spreadsheet.worksheet_by_title( 'LF' )
 		rake_umschlag_table( table )
 
+		logger.fatal "--- Bi rake beginns ---"
 		$TABLE = 'Bi'
 		table = spreadsheet.worksheet_by_title( 'Bi' )
 		rake_bi_table( table )
