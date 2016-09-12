@@ -401,12 +401,12 @@ namespace :gapi do
 			##								 ##
 			#
 
-			status = color_from(i, h, 'Papier', StatusPreps, gprod.statuspreps,
-									general_color_table, logger)
-			gprod.statuspreps = status
-			status = color_from(i, h, 'Titelei', StatusTitelei, gprod.statustitelei,
-									general_color_table, logger)
-			status = gprod.statustitelei = status
+			gprod.statuspreps = color_from(i, h, 'Papier', StatusPreps,
+																		 gprod.statuspreps, general_color_table,
+																		 logger)
+			gprod.statustitelei = color_from(i, h, 'Titelei', StatusTitelei,
+																			 gprod.statustitelei,
+																			 general_color_table, logger)
 
 			# TODO: Oh my.. there is no class/status/anything for 'klappentexte'
 			#				Need to add this soon..
@@ -420,9 +420,9 @@ namespace :gapi do
 			#	TODO:	Same here ^
 			#seiten_color = $COLOR_D[ $COLORS[i-1][h['Seiten']-1]]
 
-			status = color_from(i, h, 'Umschlag', StatusUmschl, gprod.statusumschl,
-									umschlag_color_table, logger)
-			gprod.statusumschl = status
+			gprod.statusumschl = color_from(i, h, 'Umschlag', StatusUmschl,
+																			gprod.statusumschl, umschlag_color_table,
+																			logger)
 
 			name_color = $COLOR_D[ $COLORS[i-1][h['Name']-1]]
 			if name_color.nil?
@@ -431,12 +431,20 @@ namespace :gapi do
 				gprod[:satzproduktion] = true if name_color == 'light pink'
 			end
 
-			status = color_from(i, h, 'Satz', StatusSatz, gprod.statussatz,
-									general_color_table, logger)
-			gprod.statussatz = status
-			status = color_from(i, h, 'Druck', StatusDruck, gprod.statusdruck,
-									general_color_table, logger)
-			gprod.statusdruck = status
+			gprod.statussatz = color_from(i, h, 'Satz', StatusSatz, gprod.statussatz,
+																		general_color_table, logger)
+			gprod.statusdruck = color_from(i, h, 'Druck', StatusDruck,
+																		 gprod.statusdruck, general_color_table,
+																		 logger)
+			unless gprod.final_deadline.nil?
+				if gprod.final_deadline.compare_with_coercion(Date.today) == -1
+					unless gprod.statusfinal.nil?
+						gprod.statusfinal['freigabe'] = true
+					else
+						gprod.statusfinal = StatusFinal.create!(freigabe: true)
+					end
+				end
+			end
 
 			##
 			# Save 'em, so they get a computed ID, which we need for linking.
@@ -489,11 +497,16 @@ namespace :gapi do
 				next
 			end
 			if gprod.statusdruck.nil?
-				gprod.statusdruck = StatusDruck.create(status: 
-																	I18n.t("scopes_names.fertig_filter"))
+				gprod.statusdruck = StatusDruck.create!(
+					status: I18n.t("scopes_names.fertig_filter")
+				)
 			else
 				gprod.statusdruck['status'] = I18n.t("scopes_names.fertig_filter")
 			end
+
+			gprod.statusbinderei = color_from(i, h, 'Name', StatusBi,
+																				gprod.statusbinderei,
+																				general_color_table, logger)
 
 			gprod.save!
 
