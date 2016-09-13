@@ -438,11 +438,15 @@ namespace :gapi do
 																		 logger)
 			unless gprod.final_deadline.nil?
 				if gprod.final_deadline.compare_with_coercion(Date.today) == -1
-					unless gprod.statusfinal.nil?
-						gprod.statusfinal['freigabe'] = true
-					else
-						gprod.statusfinal = StatusFinal.create!(freigabe: true)
-					end
+					status = true
+				else
+					status = false
+				end
+
+				unless gprod.statusfinal.nil?
+					gprod.statusfinal['freigabe'] = status
+				else
+					gprod.statusfinal = StatusFinal.create!(freigabe: status)
 				end
 			end
 
