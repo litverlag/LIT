@@ -508,7 +508,7 @@ namespace :gapi do
 				gprod.statusdruck['status'] = I18n.t("scopes_names.fertig_filter")
 			end
 
-			gprod.statusbinderei = color_from(i, h, 'Name', StatusBi,
+			gprod.statusbinderei = color_from(i, h, 'Name', StatusBinderei,
 																				gprod.statusbinderei,
 																				general_color_table, logger)
 
