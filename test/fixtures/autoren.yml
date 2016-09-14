@@ -1,7 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  id: 1443
   fox_id: iauthm
   anrede: Mister
   vorname: Iwrite
