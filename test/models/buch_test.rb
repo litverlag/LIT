@@ -1,11 +1,11 @@
 require 'test_helper'
 
 class BuchTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
 	test "book existence" do
 		assert_not_nil Buch.where(isbn: '3-123-33214-6').first
+		assert_not_nil Buch.where(isbn: '978-3-643-90794-3').first
+		assert_not_nil Buch.where(isbn: '978-3-643-12298-8').first
+		assert_not_nil Buch.where(isbn: '3-643-12530-0').first
 	end
 
 	test "linking buch_reihe" do

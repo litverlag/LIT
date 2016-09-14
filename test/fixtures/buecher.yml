@@ -1,7 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 buecher_001:
-  id: 980190962
   autor_id: 1443
   lektor_id: 223
   gprod_id: 3333
@@ -18,32 +17,23 @@ buecher_001:
   preis: 9.99
   spreis: 9.99
   sammelband: f
-  erscheinungsjahr: 
-  gewicht: 
-  volumen: 
   format_bezeichnung: A5
   umschlag_bezeichnung: LaTeX
   papier_bezeichnung: Offset 90g
   bindung_bezeichnung: klebe
-  vier_farb: 
-  rueckenstaerke: 
   klappentext: t
-  eintrag_cip_seite: 
   created_at: '2016-08-19 14:32:31'
   updated_at: '2016-08-19 14:32:31'
-  sw: 
   r_code: rumrei
 
-buecher_002:
-  id: 98019090
-  autor_id:
-  lektor_id:
-  gprod_id:
-  name: Peggy Sue und der blaue Hund
-  isbn: 3-123-33214-6
-  issn: 
-  titel1: MyText
-  format_bezeichnung:
-  umschlag_bezeichnung:
-  papier_bezeichnung:
-  bindung_bezeichnung:
+one: 
+  name: Peace Report 2016
+  isbn: 978-3-643-90794-3
+
+two:
+  name: Spuren der Erinnerung an jüdische Familien in Münster-Wolbeck 
+  isbn: 978-3-643-12298-8
+
+three:
+  name: Dont know this name
+  isbn: 3-643-12530-0

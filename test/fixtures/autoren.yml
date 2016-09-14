@@ -7,16 +7,14 @@ one:
   vorname: Iwrite
   name: Alotbooks
   email: longbook@gmx.de
-  str: 
-  plz: 
-  ort: 
-  tel: 
-  fax: 
-  institut: 
-  dienstadresse: 
-  demail: 
-  dstr: 
-  dplz: 
-  dort: 
-  dtel: 
-  dfax: 
+
+two:
+  fox_id: schillex
+  name: Schilling
+  email: pmschilling@t-online.de
+
+
+three:
+  fox_id: puzaboo
+  name: Puzabingen
+  email: puza@uni-tuebingen.de

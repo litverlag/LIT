@@ -15,3 +15,9 @@ two:
   titel: The Mighty
   position: noidea
   emailkuerzel: richter@lit-verlag.de
+
+three:
+  id: 2133
+  name: Rainer
+  fox_name: rai
+  emailkuerzel: rainer@lit-verlag.de

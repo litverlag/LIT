@@ -174,3 +174,31 @@ de:
     nächsterAuftrag_filter: "nächsterAuftrag"
     verschickt_filter: "verschickt"
     alle_filter: "alle"
+
+  bi_names:
+    fhc: 'faden_hardcover'
+    k: 'klebe'
+    hc: 'hardcover'
+    f: 'faden'
+
+  paper_names:
+    offset80: 'Offset 80g'
+    offset90: 'Offset 90g'
+    werk90g: 'Werkdruck 90g gelb'
+    werk90b: 'Werkdruck 90g blau'
+    werk100: 'Werkdruck 100g'
+
+  um_names:
+    tex: 'LaTeX'
+    indesign: 'InDesign'
+    unknown: 'Neue Reihe'
+    extern: 'Geliefert'
+
+  format_names:
+    a3: '297 × 420'
+    a4: '210 × 297'
+    a5: '147 × 210'
+    a6: '105 × 148'
+    sonder24: '170 × 240'
+    sonder23: '162 × 230'
+    sonder22: '160 × 220'
