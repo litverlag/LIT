@@ -14,11 +14,11 @@ namespace :gapi do
 
 	def check_papier_entry( entry , logger=nil )
 		tok = nil
-		if		entry =~ /o? ?80|80 ?o/i;				tok = 'Offset 80g'
-		elsif entry =~ /o ?90|90 ?o/i;				tok = 'Offset 90g'
-		elsif entry =~ /(wg ?90)|(90 ?wg)/i;	tok = 'Werkdruck 90g gelb'
-		elsif entry =~ /(w ?90)|(90 ?w)/i;		tok = 'Werkdruck 90g blau'
-		elsif entry =~ /wg? ?100|100 ?wg?/i;	tok = 'Werkdruck 100g'
+		if		entry =~ /o? ?80|80 ?o/i;				tok = I18n.t('paper_names.offset80')
+		elsif entry =~ /o ?90|90 ?o/i;				tok = I18n.t('paper_names.offset90')
+		elsif entry =~ /(wg ?90)|(90 ?wg)/i;	tok = I18n.t('paper_names.werk90g')
+		elsif entry =~ /(w ?90)|(90 ?w)/i;		tok = I18n.t('paper_names.werk90b')
+		elsif entry =~ /wg? ?100|100 ?wg?/i;	tok = I18n.t('paper_names.werk100')
 		else
 			logger.error "Unknown 'papier_bezeichnung': '#{entry}'" unless logger.nil?
 		end
@@ -28,11 +28,11 @@ namespace :gapi do
 	def check_bindung_entry( entry , logger=nil )
 		tok = nil
 		extern = nil
-		if		entry =~ /\+/i ;		tok = 'multi: '	+ entry	; extern = true
-		elsif	entry =~ /fhc/i;		tok = 'faden_hardcover'	; extern = true
-		elsif	entry =~ /k/i	 ;		tok = 'klebe'						; extern = false
-		elsif	entry =~ /f/i	 ;		tok = 'faden'						; extern = true
-		elsif entry =~ /h/i	 ;		tok = 'hardcover'				; extern = true
+		if		entry =~ /\+/i ;		tok = 'multi: '	+ entry			; extern = true
+		elsif	entry =~ /fhc/i;		tok = I18n.t('bi_names.fhc'); extern = true
+		elsif	entry =~ /k/i	 ;		tok = I18n.t('bi_names.k')	; extern = false
+		elsif	entry =~ /f/i	 ;		tok = I18n.t('bi_names.f')	; extern = true
+		elsif entry =~ /h/i	 ;		tok = I18n.t('bi_names.h')	; extern = true
 		else
 			logger.error "Unknown 'bindung': '#{entry}'" unless logger.nil?
 		end
@@ -41,10 +41,10 @@ namespace :gapi do
 
 	def check_um_abteil_entry( entry, logger=nil )
 		tok = nil
-		if		entry =~ /te?x/i;		tok = 'LaTeX'
-		elsif entry =~ /in/i;			tok = 'InDesign'
-		elsif entry =~ /neu/i;		tok = 'Neue Reihe'
-		elsif entry =~ /autor/i;	tok = 'Geliefert'
+		if		entry =~ /te?x/i;		tok = I18n.t('um_names.tex')
+		elsif entry =~ /in/i;			tok = I18n.t('um_names.indesign')
+		elsif entry =~ /neu/i;		tok = I18n.t('um_names.unknown')
+		elsif entry =~ /autor/i;	tok = I18n.t('um_names.extern')
 		else
 			logger.error "Unknown 'umschlag abteilung': '#{entry}'" unless logger.nil?
 		end
@@ -53,13 +53,13 @@ namespace :gapi do
 
 	def check_umformat_entry( entry, logger=nil )
 		tok = nil
-		if		entry =~ /a3/i;			tok = '297 × 420'#'A3'
-		elsif entry =~ /a4/i;			tok = '210 × 297'#'A4'
-		elsif entry =~ /a5|21/i;  tok = '147 × 210'#'A5'
-		elsif entry =~ /a6/i;			tok = '105 × 148'#'A6'
-		elsif entry =~ /24/i;			tok = '170 × 240'#'23'
-		elsif entry =~ /23/i;			tok = '162 × 230'#'23'
-		elsif entry =~ /22/i;			tok = '160 × 220'#'22'
+		if		entry =~ /a3/i;			tok = I18n.t('format_names.a3')
+		elsif entry =~ /a4/i;			tok = I18n.t('format_names.a4')
+		elsif entry =~ /a5|21/i;  tok = I18n.t('format_names.a5')
+		elsif entry =~ /a6/i;			tok = I18n.t('format_names.a6')
+		elsif entry =~ /24/i;			tok = I18n.t('format_names.sonder24')
+		elsif entry =~ /23/i;			tok = I18n.t('format_names.sonder23')
+		elsif entry =~ /22/i;			tok = I18n.t('format_names.sonder22')
 		elsif entry =~ /sonder/i; tok = entry
 		else
 			logger.error "Unknown 'Buchformat': '#{entry}'" unless logger.nil?
@@ -148,7 +148,7 @@ namespace :gapi do
 	end
 
 	def check_date_entry( entry, logger=nil )
-		return nil if entry =~ /author/i or entry.empty?
+		return nil if entry =~ /autor/i or entry.empty?
 		begin
 			date = Date.parse(entry) 
 		rescue
@@ -211,7 +211,7 @@ namespace :gapi do
 
 		if color.nil? or table[color.to_s].nil?
 			# Log error, and status = 'neu'
-			logger.error "Color: '#{rowname}' column: #{row-1}"
+			logger.error "Color: '#{rowname}' column: #{row}"
 			if status.nil?
 				status = abteil.create!(status: I18n.t("scopes_names.neu_filter"))
 			else
@@ -272,21 +272,23 @@ namespace :gapi do
 		lektoremailkuerzel = {
 			'hf'  => 'hopf@lit-verlag.de',
 			'whf' => 'hopf@lit-verlag.de',
-			'ch'	=> 'Unknown_ch@invalid.com',
-			'hfch'=> 'wtf_is_hfch@invalid.com',
+			'ch'	=> 'ch@unknown.com',
+			'hfch'=> 'hopf@lit-verlag.de',
 			'rai' => 'rainer@lit-verlag.de',
 			'rit' => 'richter@lit-verlag.de',
 			'bel' => 'bellmann@lit-verlag.de',
-			'opa' => 'Unknown_opa@invalid.com',
+			'opa' => 'opa@unknown.com',
 			'litb'=> 'berlin@lit-verlag.de',
 			'wla' => 'wien@lit-verlag.de',
 			'wien'=> 'wien@lit-verlag.de',
-			'web' => 'Unknown_web@invalid.com' }
+			'web' => 'web@unknown.com' }
 
 		(2..table.num_rows).each do |i| #skip first line: headers
-			gprod = Gprod.new( :projektname	=> table[i,h['Name']] ) rescue nil
-			if gprod.nil?
-				logger.fatal "Table entry 'Name' not found. Someone messed it up?"
+			begin
+				gprod = Gprod.where(projektname: table[i,h['Name']]).first
+				gprod = Gprod.new(:projektname => table[i,h['Name']]) if gprod.nil?
+			rescue TypeError => e
+				logger.fatal "Table entry not found [#{e}], Skipping.."
 				next
 			end
 
@@ -346,11 +348,11 @@ namespace :gapi do
 				end
 			else
 				# email from Table does not belong to author.
-				logger.error "Author not found, any ideas? [1]"
+				logger.error "Author not found, any ideas? [2]"
 			end
 
 			seiten = /\s*(\d*)\s*W?\s*(\d*)/i.match(table[i,h['Seiten']]) rescue nil
-			if not seiten.nil? or not seiten[2].nil?
+			if seiten and not seiten[2].empty?
 				buch[:seiten] = seiten[2].to_i
 			elsif seiten
 				buch[:seiten] = seiten[1].to_i
@@ -436,6 +438,7 @@ namespace :gapi do
 			gprod.statusdruck = color_from(i, h, 'Druck', StatusDruck,
 																		 gprod.statusdruck, general_color_table,
 																		 logger)
+
 			unless gprod.final_deadline.nil?
 				if gprod.final_deadline.compare_with_coercion(Date.today) == -1
 					status = true
@@ -447,6 +450,16 @@ namespace :gapi do
 					gprod.statusfinal['freigabe'] = status
 				else
 					gprod.statusfinal = StatusFinal.create!(freigabe: status)
+				end
+			end
+
+			other_stati = [ StatusBildpr, StatusOffsch, StatusRg ]
+			other_stati.each do |s|
+				if s.where(gprod_id: gprod['id']).nil?
+					s.create!(
+						status: I18n.t("scopes_names.neu_filter"),
+						gprod_id: gprod['id'],
+					)
 				end
 			end
 
@@ -462,6 +475,8 @@ namespace :gapi do
 			reihe.autor_ids= autor['id'] unless autor.nil? or reihe.nil?
 			autor.buch_ids= buch['id'] unless autor.nil?
 
+			reihe.save! unless reihe.nil?
+			autor.save! unless autor.nil?
 			gprod.save!
 			buch.save!
 			# Save 'em again.
@@ -558,6 +573,7 @@ namespace :gapi do
 	desc "Import GoogleSpreadsheet-'Produktionstabellen'-data."
 	task test: :environment do
     require 'minitest/autorun'
+
 		class GapiTest < Minitest::Test
 
 			def test_papier_bezeichnung()
@@ -706,17 +722,6 @@ namespace :gapi do
 #					assert_equal value, tok
 #				end
 #			end
-
-			# NOTE not finished.. need to provide proper fixtures
-			def test_the_real_thing()
-				session = GoogleDrive.saved_session(".credentials/client_secret.json")
-				spreadsheet = session.spreadsheet_by_key("1YWWcaEzdkBLidiXkO-_3fWtne2kMgXuEnw6vcICboRc")
-
-				logger = Logger.new($stdout)
-				$TABLE = 'Unittests'
-				table = spreadsheet.worksheet_by_title('Unittests')
-				rake_umschlag_table(table, logger)
-			end
 
 		end # unittest class
 

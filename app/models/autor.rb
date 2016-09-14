@@ -24,7 +24,7 @@ class Autor < ActiveRecord::Base
 	##
 	# Validations..
 	validates :email, format: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i, 
-										allow_nil: true, 
+										allow_nil: true,
 										allow_blank: true
 
  end

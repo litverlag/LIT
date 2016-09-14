@@ -24,13 +24,10 @@ class Projekt < Gprod
 			@projekt = Gprod.find(id)
 		elsif !current_admin_user.lektor.nil?
 			@projekt = current_admin_user.lektor.gprod.find(id)
-			# Not all admin_users have a lektor ..
 		else
 			@projekt = Gprod.find(id)
 		end
 
 	end
-
-
 
 end
