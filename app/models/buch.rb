@@ -98,8 +98,10 @@ class Buch < ActiveRecord::Base
 	#validates :isbn, format: /\d{0,3}-?\d-\d{3}-\d+-\d/
 	#validates :isbn, format: { with: /\d{0,3}-?\d-\d{3}-\d+-\d/, on: :create }
 
-	validates :isbn, format: /\d{0,3}-?\d-\d{3,5}-\d+-[\dX]/, uniqueness: true, 
-		allow_nil: true, allow_blank: true, message: ":: '%{value}'"
+	validates :isbn, format: { 
+		with: /\d{0,3}-?\d-\d{3,5}-\d+-[\dX]/, 
+		message: ":: '%{value}'"
+	}, uniqueness: true, allow_nil: true, allow_blank: true
 
 	# FIXME: What token should we allow? Ask chef!
 	#

@@ -183,11 +183,12 @@ namespace :gapi do
 			return nil
 		end
 
-		short_isbn.rstrip!.lstrip!
-		buch = Buch.where("isbn like '%#{short_isbn}%'").first
+		short_isbn.rstrip!
+		short_isbn.lstrip!
+		buch = Buch.where("isbn like '%#{short_isbn}'").first
 		if buch.nil?
 			m = /([0-9]+-[0-9]+)$/i.match(short_isbn)
-			buch = Buch.where("isbn like '%#{m[1]}%'").first unless m.nil?
+			buch = Buch.where("isbn like '%#{m[1]}'").first unless m.nil?
 		end
 		if buch.nil?
 			if (/[0-9]{5}-[0-9]/ =~ short_isbn) == 0
@@ -357,9 +358,9 @@ namespace :gapi do
 
 			seiten = /\s*(\d*)\s*W?\s*(\d*)/i.match(table[i,h['Seiten']]) rescue nil
 			if seiten and not seiten[2].empty?
-				buch[:seiten] = seiten[2].to_i
+				buch['seiten'] = seiten[2].to_i
 			elsif seiten
-				buch[:seiten] = seiten[1].to_i
+				buch['seiten'] = seiten[1].to_i
 			else
 				logger.error "Could not undertstand 'Seiten' entry: col[#{i}]"
 			end
