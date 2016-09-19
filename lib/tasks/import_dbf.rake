@@ -186,7 +186,9 @@ namespace :dbf do
           end
         end
         
-        buch.save!
+				# sanity test.. 
+				# a single isbn entry exists with the content 'alt', WTF..
+        buch.save! if /[0-9]/.match(buch.isbn)
       end
       progressbar.increment
     end
