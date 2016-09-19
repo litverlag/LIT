@@ -184,10 +184,10 @@ namespace :gapi do
 		end
 
 		short_isbn.rstrip!.lstrip!
-		buch = Buch.where("isbn like '%#{short_isbn}'").first
+		buch = Buch.where("isbn like '%#{short_isbn}%'").first
 		if buch.nil?
 			m = /([0-9]+-[0-9]+)$/i.match(short_isbn)
-			buch = Buch.where("isbn like '%#{m[1]}'").first unless m.nil?
+			buch = Buch.where("isbn like '%#{m[1]}%'").first unless m.nil?
 		end
 		if buch.nil?
 			if (/[0-9]{5}-[0-9]/ =~ short_isbn) == 0
