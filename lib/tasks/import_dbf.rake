@@ -188,7 +188,7 @@ namespace :dbf do
         
 				# sanity test.. 
 				# a single isbn entry exists with the content 'alt', WTF..
-				puts "Found invalid isbn: '#{buch.isbn}'" unless buch.isbn.valid?
+				puts "Found invalid Buch, isbn is: '#{buch.isbn}'" unless buch.valid?
         buch.save if /[0-9]/.match(buch.isbn)
       end
       progressbar.increment
