@@ -553,8 +553,7 @@ namespace :gapi do
 		logger.fatal "--- Archiv rake beginns ---"
 		$TABLE = 'Archiv'
 		table = spreadsheet.worksheet_by_title('Archiv')
-		# Turned off logger, cause that table is a mess.
-		rake_umschlag_table(table, nil)
+		rake_umschlag_table(table, logger)
 		logger.fatal "--- UmArchiv rake beginns ---"
 		$TABLE = 'UmArchiv'
 		table = spreadsheet.worksheet_by_title('UmArchiv')
