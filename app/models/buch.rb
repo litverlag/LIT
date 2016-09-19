@@ -99,7 +99,7 @@ class Buch < ActiveRecord::Base
 	#validates :isbn, format: { with: /\d{0,3}-?\d-\d{3}-\d+-\d/, on: :create }
 
 	validates :isbn, format: { 
-		with: /\d{0,3}-?\d-\d{3,5}-\d+-[\dX]/, 
+		with: /\d{0,3}-?\d-\d{3,5}-\d+-[\dXx]/, 
 		message: ":: '%{value}'"
 	}, uniqueness: true, allow_nil: true, allow_blank: true
 
