@@ -183,7 +183,12 @@ namespace :gapi do
 			return nil
 		end
 
-		buch = Buch.where( "isbn like '%#{short_isbn}'" ).first
+		short_isbn.rstrip!.lstrip!
+		buch = Buch.where("isbn like '%#{short_isbn}%'").first
+		if buch.nil?
+			m = /([0-9]+-[0-9]+)$/i.match(short_isbn)
+			buch = Buch.where("isbn like '%#{m[1]}%'").first unless m.nil?
+		end
 		if buch.nil?
 			if (/[0-9]{5}-[0-9]/ =~ short_isbn) == 0
 				logger.fatal "ISBN -- not found: '#{short_isbn}'"
@@ -204,14 +209,13 @@ namespace :gapi do
 	end
 
 	def color_from(row, dict, rowname, abteil, status, table, logger)
-
-		unless row.nil? or dict.nil? or dict[rowname].nil?
+		unless row.nil? or dict.nil?
 			color = $COLOR_D[ $COLORS[row-1][dict[rowname]-1]]
 		end
 
 		if color.nil? or table[color.to_s].nil?
 			# Log error, and status = 'neu'
-			logger.error "Color: '#{rowname}' column: #{row}"
+			logger.error "Color: '#{rowname}' column: #{row}" unless dict[rowname].nil?
 			if status.nil?
 				status = abteil.create!(status: I18n.t("scopes_names.neu_filter"))
 			else
@@ -548,7 +552,8 @@ namespace :gapi do
 		logger.fatal "--- Archiv rake beginns ---"
 		$TABLE = 'Archiv'
 		table = spreadsheet.worksheet_by_title('Archiv')
-		rake_umschlag_table(table, logger)
+		# Turned off logger, cause that table is a mess.
+		rake_umschlag_table(table, nil)
 		logger.fatal "--- UmArchiv rake beginns ---"
 		$TABLE = 'UmArchiv'
 		table = spreadsheet.worksheet_by_title('UmArchiv')

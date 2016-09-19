@@ -186,7 +186,7 @@ namespace :dbf do
           end
         end
         
-        buch.save
+        buch.save!
       end
       progressbar.increment
     end
