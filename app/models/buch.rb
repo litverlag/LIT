@@ -63,12 +63,13 @@ class Buch < ActiveRecord::Base
 	end
 
 	factor_table = {
-		'Offset 80g'          => 0.05 ,
-		'Offset 90g'					=> 0.06 ,
-		'Werkdruck 90g blau'  => 0.055,
-		'Werkdruck 100g'      => 0.06 ,
+		I18n.t('paper_names.offset80') => 0.05 ,
+		I18n.t('paper_names.offset90') => 0.06 ,
+		I18n.t('paper_names.werk90b') => 0.055,
+		I18n.t('paper_names.werk90g') => 0.055 ,
+		I18n.t('paper_names.werk100') => 0.06 ,
 		'KunstdruckMatt'			=> 0.05 ,
-		'Werkdruck 90g gelb'  => 0.055 }
+	}
 
 ## Python code for backsize computation.
 # try: # [papertype.lower()[:3]] cause "w90 $", what is this madness..
