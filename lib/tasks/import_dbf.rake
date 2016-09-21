@@ -215,8 +215,6 @@ namespace :dbf do
 					end
 				rescue NoMethodError => e
 					puts "'#{e}', but i dont care"
-				rescue Exception => e
-					puts "'#{e}', might be a problem"
 				end
 
         buch.save
