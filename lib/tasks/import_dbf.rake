@@ -162,6 +162,21 @@ namespace :dbf do
           :preis => record.preis,
           :spreis => record.spreis,
         )
+				buch_d = {
+          :name => 'name',
+          :isbn => 'isbn',
+          :issn => 'issn',
+          :titel1 => 'tit1',
+          :titel2 => 'tit2',
+          :titel3 => 'tit3',
+          :utitel1 => 'utit1',
+          :utitel2 => 'utit2',
+          :utitel3 => 'utit3',
+          :seiten => 'seiten',
+          :sammelband => 'sammelbd',
+          :preis => 'preis',
+          :spreis => 'spreis',
+				}
         
         #autoren des buches suchen
         vorname = record.verf2
@@ -186,10 +201,18 @@ namespace :dbf do
           end
         end
         
-				# sanity test.. 
-				# a single isbn entry exists with the content 'alt', WTF..
-				puts "Found invalid Buch, isbn is: '#{buch.isbn}'" unless buch.valid?
-        buch.save if /[0-9]/.match(buch.isbn)
+				# sanity tests.. , buch doppelt?, buch invalid?, ..
+				unless buch.valid?
+					if buch = Buch.where(isbn: buch.isbn).first
+						buch_d.each do |key, value|
+							buch[key] = record.send(value) if buch[key].nil? or buch[key].empty?
+						end
+					else
+						puts "Found invalid Buch, isbn is: '#{buch.isbn}'"
+					end
+				end
+
+        buch.save
       end
       progressbar.increment
     end

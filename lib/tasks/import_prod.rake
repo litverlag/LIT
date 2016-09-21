@@ -584,26 +584,26 @@ namespace :gapi do
 			def test_papier_bezeichnung()
 				papier_table = {
 					'115 matt'=> nil, # ??XXX??
-					'o80'			=> 'Offset 80g' ,					# Offset 80
-					'80'			=> 'Offset 80g',
-					'80o'			=> 'Offset 80g' ,
-					'o 80'		=> 'Offset 80g' ,
-					'o80 $'		=> 'Offset 80g' ,
-					'o80 y'		=> 'Offset 80g' ,
-					'o90'			=> 'Offset 90g' ,					# Offset 90
-					'o 90'		=> 'Offset 90g' ,
-					'90o'			=> 'Offset 90g' ,
-					'w90 $'		=> 'Werkdruck 90g blau' , # Werkdruck 90 blau
-					'w90 y'		=> 'Werkdruck 90g blau' ,
-					'w90'			=> 'Werkdruck 90g blau' ,
-					'w 90'		=> 'Werkdruck 90g blau' ,
-					'90w'			=> 'Werkdruck 90g blau' ,
-					'wg90 $'	=> 'Werkdruck 90g gelb' , # Werkdruck 90 gelb
-					'wg90'		=> 'Werkdruck 90g gelb' ,
-					'90wg'		=> 'Werkdruck 90g gelb' ,
-					'wg 90'		=> 'Werkdruck 90g gelb' ,
-					'wg100'		=> 'Werkdruck 100g' ,			# Werkdruck 100
-					'w100'		=> 'Werkdruck 100g' , 
+					'o80'			=> I18n.t('paper_names.offset80') ,# Offset 80
+					'80'			=> I18n.t('paper_names.offset80'),
+					'80o'			=> I18n.t('paper_names.offset80') ,
+					'o 80'		=> I18n.t('paper_names.offset80') ,
+					'o80 $'		=> I18n.t('paper_names.offset80') ,
+					'o80 y'		=> I18n.t('paper_names.offset80') ,
+					'o90'			=> I18n.t('paper_names.offset90') ,# Offset 90
+					'o 90'		=> I18n.t('paper_names.offset90') ,
+					'90o'			=> I18n.t('paper_names.offset90') ,
+					'w90 $'		=> I18n.t('paper_names.werk90b') , # Werkdruck 90 blau
+					'w90 y'		=> I18n.t('paper_names.werk90b') ,
+					'w90'			=> I18n.t('paper_names.werk90b') ,
+					'w 90'		=> I18n.t('paper_names.werk90b') ,
+					'90w'			=> I18n.t('paper_names.werk90b') ,
+					'wg90 $'	=> I18n.t('paper_names.werk90g') , # Werkdruck 90 gelb
+					'wg90'		=> I18n.t('paper_names.werk90g') ,
+					'90wg'		=> I18n.t('paper_names.werk90g') ,
+					'wg 90'		=> I18n.t('paper_names.werk90g') ,
+					'wg100'		=> I18n.t('paper_names.werk100') , # Werkdruck 100
+					'w100'		=> I18n.t('paper_names.werk100') , 
 				}
 				papier_table.to_enum.each do |key, value|
 					tok = check_papier_entry(key)
@@ -614,20 +614,21 @@ namespace :gapi do
 
 			def test_umformat_bezeichnung()
 				format_table = {
-					'A4'			=> '210 × 297',
-					'24x17'		=> '170 × 240',
-					'23'			=> '162 × 230',
-					'23x16'		=> '162 × 230',
-					'23 x 16'	=> '162 × 230',
-					'22x16'		=> '160 × 220',
-					'22 x 16'	=> '160 × 220',
-					'A5'			=> '147 × 210',
-					'a5'			=> '147 × 210',
-					'21x14'		=> '147 × 210',
-					'21 x 14'	=> '147 × 210',
-					'21'			=> '147 × 210',
-					'A6'			=> '105 × 148',
+					'A4'			=> I18n.t('format_names.a4'),
+					'24x17'		=> I18n.t('format_names.sonder24'),
+					'23'			=> I18n.t('format_names.sonder23'),
+					'23x16'		=> I18n.t('format_names.sonder23'),
+					'23 x 16'	=> I18n.t('format_names.sonder23'),
+					'22x16'		=> I18n.t('format_names.sonder22'),
+					'22 x 16'	=> I18n.t('format_names.sonder22'),
+					'A5'			=> I18n.t('format_names.a5'),
+					'a5'			=> I18n.t('format_names.a5'),
+					'21x14'		=> I18n.t('format_names.a5'),
+					'21 x 14'	=> I18n.t('format_names.a5'),
+					'21'			=> I18n.t('format_names.a5'),
+					'A6'			=> I18n.t('format_names.a6'),
 					'sonder12'=> 'sonder12',
+					'sonderlol'=> 'sonderlol',
 				}
 				format_table.to_enum.each do |key, value|
 					tok = check_umformat_entry(key)
@@ -681,10 +682,10 @@ namespace :gapi do
 
 			def test_bindung_entry()
 				table = {
-					'f' => ['faden',true],
-					'K' => ['klebe',false],
+					'f' => [I18n.t('bi_names.f'),true],
+					'K' => [I18n.t('bi_names.k'),false],
 					'fhc' => ['faden_hardcover',true],
-					'k' => ['klebe',false],
+					'k' => [I18n.t('bi_names.k'),false],
 				}
 				table.to_enum.each do |key, value|
 					tok = check_bindung_entry(key)
