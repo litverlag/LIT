@@ -21,5 +21,5 @@ production:
   timeout: 5000
   database: production
   port: 5434
-  username: production
+  username: postgres
   password: <%= ENV['PROD_DATABASE_PASSWORD'] %>
