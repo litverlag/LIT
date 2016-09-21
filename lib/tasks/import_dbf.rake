@@ -202,14 +202,21 @@ namespace :dbf do
         end
         
 				# sanity tests.. , buch doppelt?, buch invalid?, ..
-				unless buch.valid?
-					if buch = Buch.where(isbn: buch.isbn).first
-						buch_d.each do |key, value|
-							buch[key] = record.send(value) if buch[key].nil? or buch[key].empty?
+				begin
+					unless buch.valid?
+						if buch_double = Buch.where(isbn: buch.isbn).first
+							buch = buch_double
+							buch_d.each do |key, value|
+								buch[key] = record.send(value) if buch[key].nil? or buch[key].empty?
+							end
+						else
+							puts "Found invalid Buch, isbn is: '#{buch.isbn}'"
 						end
-					else
-						puts "Found invalid Buch, isbn is: '#{buch.isbn}'"
 					end
+				rescue NoMethodError => e
+					puts "'#{e}', but i dont care"
+				rescue Exception => e
+					puts "'#{e}', might be a problem"
 				end
 
         buch.save
