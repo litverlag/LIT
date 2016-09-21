@@ -210,9 +210,7 @@ namespace :gapi do
 	end
 
 	def color_from(row, dict, rowname, abteil, status, table, logger)
-		unless row.nil? and not dict.nil?
-			color = $COLOR_D[ $COLORS[row-1][dict[rowname]-1]]
-		end
+		color = $COLOR_D[ $COLORS[row-1][dict[rowname]-1]] rescue nil
 
 		if color.nil? or table[color.to_s].nil?
 			# Log error, and status = 'neu'
