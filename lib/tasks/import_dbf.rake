@@ -43,7 +43,7 @@ namespace :dbf do
 			'hf'  => 'Hopf',
 			'whf' => 'Hopf',
 			'ch'	=> 'Unknown_ch',
-			'hfch'=> 'wtf_hfch',
+			'hfch'=> 'Hopf',
 			'rai' => 'Rainer',
 			'bel' => 'Bellman',
 			'opa' => 'Unknown_opa',
@@ -54,8 +54,8 @@ namespace :dbf do
 		lektoremailkuerzel = {
 			'hf'  => 'hopf@lit-verlag.de',
 			'whf' => 'hopf@lit-verlag.de',
+			'hfch'=> 'hopf@invalid.com',
 			'ch'	=> 'Unknown_ch@invalid.com',
-			'hfch'=> 'wtf_is_hfch@invalid.com',
 			'rai' => 'rainer@lit-verlag.de',
 			'rit' => 'richter@lit-verlag.de',
 			'bel' => 'bellmann@lit-verlag.de',
