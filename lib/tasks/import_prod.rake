@@ -456,19 +456,6 @@ namespace :gapi do
 				end
 			end
 
-			other_stati = [ StatusBildpr, StatusOffsch, StatusRg ]
-			other_stati.each do |status_class|
-				if status_class.where(gprod_id: gprod['id']).nil?
-					s = status_class.create!(
-						status: I18n.t("scopes_names.neu_filter"),
-						gprod_id: gprod['id'],
-					)
-					gprod.statusbildpr	= s if status_class == StatusBildpr
-					gprod.statusoffsch	= s if status_class == StatusOffsch
-					gprod.statusrg			= s if status_class == StatusRg
-				end
-			end
-
 			##
 			# Save 'em, so they get a computed ID, which we need for linking.
 			gprod.save!
