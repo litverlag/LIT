@@ -55,14 +55,14 @@ namespace :dbf do
 			'hf'  => 'hopf@lit-verlag.de',
 			'whf' => 'hopf@lit-verlag.de',
 			'hfch'=> 'hopf@invalid.com',
-			'ch'	=> 'Unknown_ch@invalid.com',
 			'rai' => 'rainer@lit-verlag.de',
 			'rit' => 'richter@lit-verlag.de',
 			'bel' => 'bellmann@lit-verlag.de',
-			'opa' => 'Unknown_opa@invalid.com',
 			'litb'=> 'berlin@lit-verlag.de',
 			'wla' => 'wien@lit-verlag.de',
 			'wien'=> 'wien@lit-verlag.de',
+			'opa' => 'Unknown_opa@invalid.com',
+			'ch'	=> 'Unknown_ch@invalid.com',
 			'web' => 'Unknown_web@invalid.com'
 		}
 
