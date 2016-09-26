@@ -4,13 +4,16 @@ namespace :db do
 		# Create actual Departments.
 		lektoren = [ 'hopf', 'rainer', 'richter', 'bellmann', 'berlin', 'wien' ]
 		lektoren.each do |lektor|
-			unless AdminUser.where(email: "#{lektor}@lit-verlag.de").first
-				new = AdminUser.create!(email: "#{lektor}@lit-verlag.de",
+			mail = "#{lektor}@lit-verlag.de"
+			unless AdminUser.where(email: mail).first
+				new = AdminUser.create!(email: mail,
 																password: "password1",
 																password_confirmation: "password1",)
 				new.department_ids = Department.where(name: "Lektor").first.id
 				new.lektor = Lektor.where(name: lektor).first
-				puts "Creating #{lektor}@lit-verlag.de"
+				new.lektor = Lektor.where(emailkuerzel: mail).first if new.lektor.nil?
+				lek = new.lektor ? " with Lektor " : " without Lektor."
+				puts "Creating #{lektor}@lit-verlag.de" + lek + new.lektor.to_s
 				new.save!
 			end
 		end
@@ -24,11 +27,12 @@ namespace :db do
 
 		(dep_list - admin_list).each do |id|
 			d = Department.where(id: id).first
-			puts "Creating #{d.name.downcase}@lit-verlag.de"
 			new = AdminUser.create!(email: "#{d.name.downcase}@lit-verlag.de",
 												password: "password1",
 												password_confirmation: "password1")
 			new.department_ids = id
+			new.save!
+			puts "Creating #{d.name.downcase}@lit-verlag.de without associated Lektor."
 		end
 
 	end
