@@ -195,10 +195,10 @@ de:
     extern: 'Geliefert'
 
   format_names:
-    a3: '297 × 420'
-    a4: '210 × 297'
-    a5: '147 × 210'
-    a6: '105 × 148'
-    sonder24: '170 × 240'
-    sonder23: '162 × 230'
-    sonder22: '160 × 220'
+    a3: 'A3'
+    a4: 'A4'
+    a5: 'A5'
+    a6: 'A6'
+    sonder24: 'sonder 240 × 170'
+    sonder23: 'sonder 230 × 162'
+    sonder22: 'sonder 220 × 160'

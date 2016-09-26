@@ -10,8 +10,10 @@ bin/rake gapi:test
 failure $?
 bin/rake test
 failure $?
-if [[ "x$1" == "xcommit" ]] ; then
+if [[ $1 == "commit" ]] || [[ $1 == "push" ]] ; then
 	git commit -a
-	#git push --all
+	if [[ $1 == "push" ]]; then
+		git push --all
+	fi
 fi
 exit 0
