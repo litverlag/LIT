@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160720141549) do
+ActiveRecord::Schema.define(version: 20160926103039) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -101,8 +101,8 @@ ActiveRecord::Schema.define(version: 20160720141549) do
     t.text     "utitel2"
     t.text     "utitel3"
     t.integer  "seiten"
-    t.decimal  "preis",                precision: 4, scale: 2
-    t.decimal  "spreis",               precision: 4, scale: 2
+    t.decimal  "preis",                precision: 5, scale: 3
+    t.decimal  "spreis",               precision: 5, scale: 3
     t.boolean  "sammelband",                                   default: false
     t.date     "erscheinungsjahr"
     t.float    "gewicht"
