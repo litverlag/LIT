@@ -85,3 +85,9 @@ bower.json
 
 # ctags
 tags
+
+#
+.credentials
+.credentials/*
+Gemfile.lock
+db/dbfs
