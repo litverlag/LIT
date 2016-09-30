@@ -91,3 +91,5 @@ tags
 .credentials/*
 Gemfile.lock
 db/dbfs
+db/development.sqlite
+*.swo
