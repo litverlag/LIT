@@ -92,3 +92,5 @@ tags
 db/development.sqlite
 *.swo
 Gemfile.lock
+db/dbfs
+database.yml
