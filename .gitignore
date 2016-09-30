@@ -85,3 +85,9 @@ bower.json
 
 # ctags
 tags
+
+# 
+.credentials
+.credentials/*
+db/development.sqlite
+*.swo
