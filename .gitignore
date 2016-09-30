@@ -91,3 +91,4 @@ tags
 .credentials/*
 db/development.sqlite
 *.swo
+Gemfile.lock
