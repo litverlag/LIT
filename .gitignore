@@ -94,3 +94,4 @@ db/development.sqlite
 Gemfile.lock
 db/dbfs
 config/database.yml
+database.yml
