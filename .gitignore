@@ -90,6 +90,8 @@ tags
 .credentials
 .credentials/*
 db/development.sqlite3
+config/database.yml
+database.yml
 development.sqlite3
 Gemfile.lock
 db/dbfs
