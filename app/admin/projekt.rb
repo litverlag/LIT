@@ -1,7 +1,9 @@
 ActiveAdmin.register Projekt do
   menu label: "Meine Projekte"
   #menu priority: x
-  config.filters = false
+	##
+	# Why was this false..?
+  config.filters = true
 
   #scopes -> filter the viewable project in the table
   scope (I18n.t("scopes_names.alle_filter")), :alle_filter
@@ -200,6 +202,9 @@ ActiveAdmin.register Projekt do
      @department = "projekt"
      puts "______________PROJEKT______INDEX__________________-"
      puts  current_admin_user.departments.to_a[0].name
+
+		 # enable sorting
+     selectable_column
     
      column I18n.t("status_names.statusfinal") do |p|
        status_tag(p.statusfinal.status)
@@ -237,6 +242,24 @@ ActiveAdmin.register Projekt do
     
      actions
    end
+
+   #filter Lektor.where(id: :lektor_id).first
+	 #filter :autor_id
+	 filter :final_deadline
+	 filter :druck_deadline
+	 filter :titelei_deadline
+	 filter :satz_deadline
+	 filter :preps_deadline
+	 filter :bildpr_deadline
+	 filter :offsch_deadline
+	 filter :umschlag_deadline
+	 filter :binderei_deadline
+
+	 filter :lektor_bemerkungen_public
+	 #filter :
+   filter :projekt_email_adresse
+	 filter :projektname
+   filter :created_at
 
 
 
