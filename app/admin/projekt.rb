@@ -35,6 +35,13 @@ ActiveAdmin.register Projekt do
       else
         super.all
       end
+
+			# FIXME .. trying to sort by a status results in an 
+			# Error: 'missing FROM-clause entry for table "statusumschl"'
+			#
+			# Get stati for sorting.
+			#super.includes(:statustitelei).references(:statustitelei)
+			#super.includes(:statusumschl).references(:statusumschl)
     end
 
 
@@ -204,24 +211,25 @@ ActiveAdmin.register Projekt do
      puts  current_admin_user.departments.to_a[0].name
 
 		 # enable sorting
-     selectable_column
+     #selectable_column
     
-     column I18n.t("status_names.statusfinal") do |p|
+     column I18n.t("status_names.statusfinal"), sortable: :status_final do |p|
        status_tag(p.statusfinal.status)
      end
-     column I18n.t("gprod_names.final_deadline") do |p|
+     column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
        ##
        # the raw method is used to surround the data with a div element of class='deadline'
        # this is used by the js function deadline_colorcode defined in for_show.js.erb
        raw "<div class='deadline'>#{p.final_deadline}</div>"
      end
+     #column I18n.t("status_names.statustitelei"), sortable: 'statustitelei.status' do |p|
      column I18n.t("status_names.statustitelei") do |p|
        status_tag(p.statustitelei.status)
      end
-     column I18n.t("gprod_names.titelei_deadline") do |p|
+     column I18n.t("gprod_names.titelei_deadline"), sortable: :titelei_deadline do |p|
        raw "<div class='deadline'>#{p.titelei_deadline}</div>"
      end
-     column I18n.t("status_names.statusumschl") do |p|
+     column I18n.t("status_names.statusumschl"), sortable: :status_umschl do |p|
        status_tag(p.statusumschl.status)
      end
      column I18n.t("gprod_names.umschlag_deadline") do |p|
@@ -236,7 +244,8 @@ ActiveAdmin.register Projekt do
      column I18n.t("gprod_names.projektname") do |p|
        p.projektname
      end
-     column I18n.t("gprod_names.projekt_email_adresse") do |p|
+     column I18n.t("gprod_names.projekt_email_adresse"), 
+				 sortable: :projekt_email_adresse do |p|
        p.projekt_email_adresse
      end
     

@@ -4,8 +4,15 @@ default: &default
   timeout: 5000
 
 development:
-  <<: *default
-  database: db/development.sqlite3
+  adapter: postgresql
+  encoding: unicode
+  host: localhost
+  pool: 5
+  timeout: 5000
+  database: postgres
+  port: 5434
+  username: production
+  password: <%= ENV['PROD_DATABASE_PASSWORD'] %>
 
 test:
   <<: *default
