@@ -76,14 +76,53 @@ ActiveAdmin.register Um do
 
   end
 
-  index title: I18n.t("gprod_names.umschlag_umschlag"), download_links: [:odt] do
-	@test = [:projektname, :isbn, :umschlag_bezeichnung, :rueckenstaerke]
-    column('Status') { |um| status_tag(um.statusumschl.status) }
-	@test.each do |val|
-		column val
-	end
+  index title: I18n.t("gprod_names.umschlag_umschlag"), download_links: [:odt, :csv] do
+		column I18n.t("status_names.statusumschl") do |p|
+			status_tag(p.statusumschl.status)
+		end
+    column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
+      p.projektname
+    end
+		column I18n.t("buecher_names.isbn") do |p|
+			p.buch.isbn unless p.buch.nil?
+		end
+		column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
+			raw "<div class='deadline'>#{p.final_deadline}</div>"
+		end
+		column I18n.t("gprod_names.umschlag_deadline"), sortable: :umschlag_deadline do |p|
+			raw "<div class='deadline'>#{p.umschlag_deadline}</div>"
+		end
+		column I18n.t("buecher_names.r_code") do |p|
+			p.buch.reihen.first unless p.buch.nil?
+		end
+		column I18n.t("search_labels.lektor") do |p|
+			p.buch.lektor.name unless p.buch.lektor.nil? unless p.buch.nil?
+		end
+		column I18n.t("gprod_names.projekt_email_adresse") do |p|
+			p.projekt_email_adresse
+		end
+		column I18n.t("gprod_names.umschlag_bemerkungen") do |p|
+			p.umschlag_bemerkungen
+		end
+		column I18n.t("gprod_names.lektor_bemerkungen_public") do |p|
+			p.lektor_bemerkungen_public
+		end
+
     actions
   end
+
+	config.filters = true
+	filter :buch_isbn_cont, as: :string, label: I18n.t('buecher_names.isbn')
+	#filter :statusumschl_status_eq, as: :select, 
+		#collection: proc {$UMSCHL_STATUS}, label: I18n.t('status_names.statusumschl')
+  filter :projekt_email_adresse
+	filter :projektname
+	filter :umschlag_deadline
+	filter :binderei_deadline
+	filter :final_deadline
+	filter :druck_deadline
+	filter :titelei_deadline
+	filter :satz_deadline
 
   show do
     render partial: "show_view"

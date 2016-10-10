@@ -49,10 +49,10 @@ class Buch < ActiveRecord::Base
 	##
 	# Computes the backsize
 	def backsize
-		gprod = Gprod.where(id: self[:gprod_id])
-		if gprod[:externer_druck] then return nil end
-		pages = self[:seiten]
-		papertype = self[:papier_bezeichnung]
+		gprod = self.gprod
+		return nil if gprod[:externer_druck]
+		pages = self.seiten
+		papertype = self.papier_bezeichnung
 		factor = factor_table[ papertype ]
 		sz = pages * factor
 		unless sz.round <= sz
@@ -70,29 +70,6 @@ class Buch < ActiveRecord::Base
 		I18n.t('paper_names.werk100') => 0.06 ,
 		'KunstdruckMatt'			=> 0.05 ,
 	}
-
-## Python code for backsize computation.
-# try: # [papertype.lower()[:3]] cause "w90 $", what is this madness..
-#     factor = papierWerteFaktoren[papertype.lower()[:3]][bindung[0].lower()]
-# except KeyError:
-#     print('Catched KeyError: Vermutlich externer Druck.')
-#     print('Bindung:',bindung[0].lower())
-#     exit(-1)
-# backsize = pages * factor
-# # always round up
-# if round(backsize) <= backsize:
-#     backsize = round(backsize)+1
-# else:
-#     # if back is small AND we round up just a little just add 1
-#     if backsize <= 15 and round(backsize) - backsize <= 0.20:
-# 	backsize = round(backsize) + 1
-#     else:
-# 	backsize = round(backsize)
-# 
-# if bindung.lower()[0] in print_here:
-#     print( '%.4f' %backsize , end='' )
-#     return
-
 
 	##
 	# Example of implicit and explicit format.

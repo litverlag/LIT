@@ -275,16 +275,16 @@ namespace :gapi do
 		lektoremailkuerzel = {
 			'hf'  => 'hopf@lit-verlag.de',
 			'whf' => 'hopf@lit-verlag.de',
-			'ch'	=> 'ch@unknown.com',
+			'ch'	=> 'unknown_ch@invalid.com',
 			'hfch'=> 'hopf@lit-verlag.de',
 			'rai' => 'rainer@lit-verlag.de',
 			'rit' => 'richter@lit-verlag.de',
 			'bel' => 'bellmann@lit-verlag.de',
-			'opa' => 'opa@unknown.com',
+			'opa' => 'unknown_opa@invalid.com',
 			'litb'=> 'berlin@lit-verlag.de',
 			'wla' => 'wien@lit-verlag.de',
 			'wien'=> 'wien@lit-verlag.de',
-			'web' => 'web@unknown.com' }
+			'web' => 'unknown_web@invalid.com' }
 
 		(2..table.num_rows).each do |i| #skip first line: headers
 			begin

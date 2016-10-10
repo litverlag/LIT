@@ -97,7 +97,7 @@ de:
     preps_muster_date: "Preps Muster Date"
     prio: "Prio"
     projekt_abgeschlossen: "Ist Projekt fetig?"
-    projekt_email_adresse: "Email"
+    projekt_email_adresse: "Projekt Email"
     projektname: "Name des Projektes"
     rg_bemerkungen: "Bemerkungen Rechnung"
     rg_bezahlt: "Rechunug bezahlt?"
@@ -202,3 +202,6 @@ de:
     sonder24: 'sonder 240 × 170'
     sonder23: 'sonder 230 × 162'
     sonder22: 'sonder 220 × 160'
+
+  search_labels:
+    lektor: 'Lektor'

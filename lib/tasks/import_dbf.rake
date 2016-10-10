@@ -39,31 +39,34 @@ namespace :dbf do
       'pol' => 'Politikwissenschaft'
     }
     
-		lektorname = {
-			'hf'  => 'Hopf',
-			'whf' => 'Hopf',
-			'ch'	=> 'Unknown_ch',
-			'hfch'=> 'Hopf',
-			'rai' => 'Rainer',
-			'bel' => 'Bellman',
-			'opa' => 'Unknown_opa',
-			'litb'=> 'Lit Berlin',
-			'wla' => 'Lit Wien',
-			'web' => 'Unknown_web'
-		}
-		lektoremailkuerzel = {
-			'hf'  => 'hopf@lit-verlag.de',
-			'whf' => 'hopf@lit-verlag.de',
-			'hfch'=> 'hopf@invalid.com',
-			'rai' => 'rainer@lit-verlag.de',
-			'rit' => 'richter@lit-verlag.de',
-			'bel' => 'bellmann@lit-verlag.de',
-			'litb'=> 'berlin@lit-verlag.de',
-			'wla' => 'wien@lit-verlag.de',
-			'wien'=> 'wien@lit-verlag.de',
-			'opa' => 'Unknown_opa@invalid.com',
-			'ch'	=> 'Unknown_ch@invalid.com',
-			'web' => 'Unknown_web@invalid.com'
+		hopf = {name: 'Hopf', mail: 'hopf@lit-verlag.de'}
+		rainer = {name: 'Rainer', mail: 'rainer@lit-verlag.de'} 
+		richter = {name: 'Richter', mail: 'richter@lit-verlag.de'}
+		bellmann = {name: 'Bellmann', mail: 'bellmann@lit-verlag.de'}
+		litb = {name: 'Lit Berlin', mail: 'berlin@lit-verlag.de'}
+		litw = {name: 'Lit Wien', mail: 'wien@lit-verlag.de'}
+		lektoren_dict = {
+			'hf'  => hopf,
+			'whf' => hopf,
+			'hfch'=> hopf,
+			'lit' => hopf,
+
+			'rai' => rainer,
+			'rainer'=> rainer,
+			'me/rai'=> rainer,
+			'we/rai'=> rainer,
+			'lut/rai'=> rainer,
+
+			'rit' => richter,
+
+			'bel' => bellmann,
+
+			'litb'=> litb,
+			'ltib'=> litb,
+
+			'wla' => litw,
+			'wien'=> litw,
+			'litw'=> litw,
 		}
 
     reihen_path = File.join(path, "reihen", "REIHEN.DBF")
@@ -222,13 +225,17 @@ namespace :dbf do
       progressbar.increment
     end
     
-    #TODO: hier verknüpfungen herstellen
     Lektor.destroy_all()
     lektoren.uniq.each do |lektor|
+
+			this = lektoren_dict[lektor]
+			name = this.nil? ? 'Unknown_' + lektor : this[:name]
+			emailkuerzel = this.nil? ? 'unknown_' + lektor + '@invalid.com' : this[:mail]
+
       Lektor.create(
         :fox_name => lektor,
-        :name => lektorname[lektor],
-				:emailkuerzel => lektoremailkuerzel[lektor]
+        :name => name,
+				:emailkuerzel => emailkuerzel
       )
     end
     
