@@ -113,8 +113,18 @@ ActiveAdmin.register Um do
 
 	config.filters = true
 	filter :buch_isbn_cont, as: :string, label: I18n.t('buecher_names.isbn')
+	##
+	# Not working, but the same is working fine for a 'Projekt'. FIXME
+	#
 	#filter :statusumschl_status_eq, as: :select, 
 		#collection: proc {$UMSCHL_STATUS}, label: I18n.t('status_names.statusumschl')
+
+	#Stupid ChoosableOption class, soon to be deprecated!
+	filter :buch_umschlag_bezeichnung_eq, 
+		as: :select, 
+		collection: proc {ChoosableOption.instance.umschlag_bezeichnung :all},
+		label: I18n.t('buecher_names.umschlag_bezeichnung')
+
   filter :projekt_email_adresse
 	filter :projektname
 	filter :umschlag_deadline

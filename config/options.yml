@@ -2,15 +2,19 @@
 # gesamten Code die symbole ändern, sollen sie geändert werden muss das Array
 # in names: kopiert werden, dann bleiben die Namen im Code gleich und mann kann
 # die optionen ändern.
+#
+##
+# Bullshit, we already have a perfectly fine global string variable class I18n
+# and this guy here 'invented' a new one to make things less uniformly.
 
 options:
 #Optionen für die Bucheigenschaften
     bindung_bezeichnung: [klebe,hardcover, fadenheftung, heft]
-    prio: ["a","b","c","Z"]
+    prio: ["A","B","C","Z"]
     form:
     datei:
-    format_bezeichnung: ["A5", "A4", "22", "23", "24", "Sonder"]
-    umschlag_bezeichnung: ["wieReihe", "TeX", "InDesign", "Extern", "Schutzschlag"]
+    format_bezeichnung: ["A6", "A5", "A4", "A3", "22", "23", "24", "Sonder"]
+    umschlag_bezeichnung: ["wie Reihe", "LaTeX", "InDesign", "Geliefert", "neue Reihe"]
     druck_art:
     vier_farb: ["1", "2", "3", "4"]
     sonder:
@@ -23,11 +27,11 @@ options:
 names:
 #Optionen für die Bucheigenschaften
     bindung_bezeichnung: [klebe,hardcover, fadenheftung, heft]
-    prio:
+    prio: ["a","b","c","z"]
     form:
     datei:
-    format_bezeichnung: ["A5", "A4", "22", "23", "24", "Sonder"]
-    umschlag_bezeichnung: ["wieReihe", "TeX", "InDesign", "Extern", "Schutzschlag"]
+    format_bezeichnung: ["a6", "a5", "a4", "a3", "22", "23", "24", "sonder"]
+    umschlag_bezeichnung: ["wiereihe", "tex", "indesign", "extern", "neu"]
     druckart:
     vier_farb: ["1", "2", "3", "4"]
     sonder:

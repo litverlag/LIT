@@ -191,7 +191,8 @@ de:
   um_names:
     tex: 'LaTeX'
     indesign: 'InDesign'
-    unknown: 'Neue Reihe'
+    neu: 'neue Reihe'
+    unknown: 'neue Reihe'
     extern: 'Geliefert'
 
   format_names:
