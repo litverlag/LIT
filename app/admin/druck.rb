@@ -14,7 +14,7 @@ ActiveAdmin.register Druck do
 # end
 
   menu
-  config.filters = false
+  config.filters = true
   actions :index, :show, :edit, :update
   
   #scopes -> filter the viewable project in the table
@@ -79,10 +79,59 @@ ActiveAdmin.register Druck do
 
   index do
     column('Status') {|druck| status_tag(druck.statusdruck.status)}
+		column I18n.t("status_names.statusumschl") do |p|
+			status_tag(p.statusumschl.status)
+		end
+		column I18n.t("buecher_names.umschlag_bezeichnung") do |p|
+			p.buch.umschlag_bezeichnung unless p.buch.nil?
+		end
     column :projektname
+		column I18n.t("buecher_names.isbn") do |p|
+			p.buch.isbn unless p.buch.nil?
+		end
+		column I18n.t("gprod_names.auflage") do |p|
+			p.auflage
+		end
+		column I18n.t("gprod_names.gesicherte_abnahme") do |p|
+			p.gesicherte_abnahme
+		end
+		column I18n.t("gprod_names.prio"), sortable: :prio do |p|
+			p.prio
+		end
+		column I18n.t("search_labels.lektor") do |p|
+			p.buch.lektor.name unless p.buch.lektor.nil? unless p.buch.nil?
+		end
+		column I18n.t("status_names.statuspreps") do |p|
+			status_tag(p.statuspreps.status) unless p.statuspreps.nil?
+		end
+		column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
+			raw "<div class='deadline'>#{p.final_deadline}</div>"
+		end
     actions
   end
 
+	filter :statusumschl_status_eq, as: :select, 
+		collection: proc {$UMSCHL_STATUS}, label: I18n.t('status_names.statusumschl')
+	filter :statusumschl_status_not_eq, as: :select, 
+		collection: proc {$UMSCHL_STATUS}, label: I18n.t('status_names.nstatusumschl')
+	#filter :statusdruck_status_eq, as: :select, 
+		#collection: proc {$DRUCK_STATUS}, label: I18n.t('status_names.statusdruck')
+	#filter :statusdruck_status_not_eq, as: :select, 
+		#collection: proc {$DRUCK_STATUS}, label: I18n.t('status_names.nstatusdruck')
+	filter :statuspreps_status_eq, as: :select, 
+		collection: proc {$PREPS_STATUS}, label: I18n.t('status_names.statuspreps')
+
+	filter :buch_isbn_cont, as: :string, label: I18n.t('buecher_names.isbn')
+	filter :prio
+  filter :projekt_email_adresse
+	filter :projektname
+	filter :umschlag_deadline
+	filter :preps_deadline
+	filter :binderei_deadline
+	filter :final_deadline
+	filter :druck_deadline
+	filter :titelei_deadline
+	filter :satz_deadline
 
   show do
     render partial: "show_view"

@@ -363,9 +363,9 @@ namespace :gapi do
 				logger.error "Could not undertstand 'Seiten' entry: col[#{i}]"
 			end
 
-			##															 ##
-			# Better Code layout beginns here #
-			##															 ##
+			##																 ##
+			# 'Better' Code layout beginns here #
+			##																 ##
 
 			bindung, extern = check_bindung_entry( table[i,h['Bi']], logger ) rescue nil
 			buch[:bindung_bezeichnung] = bindung unless bindung.nil?
@@ -526,6 +526,36 @@ namespace :gapi do
 	end # end rake_bi_table
 
 	##
+	# Rake task for the tit table.
+	def rake_tit_table(table)
+		logger = Logger.new('log/development_rake.log')
+		h = get_col_from_title(table)
+		(2..table.num_rows).each do |i| #skip first line: headers
+			buch = find_buch_by_shortisbn(table[i,h['ISBN']], logger) rescue nil
+			next if buch.nil?
+			gprod = buch.gprod
+			if gprod.nil?
+				logger.fatal "Buch without gprod -- isbn[#{buch['isbn']}]"
+				next
+			end
+
+			vers_date = check_date_entry(table[i,h['Versand']], logger) rescue nil
+			gprod.titelei_versand_datum_fuer_ueberpr = vers_date unless vers_date.nil?
+
+			korr_date = check_date_entry(table[i,h['Korrektur']], logger) rescue nil
+			gprod.titelei_korrektur_date = korr_date unless korr_date.nil?
+
+			frei_date = check_date_entry(table[i,h['Freigabe']], logger) rescue nil
+			gprod.titelei_freigabe_date = frei_date unless frei_date.nil?
+
+			gprod.titelei_bemerkungen = table[i,h['Bemerkungen II']] rescue nil
+
+			gprod.save!
+			buch.save!
+		end
+	end
+
+	##
 	# A task importing ALL data from the google 'Prod' tables.
 	desc "Import GoogleSpreadsheet-'Produktionstabellen'-data."
 	task import: :environment do
@@ -560,7 +590,24 @@ namespace :gapi do
 		table = spreadsheet.worksheet_by_title('Bi')
 		rake_bi_table(table)
 
+		logger.fatal "--- Tit rake beginns ---"
+		$TABLE = 'Tit'
+		table = spreadsheet.worksheet_by_title('Tit')
+		rake_tit_table(table)
+
 	end # end import-task
+
+	# Small task only for tit import.
+	desc "Tit table import test"
+	task import_tit: :environment do
+		session = GoogleDrive.saved_session( ".credentials/client_secret.json" )
+		spreadsheet = session.spreadsheet_by_key( "1YWWcaEzdkBLidiXkO-_3fWtne2kMgXuEnw6vcICboRc" )
+		logger = Logger.new('log/development_rake.log')
+		logger.fatal "--- Tit rake beginns ---"
+		$TABLE = 'Tit'
+		table = spreadsheet.worksheet_by_title('Tit')
+		rake_tit_table(table)
+	end
 
 	# Unit-testing task.
 	desc "Import GoogleSpreadsheet-'Produktionstabellen'-data."

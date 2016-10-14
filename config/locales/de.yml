@@ -95,7 +95,7 @@ de:
     preps_deadline: "SollF Preps"
     preps_muster_bemerkungen: "Preps Muster Bemerkungen"
     preps_muster_date: "Preps Muster Date"
-    prio: "Prio"
+    prio: "Priorität"
     projekt_abgeschlossen: "Ist Projekt fetig?"
     projekt_email_adresse: "Projekt Email"
     projektname: "Name des Projektes"
@@ -118,6 +118,7 @@ de:
     titelei_versand_an_zur_ueberpf: "Versand zur Überprüfung?"
     titelei_versand_datum_fuer_ueberpr: "Versand zur Überpr. am?"
     titelei_zusaetze: "Titelei Zusätze"
+    titelei_titelei: "Titelei"
     umschlag_bemerkungen: "Bemerkungen Umschlag"
     umschlag_deadline: "SollF Umschlag"
     umschlag_schutzumschlag: "Schutzumschlag?"
@@ -157,6 +158,7 @@ de:
     statusbildpr: "statusbildpr"
     statusbinderei: "statusbinderei"
     statusdruck: "statusdruck"
+    nstatusdruck: "not statusdruck"
     statusfinal: "statusfinal"
     statusoffsch: "statusoffsch"
     statuspreps: "statuspreps"
@@ -164,6 +166,7 @@ de:
     statussatz: "statussatz"
     statustitelei: "statustitelei"
     statusumschl: "statusumschl"
+    nstatusumschl: "not statusumschl"
     
   scopes_names:
     neu_filter: "neu"

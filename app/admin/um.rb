@@ -1,7 +1,7 @@
 ActiveAdmin.register Um do
   menu label: 'Umschlag'
   #menu priority: 5
-  config.filters = false
+  config.filters = true
   actions :index, :show, :edit, :update
   
   #scopes -> filter the viewable project in the table
@@ -111,10 +111,10 @@ ActiveAdmin.register Um do
     actions
   end
 
-	config.filters = true
 	filter :buch_isbn_cont, as: :string, label: I18n.t('buecher_names.isbn')
 	##
 	# Not working, but the same is working fine for a 'Projekt'. FIXME
+	# The problem is that 'INNER JOIN' in ALL the abteilungs-classes.. 
 	#
 	#filter :statusumschl_status_eq, as: :select, 
 		#collection: proc {$UMSCHL_STATUS}, label: I18n.t('status_names.statusumschl')
