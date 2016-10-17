@@ -211,9 +211,6 @@ ActiveAdmin.register Projekt do
 		puts "______________PROJEKT______INDEX__________________-"
 		puts	current_admin_user.departments.to_a[0].name
 
-		# enable sorting
-		#selectable_column
-
 		column I18n.t("status_names.statusfinal"), sortable: :status_final do |p|
 			status_tag(p.statusfinal.status)
 		end

@@ -209,3 +209,6 @@ de:
 
   search_labels:
     lektor: 'Lektor'
+
+  headlines:
+    um_pod: 'Aktuelle Umschläge'
