@@ -195,7 +195,8 @@ de:
     tex: 'LaTeX'
     indesign: 'InDesign'
     neu: 'neue Reihe'
-    unknown: 'neue Reihe'
+    reihe: 'wie Reihe'
+    unknown: 'wie Reihe'
     extern: 'Geliefert'
 
   format_names:

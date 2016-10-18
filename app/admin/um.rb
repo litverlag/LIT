@@ -2,6 +2,7 @@ ActiveAdmin.register Um do
   menu label: 'Umschlag'
   #menu priority: 5
   config.filters = true
+	config.sort_order = 'final_deadline_asc'
   actions :index, :show, :edit, :update
   
   #scopes -> filter the viewable project in the table
@@ -29,6 +30,13 @@ ActiveAdmin.register Um do
       @department = "umschlag"
       puts "______________UMSCHLAG______SHOW___________________-"
       @projekt = Gprod.find(permitted_params[:id])
+
+			# Computing the backsize. Should probably moved to projekt change
+			# submission, to be called less often. FIXME
+			unless @projekt.buch.nil?
+				bz = @projekt.buch.backsize()
+				@projekt.buch.rueckenstaerke = bz if bz
+			end
     end
 
     def edit
@@ -80,6 +88,9 @@ ActiveAdmin.register Um do
 		column I18n.t("status_names.statusumschl") do |p|
 			status_tag(p.statusumschl.status)
 		end
+		column I18n.t("status_names.statussatz") do |p|
+			status_tag(p.statussatz.status)
+		end
     column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
       p.projektname
     end
@@ -114,12 +125,14 @@ ActiveAdmin.register Um do
 	filter :buch_isbn_cont, as: :string, label: I18n.t('buecher_names.isbn')
 	##
 	# Not working, but the same is working fine for a 'Projekt'. FIXME
-	# The problem is that 'INNER JOIN' in ALL the abteilungs-classes.. 
+	# The problem is that 'INNER JOIN' in ALL the abteilungs-classes.. because
+	# ransack does a 'left join' by default.
 	#
-	#filter :statusumschl_status_eq, as: :select, 
+	#filter :statusumschl_status, as: :select, 
 		#collection: proc {$UMSCHL_STATUS}, label: I18n.t('status_names.statusumschl')
 
-	#Stupid ChoosableOption class, soon to be deprecated!
+	filter :statussatz_status, as: :select, 
+		collection: proc {$SATZ_STATUS}, label: I18n.t('status_names.statussatz')
 	filter :buch_umschlag_bezeichnung_eq, 
 		as: :select, 
 		collection: proc {ChoosableOption.instance.umschlag_bezeichnung :all},

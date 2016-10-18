@@ -49,27 +49,32 @@ class Buch < ActiveRecord::Base
 	##
 	# Computes the backsize
 	def backsize
-		gprod = self.gprod
-		return nil if gprod[:externer_druck]
-		pages = self.seiten
-		papertype = self.papier_bezeichnung
-		factor = factor_table[ papertype ]
-		sz = pages * factor
-		unless sz.round <= sz
-			return sz.round
-		else
+		return nil if gprod.externer_druck or not seiten or not papier_bezeichnung
+		factor_table = {
+			I18n.t('paper_names.offset80') => 0.05 ,
+			I18n.t('paper_names.offset90') => 0.06 ,
+			I18n.t('paper_names.werk90b') => 0.055,
+			I18n.t('paper_names.werk90g') => 0.055 ,
+			I18n.t('paper_names.werk100') => 0.06 ,
+			'KunstdruckMatt'			=> 0.05 ,
+		}
+		factor = factor_table[papier_bezeichnung]
+		return nil unless factor
+		sz = seiten * factor
+		##
+		# What you see here are rules defined by the guy who print the books.
+		#	- Always round up.
+		#	- If we would round up, but backsize is small, we need to add 1
+		if sz.round <= sz
 			return sz.round + 1
+		else 
+			if sz < 15 and (sz.round - sz <= 0.2)
+				return sz.round + 1
+			else
+				return sz.round
+			end
 		end
 	end
-
-	factor_table = {
-		I18n.t('paper_names.offset80') => 0.05 ,
-		I18n.t('paper_names.offset90') => 0.06 ,
-		I18n.t('paper_names.werk90b') => 0.055,
-		I18n.t('paper_names.werk90g') => 0.055 ,
-		I18n.t('paper_names.werk100') => 0.06 ,
-		'KunstdruckMatt'			=> 0.05 ,
-	}
 
 	##
 	# Example of implicit and explicit format.

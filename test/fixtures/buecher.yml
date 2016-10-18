@@ -18,9 +18,9 @@ buecher_001:
   spreis: 9.99
   sammelband: f
   format_bezeichnung: A5
-  umschlag_bezeichnung: LaTeX
-  papier_bezeichnung: Offset 90g
-  bindung_bezeichnung: klebe
+  umschlag_bezeichnung: <%= I18n.t('buecher_names.umschlag_bezeichnung') %>
+  papier_bezeichnung: <%= I18n.t('paper_names.offset90') %>
+  bindung_bezeichnung: <%= I18n.t('bi_names.k') %>
   klappentext: t
   created_at: '2016-08-19 14:32:31'
   updated_at: '2016-08-19 14:32:31'
@@ -29,6 +29,10 @@ buecher_001:
 one: 
   name: Peace Report 2016
   isbn: 978-3-643-90794-3
+  gprod_id: 3334
+  seiten: 120
+  papier_bezeichnung: <%= I18n.t('paper_names.offset80') %>
+  bindung_bezeichnung: <%= I18n.t('bi_names.k') %>
 
 two:
   name: Spuren der Erinnerung an jüdische Familien in Münster-Wolbeck 

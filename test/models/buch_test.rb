@@ -23,4 +23,11 @@ class BuchTest < ActiveSupport::TestCase
 			assert_includes reihe.buch_ids, buch['id']
 		end
 	end
+
+	test "backsize function" do
+		b = Buch.where(isbn: '3-123-33214-6').first
+		assert_equal 20, b.backsize
+		b = Buch.where(isbn: '978-3-643-90794-3').first
+		assert_equal 7, b.backsize
+	end
 end
