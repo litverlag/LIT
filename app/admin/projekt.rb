@@ -80,10 +80,12 @@ ActiveAdmin.register Projekt do
 			#This methods are used to check if the Author can actually release
 			# project for the departments.
 			@department = "projekt"
-			@array_of_format_bezeichungen = ChoosableOption.instance.format_bezeichnung :all
-			@array_of_umschlag_bezeichnungen = ChoosableOption.instance.umschlag_bezeichnung :all
-			@array_of_papier_bezeichungen = ChoosableOption.instance.papier_bezeichnung :all
-			@array_of_vier_farb = ChoosableOption.instance.vier_farb :all
+			@array_of_format_bezeichungen = I18n.t('format_names').values
+			@array_of_umschlag_bezeichnungen = I18n.t('um_names').values.delete_if { |i| 
+				i == I18n.t('um_names.reihe')
+			}
+			@array_of_papier_bezeichungen = I18n.t('paper_names').values
+			@array_of_vier_farb = ChoosableOption.instance.vier_farb :all # wtf is vier_farb anyway
 
 
 			@button_text_add = I18n.t 'buttons.author_new'

@@ -49,7 +49,8 @@ class Buch < ActiveRecord::Base
 	##
 	# Computes the backsize
 	def backsize
-		return nil if gprod.externer_druck or not seiten or not papier_bezeichnung
+		return nil if gprod.externer_druck or seiten.nil? or seiten == 0 or not
+				I18n.t('paper_names').values.include?(papier_bezeichnung)
 		factor_table = {
 			I18n.t('paper_names.offset80') => 0.05 ,
 			I18n.t('paper_names.offset90') => 0.06 ,
@@ -100,11 +101,11 @@ class Buch < ActiveRecord::Base
 	#	allow_nil: true, allow_blank: true }
 
 	#validates :umschlag_bezeichnung, inclusion: { 
-	#	in: %w(LaTeX InDesign Geliefert),
-	#	message: "'%{value}' is keine Umschlag-Abteilung.",	
-	#	allow_nil: true, allow_blank: true }
-  #
+		#in: I18n.t('um_names').values,
+		#message: "'%{value}' is keine Umschlag-Abteilung.",	
+		#allow_nil: true, allow_blank: true }
+	#
 	#validates :format_bezeichnung, format: /(^A[345]$)|(^\d+ ?x ?\d+$)|(^$)/,
 	#	allow_nil: true, allow_blank: true
 
-end                                                   
+end

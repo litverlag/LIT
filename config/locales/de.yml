@@ -207,6 +207,7 @@ de:
     sonder24: 'sonder 240 × 170'
     sonder23: 'sonder 230 × 162'
     sonder22: 'sonder 220 × 160'
+    sonder: 'Sonder'
 
   search_labels:
     lektor: 'Lektor'

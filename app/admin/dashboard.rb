@@ -52,12 +52,20 @@ ActiveAdmin.register_page "Dashboard" do
 							pod.each do |p|
 								next if p.statusumschl.status.eql? I18n.t('scopes_names.fertig_filter')
 								tr ''
-								td link_to(p.buch.isbn, "/admin/ums/#{p.id}") unless p.buch.nil?
+								unless p.buch.nil?
+									td link_to(p.buch.isbn, "/admin/ums/#{p.id}") 
+								else
+									td "<empty>"
+								end
 								td p.statusumschl.status
 								td p.final_deadline
 								td p.umschlag_deadline
 								td p.projektname
-								td p.buch.lektor.name unless p.buch.lektor.nil? unless p.buch.nil?
+								unless p.buch.lektor.nil? and not p.buch.nil?
+									td p.buch.lektor.name 
+								else
+									td "<empty>"
+								end
 							end	
 						end
 					end

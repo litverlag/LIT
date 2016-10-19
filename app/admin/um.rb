@@ -35,7 +35,8 @@ ActiveAdmin.register Um do
 			# submission, to be called less often. FIXME
 			unless @projekt.buch.nil?
 				bz = @projekt.buch.backsize()
-				@projekt.buch.rueckenstaerke = bz if bz
+				@projekt.buch.rueckenstaerke = bz unless bz.nil?
+				@projekt.save
 			end
     end
 
