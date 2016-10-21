@@ -28,21 +28,17 @@ ActiveAdmin.register Um do
     def show
       #departement is set to choose the right department for the Show / Edit View
       @department = "umschlag"
-      puts "______________UMSCHLAG______SHOW___________________-"
       @projekt = Gprod.find(permitted_params[:id])
 
-			# Computing the backsize. Should probably moved to projekt change
+			# Computing the backsize. Should probably be moved to projekt change
 			# submission, to be called less often. FIXME
 			unless @projekt.buch.nil?
 				bz = @projekt.buch.backsize()
-				@projekt.buch.rueckenstaerke = bz unless bz.nil?
-				@projekt.save
+				@projekt.buch.update({:rueckenstaerke => bz}) unless bz.nil?
 			end
     end
 
     def edit
-      puts "______________UMSCHLAG______EDIT___________________-"
-      puts ChoosableOption.instance.methods
 
       # This variable decides how the view is rendered, depending on the *_settings.yml in conf
       @department = "umschlag"
@@ -52,13 +48,12 @@ ActiveAdmin.register Um do
     end
 
     def update
-      puts "______________UMSCHLAG______UPDATE___________________-"
       @projekt = Gprod.find(permitted_params[:id])
 
       respond_to do |format|
 
         format.js{
-          puts permitted_params
+					#check_constraints(permitted_params[:gprod])
           @projekt.update(permitted_params[:gprod])
           #Part to update the status
           if permitted_params[:status]

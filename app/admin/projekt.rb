@@ -27,7 +27,7 @@ ActiveAdmin.register Projekt do
 		#
 		# Rouven asks: Who wrote this? please mail me rouvenglauert@gmail.com
 		#
-		# GRN-5 asks: Who is Rouven?
+		# That communication..
 
 		def scoped_collection
 			if current_admin_user.departments.where("name = ?", 'Lektor').any?
@@ -101,6 +101,49 @@ ActiveAdmin.register Projekt do
 
 		end
 
+		##
+		# Arbitrary constraints checks. 
+		# Example: 
+		#   So we check if our column is :bindung_bezeichnung, if so we force valid
+		#   @projekt.externer_druck entry. We just add to the column hash, if
+		#   instance is @projekt, otherwise we add to new_data and
+		#   @projekt.update() ourselfs.
+		#
+		def check_constraints(instance, data)
+			puts '[+] starting constraint checks'
+			new_data = {}
+
+			# Tiny helper to choose how to update, that is locally or the data hash
+			def push(newH, oldH, i, entry, value)
+				if i == @projekt
+					oldH.update({entry => value}) unless oldH[entry] == value
+					puts '[+] updating oldH' unless oldH[entry] == value
+				else
+					newH.update({entry => value}) unless oldH[entry] == value
+					puts '[+] updating newH' unless oldH[entry] == value
+				end
+			end
+
+			if data.include?(:bindung_bezeichnung)
+				puts '[+] they r probably working'
+				faden_or_hardcover = I18n.t('bi_names').values.delete_if{ |i| i == I18n.t('bi_names.k') }
+				klebe = I18n.t('bi_names.k')
+				if faden_or_hardcover.include? data[:bindung_bezeichnung] 
+					value = true
+				elsif klebe.include? data[:bindung_bezeichnung]
+					value = false
+				end
+				puts "[+] pushing #{value}"
+				push(new_data, data, instance, externer_druck, value) unless value.nil?
+
+			end
+
+			@projekt.update(new_data) unless new_data.empty?
+			puts '[+] updating locally' unless new_data.empty?
+			puts '[-] not updating locally' if new_data.empty?
+
+			puts '[-] finished constraint checks'
+		end
 
 
 		def update
@@ -109,13 +152,16 @@ ActiveAdmin.register Projekt do
 			#Proc for the updating if there is already an Author
 					updateProc = Proc.new{|modelinstance ,data|
 						js_action = "project_changed"
+
+						# Add arbitrary constraint checks here!
+						check_constraints(modelinstance, data)
+
 						if data != nil
 							if not modelinstance.update(data)
 								render 'edit'
 							end
 						end}
 						
-			# TO BE INTERNATIONALIZED this strings are temporary for the names of the buttons
 			@button_text_add = I18n.t 'buttons.author_new'
 			@button_text_asso = I18n.t 'buttons.author_asso'
 			@button_text_edit =	I18n.t 'buttons.author_edit'
@@ -129,11 +175,11 @@ ActiveAdmin.register Projekt do
 
 					if permitted_params[:gprod] then updateProc.call(@projekt,permitted_params[:gprod]) end
 					if permitted_params[:buch] then updateProc.call(@projekt.buch,permitted_params[:buch]) end
-				puts "__________________TesT________________________________"
 
-				puts permitted_params[:gprod]
+				#puts "__________________TesT________________________________"
+				#puts permitted_params[:gprod]
 				#puts permitted_params[:status][:freigabe_titelei]
-				puts "__________________TesT________________________________"
+				#puts "__________________TesT________________________________"
 
 					# This part is used to update to a new status with the status_logic module
 					if permitted_params[:status]
@@ -145,8 +191,10 @@ ActiveAdmin.register Projekt do
 
 					#puts permitted_params
 
-					# It is checked if the the User want to create a new Author or if he wants to make an association with one who already exists
-					# if there is no Author in the Database we get an Error, if there is on he gets associated.
+					# It is checked if the the User want to create a new Author or if he
+					# wants to make an association with one who already exists if there
+					# is no Author in the Database we get an Error, if there is on he
+					# gets associated.
 					if permitted_params[:commit].eql?(@button_text_asso)
 						if not Autor.associate_with(@projekt,permitted_params[:autor])
 							@js_action = "autor_add"
@@ -171,7 +219,7 @@ ActiveAdmin.register Projekt do
 				}
 			end
 
-		# redirect_to collection_path, notice: "Projekt erfolgreich bearbeitet"
+			#redirect_to collection_path, notice: "Projekt erfolgreich bearbeitet"
 
 		end
 		
