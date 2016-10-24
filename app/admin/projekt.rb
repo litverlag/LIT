@@ -101,66 +101,22 @@ ActiveAdmin.register Projekt do
 
 		end
 
-		##
-		# Arbitrary constraints checks. 
-		# Example: 
-		#   So we check if our column is :bindung_bezeichnung, if so we force valid
-		#   @projekt.externer_druck entry. We just add to the column hash, if
-		#   instance is @projekt, otherwise we add to new_data and
-		#   @projekt.update() ourselfs.
-		#
-		def check_constraints(instance, data)
-			puts '[+] starting constraint checks'
-			new_data = {}
-
-			# Tiny helper to choose how to update, that is locally or the data hash
-			def push(newH, oldH, i, entry, value)
-				if i == @projekt
-					oldH.update({entry => value}) unless oldH[entry] == value
-					puts '[+] updating oldH' unless oldH[entry] == value
-				else
-					newH.update({entry => value}) unless oldH[entry] == value
-					puts '[+] updating newH' unless oldH[entry] == value
-				end
-			end
-
-			if data.include?(:bindung_bezeichnung)
-				puts '[+] they r probably working'
-				faden_or_hardcover = I18n.t('bi_names').values.delete_if{ |i| i == I18n.t('bi_names.k') }
-				klebe = I18n.t('bi_names.k')
-				if faden_or_hardcover.include? data[:bindung_bezeichnung] 
-					value = true
-				elsif klebe.include? data[:bindung_bezeichnung]
-					value = false
-				end
-				puts "[+] pushing #{value}"
-				push(new_data, data, instance, externer_druck, value) unless value.nil?
-
-			end
-
-			@projekt.update(new_data) unless new_data.empty?
-			puts '[+] updating locally' unless new_data.empty?
-			puts '[-] not updating locally' if new_data.empty?
-
-			puts '[-] finished constraint checks'
-		end
-
-
 		def update
 
 			puts "____________________________UPDATE____PROJEKTE_______________________"
 			#Proc for the updating if there is already an Author
-					updateProc = Proc.new{|modelinstance ,data|
-						js_action = "project_changed"
+			updateProc = Proc.new{|modelinstance ,data|
+				js_action = "project_changed"
 
-						# Add arbitrary constraint checks here!
-						check_constraints(modelinstance, data)
+				# Add arbitrary constraint checks here!
+				check_constraints(modelinstance, data)
 
-						if data != nil
-							if not modelinstance.update(data)
-								render 'edit'
-							end
-						end}
+				if data != nil
+					if not modelinstance.update(data)
+						render 'edit'
+					end
+				end
+			}
 						
 			@button_text_add = I18n.t 'buttons.author_new'
 			@button_text_asso = I18n.t 'buttons.author_asso'

@@ -21,13 +21,13 @@ class Buch < ActiveRecord::Base
 	##  the database is incomplete?
 	## Fixed.
   def short_isbn
-		i = Lisbn.new(self.isbn)					if (/\d{3}-\d-\d{3}-\d+/ =~ self.isbn)==0
-		i = Lisbn.new("978-#{self.isbn}") if (			/\d-\d{3}-\d+/ =~ self.isbn)==0
-
+		i = Lisbn.new(isbn)					 if (/\d{3}-\d-\d{3}-\d+/ =~ isbn) == 0
+		i = Lisbn.new("978-#{isbn}") if (			 /\d-\d{3}-\d+/ =~ isbn) == 0
+		return nil if i.nil?
 		if i.valid?
 			"#{i.parts[3]}-#{i.parts[4]}"
 		else
-			"#WrongFormat: '"+self.isbn+"'"
+			"#WrongFormat: '#{isbn}'"
 		end
   end
 

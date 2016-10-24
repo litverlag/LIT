@@ -14,7 +14,7 @@
 
 options:
 #Optionen für die Bucheigenschaften
-    bindung_bezeichnung: [klebe,hardcover, fadenheftung]
+    bindung_bezeichnung: ['klebe', 'hardcover', 'faden', 'faden_hardcover']
     prio: ['A','B','C','Z']
     form:
     datei:
@@ -31,7 +31,7 @@ options:
 #Symbolnamen, die im Code verwendet werden sollen.
 names:
 #Optionen für die Bucheigenschaften
-    bindung_bezeichnung: [klebe,hardcover, fadenheftung]
+    bindung_bezeichnung: ['klebe','hardcover', 'faden', 'faden_hardcover']
     prio: ['a','b','c','z']
     form:
     datei:
@@ -43,4 +43,4 @@ names:
     papier_bezeichnung: ['o80', 'w90', 'wg100', 'wg90']
     musterart:
     #Automische fristen ausgehen von Finaler Frist
-    fristen: [titelei,preps,umschlag,binderei]
+    fristen: ['titelei', 'preps', 'umschlag', 'binderei']

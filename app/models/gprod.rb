@@ -45,7 +45,6 @@ class Gprod < ActiveRecord::Base
   scope_maker([:neu_filter, :bearbeitung_filter, :fertig_filter, :problem_filter], "status_final", StatusOptionsAdapter.option(:statusfinal))
 
 
-
   #validates :projektname, :projekt_email_adresse, presence: true
 	validates :projekt_email_adresse, format: { 
 		with: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i, 

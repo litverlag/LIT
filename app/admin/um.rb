@@ -31,7 +31,7 @@ ActiveAdmin.register Um do
       @projekt = Gprod.find(permitted_params[:id])
 
 			# Computing the backsize. Should probably be moved to projekt change
-			# submission, to be called less often. FIXME
+			# submission, to be called less often. TODO
 			unless @projekt.buch.nil?
 				bz = @projekt.buch.backsize()
 				@projekt.buch.update({:rueckenstaerke => bz}) unless bz.nil?
@@ -53,7 +53,7 @@ ActiveAdmin.register Um do
       respond_to do |format|
 
         format.js{
-					#check_constraints(permitted_params[:gprod])
+					check_constraints(@projekt.buch, permitted_params[:gprod])
           @projekt.update(permitted_params[:gprod])
           #Part to update the status
           if permitted_params[:status]

@@ -260,30 +260,30 @@ namespace :gapi do
 		lektorname = {
 			'hf'			=> 'Hopf',
 			'whf'			=> 'Hopf',
-			'ch'			=> 'Unknown_ch',
-			'hfch'		=> 'wtf_hfch',
+			'hfch'		=> 'Hopf',
 			'rai'			=> 'Rainer',
 			'rainer'  => 'Rainer',
-			'berlin'  => 'Berlin',
 			'rit'			=> 'Richter',
 			'bel'			=> 'Bellman',
-			'opa'			=> 'Unknown_opa',
+			'berlin'  => 'Lit Berlin',
 			'litb'		=> 'Lit Berlin',
-			'wien'		=> 'Wien',
+			'wien'		=> 'Lit Wien',
 			'wla'			=> 'Lit Wien',
+			'opa'			=> 'Unknown_opa',
+			'ch'			=> 'Unknown_ch',
 			'web'			=> 'Unknown_web' }
 		lektoremailkuerzel = {
 			'hf'  => 'hopf@lit-verlag.de',
 			'whf' => 'hopf@lit-verlag.de',
-			'ch'	=> 'unknown_ch@invalid.com',
 			'hfch'=> 'hopf@lit-verlag.de',
 			'rai' => 'rainer@lit-verlag.de',
 			'rit' => 'richter@lit-verlag.de',
 			'bel' => 'bellmann@lit-verlag.de',
-			'opa' => 'unknown_opa@invalid.com',
 			'litb'=> 'berlin@lit-verlag.de',
 			'wla' => 'wien@lit-verlag.de',
 			'wien'=> 'wien@lit-verlag.de',
+			'ch'	=> 'unknown_ch@invalid.com',
+			'opa' => 'unknown_opa@invalid.com',
 			'web' => 'unknown_web@invalid.com' }
 
 		(2..table.num_rows).each do |i| #skip first line: headers
