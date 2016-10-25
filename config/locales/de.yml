@@ -215,3 +215,5 @@ de:
   headlines:
     um_pod: 'Aktuelle Umschläge'
     lek_pod: 'Aktuelle Projekte'
+    tit_pod: 'Aktuelle Titeleien'
+    sollf_diff: 'Heute bis SollF'

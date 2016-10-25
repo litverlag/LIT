@@ -14,7 +14,8 @@ class ApplicationController < ActionController::Base
 
 	##
 	# Arbitrary constraints checks.
-	#		This is a pretty crappy routine...
+	#		This is a pretty crappy routine as we hardcoded the sub-hash-objects into
+	#		it at more than one place.
 	#
 	# Example: 
 	#   We check if the column :bindung_bezeichnung is in the data hash that

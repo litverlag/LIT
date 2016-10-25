@@ -73,9 +73,8 @@ ActiveAdmin.register Um do
     # Match download link with corresponding method which generates the output
     # in this case we use print_report for the .odt output
     def index
-      super do |format|#index!, html
-        format.odt {print_report("umschlag_report", method(:umschlag))}
-      end
+			# index!, html
+			super { |format| format.odt {print_report("umschlag_report", method(:umschlag))} }
     end
 
   end
@@ -124,8 +123,8 @@ ActiveAdmin.register Um do
 	# The problem is that 'INNER JOIN' in ALL the abteilungs-classes.. because
 	# ransack does a 'left join' by default.
 	#
-	#filter :statusumschl_status, as: :select, 
-		#collection: proc {$UMSCHL_STATUS}, label: I18n.t('status_names.statusumschl')
+	filter :statusumschl, as: :select, 
+		collection: proc {$UMSCHL_STATUS}, label: I18n.t('status_names.statusumschl')
 
 	filter :statussatz_status, as: :select, 
 		collection: proc {$SATZ_STATUS}, label: I18n.t('status_names.statussatz')

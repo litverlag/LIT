@@ -269,6 +269,7 @@ ActiveAdmin.register Projekt do
 	filter :lektor_bemerkungen_public
 	filter :projekt_email_adresse
 	filter :projektname
+	filter :prio, as: :select
 
 	filter :final_deadline
 	filter :druck_deadline

@@ -31,10 +31,20 @@ class Gprod < ActiveRecord::Base
     scope :alle_filter, -> {}
     status_names.length.times do |i|
       scope (status_names[i]), -> {
-				#this SQL interrogation is possible only using the INNER JOIN in
-				#default scope (in every Abteilung)
-
-        Gprod.where("#{table}.status = ?", status_strings[i])
+				# This SQL interrogation is possible only using the INNER JOIN in
+				# default scope (in every Abteilung).
+				Gprod.where("#{table}.status = ?", status_strings[i])
+      }
+    end
+  end
+	##
+	# This was a try to disable those mad SQL joins in every class, but failed..
+  def self.non_crappy_scope_maker(status_names, table, status_strings)
+    scope :alle_filter, -> {}
+    status_names.length.times do |i|
+      scope (status_names[i]), -> {
+				Gprod.joins("INNER JOIN #{table} on #{table}.gprod_id = gprods.id")\
+					.where("#{table}.status = ?", status_strings[i])
       }
     end
   end
