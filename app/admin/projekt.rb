@@ -212,6 +212,8 @@ ActiveAdmin.register Projekt do
 
 
 	index download_links: [:odt] do
+		actions
+
 		#render partial: 'projectindex'
 		@department = "projekt"
 		puts "______________PROJEKT______INDEX__________________-"
@@ -226,43 +228,29 @@ ActiveAdmin.register Projekt do
 			# this is used by the js function deadline_colorcode defined in for_show.js.erb
 			raw "<div class='deadline'>#{p.final_deadline}</div>"
 		end
-		column I18n.t("status_names.statustitelei") do |p|
-			status_tag(p.statustitelei.status)
+		column I18n.t("status_names.statusbinderei") do |p|
+			status_tag(p.statusbinderei.status)
 		end
-		column I18n.t("gprod_names.titelei_deadline"), sortable: :titelei_deadline do |p|
-			raw "<div class='deadline'>#{p.titelei_deadline}</div>"
+		column I18n.t("status_names.statusdruck") do |p|
+			status_tag(p.statusdruck.status)
 		end
 		column I18n.t("status_names.statusumschl") do |p|
 			status_tag(p.statusumschl.status)
 		end
-		column I18n.t("gprod_names.umschlag_deadline"), sortable: :umschlag_deadline do |p|
-			raw "<div class='deadline'>#{p.umschlag_deadline}</div>"
-		end
-		column I18n.t("status_names.statuspreps") do |p|
-			status_tag(p.statuspreps.status)
-		end
-		column I18n.t("gprod_names.preps_deadline") do |p|
-			raw "<div class='deadline'>#{p.preps_deadline}</div>"
-		end
 		column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
 			p.projektname
 		end
-		column I18n.t("gprod_names.projekt_email_adresse"), 
-	 		 sortable: :projekt_email_adresse do |p|
-			p.projekt_email_adresse
-		end
-
-		actions
 	end
 
-	filter :statustitelei_status_eq, as: :select, 
-		collection: proc {$TITELEI_STATUS}, label: 'statustitelei'
-	filter :statusumschl_status_eq, as: :select, 
-		collection: proc {$UMSCHL_STATUS}, label: 'statusumschl'
-	filter :statuspreps_status_eq, as: :select, 
-		collection: proc {$PREPS_STATUS}, label: 'statuspreps'
-	filter :statusdruck_status_eq, as: :select, 
-		collection: proc {$DRUCK_STATUS}, label: 'statusdruck'
+	filter :final_deadline
+
+	filter :statusbinderei_status_not_eq, as: :select, 
+		collection: proc {$BINDEREI_STATUS}, label: I18n.t('status_names.nstatusbinderei')
+	filter :statusdruck_status_not_eq, as: :select, 
+		collection: proc {$DRUCK_STATUS}, label: I18n.t('status_names.nstatusdruck')
+	filter :statusumschl_status_not_eq, as: :select, 
+		collection: proc {$UMSCHL_STATUS}, label: I18n.t('status_names.nstatusumschl')
+
 	filter :lektor_id_eq, as: :select, collection: proc {Lektor.all}, label: 'Lektoren'
 	filter :autor_id_eq, as: :select, collection: proc {Autor.all}, label: 'Autoren'
 
@@ -271,23 +259,9 @@ ActiveAdmin.register Projekt do
 	filter :projektname
 	filter :prio, as: :select
 
-	filter :final_deadline
-	filter :druck_deadline
-	filter :titelei_deadline
-	filter :satz_deadline
-	filter :preps_deadline
-	filter :bildpr_deadline
-	filter :offsch_deadline
-	filter :umschlag_deadline
-	filter :binderei_deadline
-	filter :created_at
-	filter :final_deadline_not_null, as: :string, label: 'sollf present'
-
 	show do
 		render partial: "show_view"
 	end
-
-
 
 	form partial: 'newInput' 
 

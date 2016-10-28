@@ -110,6 +110,9 @@ ActiveAdmin.register Druck do
     actions
   end
 
+	filter :final_deadline
+	filter :druck_deadline
+
 	filter :statusumschl_status_eq, as: :select, 
 		collection: proc {$UMSCHL_STATUS}, label: I18n.t('status_names.statusumschl')
 	filter :statusumschl_status_not_eq, as: :select, 
@@ -125,12 +128,6 @@ ActiveAdmin.register Druck do
 	filter :prio
   filter :projekt_email_adresse
 	filter :projektname
-	filter :umschlag_deadline
-	filter :preps_deadline
-	filter :binderei_deadline
-	filter :final_deadline
-	filter :druck_deadline
-	filter :titelei_deadline
 	filter :satz_deadline
 
   show do

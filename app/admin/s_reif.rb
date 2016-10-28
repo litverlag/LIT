@@ -1,8 +1,10 @@
 ActiveAdmin.register SReif do
   menu label: 'SReif'
   menu priority: 4
-  config.filters = false
+  #config.filters = true
+  config.filters = true
   actions :index, :show, :edit, :update
+	config.sort_order = 'final_deadline_asc'
   menu
   
   #scopes -> filter the viewable project in the table
@@ -67,10 +69,41 @@ ActiveAdmin.register SReif do
   end
 
   index title: 'Satz' do
-    column('Status') {|satz| status_tag(satz.statussatz.status)}
-    column :projektname
+		column I18n.t("status_names.statussatz") do |p|
+			status_tag(p.statussatz.status)
+		end
+    column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
+      p.projektname
+    end
+		column I18n.t("buecher_names.isbn") do |p|
+			p.buch.isbn unless p.buch.nil?
+		end
+		column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
+			raw "<div class='deadline'>#{p.final_deadline}</div>"
+		end
+		column I18n.t("gprod_names.satz_deadline"), sortable: :satz_deadline do |p|
+			raw "<div class='deadline'>#{p.satz_deadline}</div>"
+		end
+		column I18n.t("search_labels.lektor") do |p|
+			p.buch.lektor.name unless p.buch.lektor.nil? unless p.buch.nil?
+		end
+		column I18n.t("gprod_names.lektor_bemerkungen_public") do |p|
+			p.lektor_bemerkungen_public
+		end
+		column I18n.t('gprod_names.satzproduktion'), sortable: :satzproduktion do |p|
+			p.satzproduktion
+		end
     actions
   end
+
+	filter :satzproduktion, as: :select
+	filter :buch_isbn_cont, as: :string, label: I18n.t('buecher_names.isbn')
+	filter :statusumschl_status, as: :select, 
+		collection: proc {$UMSCHL_STATUS}, label: I18n.t('status_names.statusumschl')
+	filter :lektor
+	filter :projektname
+	filter :final_deadline
+	filter :satz_deadline
 
   show do
     render partial: "show_view"

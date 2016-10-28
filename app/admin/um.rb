@@ -117,30 +117,18 @@ ActiveAdmin.register Um do
     actions
   end
 
-	filter :buch_isbn_cont, as: :string, label: I18n.t('buecher_names.isbn')
-	##
-	# Not working, but the same is working fine for a 'Projekt'. FIXME
-	# The problem is that 'INNER JOIN' in ALL the abteilungs-classes.. because
-	# ransack does a 'left join' by default.
-	#
-	filter :statusumschl, as: :select, 
-		collection: proc {$UMSCHL_STATUS}, label: I18n.t('status_names.statusumschl')
-
-	filter :statussatz_status, as: :select, 
-		collection: proc {$SATZ_STATUS}, label: I18n.t('status_names.statussatz')
+	filter :final_deadline
+	filter :umschlag_deadline
 	filter :buch_umschlag_bezeichnung_eq, 
 		as: :select, 
 		collection: proc {ChoosableOption.instance.umschlag_bezeichnung :all},
 		label: I18n.t('buecher_names.umschlag_bezeichnung')
-
-  filter :projekt_email_adresse
+	filter :buch_isbn_cont, as: :string, label: I18n.t('buecher_names.isbn')
 	filter :projektname
-	filter :umschlag_deadline
-	filter :binderei_deadline
-	filter :final_deadline
-	filter :druck_deadline
-	filter :titelei_deadline
-	filter :satz_deadline
+  filter :projekt_email_adresse
+	filter :buch_reihen_name_cont, as: :string, label: I18n.t('buecher_names.r_code')
+	filter :statussatz_status, as: :select, 
+		collection: proc {$SATZ_STATUS}, label: I18n.t('status_names.statussatz')
 
   show do
     render partial: "show_view"

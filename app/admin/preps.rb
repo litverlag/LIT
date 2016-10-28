@@ -1,7 +1,8 @@
 ActiveAdmin.register Preps do
   menu label: 'Preps'
   menu priority: 13
-  config.filters = false
+  config.filters = true
+	config.sort_order = 'final_deadline_asc'
   actions :index, :show, :edit, :update
 
   #scopes -> filter the viewable project in the table
@@ -71,15 +72,46 @@ ActiveAdmin.register Preps do
     end
   end
 
-  index title: 'Preps', download_links: [:odt] do
-
-    @test = [:projektname, :projekt_email_adresse]
-    column('Status') {|preps| status_tag(preps.statuspreps.status)}
-    @test.each do |value|
-		column value
+  index title: I18n.t("gprod_names.preps_preps"), download_links: [:odt, :csv] do
+		column I18n.t("status_names.statuspreps") do |p|
+			status_tag(p.statuspreps.status)
+		end
+    column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
+      p.projektname
     end
+		column I18n.t("buecher_names.isbn") do |p|
+			p.buch.isbn unless p.buch.nil?
+		end
+		column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
+			raw "<div class='deadline'>#{p.final_deadline}</div>"
+		end
+		column I18n.t("gprod_names.preps_deadline"), sortable: :preps_deadline do |p|
+			raw "<div class='deadline'>#{p.preps_deadline}</div>"
+		end
+		column I18n.t('gprod_names.muster_art') do |p|
+			p.muster_art
+		end
+		column I18n.t("search_labels.lektor") do |p|
+			p.buch.lektor.name unless p.buch.lektor.nil? unless p.buch.nil?
+		end
+		column I18n.t("gprod_names.preps_bemerkungen") do |p|
+			p.preps_bemerkungen
+		end
+		column I18n.t("gprod_names.lektor_bemerkungen_public") do |p|
+			p.lektor_bemerkungen_public
+		end
+
     actions
   end
+
+	filter :final_deadline
+	filter :preps_deadline
+	filter :buch_isbn_cont, as: :string, label: I18n.t('buecher_names.isbn')
+	filter :statussatz_status, as: :select, 
+		collection: proc {$SATZ_STATUS}, label: I18n.t('status_names.statussatz')
+  filter :projekt_email_adresse
+	filter :projektname
+	filter :buch_reihen_name_cont, as: :string, label: I18n.t('buecher_names.r_code')
 
   show do
     render partial: "show_view"
