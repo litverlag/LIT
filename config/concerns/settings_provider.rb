@@ -37,12 +37,43 @@ class SettingsProvider
     end
   end
 
+	# TODO make this one replace "initialize" ! TODO replace following functions..
+	# @name_in_yml	-- is now a request to be send to @SettingsClass
+	def this_class_is_crap_so_i_write_a_wrapper(filename, table, name_in_yml)
+		if filename =~ /show_settings/
+			@SettingsClass = DepartmentShowSetting
+		elsif filename =~ /input_settings/
+			@SettingsClass = DepartmentInputSetting
+		else
+      raise ArgumentError, "Expected file containing show_* or input_* -settings"
+		end
+    @request = name_in_yml
+    if table.is_a? Hash
+			t_names = []
+			table.each {|key,value| t_names.append key}
+			@all_names = t_names
+			@names_and_types = table
+    elsif not (table.is_a? String and \
+						ActiveRecord::Base.connection.tables.include?(table))
+      raise ArgumentError, "SettingsProvider.new needs a valid table name, or a hash."
+    end
+	end
+
+	## 
+	# XXX This call is crap all along.. #Von-hinten-durch-die-Brust-in's-Auge!
+	#
+	#def new_get_all_options(department)
+	#end
+
   ##
-  # Returns an Hash table which all possible fields and the corresponding true or false option.
-  # The field are either from the table you have chosen when initialising an instance or from the hash you have given as a parameter or from the database.
-  # The options come from the yaml file.
-  def get_all_options
-   return @all_options
+	# Returns an Hash table which all possible fields and the corresponding true
+	# or false option.  The field are either from the table you have chosen
+	# when initialising an instance or from the hash you have given as a
+	# parameter or from the database.  The options come from the yaml file.
+	#
+	# looks like this: {'department' => {'field' => value, 'field2' => ..}
+  def get_all_options(department)
+   return @all_options[department]
   end
 
   ##
@@ -91,6 +122,8 @@ class SettingsProvider
     @names_and_types
     @filename
     @name_in_yml
+		@SettingsClass
+		@request
     ##
     # This methods takes to Arrays and makes a hash table with the first array as the keys and the second as the values
     #
@@ -137,7 +170,6 @@ class SettingsProvider
           @all_options[department.first] = make_hash_from_two_arr(@all_names,department.second)
         end
       end
-
     end
 
     def write_legend!

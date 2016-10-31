@@ -1,16 +1,19 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+# This file should contain all the record creation needed to seed the database
+# with its default values.
+# The data can then be loaded with the rake db:seed (or created alongside the
+# db with db:setup).
 
 Department.create!([
 	{name:'Superadmin'},{name:'Umschlag'},{name:'Satz'},{name:'Titelei'},
 	{name:'PrePs'},{name:'Rechnung'},{name:'Bildprüfung'},{name:'Pod'},
 	{name:'Binderei'},{name:'Lektor'}
 ])
+Department.all.each do |d|
+	ds = DepartmentShowSetting.create!(department_id: d.id)
+	di = DepartmentInputSetting.create!(department_id: d.id)
+	d.department_show_setting = ds
+	d.department_input_setting = di
+end
 
 admin = AdminUser.create!(email: 'admin@example.com',
 													password: 'cibcibcib', password_confirmation: 'cibcibcib')

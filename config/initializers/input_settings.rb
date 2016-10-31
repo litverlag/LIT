@@ -19,15 +19,15 @@ class InputSettings
     if department.nil?
       raise ArgumentError, "department can't be nil"
     end
-    if GPRODS_PROVIDER.get_all_options[department].nil?
+    if GPRODS_PROVIDER.get_all_options(department).nil?
       raise ArgumentError, "The department is not defiend in the yaml file"
     else
-      if not GPRODS_PROVIDER.get_all_options[department][field].nil?
-        return GPRODS_PROVIDER.get_all_options[department][field]
-      elsif not BUECHER_PROVIDER.get_all_options[department][field].nil?
-        return BUECHER_PROVIDER.get_all_options[department][field]
-      elsif not  STATUS_PROVIDER.get_all_options[department][field].nil?
-        return STATUS_PROVIDER.get_all_options[department][field]
+      if not GPRODS_PROVIDER.get_all_options(department)[field].nil?
+        return GPRODS_PROVIDER.get_all_options(department)[field]
+      elsif not BUECHER_PROVIDER.get_all_options(department)[field].nil?
+        return BUECHER_PROVIDER.get_all_options(department)[field]
+      elsif not  STATUS_PROVIDER.get_all_options(department)[field].nil?
+        return STATUS_PROVIDER.get_all_options(department)[field]
       end
     end
 
