@@ -186,6 +186,10 @@ ActiveAdmin.register Projekt do
 			@department = "projekt"
 			puts "______________PROJEKT______SHOW___________________-"
 			@projekt = Gprod.find(permitted_params[:id])
+			if @projekt.buch.nil?
+				@projekt.buch = Buch.create!
+			end
+			@projekt
 		end
 
 

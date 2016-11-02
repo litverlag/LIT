@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160926111422) do
+ActiveRecord::Schema.define(version: 20161102133034) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -116,7 +116,7 @@ ActiveRecord::Schema.define(version: 20160926111422) do
     t.string   "bindung_bezeichnung"
     t.string   "vier_farb"
     t.float    "rueckenstaerke"
-    t.boolean  "klappentext"
+    t.boolean  "klappentext",                                  default: true
     t.boolean  "eintrag_cip_seite"
     t.datetime "created_at",                                                   null: false
     t.datetime "updated_at",                                                   null: false
@@ -128,6 +128,28 @@ ActiveRecord::Schema.define(version: 20160926111422) do
     t.integer "buch_id",  null: false
     t.integer "reihe_id", null: false
   end
+
+  create_table "department_input_settings", force: :cascade do |t|
+    t.integer  "department_id"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.boolean  "gprods_options",  default: [],              array: true
+    t.boolean  "buecher_options", default: [],              array: true
+    t.boolean  "status_options",  default: [],              array: true
+  end
+
+  add_index "department_input_settings", ["department_id"], name: "index_department_input_settings_on_department_id", using: :btree
+
+  create_table "department_show_settings", force: :cascade do |t|
+    t.integer  "department_id"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.boolean  "gprods_options",  default: [],              array: true
+    t.boolean  "buecher_options", default: [],              array: true
+    t.boolean  "status_options",  default: [],              array: true
+  end
+
+  add_index "department_show_settings", ["department_id"], name: "index_department_show_settings_on_department_id", using: :btree
 
   create_table "departments", force: :cascade do |t|
     t.string   "name"
