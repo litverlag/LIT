@@ -37,7 +37,19 @@ class ShowSettings
 
   end
 
+	# Will replace the current is_visible? method.
+	def new_is_visible?(department, field)
+		s = DepartmentShowSetting.where(
+			department_id: current_admin_user.departments.first.id
+		).first
+		[s.gprods_options, s.buecher_options, s.status_options].each {|x|
+			return true if x.include? field and x.send(field)
+		}
+		return false
+	end
 
+	#Thoughts: Should we add those v names_and_types fields to the
+	# department_settings tables?
 
   def which_type(field)
     field = field.to_sym
