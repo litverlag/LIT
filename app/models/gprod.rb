@@ -57,7 +57,7 @@ class Gprod < ActiveRecord::Base
 
   #validates :projektname, :projekt_email_adresse, presence: true
 	validates :projekt_email_adresse, format: { 
-		with: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i, 
+		with: /\A([\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\s*)+\z/i, 
 		message: "'%{value}' does not match",
 		allow_nil: true, allow_blank: true 
 	}

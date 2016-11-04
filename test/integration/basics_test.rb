@@ -18,7 +18,7 @@ class BasicsTest < ActionDispatch::IntegrationTest
 	test "login as mister bellmann" do
 
 		post "/admin/login", params: { 
-			admin_user: { email: admin_users(:bellmann).email, password: admin_users(:bellmann).password },
+			admin_user: { email: 'richter@lit-verlag.de', password: 'password' },
 			commit: 'Login'
 			}
 		assert_response :success

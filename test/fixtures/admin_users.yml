@@ -8,9 +8,7 @@
 bellmann:
   id: 298486374
   email: bellmann@lit-verlag.de
-  encrypted_password: "$2a$04$5oqMHePrUx8qR6ubdJiQRuufZGWQRYwMYrvg05LCrfyUMWGM2FKQi"
-  #encrypted_password: "$2a$10$1gaNQ8sBaJbLIMznYoPZdO0wg.c4Roid5aPNXLsudQU.3C0fJxASa"
-  #encrypted_password: "$2a$10$FYT.8wcZJEbpCgqTltHy4en0/H4.GFFbQQQd6xkD1QyofymtGxkwq"
+  encrypted_password: "$2a$04$J3VsqAn8K//XQ8sqXa3Rku4PJmZPAiLobuur4jW.nV63Gq7lM2WFy"
   vorname: Bellissimo
   nachname: Bellum
   reset_password_token: 
@@ -27,7 +25,7 @@ bellmann:
 admin:
   id: 980190962
   email: admin@example.com
-  encrypted_password: "$2a$10$51JG9rOQhw57YQoyAHsxQOT8eExBD6BSgLEUcP/P1W3vj6mip3k9i"
+  encrypted_password: "$2a$04$J3VsqAn8K//XQ8sqXa3Rku4PJmZPAiLobuur4jW.nV63Gq7lM2WFy"
   vorname: ''
   nachname: ''
   reset_password_token: 
@@ -41,3 +39,10 @@ admin:
   lektor_id: 
   created_at: '2016-10-18 11:27:57'
   updated_at: '2016-10-18 11:27:57'
+richter:
+  id: 312
+  email: "richter@lit-verlag.de"
+  vorname: Richter
+  nachname: Extrem
+  encrypted_password: <%= AdminUser.new.send(:password_digest, 'password') %>
+  sign_in_count: 541

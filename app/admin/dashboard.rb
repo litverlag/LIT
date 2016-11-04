@@ -197,5 +197,42 @@ ActiveAdmin.register_page "Dashboard" do
 			end
 		end
 
+		if dep.include? 'Druck' or dep.include? 'Superadmin'
+			panel I18n.t('headlines.lek_pod') do
+				table do
+					pod = Projekt.ransack(final_deadline_gt: Date.today).result.map
+					pod = pod.sort_by { |v| v.final_deadline }
+					pod.sort! &z_top_prio
+					#pod.delete_if { |p| p.satzproduktion == false }
+					th I18n.t('buecher_names.isbn')
+					th I18n.t('gprod_names.projektname')
+					th I18n.t('gprod_names.prio')
+					th I18n.t('status_names.statusdruck')
+					th I18n.t('gprod_names.final_deadline')
+					th I18n.t('gprod_names.druck_deadline')
+					th I18n.t('search_labels.lektor')
+					pod.each do |p|
+						next if p.statusdruck.status.eql? I18n.t('scopes_names.fertig_filter')
+						if p.prio == "Z"
+							cur_status = status_tag(
+								class: I18n.t('scopes_names.problem_filter'),
+								label: p.prio
+							)
+						else
+							cur_status = p.prio
+						end
+						tr ''
+						td link_to(p.buch.isbn, "/admin/s_reifs/#{p.id}") rescue td "<empty>"
+						td p.projektname
+						td cur_status
+						td status_tag(p.statusdruck.status)
+						td p.final_deadline
+						td p.druck_deadline
+						td p.buch.lektor.name rescue td "<empty>"
+					end
+				end
+			end
+		end
+
   end # content
 end
