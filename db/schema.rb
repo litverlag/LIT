@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161102133034) do
+ActiveRecord::Schema.define(version: 20161104101812) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -179,7 +179,7 @@ ActiveRecord::Schema.define(version: 20161102133034) do
     t.date     "rg_deadline"
     t.date     "binderei_deadline"
     t.boolean  "projekt_abgeschlossen",              default: false
-    t.string   "projekt_email_adresse"
+    t.string   "projekt_email_adresse",                                           array: true
     t.string   "projektname"
     t.integer  "auflage"
     t.date     "erscheinungsjahr"
