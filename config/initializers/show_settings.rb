@@ -1,20 +1,25 @@
 require 'singleton'
 ###
 # This class is to test if a field is visible in the view
-# it has three instances of Input settings on for the buecher field, one for the gprod fields and one for the Status_fields
+# it has three instances of Input settings on for the buecher field, one for
+# the gprod fields and one for the Status_fields
 #
 #
 class ShowSettings
   include Singleton
-  #@status is used to insert new field/options pairs to the SettingsProvider which do not come from a database table.
-  @status = {:statusbildpr => "selectable", :statusbinderei => "selectable", :statusdruck => "selectable", :statusfinal => "selectable", :statusoffsch => "selectable", :statuspreps => "selectable", :statusrg => "selectable", :statussatz => "selectable", :statustitelei => "selectable", :statusumschl => "selectable"}
+	#@status is used to insert new field/options pairs to the SettingsProvider
+	#which do not come from a database table.
+	@status = {:statusbildpr => "selectable", :statusbinderei => "selectable",
+						:statusdruck => "selectable", :statusfinal => "selectable",
+						:statusoffsch => "selectable", :statuspreps => "selectable",
+						:statusrg => "selectable", :statussatz => "selectable",
+						:statustitelei => "selectable", :statusumschl => "selectable"}
   GPRODS_PROVIDER = SettingsProvider.new("config/show_settings.yml",'gprods',"gprods_options")
   BUECHER_PROVIDER = SettingsProvider.new("config/show_settings.yml",'buecher',"buecher_options")
   #Instanziation of the Provider with a Hash table instead of a name of a database table
   STATUS_PROVIDER = SettingsProvider.new("config/show_settings.yml",@status,"status_options")
 
   def is_visible?(department, field)
-    # begin
     field = field.to_sym
     if department.nil?
       raise ArgumentError, "Department can't be nil"
@@ -30,26 +35,27 @@ class ShowSettings
         return STATUS_PROVIDER.get_all_options(department)[field]
       end
     end
-
-    # rescue
-    #   raise ArgumentError, "In the YAML file is a definition missing"
-    #end
-
   end
 
-	# Will replace the current is_visible? method.
+	##
+	# replace is_visible?
 	def new_is_visible?(department, field)
-		s = DepartmentShowSetting.where(
+		settings = DepartmentShowSetting.where(
 			department_id: current_admin_user.departments.first.id
 		).first
-		[s.gprods_options, s.buecher_options, s.status_options].each {|x|
-			return true if x.include? field and x.send(field)
-		}
+		return true if settings.send(field)
 		return false
 	end
+	##
+	# replace which_type
+	##
+	# Thoughts: 
+	#		Is it a significant performance hit, if we look up types at runtime?
+	#		Should we add those v names_and_types fields to the department_settings
+	#		database tables?
+	def new_which_type(field)
+	end
 
-	#Thoughts: Should we add those v names_and_types fields to the
-	# department_settings tables?
 
   def which_type(field)
     field = field.to_sym
@@ -71,14 +77,14 @@ class ShowSettings
       when "status"
         STATUS_PROVIDER.all_coloum_names
       else
-        raise ArgumentError, "There is no table or manually defined SettingsProvider for you table "
+        raise ArgumentError, 
+					"There is no table or manually defined SettingsProvider for you table"
     end
   end
 
-
-
   ##
-  # In this method you have to change the type of the field manually. This is necessary if you want to have more
+	# In this method you have to change the type of the field manually. This is
+	# necessary if you want to have more
   # options for the views to choose from
   #
   def initialize
@@ -89,7 +95,6 @@ class ShowSettings
     BUECHER_PROVIDER.change_type(:format_bezeichnung,"selectable")
 
     #GPRODS_PROVIDER.change_type(:prio,"selectable")
-
     GPRODS_PROVIDER.remove_attribute "id"
     GPRODS_PROVIDER.remove_attribute "lektor_id"
     GPRODS_PROVIDER.remove_attribute "autor_id"
@@ -102,10 +107,5 @@ class ShowSettings
     BUECHER_PROVIDER.remove_attribute "id"
     BUECHER_PROVIDER.remove_attribute "created_at"
     BUECHER_PROVIDER.remove_attribute "updated_at"
-
-
   end
-
-
 end
-

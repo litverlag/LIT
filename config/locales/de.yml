@@ -122,8 +122,6 @@ de:
     umschlag_bemerkungen: "Bemerkungen Umschlag"
     umschlag_deadline: "SollF Umschlag"
     umschlag_schutzumschlag: "Schutzumschlag?"
-    umschlag_umschlag: "Umschlag"
-    preps_preps: "Preps"
     umschlag_umschlagsbild: "Umschlagsbild?"
     zum_druck: "zum Druck"
 
@@ -216,6 +214,8 @@ de:
     lektor: 'Lektor'
 
   headlines:
+    umschlag_umschlag: "Umschlag"
+    preps_preps: "Preps"
     um_pod: 'Aktuelle Umschläge'
     lek_pod: 'Aktuelle Projekte'
     tit_pod: 'Aktuelle Titeleien'

@@ -1,13 +1,19 @@
 require 'singleton'
 ###
 # This class is to test if a field is visible in the view
-# it has three instances of Input settings on for the buecher field, one for the gprod fields and one for the Status_fields
+# it has three instances of Input settings on for the buecher field, one for
+# the gprod fields and one for the Status_fields
 #
 #
 class InputSettings
   include Singleton
-  #@status is used to insert new field/options pairs to the SettingsProvider which do not come from a database table.
-  @status = {:statusbildpr => "selectable", :statusbinderei => "selectable", :statusdruck => "selectable", :statusfinal => "selectable", :statusoffsch => "selectable", :statuspreps => "selectable", :statusrg => "selectable", :statussatz => "selectable", :statustitelei => "selectable", :statusumschl => "selectable"}
+	#@status is used to insert new field/options pairs to the SettingsProvider
+	#which do not come from a database table.
+	@status = {:statusbildpr => "selectable", :statusbinderei => "selectable",
+						:statusdruck => "selectable", :statusfinal => "selectable",
+						:statusoffsch => "selectable", :statuspreps => "selectable",
+						:statusrg => "selectable", :statussatz => "selectable",
+						:statustitelei => "selectable", :statusumschl => "selectable"}
   GPRODS_PROVIDER = SettingsProvider.new("config/import_settings.yml",'gprods',"gprods_options")
   BUECHER_PROVIDER = SettingsProvider.new("config/import_settings.yml",'buecher',"buecher_options")
   #Instanziation of the Provider with a Hash table instead of a name of a database table
@@ -59,15 +65,16 @@ class InputSettings
       when "status"
         STATUS_PROVIDER.all_coloum_names
       else
-        raise ArgumentError, "There is no table or manually defined SettingsProvider for you table "
+        raise ArgumentError, 
+					"There is no table or manually defined SettingsProvider for you table"
     end
   end
 
 
 
   ##
-  # In this method you have to change the type of the field manually. This is necessary if you want to have more
-  # options for the views to choose from
+	# In this method you have to change the type of the field manually. This is
+	# necessary if you want to have more options for the views to choose from
   #
   def initialize
     #change the type to selectable because from the db it comes as a string
