@@ -98,7 +98,7 @@ de:
     prio: "Priorität"
     projekt_abgeschlossen: "Ist Projekt fetig?"
     projekt_email_adresse: "Projekt Email"
-    projektname: "Name des Projektes"
+    projektname: "Name"
     rg_bemerkungen: "Bemerkungen Rechnung"
     rg_bezahlt: "Rechunug bezahlt?"
     rg_deadline: "SollF Rechnung"
@@ -156,20 +156,20 @@ de:
     r_code: "Reihe"
 
   status_names:
-    statusbildpr: "statusbildpr"
-    statusbinderei: "statusbinderei"
-    nstatusbinderei: "not statusbinderei"
-    statusdruck: "statusdruck"
-    nstatusdruck: "not statusdruck"
-    statusfinal: "statusfinal"
-    statusoffsch: "statusoffsch"
-    statuspreps: "statuspreps"
-    statusrg: "statusrg"
-    statussatz: "statussatz"
-    nstatussatz: "not statussatz"
-    statustitelei: "statustitelei"
-    statusumschl: "statusumschl"
-    nstatusumschl: "not statusumschl"
+    statusbildpr: 'Bildpr'
+    statusbinderei: 'Binderei'
+    nstatusbinderei: 'not statusbinderei'
+    statusdruck: 'Druck'
+    nstatusdruck: 'not statusdruck'
+    statusfinal: 'Final'
+    statusoffsch: 'Offsch'
+    statuspreps: 'Preps'
+    statusrg: 'Rg'
+    statussatz: 'Satz'
+    nstatussatz: 'not statussatz'
+    statustitelei: 'Titelei'
+    statusumschl: 'Umschl'
+    nstatusumschl: 'not statusumschl'
     
   scopes_names:
     neu_filter: "neu"
@@ -195,8 +195,8 @@ de:
     werk100: 'Werkdruck 100g'
 
   um_names:
-    tex: 'LaTeX'
-    indesign: 'InDesign'
+    tex: 'tx'
+    indesign: 'in'
     neu: 'neue Reihe'
     reihe: 'wie Reihe'
     unknown: 'wie Reihe'

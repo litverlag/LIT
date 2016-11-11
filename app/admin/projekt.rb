@@ -223,14 +223,24 @@ ActiveAdmin.register Projekt do
 		puts "______________PROJEKT______INDEX__________________-"
 		puts	current_admin_user.departments.to_a[0].name
 
-		column I18n.t("status_names.statusfinal"), sortable: :status_final do |p|
-			status_tag(p.statusfinal.status)
+		#column I18n.t("status_names.statusfinal"), sortable: :status_final do |p|
+			#status_tag(p.statusfinal.status)
+		#end
+		column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
+			p.projektname
 		end
 		column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
 			##
 			# the raw method is used to surround the data with a div element of class='deadline'
 			# this is used by the js function deadline_colorcode defined in for_show.js.erb
 			raw "<div class='deadline'>#{p.final_deadline}</div>"
+		end
+		column I18n.t("gprod_names.prio"), sortable: :prio do |p|
+			p.prio
+		end
+		column I18n.t("buecher_names.r_code") do |p|
+			#p.buch.reihen.first unless p.buch.nil?
+			link_to(p.buch.reihen.first.r_code, "/admin/reihen/#{p.buch.reihen.first.id}") rescue "-"
 		end
 		column I18n.t("status_names.statusbinderei") do |p|
 			status_tag(p.statusbinderei.status)
@@ -241,8 +251,8 @@ ActiveAdmin.register Projekt do
 		column I18n.t("status_names.statusumschl") do |p|
 			status_tag(p.statusumschl.status)
 		end
-		column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
-			p.projektname
+		column I18n.t("status_names.statussatz") do |p|
+			status_tag(p.statussatz.status)
 		end
 	end
 

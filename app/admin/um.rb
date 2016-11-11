@@ -90,7 +90,9 @@ ActiveAdmin.register Um do
       p.projektname
     end
 		column I18n.t("buecher_names.isbn") do |p|
-			p.buch.isbn unless p.buch.nil?
+			# .. Hmrrrm. 0x2011 is a non-breaking hyphen, but, .., we put it inside an isbn..
+			#raw "#{p.buch.isbn.gsub('-', '&#x2011&nbsp')}" rescue '-'
+			raw "#{p.buch.isbn.gsub('-', '_')}" rescue '-'
 		end
 		column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
 			raw "<div class='deadline'>#{p.final_deadline}</div>"
@@ -99,7 +101,7 @@ ActiveAdmin.register Um do
 			raw "<div class='deadline'>#{p.umschlag_deadline}</div>"
 		end
 		column I18n.t("buecher_names.r_code") do |p|
-			p.buch.reihen.first unless p.buch.nil?
+			link_to(p.buch.reihen.first.r_code, "/admin/reihen/#{p.buch.reihen.first.id}") rescue "-"
 		end
 		column I18n.t("search_labels.lektor") do |p|
 			p.buch.lektor.name unless p.buch.lektor.nil? unless p.buch.nil?

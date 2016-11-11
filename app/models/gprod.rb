@@ -37,17 +37,6 @@ class Gprod < ActiveRecord::Base
       }
     end
   end
-	##
-	# This was a try to disable those mad SQL joins in every class, but failed..
-  def self.non_crappy_scope_maker(status_names, table, status_strings)
-    scope :alle_filter, -> {}
-    status_names.length.times do |i|
-      scope (status_names[i]), -> {
-				Gprod.joins("INNER JOIN #{table} on #{table}.gprod_id = gprods.id")\
-					.where("#{table}.status = ?", status_strings[i])
-      }
-    end
-  end
   
 	#status_names array must be written in the same order of the status_strings
 	#array (see models/concerns/global_variables) + table name + symbol for
