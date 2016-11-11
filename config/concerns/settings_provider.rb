@@ -37,7 +37,7 @@ class SettingsProvider
     end
   end
 
-	# TODO make this one replace "initialize" ! And replace following functions..
+	##
 	# @name_in_yml	-- is now a request to be send to @SettingsClass
 	def this_class_is_crap_so_i_write_a_wrapper(filename, table, name_in_yml)
 		if filename =~ /show_settings/
@@ -59,11 +59,9 @@ class SettingsProvider
     end
 	end
 
-	## 
-	# XXX This call is crap all along.. #Von-hinten-durch-die-Brust-ins-Auge
-	#
-	#def new_get_all_options(department)
-	#end
+	##
+	# replace names_and_types
+	#def new_names_and_types
 
   ##
 	# Returns an Hash table which all possible fields and the corresponding true

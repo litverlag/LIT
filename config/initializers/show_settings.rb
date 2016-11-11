@@ -37,26 +37,6 @@ class ShowSettings
     end
   end
 
-	##
-	# replace is_visible?
-	def new_is_visible?(department, field)
-		settings = DepartmentShowSetting.where(
-			department_id: current_admin_user.departments.first.id
-		).first
-		return true if settings.send(field)
-		return false
-	end
-	##
-	# replace which_type
-	##
-	# Thoughts: 
-	#		Is it a significant performance hit, if we look up types at runtime?
-	#		Should we add those v names_and_types fields to the department_settings
-	#		database tables?
-	def new_which_type(field)
-	end
-
-
   def which_type(field)
     field = field.to_sym
     if not GPRODS_PROVIDER.names_and_types[field].nil?
@@ -108,4 +88,51 @@ class ShowSettings
     BUECHER_PROVIDER.remove_attribute "created_at"
     BUECHER_PROVIDER.remove_attribute "updated_at"
   end
+
+
+
+
+	##################
+	# New code below #
+	##################
+
+	##
+	# replace is_visible?
+	def new_is_visible?(department, field)
+		return true if department.department_show_settings.send(field)
+		return false
+	end
+
+	TYPE_OVERRIDE = {}
+	TYPE_OVERRIDE.update(:papier_bezeichnung=>"selectable")
+	TYPE_OVERRIDE.update(:bindung_bezeichnung=>"selectable")
+	TYPE_OVERRIDE.update(:umschlag_bezeichnung=>"selectable")
+	TYPE_OVERRIDE.update(:format_bezeichnung=>"selectable")
+	##
+	# replace which_type
+	##
+	# Thoughts: This may result in a lot.. a lot of db lookups.. Hm.
+	def new_which_type(field)
+		if TYPE_OVERRIDE.include? field
+			return TYPE_OVERRIDE[field.to_sym]
+		else
+			{'buecher_names' => 'buecher_options', 
+			'gprod_names' => 'gprods_options', 
+			'status_names' => 'status_options'}.each do |i, t|
+				list = I18n.t(i).keys
+				if list.include? field
+					table = t
+					break
+				end
+			}
+			raise ArgumentError, "Requested type field not found" if table.nil?
+
+			tmp = {}
+			ActiveRecord::Base.connection.columns(table).each do |c|
+				tmp.update(c.name => c.type.to_s)
+			end
+			return tmp[field.to_sym]
+		end
+	end
+
 end

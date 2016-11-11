@@ -1,4 +1,7 @@
 require 'singleton'
+##
+# See config/initializers/show_settings.rb for updated stuff.
+
 ###
 # This class is to test if a field is visible in the view
 # it has three instances of Input settings on for the buecher field, one for
@@ -83,7 +86,7 @@ class InputSettings
     BUECHER_PROVIDER.change_type(:umschlag_bezeichnung,"selectable")
     BUECHER_PROVIDER.change_type(:format_bezeichnung,"selectable")
 
-    #GPRODS_PROVIDER.change_type(:prio,"selectable")
+    GPRODS_PROVIDER.change_type(:prio,"selectable")
 
     GPRODS_PROVIDER.remove_attribute "id"
     GPRODS_PROVIDER.remove_attribute "lektor_id"
