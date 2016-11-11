@@ -106,6 +106,7 @@ ActiveAdmin.register Preps do
 
 	filter :final_deadline
 	filter :preps_deadline
+	filter :satzproduktion
 	filter :buch_isbn_cont, as: :string, label: I18n.t('buecher_names.isbn')
 	filter :statussatz_status, as: :select, 
 		collection: proc {$SATZ_STATUS}, label: I18n.t('status_names.statussatz')

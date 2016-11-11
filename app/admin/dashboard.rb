@@ -4,25 +4,9 @@ ActiveAdmin.register_page "Dashboard" do
 
   content title: proc{ I18n.t("active_admin.dashboard") } do
 
-    # Here is an example of a simple dashboard with columns and panels.
-    #
-    # columns do
-    #   column do
-    #     panel "Recent Posts" do
-    #       ul do
-    #         Post.recent(5).map do |post|
-    #           li link_to(post.title, admin_post_path(post))
-    #         end
-    #       end
-    #     end
-    #   end
-
-    #   column do
-    #     panel "Info" do
-    #       para "Welcome to ActiveAdmin."
-    #     end
-    #   end
-    # end
+		##
+		# I expected to need more diversity for the different departments, thus
+		# this is pretty verbose.
 
 		dep = current_admin_user.departments.first.name
 		z_top_prio = Proc.new { |a,b|
@@ -36,6 +20,16 @@ ActiveAdmin.register_page "Dashboard" do
 				0
 			end
 		}
+		def tagged_prio(p)
+			if p.prio == "Z"
+				status_tag(
+					class: I18n.t('scopes_names.problem_filter'),
+					label: p.prio
+				)
+			else
+				p.prio
+			end
+		end
 
 		if dep.include? 'Superadmin'
 			div class: "blank_slate_container", id: "dashboard_default_message" do
@@ -69,7 +63,7 @@ ActiveAdmin.register_page "Dashboard" do
 						tr ''
 						td link_to(p.buch.isbn, "/admin/projekte/#{p.id}") rescue td "<empty>"
 						td p.projektname
-						td p.prio
+						td tagged_prio(p)
 						td status_tag(p.statusfinal.status)
 						td p.final_deadline
 						#unless p.buch.lektor.nil? and not p.buch.nil?
@@ -103,18 +97,10 @@ ActiveAdmin.register_page "Dashboard" do
 					th I18n.t('search_labels.lektor')
 					pod.each do |p|
 						next if p.statusumschl.status.eql? I18n.t('scopes_names.fertig_filter')
-						if p.prio == "Z"
-							cur_status = status_tag(
-								class: I18n.t('scopes_names.problem_filter'),
-								label: p.prio
-							)
-						else
-							cur_status = p.prio
-						end
 						tr ''
 						td link_to(p.buch.isbn, "/admin/ums/#{p.id}") rescue td "<empty>"
 						td p.projektname
-						td cur_status
+						td tagged_prio(p)
 						td status_tag(p.statusumschl.status)
 						td p.final_deadline
 						td p.umschlag_deadline
@@ -139,18 +125,10 @@ ActiveAdmin.register_page "Dashboard" do
 					th I18n.t('search_labels.lektor')
 					pod.each do |p|
 						next if p.statustitelei.status.eql? I18n.t('scopes_names.fertig_filter')
-						if p.prio == "Z"
-							cur_status = status_tag(
-								class: I18n.t('scopes_names.problem_filter'),
-								label: p.prio
-							)
-						else
-							cur_status = p.prio
-						end
 						tr ''
 						td link_to(p.buch.isbn, "/admin/tits/#{p.id}") rescue td "<empty>"
 						td p.projektname
-						td cur_status
+						td tagged_prio(p)
 						td status_tag(p.statustitelei.status)
 						td p.final_deadline
 						td (p.final_deadline - Date.today).to_i
@@ -176,18 +154,10 @@ ActiveAdmin.register_page "Dashboard" do
 					th I18n.t('search_labels.lektor')
 					pod.each do |p|
 						next if p.statussatz.status.eql? I18n.t('scopes_names.fertig_filter')
-						if p.prio == "Z"
-							cur_status = status_tag(
-								class: I18n.t('scopes_names.problem_filter'),
-								label: p.prio
-							)
-						else
-							cur_status = p.prio
-						end
 						tr ''
 						td link_to(p.buch.isbn, "/admin/s_reifs/#{p.id}") rescue td "<empty>"
 						td p.projektname
-						td cur_status
+						td tagged_prio(p)
 						td status_tag(p.statussatz.status)
 						td p.final_deadline
 						td p.satz_deadline
@@ -197,13 +167,12 @@ ActiveAdmin.register_page "Dashboard" do
 			end
 		end
 
-		if dep.include? 'Druck' or dep.include? 'Superadmin'
+		if dep.include? 'Pod' or dep.include? 'Superadmin'
 			panel I18n.t('headlines.lek_pod') do
 				table do
 					pod = Projekt.ransack(final_deadline_gt: Date.today).result.map
 					pod = pod.sort_by { |v| v.final_deadline }
 					pod.sort! &z_top_prio
-					#pod.delete_if { |p| p.satzproduktion == false }
 					th I18n.t('buecher_names.isbn')
 					th I18n.t('gprod_names.projektname')
 					th I18n.t('gprod_names.prio')
@@ -213,21 +182,41 @@ ActiveAdmin.register_page "Dashboard" do
 					th I18n.t('search_labels.lektor')
 					pod.each do |p|
 						next if p.statusdruck.status.eql? I18n.t('scopes_names.fertig_filter')
-						if p.prio == "Z"
-							cur_status = status_tag(
-								class: I18n.t('scopes_names.problem_filter'),
-								label: p.prio
-							)
-						else
-							cur_status = p.prio
-						end
 						tr ''
 						td link_to(p.buch.isbn, "/admin/s_reifs/#{p.id}") rescue td "<empty>"
 						td p.projektname
-						td cur_status
+						td tagged_prio(p)
 						td status_tag(p.statusdruck.status)
 						td p.final_deadline
 						td p.druck_deadline
+						td p.buch.lektor.name rescue td "<empty>"
+					end
+				end
+			end
+		end
+
+		if dep.include? 'PrePs' or dep.include? 'Superadmin'
+			panel I18n.t('headlines.lek_pod') do
+				table do
+					pod = Projekt.ransack(final_deadline_gt: Date.today).result.map
+					pod = pod.sort_by { |v| v.final_deadline }
+					pod.sort! &z_top_prio
+					th I18n.t('buecher_names.isbn')
+					th I18n.t('gprod_names.projektname')
+					th I18n.t('gprod_names.prio')
+					th I18n.t('status_names.statuspreps')
+					th I18n.t('gprod_names.final_deadline')
+					th I18n.t('gprod_names.preps_deadline')
+					th I18n.t('search_labels.lektor')
+					pod.each do |p|
+						next if p.statuspreps.status.eql? I18n.t('scopes_names.fertig_filter')
+						tr ''
+						td link_to(p.buch.isbn, "/admin/s_reifs/#{p.id}") rescue td "<empty>"
+						td p.projektname
+						td tagged_prio(p)
+						td status_tag(p.statuspreps.status)
+						td p.final_deadline
+						td p.preps_deadline
 						td p.buch.lektor.name rescue td "<empty>"
 					end
 				end
