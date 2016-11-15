@@ -28,20 +28,12 @@ ActiveAdmin.register Projekt do
 		# Rouven asks: Who wrote this? please mail me rouvenglauert@gmail.com
 		#
 		# That communication..
-
 		def scoped_collection
 			if current_admin_user.departments.where("name = ?", 'Lektor').any?
 				super.where(lektor: current_admin_user.lektor)
 			else
 				super.all
 			end
-
-			# FIXME .. trying to sort by a status results in an 
-			# Error: 'missing FROM-clause entry for table "statusumschl"'
-			#
-			# Get stati for sorting.
-			#super.includes(:statustitelei).references(:statustitelei)
-			#super.includes(:statusumschl).references(:statusumschl)
 		end
 
 
@@ -55,17 +47,18 @@ ActiveAdmin.register Projekt do
 			puts "____________________________CREATE__________________________"
 			#Check if the current User is a Lektor if not he is not able to create a Projekt
 			if current_admin_user.departments.to_a[0].name == "Lektor"
-				if not @projekt = Projekt.create(permitted_params[:projekt])
-					#render 'new'
-				elsif not @projekt.buch = Buch.create( :name => "unbekannt" )
-					#render 'new'
-				elsif not createStatus(@projekt)
-					#render 'new'
-				else
-					@projekt.lektor = current_admin_user.lektor
-					@projekt.save
-					redirect_to collection_path, notice: (I18n.t("flash_notice.revised_success.new_project"))
+				begin
+					@projekt = Projekt.create!(permitted_params[:projekt])
+					@projekt.buch = Buch.create!( :name => "unbekannt" )
+					createStatus(@projekt)
+				rescue ActiveRecord::RecordInvalid
+          redirect_to '/admin/projekte/new'
+          flash[:alert] = I18n.t 'flash_notice.revised_failure.new_project_invalid'
+					return
 				end
+				@projekt.lektor = current_admin_user.lektor
+				@projekt.save
+				redirect_to collection_path, notice: (I18n.t("flash_notice.revised_success.new_project"))
 			else
 				#raise StandardError, "A project can only be created by a lektor"
 			end
@@ -112,8 +105,12 @@ ActiveAdmin.register Projekt do
 				check_constraints(modelinstance, data)
 
 				if data != nil
-					if not modelinstance.update(data)
-						render 'edit'
+					begin
+						modelinstance.update!(data)
+					rescue ActiveRecord::RecordInvalid
+						redirect_to "/admin/projekte/#{@projekt.id}/edit"
+						flash[:alert] = I18n.t 'flash_notice.revised_failure.new_project_invalid'
+						return
 					end
 				end
 			}
@@ -170,8 +167,19 @@ ActiveAdmin.register Projekt do
 
 					end
 
-					#to obtain modified data (ex rojectShow.js.erb)
-					render "_project_Input_Response.js.erb"
+					##
+					# Ok, so they wanted to show the updated stati in the flash notice,
+					# which is not that relevant..
+					# But they did not redirect at all, so no one would actually see the
+					# flash thingy, which is relevant if you mess up your input, thus I
+					# just redirect_to.
+					#
+					# old_comment = '''
+					# to obtain modified data (ex rojectShow.js.erb)
+					# render "_project_Input_Response.js.erb"
+					# '''
+          redirect_to "/admin/projekte/#{@projekt.id}"
+          flash[:notice] = I18n.t 'flash_notice.revised_success.project_update'
 				}
 			end
 

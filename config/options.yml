@@ -27,6 +27,7 @@ options:
     musterart:
     #Automische fristen ausgehen von Finaler Frist
     fristen: [5,6,7,8]
+    bilder: ['s/w', '4f']
 
 #Symbolnamen, die im Code verwendet werden sollen.
 names:
@@ -44,3 +45,4 @@ names:
     musterart:
     #Automische fristen ausgehen von Finaler Frist
     fristen: ['titelei', 'preps', 'umschlag', 'binderei']
+    bilder: ['sw', '4f']

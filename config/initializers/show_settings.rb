@@ -66,30 +66,31 @@ class ShowSettings
 
 
   ##
-  # In this method you have to change the type of the field manually. This is necessary if you want to have more
-  # options for the views to choose from
+	# In this method you have to change the type of the field manually. This is
+	# necessary if you want to have more options for the views to choose from
   #
   def initialize
     #change the type to selectable because from the db it comes as a string
-    BUECHER_PROVIDER.change_type(:papier_bezeichnung,"selectable")
-    BUECHER_PROVIDER.change_type(:bindung_bezeichnung,"selectable")
-    BUECHER_PROVIDER.change_type(:umschlag_bezeichnung,"selectable")
-    BUECHER_PROVIDER.change_type(:format_bezeichnung,"selectable")
+    BUECHER_PROVIDER.change_type(:papier_bezeichnung,'selectable')
+    BUECHER_PROVIDER.change_type(:bindung_bezeichnung,'selectable')
+    BUECHER_PROVIDER.change_type(:umschlag_bezeichnung,'selectable')
+    BUECHER_PROVIDER.change_type(:format_bezeichnung,'selectable')
 
-    #GPRODS_PROVIDER.change_type(:prio,"selectable")
+    GPRODS_PROVIDER.change_type(:prio,'selectable')
+		GPRODS_PROVIDER.change_type(:bilder, 'selectable')
 
-    GPRODS_PROVIDER.remove_attribute "id"
-    GPRODS_PROVIDER.remove_attribute "lektor_id"
-    GPRODS_PROVIDER.remove_attribute "autor_id"
-    GPRODS_PROVIDER.remove_attribute "created_at"
-    GPRODS_PROVIDER.remove_attribute "updated_at"
+    GPRODS_PROVIDER.remove_attribute 'id'
+    GPRODS_PROVIDER.remove_attribute 'lektor_id'
+    GPRODS_PROVIDER.remove_attribute 'autor_id'
+    GPRODS_PROVIDER.remove_attribute 'created_at'
+    GPRODS_PROVIDER.remove_attribute 'updated_at'
 
-    BUECHER_PROVIDER.remove_attribute "autor_id"
-    BUECHER_PROVIDER.remove_attribute "lektor_id"
-    BUECHER_PROVIDER.remove_attribute "gprod_id"
-    BUECHER_PROVIDER.remove_attribute "id"
-    BUECHER_PROVIDER.remove_attribute "created_at"
-    BUECHER_PROVIDER.remove_attribute "updated_at"
+    BUECHER_PROVIDER.remove_attribute 'autor_id'
+    BUECHER_PROVIDER.remove_attribute 'lektor_id'
+    BUECHER_PROVIDER.remove_attribute 'gprod_id'
+    BUECHER_PROVIDER.remove_attribute 'id'
+    BUECHER_PROVIDER.remove_attribute 'created_at'
+    BUECHER_PROVIDER.remove_attribute 'updated_at'
 
 
   end

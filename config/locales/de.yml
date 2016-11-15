@@ -53,6 +53,7 @@ de:
     revised_failure:
       new_project_error: "Nur Lektoren können neue Projekte erstellen"
       user_update: "Überarbeiten des Users gescheitert"
+      new_project_invalid: 'Einige eingaben sind falsch, überprüfen sie ihre Eingaben.'
 
     is_not_a_number: "Bitte tragen Sie eine Zahl ein"
 
@@ -77,7 +78,7 @@ de:
     externer_druck_verschickt_von: "An extern verschickt von?"
     externer_druck: "Wird extern gedruckt?"
     final_deadline: "SollF gesamt"
-    gesicherte_abnahme: "Gesicherte Abnahme"
+    gesicherte_abnahme: "Abnahme"
     kommentar_public: "öffentlicher Kommentar"
     lektor_bemerkungen_private: "Private Bemerkungen"
     lektor_bemerkungen_public: "Lektor Bemerkungen"

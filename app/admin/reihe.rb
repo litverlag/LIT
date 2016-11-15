@@ -70,6 +70,7 @@ ActiveAdmin.register Reihe do
     
   end
   
+	# TODO see `todo`, there is a something wrong here.
   form do |f|
       f.inputs 'Details' do
         f.input :name
@@ -77,14 +78,14 @@ ActiveAdmin.register Reihe do
       end
       
       f.inputs 'Bände' do
-        f.has_many :reihen_zuordnungen, heading: nil, allow_destroy: true, new_record: 'Band hinzufügen' do |a|
-          a.input :buch_id, :label => 'Titel', :input_html => { :class => 'buch-input'}
+        f.has_many :buecher, heading: nil, allow_destroy: true, new_record: 'Band hinzufügen' do |a|
+          a.input :titel1, :label => 'Titel', :input_html => { :class => 'buch-input'}
         end
       end
       
       f.inputs 'Herausgeber' do
-        f.has_many :reihen_hg_zuordnungen, heading: nil, allow_destroy: true, new_record: 'Herausgeber hinzufügen' do |a|
-          a.input :autor_id, :label => 'Name', :input_html => { :class => 'autor-input'}
+        f.has_many :autoren, heading: nil, allow_destroy: true, new_record: 'Herausgeber hinzufügen' do |a|
+          a.input :name, :label => 'Name', :input_html => { :class => 'autor-input'}
         end
       end
       f.actions

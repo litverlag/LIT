@@ -22,6 +22,9 @@ class Ability
         @departName.append a.name
     end
 
+		can :read, Reihe
+		#can :read, Buch
+
     #TODO Rechte für alle Benutzergruppen eintragen
     if @departName.include?'Superadmin'
       can :manage, :all
@@ -48,6 +51,8 @@ class Ability
     end
     if @departName.include?'Lektor'
       can :manage, Projekt
+      can :manage, Gprod
+      can :manage, Reihe
     end
     if @departName.include?'Pod'
       can [:read, :update], :Druck
@@ -56,9 +61,7 @@ class Ability
       can [:read, :update], :Bi
     end
 
-    #can :manage, :all #TODO remove this can :manage :all
     can :read, ActiveAdmin::Page, :name => "Dashboard"
     can :read, ActiveAdmin::Page, :name => "Access_denied"
-
   end
 end
