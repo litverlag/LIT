@@ -224,7 +224,8 @@ ActiveAdmin.register Projekt do
 
 
 	index download_links: [:odt] do
-		actions
+		# We dont not need those actions if we link_to(admin/projekte/id) see below
+		#actions
 
 		#render partial: 'projectindex'
 		@department = "projekt"
@@ -235,7 +236,7 @@ ActiveAdmin.register Projekt do
 			#status_tag(p.statusfinal.status)
 		#end
 		column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
-			p.projektname
+			link_to(p.projektname, "/admin/projekte/#{p.id}")
 		end
 		column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
 			##

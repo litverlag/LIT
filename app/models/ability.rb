@@ -51,7 +51,7 @@ class Ability
     end
     if @departName.include?'Lektor'
       can :manage, Projekt
-      can :manage, Gprod
+      can :update, Gprod
       can :manage, Reihe
     end
     if @departName.include?'Pod'

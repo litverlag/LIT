@@ -14,6 +14,13 @@ class Buch < ActiveRecord::Base
   belongs_to :gprod
   belongs_to :lektor
 
+	##
+	# Lets overwrite r_code assignment, so that we link the correspoding Reihe.
+	def r_code=(rc)
+		self[:r_code] = rc
+		self.reihen = Reihe.where(r_code: rc)
+	end
+
   ##
   # Checks if the ISBN is corrent makes use of the LISBN gem
 	#
@@ -64,8 +71,8 @@ class Buch < ActiveRecord::Base
 		sz = seiten * factor
 		##
 		# What you see here are rules defined by the guy who print the books.
-		#	- Always round up.
-		#	- If we would round up, but backsize is small, we need to add 1
+		#	- Always round up
+		#	- If we would round up, but backsize is small(<15), we need to add 1
 		if sz.round <= sz
 			return sz.round + 1
 		else 

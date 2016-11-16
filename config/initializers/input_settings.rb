@@ -76,7 +76,8 @@ class InputSettings
     BUECHER_PROVIDER.change_type(:umschlag_bezeichnung,"selectable")
     BUECHER_PROVIDER.change_type(:format_bezeichnung,"selectable")
 
-    #GPRODS_PROVIDER.change_type(:prio,"selectable")
+    GPRODS_PROVIDER.change_type(:prio,'selectable')
+		GPRODS_PROVIDER.change_type(:bilder, 'selectable')
 
     GPRODS_PROVIDER.remove_attribute "id"
     GPRODS_PROVIDER.remove_attribute "lektor_id"

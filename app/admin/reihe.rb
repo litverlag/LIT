@@ -70,7 +70,6 @@ ActiveAdmin.register Reihe do
     
   end
   
-	# TODO see `todo`, there is a something wrong here.
   form do |f|
       f.inputs 'Details' do
         f.input :name
@@ -80,6 +79,9 @@ ActiveAdmin.register Reihe do
       f.inputs 'Bände' do
         f.has_many :buecher, heading: nil, allow_destroy: true, new_record: 'Band hinzufügen' do |a|
           a.input :titel1, :label => 'Titel', :input_html => { :class => 'buch-input'}
+					##
+					# Almost, .. ^^
+					#a select_tag("buch[#{:titel1}]", options_for_select(Buch.all),include_blank: true )
         end
       end
       
