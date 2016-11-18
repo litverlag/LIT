@@ -52,7 +52,7 @@ ActiveAdmin.register Reihe do
           b.name
         end
         column "Titel" do |b|
-          link_to b.titel1, admin_buch_path(b)
+          link_to(b.titel1, admin_projekt_path(b))
         end
         column "ISBN" do |b|
           b.isbn
@@ -76,18 +76,17 @@ ActiveAdmin.register Reihe do
         f.input :r_code
       end
       
-      f.inputs 'Bände' do
-        f.has_many :buecher, heading: nil, allow_destroy: true, new_record: 'Band hinzufügen' do |a|
-          a.input :titel1, :label => 'Titel', :input_html => { :class => 'buch-input'}
-					##
-					# Almost, .. ^^
-					#a select_tag("buch[#{:titel1}]", options_for_select(Buch.all),include_blank: true )
-        end
-      end
+     #f.inputs 'Bände' do
+     #  f.has_many :buecher, heading: nil, allow_destroy: true, new_record: 'Band hinzufügen' do |a|
+     #    a.input :titel1, :label => 'Titel', :input_html => { :class => 'buch-input'}
+     #  end
+     #end
       
       f.inputs 'Herausgeber' do
         f.has_many :autoren, heading: nil, allow_destroy: true, new_record: 'Herausgeber hinzufügen' do |a|
-          a.input :name, :label => 'Name', :input_html => { :class => 'autor-input'}
+					a.input :name, :label => 'Name', as: :select, 
+						collection: Autor.all.select{|a| not a.name.empty?}.map{|a| [a.name, a.id]}.sort, 
+						:input_html => { :class => 'autor-input'}
         end
       end
       f.actions
