@@ -45,10 +45,16 @@ ActiveAdmin.register Preps do
     def update
       puts "______________PREPS______UPDATE___________________-"
       @projekt = Gprod.find(permitted_params[:id])
+			begin
+				@projekt.update!(permitted_params[:gprod])
+			rescue ActiveRecord::RecordInvalid
+				redirect_to "/admin/preps/#{@projekt.id}/edit"
+				flash[:alert] = I18n.t 'flash_notice.revised_failure.new_project_invalid'
+				return
+			end
 
       respond_to do |format|
         format.js{
-          @projekt.update(permitted_params[:gprod])
           #Part to update the status
           if permitted_params[:status]
             permitted_params[:status].each do  |status_key,status_value|

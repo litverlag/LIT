@@ -56,10 +56,10 @@ class Ability
       can :manage, Reihe
     end
     if @departName.include?'Pod'
-      can [:read, :update], :Druck
+      can [:read, :update], Druck
     end
     if @departName.include?'Binderei'
-      can [:read, :update], :Bi
+      can [:read, :update], Bi
     end
 
     can :read, ActiveAdmin::Page, :name => "Dashboard"

@@ -25,6 +25,12 @@ de:
   date:
     formats:
       default: "%d/%m/%Y"
+      long: '%d.%m.%Y'
+
+## Rails is complaining, but what format does it want?
+  time:
+    formats:
+      long: '%d.%m.%Y %H:%M:%S'
 
   textfield_messages:
     versand_an: "Falls sie hier nichts ausfüllen wird der Autor eingetragen"

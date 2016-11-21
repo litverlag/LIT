@@ -46,11 +46,17 @@ ActiveAdmin.register Tit do
     def update
       puts "______________TITLEI______UPDATE___________________-"
       @projekt = Gprod.find(permitted_params[:id])
+			begin
+				@projekt.update!(permitted_params[:gprod])
+			rescue ActiveRecord::RecordInvalid
+				redirect_to "/admin/tits/#{@projekt.id}/edit"
+				flash[:alert] = I18n.t 'flash_notice.revised_failure.new_project_invalid'
+				return
+			end
 
       respond_to do |format|
         format.js{
 
-          @projekt.update(permitted_params[:gprod])
           #Part to update the status
           if permitted_params[:status]
             permitted_params[:status].each do  |status_key,status_value|

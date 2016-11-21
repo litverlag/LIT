@@ -52,7 +52,11 @@ ActiveAdmin.register Reihe do
           b.name
         end
         column "Titel" do |b|
-          link_to(b.titel1, admin_projekt_path(b))
+					unless b.gprod_id.nil?
+						link_to(b.titel1, "/admin/projekte/#{b.gprod_id}")
+					else
+						b.titel1
+					end
         end
         column "ISBN" do |b|
           b.isbn
@@ -75,6 +79,9 @@ ActiveAdmin.register Reihe do
         f.input :name
         f.input :r_code
       end
+			f.inputs 'test' do
+				f.input :autoren, collection: Autor.all
+			end
       
      #f.inputs 'Bände' do
      #  f.has_many :buecher, heading: nil, allow_destroy: true, new_record: 'Band hinzufügen' do |a|
@@ -84,8 +91,8 @@ ActiveAdmin.register Reihe do
       
       f.inputs 'Herausgeber' do
         f.has_many :autoren, heading: nil, allow_destroy: true, new_record: 'Herausgeber hinzufügen' do |a|
-					a.input :name, :label => 'Name', as: :select, 
-						collection: Autor.all.select{|a| not a.name.empty?}.map{|a| [a.name, a.id]}.sort, 
+					a.input :id, :label => 'id', as: :select, 
+						collection: Autor.all.select{|a| not a.name.empty?}.map{|a| "#{a.id}: #{a.name}"}.sort, 
 						:input_html => { :class => 'autor-input'}
         end
       end

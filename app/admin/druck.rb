@@ -58,6 +58,17 @@ ActiveAdmin.register Druck do
     def update
       puts "______________DRUCK______UPDATE___________________-"
       @projekt = Gprod.find(permitted_params[:id])
+			begin
+				@projekt.update!(permitted_params[:gprod]) if permitted_params[:gprod]
+				@projekt.update!(permitted_params[:buch]) if permitted_params[:buch]
+			rescue ActiveRecord::RecordInvalid
+				redirect_to "/admin/druck/#{@projekt.id}/edit"
+				flash[:alert] = I18n.t 'flash_notice.revised_failure.new_project_invalid'
+				return
+			end
+
+			# The following is madness anyway, why would we want to have status
+			# modification flashing ..
       respond_to do |format|
         format.js{
           @projekt = Gprod.find(permitted_params[:id])

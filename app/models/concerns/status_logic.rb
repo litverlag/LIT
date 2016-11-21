@@ -98,6 +98,7 @@ module StatusLogic
       elsif changedTo.class == String
 
         # TODO
+				# ?? What to do??
 
       end
 
@@ -286,29 +287,21 @@ module StatusLogic
   # Method used to instantiate all relevant project status
   
   def createStatus(projekt)
-    if not projekt.statusfinal = StatusFinal.create()
+		begin
+			projekt.statusfinal = StatusFinal.create!()
+			projekt.statusdruck = StatusDruck.create!()
+			projekt.statustitelei = StatusTitelei.create!()
+			projekt.statussatz = StatusSatz.create!()
+			projekt.statuspreps = StatusPreps.create!()
+			projekt.statusoffsch = StatusOffsch.create!()
+			projekt.statusumschl = StatusUmschl.create!()
+			projekt.statusrg = StatusRg.create!()
+			projekt.statusbildpr = StatusBildpr.create!()
+			projekt.statusbinderei = StatusBinderei.create!()
+		rescue
       return false
-    elsif not projekt.statusdruck = StatusDruck.create()
-      return false
-    elsif not projekt.statustitelei = StatusTitelei.create()
-      return false
-    elsif not projekt.statussatz = StatusSatz.create()
-      return false
-    elsif not projekt.statuspreps = StatusPreps.create()
-      return false
-    elsif not projekt.statusoffsch = StatusOffsch.create()
-      return false
-    elsif not projekt.statusumschl = StatusUmschl.create()
-      return false
-    elsif not projekt.statusrg = StatusRg.create()
-      return false
-    elsif not projekt.statusbildpr = StatusBildpr.create()
-      return false
-    elsif not projekt.statusbinderei = StatusBinderei.create()
-      return false
-    else
-      return true
     end
+		return true
   end
 
 end

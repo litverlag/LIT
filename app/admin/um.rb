@@ -54,7 +54,13 @@ ActiveAdmin.register Um do
 
         format.js{
 					check_constraints(@projekt.buch, permitted_params[:gprod])
-          @projekt.update(permitted_params[:gprod])
+					begin
+						@projekt.update!(permitted_params[:gprod])
+					rescue ActiveRecord::RecordInvalid
+						redirect_to "/admin/ums/#{@projekt.id}/edit"
+						flash[:alert] = I18n.t 'flash_notice.revised_failure.new_project_invalid'
+						return
+					end
           #Part to update the status
           if permitted_params[:status]
             permitted_params[:status].each do  |status_key,status_value|
