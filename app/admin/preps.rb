@@ -82,11 +82,11 @@ ActiveAdmin.register Preps do
 		column I18n.t("status_names.statuspreps") do |p|
 			status_tag(p.statuspreps.status)
 		end
-    column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
-      p.projektname
-    end
+		column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
+			link_to(p.projektname, "/admin/preps/#{p.id}")
+		end
 		column I18n.t("buecher_names.isbn") do |p|
-			p.buch.isbn unless p.buch.nil?
+			raw p.buch.isbn.gsub('-', '&#8209;') unless p.buch.nil?
 		end
 		column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
 			raw "<div class='deadline'>#{p.final_deadline}</div>"
@@ -106,8 +106,6 @@ ActiveAdmin.register Preps do
 		column I18n.t("gprod_names.lektor_bemerkungen_public") do |p|
 			p.lektor_bemerkungen_public
 		end
-
-    actions
   end
 
 	filter :final_deadline

@@ -43,7 +43,7 @@ ActiveAdmin.register_page "Dashboard" do
 		if dep.include? 'Lektor' or dep.include? 'Superadmin'
 			panel I18n.t('headlines.lek_pod') do
 				table do
-					pod = Projekt.ransack(final_deadline_gt: Date.today).result.map
+					pod = Projekt.ransack(final_deadline_gt: Date.yesterday).result.map
 					pod = pod.sort_by { |v| v.final_deadline }
 					pod.sort! &z_top_prio
 					unless /admin/.match(current_admin_user.email)
@@ -52,22 +52,33 @@ ActiveAdmin.register_page "Dashboard" do
 								rescue false
 						}
 					end
-					th I18n.t('buecher_names.isbn')
 					th I18n.t('gprod_names.projektname')
 					th I18n.t('gprod_names.prio')
-					th I18n.t('status_names.statusfinal')
-					th I18n.t('gprod_names.final_deadline')
+					th I18n.t("status_names.statusbinderei")
+					th I18n.t("status_names.statusdruck")
+					th I18n.t("gprod_names.externer_druck")
+					th I18n.t("status_names.statusumschl")
+					th I18n.t("status_names.statussatz")
 					th I18n.t('search_labels.lektor')
 					pod.each do |p|
 						next if p.statusfinal.status.eql? I18n.t('scopes_names.fertig_filter')
 						tr ''
-						td link_to(p.buch.isbn, "/admin/projekte/#{p.id}") rescue td "<empty>"
-						td p.projektname
+						td link_to(p.projektname, "/admin/projekte/#{p.id}") rescue td "-"
 						td tagged_prio(p)
-						td status_tag(p.statusfinal.status)
-						td p.final_deadline
-						#unless p.buch.lektor.nil? and not p.buch.nil?
-						td p.buch.lektor.name rescue td "<empty>"
+						td status_tag(p.statusbinderei.status)
+						td status_tag(p.statusdruck.status)
+						if p.externer_druck
+							td "extern #{p.buch.bindung_bezeichnung}" rescue td 'extern'
+						else
+							td p.buch.bindung_bezeichnung rescue td 'extern'
+						end
+						td status_tag(p.statusumschl.status)
+						if p.satzproduktion
+							td status_tag(p.statussatz.status)
+						else
+							td "-"
+						end
+						td p.buch.lektor.name rescue td "-"
 					end
 				end
 			end
@@ -76,7 +87,7 @@ ActiveAdmin.register_page "Dashboard" do
 		if dep.include? 'Umschlag' or dep.include? 'Superadmin'
 			panel I18n.t('headlines.um_pod') do
 				table do
-					pod = Projekt.ransack(final_deadline_gt: Date.today).result.map
+					pod = Projekt.ransack(final_deadline_gt: Date.yesterday).result.map
 					pod = pod.sort_by { |v| v.final_deadline }
 					pod.sort! &z_top_prio
 					if /(tex|umschlag)/.match(current_admin_user.email) or /admin/.match(current_admin_user.email)
@@ -113,7 +124,7 @@ ActiveAdmin.register_page "Dashboard" do
 		if dep.include? 'Titelei' or dep.include? 'Superadmin'
 			panel I18n.t('headlines.tit_pod') do
 				table do
-					pod = Projekt.ransack(final_deadline_gt: Date.today).result.map
+					pod = Projekt.ransack(final_deadline_gt: Date.yesterday).result.map
 					pod = pod.sort_by { |v| v.final_deadline }
 					pod.sort! &z_top_prio
 					th I18n.t('buecher_names.isbn')
@@ -131,7 +142,7 @@ ActiveAdmin.register_page "Dashboard" do
 						td tagged_prio(p)
 						td status_tag(p.statustitelei.status)
 						td p.final_deadline
-						td (p.final_deadline - Date.today).to_i
+						td (p.final_deadline - Date.yesterday).to_i
 						td p.buch.lektor.name rescue td "<empty>"
 					end
 				end
@@ -141,7 +152,7 @@ ActiveAdmin.register_page "Dashboard" do
 		if dep.include? 'Satz' or dep.include? 'Superadmin'
 			panel I18n.t('headlines.lek_pod') do
 				table do
-					pod = Projekt.ransack(final_deadline_gt: Date.today).result.map
+					pod = Projekt.ransack(final_deadline_gt: Date.yesterday).result.map
 					pod = pod.sort_by { |v| v.final_deadline }
 					pod.sort! &z_top_prio
 					pod.delete_if { |p| p.satzproduktion == false }
@@ -170,7 +181,7 @@ ActiveAdmin.register_page "Dashboard" do
 		if dep.include? 'Pod' or dep.include? 'Superadmin'
 			panel I18n.t('headlines.lek_pod') do
 				table do
-					pod = Projekt.ransack(final_deadline_gt: Date.today).result.map
+					pod = Projekt.ransack(final_deadline_gt: Date.yesterday).result.map
 					pod = pod.sort_by { |v| v.final_deadline }
 					pod.sort! &z_top_prio
 					th I18n.t('buecher_names.isbn')
@@ -198,7 +209,7 @@ ActiveAdmin.register_page "Dashboard" do
 		if dep.include? 'PrePs' or dep.include? 'Superadmin'
 			panel I18n.t('headlines.lek_pod') do
 				table do
-					pod = Projekt.ransack(final_deadline_gt: Date.today).result.map
+					pod = Projekt.ransack(final_deadline_gt: Date.yesterday).result.map
 					pod = pod.sort_by { |v| v.final_deadline }
 					pod.sort! &z_top_prio
 					th I18n.t('buecher_names.isbn')

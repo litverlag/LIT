@@ -226,15 +226,10 @@ ActiveAdmin.register Projekt do
 	index download_links: [:odt] do
 		# We dont not need those actions if we link_to(admin/projekte/id) see below
 		#actions
-
-		#render partial: 'projectindex'
 		@department = "projekt"
 		puts "______________PROJEKT______INDEX__________________-"
 		puts	current_admin_user.departments.to_a[0].name
 
-		#column I18n.t("status_names.statusfinal"), sortable: :status_final do |p|
-			#status_tag(p.statusfinal.status)
-		#end
 		column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
 			link_to(p.projektname, "/admin/projekte/#{p.id}")
 		end
@@ -248,7 +243,6 @@ ActiveAdmin.register Projekt do
 			p.prio
 		end
 		column I18n.t("buecher_names.r_code") do |p|
-			#p.buch.reihen.first unless p.buch.nil?
 			link_to(p.buch.reihen.first.r_code, "/admin/reihen/#{p.buch.reihen.first.id}") rescue "-"
 		end
 		column I18n.t("status_names.statusbinderei") do |p|
@@ -261,7 +255,14 @@ ActiveAdmin.register Projekt do
 			status_tag(p.statusumschl.status)
 		end
 		column I18n.t("status_names.statussatz") do |p|
-			status_tag(p.statussatz.status)
+			if p.satzproduktion
+				status_tag(p.statussatz.status)
+			else
+				"-"
+			end
+		end
+		column I18n.t("status_names.statustitelei") do |p|
+			status_tag(p.statustitelei.status)
 		end
 	end
 

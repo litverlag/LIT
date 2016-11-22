@@ -96,9 +96,11 @@ ActiveAdmin.register Druck do
 		column I18n.t("buecher_names.umschlag_bezeichnung") do |p|
 			p.buch.umschlag_bezeichnung unless p.buch.nil?
 		end
-    column :projektname
+		column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
+			link_to(p.projektname, "/admin/druck/#{p.id}")
+		end
 		column I18n.t("buecher_names.isbn") do |p|
-			p.buch.isbn unless p.buch.nil?
+			raw p.buch.isbn.gsub('-', '&#8209;') unless p.buch.nil?
 		end
 		column I18n.t("gprod_names.auflage") do |p|
 			p.auflage
@@ -118,7 +120,6 @@ ActiveAdmin.register Druck do
 		column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
 			raw "<div class='deadline'>#{p.final_deadline}</div>"
 		end
-    actions
   end
 
 	filter :final_deadline

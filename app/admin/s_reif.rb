@@ -73,10 +73,10 @@ ActiveAdmin.register SReif do
 			status_tag(p.statussatz.status)
 		end
     column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
-      p.projektname
+			link_to(p.projektname, "/admin/s_reifs/#{p.id}")
     end
 		column I18n.t("buecher_names.isbn") do |p|
-			p.buch.isbn unless p.buch.nil?
+			raw p.buch.isbn.gsub('-', '&#8209;') unless p.buch.nil?
 		end
 		column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
 			raw "<div class='deadline'>#{p.final_deadline}</div>"
@@ -93,7 +93,7 @@ ActiveAdmin.register SReif do
 		column I18n.t('gprod_names.satzproduktion'), sortable: :satzproduktion do |p|
 			p.satzproduktion
 		end
-    actions
+    #actions
   end
 
 	filter :satzproduktion, as: :select

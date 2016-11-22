@@ -90,15 +90,20 @@ ActiveAdmin.register Um do
 			status_tag(p.statusumschl.status)
 		end
 		column I18n.t("status_names.statussatz") do |p|
-			status_tag(p.statussatz.status)
+			if p.satzproduktion
+				status_tag(p.statussatz.status)
+			else
+				"-"
+			end
 		end
-    column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
-      p.projektname
-    end
+		column I18n.t("status_names.statustitelei") do |p|
+			status_tag(p.statustitelei.status)
+		end
+		column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
+			link_to(p.projektname, "/admin/ums/#{p.id}")
+		end
 		column I18n.t("buecher_names.isbn") do |p|
-			# .. Hmrrrm. 0x2011 is a non-breaking hyphen, but, .., we put it inside an isbn..
-			#raw "#{p.buch.isbn.gsub('-', '&#x2011&nbsp')}" rescue '-'
-			raw "#{p.buch.isbn.gsub('-', '_')}" rescue '-'
+			raw "#{p.buch.isbn.gsub('-', '&#8209;')}" rescue '-'
 		end
 		column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
 			raw "<div class='deadline'>#{p.final_deadline}</div>"
@@ -121,8 +126,6 @@ ActiveAdmin.register Um do
 		column I18n.t("gprod_names.lektor_bemerkungen_public") do |p|
 			p.lektor_bemerkungen_public
 		end
-
-    actions
   end
 
 	filter :final_deadline
@@ -137,6 +140,8 @@ ActiveAdmin.register Um do
 	filter :buch_reihen_name_cont, as: :string, label: I18n.t('buecher_names.r_code')
 	filter :statussatz_status, as: :select, 
 		collection: proc {$SATZ_STATUS}, label: I18n.t('status_names.statussatz')
+	filter :statustitelei_status, as: :select, 
+		collection: proc {$TITELEI_STATUS}, label: I18n.t('status_names.statustitelei')
 
   show do
     render partial: "show_view"
