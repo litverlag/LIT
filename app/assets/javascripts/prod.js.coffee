@@ -65,7 +65,6 @@ buch =
 		}
 	}
 
-alert('why..');
 initSelect2 = (inputs, extra = {}, c) ->
   inputs.each ->
     item = $(this)
