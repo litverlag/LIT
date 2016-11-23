@@ -168,6 +168,8 @@ de:
     nstatusbinderei: 'not statusbinderei'
     statusdruck: 'Druck'
     nstatusdruck: 'not statusdruck'
+    statusexternerdruck: 'Externer Druck'
+    nstatusexternerdruck: 'not Externer Druck'
     statusfinal: 'Final'
     statusoffsch: 'Offsch'
     statuspreps: 'Preps'
