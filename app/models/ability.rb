@@ -50,9 +50,9 @@ class Ability
       # can :manage, :all
     end
     if @departName.include?'Lektor'
-			can :manage, Autor
-      can :manage, Projekt
       can :update, Gprod
+      can :manage, Projekt
+			can :manage, Autor
       can :manage, Reihe
     end
     if @departName.include?'Pod'

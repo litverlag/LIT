@@ -1,10 +1,8 @@
 ActiveAdmin.register Reihe do
+  menu label: 'Reihen'
+  menu priority:99
   filter :name
   filter :r_code
-
-  menu false
-  #menu priority:99
-  menu
   
  
   

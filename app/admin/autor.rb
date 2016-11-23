@@ -1,8 +1,7 @@
 ActiveAdmin.register Autor do
   config.filters = false
-  menu false
-
-  #menu priority:99
+  menu label: 'Autoren'
+  menu priority:99
 
 
 

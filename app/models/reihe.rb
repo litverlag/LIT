@@ -8,11 +8,9 @@ class Reihe < ActiveRecord::Base
 
 	# Used for some 'collection:' entry.
 	def self.rcodes
-		all_r_codes = []
-		self.all.each{|r|
-			all_r_codes.append(r.r_code)
+		self.all.map { |r|
+			r.r_code
 		}
-		all_r_codes.sort
 	end
 
 end

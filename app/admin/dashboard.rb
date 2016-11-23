@@ -70,7 +70,7 @@ ActiveAdmin.register_page "Dashboard" do
 						if p.externer_druck
 							td "extern #{p.buch.bindung_bezeichnung}" rescue td 'extern'
 						else
-							td p.buch.bindung_bezeichnung rescue td 'extern'
+							td '-'
 						end
 						td status_tag(p.statusumschl.status)
 						if p.satzproduktion

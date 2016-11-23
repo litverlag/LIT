@@ -1,8 +1,6 @@
 ActiveAdmin.register Projekt do
 	menu label: "Meine Projekte"
-	#menu priority: x
-	##
-	# Why was this false..?
+	config.sort_order = 'final_deadline_asc'
 	config.filters = true
 
 	#scopes -> filter the viewable project in the table

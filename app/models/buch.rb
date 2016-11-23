@@ -22,11 +22,7 @@ class Buch < ActiveRecord::Base
 	end
 
   ##
-  # Checks if the ISBN is corrent makes use of the LISBN gem
-	#
-	## Who wrote this bullshit? How about we dont assume that the isbn data in
-	##  the database is incomplete?
-	## Fixed.
+  # Checks if the ISBN is correct
   def short_isbn
 		i = Lisbn.new(isbn)					 if (/\d{3}-\d-\d{3}-\d+/ =~ isbn) == 0
 		i = Lisbn.new("978-#{isbn}") if (			 /\d-\d{3}-\d+/ =~ isbn) == 0
