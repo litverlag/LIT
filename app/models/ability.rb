@@ -58,6 +58,10 @@ class Ability
     if @departName.include?'Pod'
       can [:read, :update], Druck
     end
+    if @departName.include?'ExternerDruck'
+      can [:read, :update], ExternerDruck
+      can [:read, :update], Druck
+    end
     if @departName.include?'Binderei'
       can [:read, :update], Bi
     end

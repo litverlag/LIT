@@ -556,6 +556,31 @@ namespace :gapi do
 	end
 
 	##
+	# Rake task for mr. ExternerDruck
+	def rake_ext_druck_table(table)
+		logger = Logger.new('log/development_rake.log')
+		h = get_col_from_title(table)
+		(2..table.num_rows).each do |i| #skip first line: headers
+			buch = find_buch_by_shortisbn(table[i,h['ISBN']], logger) rescue nil
+			next if buch.nil?
+			gprod = buch.gprod
+			if gprod.nil?
+				logger.fatal "Buch without gprod -- isbn[#{buch['isbn']}]"
+				next
+			end
+
+			vers_date = check_date_entry(table[i,h['an Extern']], logger) rescue nil
+			gprod.externer_druck_verschickt = vers_date unless vers_date.nil?
+
+			korr_date = check_date_entry(table[i,h['fertig soll']], logger) rescue nil
+			gprod.externer_druck_deadline = korr_date unless korr_date.nil?
+
+			frei_date = check_date_entry(table[i,h['grün fertig']], logger) rescue nil
+			gprod.externer_druck_finished = frei_date unless frei_date.nil?
+		end
+	end
+
+	##
 	# A task importing ALL data from the google 'Prod' tables.
 	desc "Import GoogleSpreadsheet-'Produktionstabellen'-data."
 	task import: :environment do
@@ -595,6 +620,11 @@ namespace :gapi do
 		table = spreadsheet.worksheet_by_title('Tit')
 		rake_tit_table(table)
 
+		logger.fatal "--- ExternerDruck rake beginns ---"
+		$TABLE = 'Extern'
+		table = spreadsheet.worksheet_by_title('Extern')
+		rake_ext_druck_table(table)
+
 	end # end import-task
 
 	# Small task only for tit import.
@@ -607,6 +637,17 @@ namespace :gapi do
 		$TABLE = 'Tit'
 		table = spreadsheet.worksheet_by_title('Tit')
 		rake_tit_table(table)
+	end
+	# Another one..
+	desc "ExternerDruck table import test"
+	task import_extd: :environment do
+		session = GoogleDrive.saved_session( ".credentials/client_secret.json" )
+		spreadsheet = session.spreadsheet_by_key( "1YWWcaEzdkBLidiXkO-_3fWtne2kMgXuEnw6vcICboRc" )
+		logger = Logger.new('log/development_rake.log')
+		logger.fatal "--- ExternerDruck rake beginns ---"
+		$TABLE = 'Extern'
+		table = spreadsheet.worksheet_by_title('Extern')
+		rake_ext_druck_table(table)
 	end
 
 	# Unit-testing task.

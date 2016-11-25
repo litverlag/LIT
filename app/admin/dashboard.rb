@@ -197,7 +197,7 @@ ActiveAdmin.register_page "Dashboard" do
 					pod.each do |p|
 						next if p.statusdruck.status.eql? I18n.t('scopes_names.fertig_filter')
 						tr ''
-						td link_to(p.buch.isbn, "/admin/s_reifs/#{p.id}") rescue td "<empty>"
+						td link_to(p.buch.isbn, "/admin/druck/#{p.id}") rescue td "<empty>"
 						td p.projektname
 						td tagged_prio(p)
 						td status_tag(p.statusdruck.status)
@@ -228,7 +228,7 @@ ActiveAdmin.register_page "Dashboard" do
 					pod.each do |p|
 						next if p.statusdruck.status.eql? I18n.t('scopes_names.fertig_filter')
 						tr ''
-						td link_to(p.buch.isbn, "/admin/s_reifs/#{p.id}") rescue td "<empty>"
+						td link_to(p.buch.isbn, "/admin/druck/#{p.id}") rescue td "<empty>"
 						td p.projektname
 						td tagged_prio(p)
 						td status_tag(p.statusdruck.status)
