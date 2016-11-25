@@ -1,6 +1,7 @@
 # Access to the bool-arrays: gprods_options, buecher_options, status_options
 class DepartmentShowSetting < ActiveRecord::Base
   belongs_to :department
+  #has_one :department
 
 	## 
 	# I really thought it would be simpler, to enumerate a boolean array, instead
@@ -29,7 +30,6 @@ class DepartmentShowSetting < ActiveRecord::Base
 	 'gprod_names' => 'gprods_options', 
 	 'status_names' => 'status_options'}.each do |i18name, column|
 		I18n.t(i18name).keys.each do |m|
-			i = 0
 			# Create getter ..
 			define_method(m) do
 				if i18name.include? 'gprod'
@@ -54,7 +54,6 @@ class DepartmentShowSetting < ActiveRecord::Base
 					raise ArgumentError, "#{m}::#{value}"
 				end
 			end
-			i += 1
 		end
 	end
 end

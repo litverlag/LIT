@@ -11,6 +11,19 @@ Department.create!([
 Department.all.each do |d|
 	ds = DepartmentShowSetting.create!(department_id: d.id)
 	di = DepartmentInputSetting.create!(department_id: d.id)
+
+	opts = ['gprods_options', 'buecher_options', 'status_options']
+	opts.each{|option| 
+		ds[option] = []
+		ShowSettings.instance.all(option.sub('_options','')).each {|g| 
+			ds[option] << true 
+		}
+		di[option] = []
+		InputSettings.instance.all(option.sub('_options','')).each {|g| 
+			ds[option] << true 
+		}
+	}
+
 	d.department_show_setting = ds
 	d.department_input_setting = di
 end

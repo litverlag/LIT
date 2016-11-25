@@ -19,7 +19,7 @@ class ShowSettings
   #Instanziation of the Provider with a Hash table instead of a name of a database table
   STATUS_PROVIDER = SettingsProvider.new("config/show_settings.yml",@status,"status_options")
 
-  def is_visible?(department, field)
+  def old_is_visible?(department, field)
     field = field.to_sym
     if department.nil?
       raise ArgumentError, "Department can't be nil"
@@ -37,7 +37,7 @@ class ShowSettings
     end
   end
 
-  def which_type(field)
+  def old_which_type(field)
     field = field.to_sym
     if not GPRODS_PROVIDER.names_and_types[field].nil?
       return GPRODS_PROVIDER.names_and_types[field]
@@ -48,7 +48,7 @@ class ShowSettings
     end
   end
 
-  def all(table)
+  def old_all(table)
     case table
       when "gprods"
         GPRODS_PROVIDER.all_coloum_names
@@ -67,7 +67,7 @@ class ShowSettings
 	# necessary if you want to have more
   # options for the views to choose from
   #
-  def initialize
+  def old_initialize
     #change the type to selectable because from the db it comes as a string
     BUECHER_PROVIDER.change_type(:papier_bezeichnung,"selectable")
     BUECHER_PROVIDER.change_type(:bindung_bezeichnung,"selectable")
@@ -98,23 +98,64 @@ class ShowSettings
 
 	##
 	# replace is_visible?
-	def new_is_visible?(department, field)
-		return true if department.department_show_settings.send(field)
+	def is_visible?(dep_name, field)
+		dep = Department.where(name: dep_name).first
+		dep = Department.where(name: dep_name.downcase).first if dep.nil?
+		return true if dep.department_show_setting.send(field)
 		return false
 	end
 
-	TYPE_OVERRIDE = {}
-	TYPE_OVERRIDE.update(:papier_bezeichnung=>"selectable")
-	TYPE_OVERRIDE.update(:bindung_bezeichnung=>"selectable")
-	TYPE_OVERRIDE.update(:umschlag_bezeichnung=>"selectable")
-	TYPE_OVERRIDE.update(:format_bezeichnung=>"selectable")
+	# Class initialization with some static variables.
+	@@type_override = {
+		:papier_bezeichnung=>"selectable",
+		:bindung_bezeichnung=>"selectable",
+		:umschlag_bezeichnung=>"selectable",
+		:format_bezeichnung=>"selectable",
+	}
+	tmp = ActiveRecord::Base.connection.tables\
+		.map{|t| t if t =~ /^status_.*/i}.delete_if{|e| e.nil?}
+	@@stati = {}
+	tmp.each{|s| @@stati.update(s.to_sym => 'selectable')}
+
+	##
+	# replace initialize
+	## 
+	# Todo: Maybe we should put it to class and not instance initialization
+	# We did that ^.
+	def initialize
+	end
+
+	##
+	# replace all
+	def all(table)
+    case table
+      when "gprods"
+        ActiveRecord::Base.connection.columns('gprods').map{|g| g.name}\
+					.delete_if { |n| 
+					["id", "lektor_id", "autor_id", "created_at", "updated_at"]\
+						.include? n 
+				}
+      when "buecher"
+        ActiveRecord::Base.connection.columns('buecher').map{|g| g.name}\
+					.delete_if { |n| 
+					["autor_id", "lektor_id", "gprod_id", "id", "created_at", "updated_at"]\
+						.include? n 
+				}
+      when "status"
+        @@stati.keys #.map{|k| k.to_s} Symbols should be correct here.
+      else
+        raise ArgumentError, "There is no table for your table.. << #{table} >>"
+    end
+	end
+
 	##
 	# replace which_type
 	##
-	# Thoughts: This may result in a lot.. a lot of db lookups.. Hm.
-	def new_which_type(field)
-		if TYPE_OVERRIDE.include? field
-			return TYPE_OVERRIDE[field.to_sym]
+	# Thoughts: This may result in a lot.. a lot of db lookups..
+	#	Todo:			We have to cache these values.
+	def which_type(field)
+		if @@type_override.include? field
+			return @@type_override[field.to_sym]
 		else
 			{'buecher_names' => 'buecher_options', 
 			'gprod_names' => 'gprods_options', 
@@ -124,7 +165,7 @@ class ShowSettings
 					table = t
 					break
 				end
-			}
+			end
 			raise ArgumentError, "Requested type field not found" if table.nil?
 
 			tmp = {}

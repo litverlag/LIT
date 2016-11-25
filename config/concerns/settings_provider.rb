@@ -37,32 +37,6 @@ class SettingsProvider
     end
   end
 
-	##
-	# @name_in_yml	-- is now a request to be send to @SettingsClass
-	def this_class_is_crap_so_i_write_a_wrapper(filename, table, name_in_yml)
-		if filename =~ /show_settings/
-			@SettingsClass = DepartmentShowSetting
-		elsif filename =~ /input_settings/
-			@SettingsClass = DepartmentInputSetting
-		else
-      raise ArgumentError, "Expected file containing show_* or input_* -settings"
-		end
-    @request = name_in_yml
-    if table.is_a? Hash
-			t_names = []
-			table.each {|key,value| t_names.append key}
-			@all_names = t_names
-			@names_and_types = table
-    elsif not (table.is_a? String and \
-						ActiveRecord::Base.connection.tables.include?(table))
-      raise ArgumentError, "SettingsProvider.new needs a valid table name, or a hash."
-    end
-	end
-
-	##
-	# replace names_and_types
-	#def new_names_and_types
-
   ##
 	# Returns an Hash table which all possible fields and the corresponding true
 	# or false option.  The field are either from the table you have chosen
@@ -125,26 +99,39 @@ class SettingsProvider
     ##
     # This methods takes to Arrays and makes a hash table with the first array as the keys and the second as the values
     #
-    def make_hash_from_two_arr(keys,values)
-      unless values.nil?
-        t_array1 = []
-        i = 0
-        if keys.nil?
-          values.each do |value|
-            t_array1.push([value.to_sym,value])
-          end
-        else
-          if not keys.length == values.length
-            raise ArgumentError, "Array of keys length #{keys.length} must equal Array of values length #{values.length} "
-          end
-          values.each do |value|
-            t_array1.push([keys[i].to_sym,value])
-            i = i + 1
-          end
-        end
-        t_array1.to_h
-      end
-    end
+    #def make_hash_from_two_arr(keys,values)
+    #  unless values.nil?
+    #    t_array1 = []
+    #    i = 0
+    #    if keys.nil?
+    #      values.each do |value|
+    #        t_array1.push([value.to_sym,value])
+    #      end
+    #    else
+    #      if not keys.length == values.length
+    #        raise ArgumentError, "Array of keys length #{keys.length} must equal Array of values length #{values.length} "
+    #      end
+    #      values.each do |value|
+    #        t_array1.push([keys[i].to_sym,value])
+    #        i = i + 1
+    #      end
+    #    end
+    #    t_array1.to_h
+    #  end
+    #end
+
+		##
+		# This ^ is .. funny..?
+		##
+		def make_hash_from_two_arr(keys, vals)
+			if keys.nil?
+				vals.map{|v| v.to_sym}.zip(vals).to_h
+			#elsif keys.length != vals.length
+				#raise ArgumentError, "Array[#{keys.length}] != Array[#{values.length}]"
+			else
+				keys.zip(vals).to_h
+			end
+		end
 
     ##
     # This method imports the data from an external file it is called once at the initialization of the server
@@ -212,6 +199,35 @@ class SettingsProvider
       make_hash_from_two_arr(array_of_names,array_of_types)
     end
 
+
+
+	##################
+	# New code below #
+	##################
+
+	##
+	# This was a bad idea, now moved rewriting effort to Show/InputSettings
+	##
+	# @name_in_yml	-- is now a request to be send to @SettingsClass
+	def this_class_is_crap_so_i_write_a_wrapper(filename, table, name_in_yml)
+		if filename =~ /show_settings/
+			@SettingsClass = DepartmentShowSetting
+		elsif filename =~ /input_settings/
+			@SettingsClass = DepartmentInputSetting
+		else
+      raise ArgumentError, "Expected file containing show_* or input_* -settings"
+		end
+    @request = name_in_yml
+    if table.is_a? Hash
+			t_names = []
+			table.each {|key,value| t_names.append key}
+			@all_names = t_names
+			@names_and_types = table
+    elsif not (table.is_a? String and \
+						ActiveRecord::Base.connection.tables.include?(table))
+      raise ArgumentError, "SettingsProvider.new needs a valid table name, or a hash."
+    end
+	end
 
   end
 end
