@@ -85,7 +85,7 @@ ActiveAdmin.register Um do
 
   end
 
-  index title: I18n.t("gprod_names.umschlag_umschlag"), download_links: [:odt, :csv] do
+  index title: I18n.t("headlines.umschlag_umschlag"), download_links: [:odt, :csv] do
 		column I18n.t("status_names.statusumschl") do |p|
 			status_tag(p.statusumschl.status)
 		end

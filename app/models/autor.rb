@@ -12,8 +12,8 @@ class Autor < ActiveRecord::Base
   has_and_belongs_to_many :buecher
   accepts_nested_attributes_for :buecher
 
-  has_one :gprods
-  accepts_nested_attributes_for :gprods
+  has_one :gprod
+  accepts_nested_attributes_for :gprod
 
 ##
 # Returns the title, surname and name of the author as one string.

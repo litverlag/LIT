@@ -153,9 +153,14 @@ ActiveRecord::Schema.define(version: 20161125094808) do
 
   create_table "departments", force: :cascade do |t|
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.integer  "department_show_settings_id"
+    t.integer  "department_input_settings_id"
   end
+
+  add_index "departments", ["department_input_settings_id"], name: "index_departments_on_department_input_settings_id", using: :btree
+  add_index "departments", ["department_show_settings_id"], name: "index_departments_on_department_show_settings_id", using: :btree
 
   create_table "faecher", force: :cascade do |t|
     t.string   "name"

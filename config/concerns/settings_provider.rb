@@ -38,11 +38,14 @@ class SettingsProvider
   end
 
   ##
-  # Returns an Hash table which all possible fields and the corresponding true or false option.
-  # The field are either from the table you have chosen when initialising an instance or from the hash you have given as a parameter or from the database.
-  # The options come from the yaml file.
-  def get_all_options
-   return @all_options
+	# Returns an Hash table which all possible fields and the corresponding true
+	# or false option.  The field are either from the table you have chosen
+	# when initialising an instance or from the hash you have given as a
+	# parameter or from the database.  The options come from the yaml file.
+	#
+	# looks like this: {'department' => {'field' => value, 'field2' => ..}
+  def get_all_options(department)
+   return @all_options[department]
   end
 
   ##
@@ -91,29 +94,44 @@ class SettingsProvider
     @names_and_types
     @filename
     @name_in_yml
+		@SettingsClass
+		@request
     ##
     # This methods takes to Arrays and makes a hash table with the first array as the keys and the second as the values
     #
-    def make_hash_from_two_arr(keys,values)
-      unless values.nil?
-        t_array1 = []
-        i = 0
-        if keys.nil?
-          values.each do |value|
-            t_array1.push([value.to_sym,value])
-          end
-        else
-          if not keys.length == values.length
-            raise ArgumentError, "Array of keys length #{keys.length} must equal Array of values length #{values.length} "
-          end
-          values.each do |value|
-            t_array1.push([keys[i].to_sym,value])
-            i = i + 1
-          end
-        end
-        t_array1.to_h
-      end
-    end
+    #def make_hash_from_two_arr(keys,values)
+    #  unless values.nil?
+    #    t_array1 = []
+    #    i = 0
+    #    if keys.nil?
+    #      values.each do |value|
+    #        t_array1.push([value.to_sym,value])
+    #      end
+    #    else
+    #      if not keys.length == values.length
+    #        raise ArgumentError, "Array of keys length #{keys.length} must equal Array of values length #{values.length} "
+    #      end
+    #      values.each do |value|
+    #        t_array1.push([keys[i].to_sym,value])
+    #        i = i + 1
+    #      end
+    #    end
+    #    t_array1.to_h
+    #  end
+    #end
+
+		##
+		# This ^ is .. funny..?
+		##
+		def make_hash_from_two_arr(keys, vals)
+			if keys.nil?
+				vals.map{|v| v.to_sym}.zip(vals).to_h
+			#elsif keys.length != vals.length
+				#raise ArgumentError, "Array[#{keys.length}] != Array[#{values.length}]"
+			else
+				keys.zip(vals).to_h
+			end
+		end
 
     ##
     # This method imports the data from an external file it is called once at the initialization of the server
@@ -137,7 +155,6 @@ class SettingsProvider
           @all_options[department.first] = make_hash_from_two_arr(@all_names,department.second)
         end
       end
-
     end
 
     def write_legend!
@@ -181,7 +198,6 @@ class SettingsProvider
 
       make_hash_from_two_arr(array_of_names,array_of_types)
     end
-
 
   end
 end

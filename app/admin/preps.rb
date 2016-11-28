@@ -78,7 +78,7 @@ ActiveAdmin.register Preps do
     end
   end
 
-  index title: I18n.t("gprod_names.preps_preps"), download_links: [:odt, :csv] do
+  index title: I18n.t("headlines.preps_preps"), download_links: [:odt, :csv] do
 		column I18n.t("status_names.statuspreps") do |p|
 			status_tag(p.statuspreps.status)
 		end

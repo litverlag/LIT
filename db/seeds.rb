@@ -1,16 +1,37 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+# This file should contain all the record creation needed to seed the database
+# with its default values.
+# The data can then be loaded with the rake db:seed (or created alongside the
+# db with db:setup).
 
 Department.create!([
 	{name:'Superadmin'},{name:'Umschlag'},{name:'Satz'},{name:'Titelei'},
 	{name:'PrePs'},{name:'Rechnung'},{name:'Bildprüfung'},{name:'Pod'},
 	{name:'Binderei'},{name:'Lektor'},{name: 'ExternerDruck'}
 ])
+
+Department.all.each do |d|
+	ds = DepartmentShowSetting.create!(department_id: d.id)
+	di = DepartmentInputSetting.create!(department_id: d.id)
+
+	opts = ['gprods_options', 'buecher_options', 'status_options']
+	opts.each{|option| 
+		ds[option] = []
+		ShowSettings.instance.all(option.sub('_options','')).each {|g| 
+			ds[option] << true 
+		}
+		di[option] = []
+		InputSettings.instance.all(option.sub('_options','')).each {|g| 
+			di[option] << true 
+		}
+	}
+
+	d.department_show_setting = ds
+	d.department_input_setting = di
+end
+
+# Try load default settings from file if existent
+DepartmentShowSetting.load_persistent 'default_show_settings' rescue nil
+DepartmentInputSetting.load_persistent 'default_input_settings' rescue nil
 
 admin = AdminUser.create!(email: 'admin@example.com',
 													password: 'cibcibcib', password_confirmation: 'cibcibcib')
