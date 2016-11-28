@@ -199,35 +199,5 @@ class SettingsProvider
       make_hash_from_two_arr(array_of_names,array_of_types)
     end
 
-
-
-	##################
-	# New code below #
-	##################
-
-	##
-	# This was a bad idea, now moved rewriting effort to Show/InputSettings
-	##
-	# @name_in_yml	-- is now a request to be send to @SettingsClass
-	def this_class_is_crap_so_i_write_a_wrapper(filename, table, name_in_yml)
-		if filename =~ /show_settings/
-			@SettingsClass = DepartmentShowSetting
-		elsif filename =~ /input_settings/
-			@SettingsClass = DepartmentInputSetting
-		else
-      raise ArgumentError, "Expected file containing show_* or input_* -settings"
-		end
-    @request = name_in_yml
-    if table.is_a? Hash
-			t_names = []
-			table.each {|key,value| t_names.append key}
-			@all_names = t_names
-			@names_and_types = table
-    elsif not (table.is_a? String and \
-						ActiveRecord::Base.connection.tables.include?(table))
-      raise ArgumentError, "SettingsProvider.new needs a valid table name, or a hash."
-    end
-	end
-
   end
 end

@@ -20,7 +20,7 @@ Department.all.each do |d|
 		}
 		di[option] = []
 		InputSettings.instance.all(option.sub('_options','')).each {|g| 
-			ds[option] << true 
+			di[option] << true 
 		}
 	}
 

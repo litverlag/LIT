@@ -1,7 +1,6 @@
 ActiveAdmin.register DepartmentShowSetting do
 	menu priority: 3
   config.filters = false
-  #actions :edit
 
 	controller do
     def permitted_params

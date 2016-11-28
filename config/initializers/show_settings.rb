@@ -1,3 +1,9 @@
+##
+# Note: every function starting with "old_" is deprecated, and not used. The
+# new code is below.
+##
+
+
 require 'singleton'
 ###
 # This class is to test if a field is visible in the view
