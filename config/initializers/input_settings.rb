@@ -1,33 +1,42 @@
 require 'singleton'
+##
+# See config/initializers/show_settings.rb for updated stuff.
+
 ###
 # This class is to test if a field is visible in the view
-# it has three instances of Input settings on for the buecher field, one for the gprod fields and one for the Status_fields
+# it has three instances of Input settings on for the buecher field, one for
+# the gprod fields and one for the Status_fields
 #
 #
 class InputSettings
   include Singleton
-  #@status is used to insert new field/options pairs to the SettingsProvider which do not come from a database table.
-  @status = {:statusbildpr => "selectable", :statusbinderei => "selectable", :statusdruck => "selectable", :statusfinal => "selectable", :statusoffsch => "selectable", :statuspreps => "selectable", :statusrg => "selectable", :statussatz => "selectable", :statustitelei => "selectable", :statusumschl => "selectable"}
+	#@status is used to insert new field/options pairs to the SettingsProvider
+	#which do not come from a database table.
+	@status = {:statusbildpr => "selectable", :statusbinderei => "selectable",
+						:statusdruck => "selectable", :statusfinal => "selectable",
+						:statusoffsch => "selectable", :statuspreps => "selectable",
+						:statusrg => "selectable", :statussatz => "selectable",
+						:statustitelei => "selectable", :statusumschl => "selectable"}
   GPRODS_PROVIDER = SettingsProvider.new("config/import_settings.yml",'gprods',"gprods_options")
   BUECHER_PROVIDER = SettingsProvider.new("config/import_settings.yml",'buecher',"buecher_options")
   #Instanziation of the Provider with a Hash table instead of a name of a database table
   STATUS_PROVIDER = SettingsProvider.new("config/import_settings.yml",@status,"status_options")
 
-  def is_visible?(department, field)
+  def old_is_visible?(department, field)
    # begin
     field = field.to_sym
     if department.nil?
       raise ArgumentError, "department can't be nil"
     end
-    if GPRODS_PROVIDER.get_all_options[department].nil?
+    if GPRODS_PROVIDER.get_all_options(department).nil?
       raise ArgumentError, "The department is not defiend in the yaml file"
     else
-      if not GPRODS_PROVIDER.get_all_options[department][field].nil?
-        return GPRODS_PROVIDER.get_all_options[department][field]
-      elsif not BUECHER_PROVIDER.get_all_options[department][field].nil?
-        return BUECHER_PROVIDER.get_all_options[department][field]
-      elsif not  STATUS_PROVIDER.get_all_options[department][field].nil?
-        return STATUS_PROVIDER.get_all_options[department][field]
+      if not GPRODS_PROVIDER.get_all_options(department)[field].nil?
+        return GPRODS_PROVIDER.get_all_options(department)[field]
+      elsif not BUECHER_PROVIDER.get_all_options(department)[field].nil?
+        return BUECHER_PROVIDER.get_all_options(department)[field]
+      elsif not  STATUS_PROVIDER.get_all_options(department)[field].nil?
+        return STATUS_PROVIDER.get_all_options(department)[field]
       end
     end
 
@@ -39,7 +48,7 @@ class InputSettings
 
 
 
-  def which_type(field)
+  def old_which_type(field)
     field = field.to_sym
     if not GPRODS_PROVIDER.names_and_types[field].nil?
       return GPRODS_PROVIDER.names_and_types[field]
@@ -50,7 +59,7 @@ class InputSettings
     end
   end
 
-  def all(table)
+  def old_all(table)
     case table
       when "gprods"
         GPRODS_PROVIDER.all_coloum_names
@@ -59,17 +68,18 @@ class InputSettings
       when "status"
         STATUS_PROVIDER.all_coloum_names
       else
-        raise ArgumentError, "There is no table or manually defined SettingsProvider for you table "
+        raise ArgumentError, 
+					"There is no table or manually defined SettingsProvider for you table"
     end
   end
 
 
 
   ##
-  # In this method you have to change the type of the field manually. This is necessary if you want to have more
-  # options for the views to choose from
+	# In this method you have to change the type of the field manually. This is
+	# necessary if you want to have more options for the views to choose from
   #
-  def initialize
+  def old_initialize
     #change the type to selectable because from the db it comes as a string
     BUECHER_PROVIDER.change_type(:papier_bezeichnung,"selectable")
     BUECHER_PROVIDER.change_type(:bindung_bezeichnung,"selectable")
@@ -91,10 +101,97 @@ class InputSettings
     BUECHER_PROVIDER.remove_attribute "id"
     BUECHER_PROVIDER.remove_attribute "created_at"
     BUECHER_PROVIDER.remove_attribute "updated_at"
-
-
   end
 
+
+
+
+
+	##################
+	# New code below #
+	##################
+
+	##
+	# replace is_visible?
+	def is_visible?(dep_name, field)
+		dep = Department.where(name: dep_name).first
+		dep = Department.where(name: dep_name.downcase).first if dep.nil?
+		return true if dep.department_input_setting.send(field)
+		return false
+	end
+
+	# Class initialization with some static variables.
+	@@type_override = {
+		:papier_bezeichnung=>"selectable",
+		:bindung_bezeichnung=>"selectable",
+		:umschlag_bezeichnung=>"selectable",
+		:format_bezeichnung=>"selectable",
+		:prio=>"selectable",
+		:bilder=>"selectable",
+	}
+	tmp = ActiveRecord::Base.connection.tables\
+		.map{|t| t if t =~ /^status_.*/i}.delete_if{|e| e.nil?}
+	@@stati = {}
+	tmp.each{|s| @@stati.update(s.to_sym => 'selectable')}
+
+	##
+	# replace initialize
+	## 
+	# Todo: Maybe we should put it to class and not instance initialization
+	# We did that ^.
+	def initialize
+	end
+
+	##
+	# replace all
+	def all(table)
+    case table
+      when "gprods"
+        ActiveRecord::Base.connection.columns('gprods').map{|g| g.name}\
+					.delete_if { |n| 
+					["id", "lektor_id", "autor_id", "created_at", "updated_at"]\
+						.include? n 
+				}
+      when "buecher"
+        ActiveRecord::Base.connection.columns('buecher').map{|g| g.name}\
+					.delete_if { |n| 
+					["autor_id", "lektor_id", "gprod_id", "id", "created_at", "updated_at"]\
+						.include? n 
+				}
+      when "status"
+        @@stati.keys #.map{|k| k.to_s} Symbols should be correct here.
+      else
+        raise ArgumentError, "There is no table for your table.. << #{table} >>"
+    end
+	end
+
+	##
+	# replace which_type
+	##
+	# Thoughts: This may result in a lot.. a lot of db lookups..
+	#	Todo:			We have to cache these values.
+	def which_type(field)
+		if @@type_override.include? field
+			return @@type_override[field.to_sym]
+		else
+			{'buecher_names' => 'buecher_options', 
+			'gprod_names' => 'gprods_options', 
+			'status_names' => 'status_options'}.each do |i, t|
+				list = I18n.t(i).keys
+				if list.include? field
+					table = t
+					break
+				end
+			end
+			raise ArgumentError, "Requested type field not found" if table.nil?
+
+			tmp = {}
+			ActiveRecord::Base.connection.columns(table).each do |c|
+				tmp.update(c.name => c.type.to_s)
+			end
+			return tmp[field.to_sym]
+		end
+	end
 
 end
 
