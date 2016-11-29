@@ -3,11 +3,7 @@ namespace :db do
 	task getoldsettings: :environment do
 		puts "-begin- getoldsettings task"
 
-		dict = {
-			'projekt'		=>		'Lektor',
-			'druck'		=>			'Pod',
-			'preps'		=>			'PrePs',
-		}
+		include ApplicationHelper
 
 		{ 
 			DepartmentInputSetting => 'import_settings',
@@ -23,13 +19,17 @@ namespace :db do
 						}
 					end
 					if department.nil?
-						dep = dict[dep]
+						bak = dep
+						dep = class_to_dep(dep)
+						department = Department.where(name: dep).first
+					end
+					if department.nil?
 						Department.all.each { |d| 
 							if d.name =~ /#{dep}/i then deparment = d; break; end
 						}
 					end
 					if department.nil?
-						puts "[-] skipping #{dep}"
+						puts "[-] skipping #{dep ? dep : bak}"
 						next
 					end
 					puts "[+] processing bools for #{department.name}:"\

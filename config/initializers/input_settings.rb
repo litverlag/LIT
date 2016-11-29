@@ -110,12 +110,22 @@ class InputSettings
 	##################
 	# New code below #
 	##################
+	include ApplicationHelper
 
 	##
 	# replace is_visible?
 	def is_visible?(dep_name, field)
 		dep = Department.where(name: dep_name).first
-		dep = Department.where(name: dep_name.downcase).first if dep.nil?
+		dep = Department.where(name: dep_name.camelcase).first if dep.nil?
+		dep = Department.where(name: class_to_dep(dep_name)).first if dep.nil?
+
+		if dep.nil?
+			raise ArgumentError, "cannot find department: '#{dep_name}'" 
+		elsif dep.department_show_setting.nil?
+			raise RuntimeError, "show_settings for department '#{dep_name}' is nil"
+		end
+
+		field = field.to_s.gsub('_','').to_sym if field.to_s =~ /^status.*/i
 		return true if dep.department_input_setting.send(field)
 		return false
 	end
@@ -132,7 +142,7 @@ class InputSettings
 	tmp = ActiveRecord::Base.connection.tables\
 		.map{|t| t if t =~ /^status_.*/i}.delete_if{|e| e.nil?}
 	@@stati = {}
-	tmp.each{|s| @@stati.update(s.to_sym => 'selectable')}
+	tmp.each{|s| @@stati.update(s.gsub('_','').to_sym => 'selectable')}
 
 	##
 	# replace initialize
@@ -171,27 +181,31 @@ class InputSettings
 	# Thoughts: This may result in a lot.. a lot of db lookups..
 	#	Todo:			We have to cache these values.
 	def which_type(field)
+		return 'selectable' if field =~ /^status.*/i
+		field = field.to_sym
 		if @@type_override.include? field
 			return @@type_override[field.to_sym]
 		else
-			{'buecher_names' => 'buecher_options', 
-			'gprod_names' => 'gprods_options', 
-			'status_names' => 'status_options'}.each do |i, t|
+			table = nil
+			{'buecher_names' => 'buecher', 
+			 'gprod_names'   => 'gprods' ,
+			}.each do |i, t|
 				list = I18n.t(i).keys
 				if list.include? field
 					table = t
 					break
 				end
 			end
-			raise ArgumentError, "Requested type field not found" if table.nil?
-
-			tmp = {}
-			ActiveRecord::Base.connection.columns(table).each do |c|
-				tmp.update(c.name => c.type.to_s)
+			if table.nil?
+				# Quote: <!-- at the moment other types of data are not managed -->
+				#puts"Field not found: '#{field}'" 
+				return nil
 			end
-			return tmp[field.to_sym]
+
+			ActiveRecord::Base.connection.columns(table).each { |c|
+				return c.type.to_s if c.name.to_s =~ /#{field.to_s}/
+			}
 		end
 	end
 
 end
-

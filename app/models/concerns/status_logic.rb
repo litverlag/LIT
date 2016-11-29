@@ -290,6 +290,7 @@ module StatusLogic
 		begin
 			projekt.statusfinal = StatusFinal.create!()
 			projekt.statusdruck = StatusDruck.create!()
+			projekt.statusexternerdruck = StatusExternerDruck.create!()
 			projekt.statustitelei = StatusTitelei.create!()
 			projekt.statussatz = StatusSatz.create!()
 			projekt.statuspreps = StatusPreps.create!()
