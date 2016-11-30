@@ -1,5 +1,7 @@
 namespace :db do
-	desc "Gets old input and show settings from those .yaml files."
+	desc "Gets old input and show settings from those .yaml files.\n"\
+		+"Note: Should not be used any more, use db:load_settings/save_settings"\
+		+" instead."
 	task getoldsettings: :environment do
 		puts "-begin- getoldsettings task"
 

@@ -76,7 +76,7 @@ ActiveAdmin.register SReif do
 			link_to(p.projektname, "/admin/s_reifs/#{p.id}")
     end
 		column I18n.t("buecher_names.isbn") do |p|
-			raw p.buch.isbn.gsub('-', '&#8209;') unless p.buch.nil?
+			raw p.buch.isbn.gsub('-', '&#8209;') rescue '-'
 		end
 		column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
 			raw "<div class='deadline'>#{p.final_deadline}</div>"
@@ -85,7 +85,7 @@ ActiveAdmin.register SReif do
 			raw "<div class='deadline'>#{p.satz_deadline}</div>"
 		end
 		column I18n.t("search_labels.lektor") do |p|
-			p.buch.lektor.name unless p.buch.lektor.nil? unless p.buch.nil?
+			p.buch.lektor.name rescue '-'
 		end
 		column I18n.t("gprod_names.lektor_bemerkungen_public") do |p|
 			p.lektor_bemerkungen_public

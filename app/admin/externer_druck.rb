@@ -53,40 +53,52 @@ ActiveAdmin.register ExternerDruck do
 
   index do
     column('Status') {|druck| status_tag(druck.statusexternerdruck.status)}
+		column I18n.t("status_names.statuspreps") do |p|
+			status_tag(p.statuspreps.status) rescue '-'
+		end
 		column I18n.t("status_names.statusumschl") do |p|
 			status_tag(p.statusumschl.status)
 		end
 		column I18n.t("buecher_names.umschlag_bezeichnung") do |p|
-			p.buch.umschlag_bezeichnung unless p.buch.nil?
+			p.buch.umschlag_bezeichnung rescue '-'
 		end
 		column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
 			link_to(p.projektname, "/admin/externer_druck/#{p.id}")
 		end
 		column I18n.t("buecher_names.isbn") do |p|
-			raw p.buch.isbn.gsub('-', '&#8209;') unless p.buch.nil?
+			raw p.buch.isbn.gsub('-', '&#8209;') rescue '-'
 		end
 		column I18n.t("gprod_names.auflage") do |p|
 			p.auflage
 		end
-		column I18n.t("gprod_names.gesicherte_abnahme") do |p|
-			p.gesicherte_abnahme
+		column I18n.t("buecher_names.bindung_bezeichnung") do |p|
+			p.buch.bindung_bezeichnung rescue '-'
 		end
 		column I18n.t("gprod_names.prio"), sortable: :prio do |p|
 			p.prio
 		end
 		column I18n.t("search_labels.lektor") do |p|
-			p.buch.lektor.name unless p.buch.lektor.nil? unless p.buch.nil?
-		end
-		column I18n.t("status_names.statuspreps") do |p|
-			status_tag(p.statuspreps.status) unless p.statuspreps.nil?
+			p.buch.lektor.name rescue '-'
 		end
 		column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
 			raw "<div class='deadline'>#{p.final_deadline}</div>"
 		end
+		column I18n.t("gprod_names.externer_druck_deadline"), sortable: :final_deadline do |p|
+			raw "<div class='deadline'>#{p.externer_druck_deadline}</div>"
+		end
+		column I18n.t("gprod_names.externer_druck_finished"), sortable: :final_deadline do |p|
+			raw "<div class='deadline'>#{p.externer_druck_finished}</div>"
+		end
+		column I18n.t("gprod_names.externer_druck_bemerkungen"), sortable: :final_deadline do |p|
+			raw "<div class='deadline'>#{p.externer_druck_bemerkungen}</div>"
+		end
   end
 
 	filter :final_deadline
-	filter :druck_deadline
+	filter :externer_druck_deadline
+	filter :buch_bindung_bezeichnung, as: :select, 
+		collection: proc{ChoosableOption.instance.bindung_bezeichnung :all}, 
+		label: I18n.t('buecher_names.bindung_bezeichnung')
 	filter :statusumschl_status_eq, as: :select, 
 		collection: proc {$UMSCHL_STATUS}, label: I18n.t('status_names.statusumschl')
 	filter :statusumschl_status_not_eq, as: :select, 
@@ -94,10 +106,9 @@ ActiveAdmin.register ExternerDruck do
 	filter :statuspreps_status_eq, as: :select, 
 		collection: proc {$PREPS_STATUS}, label: I18n.t('status_names.statuspreps')
 	filter :buch_isbn_cont, as: :string, label: I18n.t('buecher_names.isbn')
+	filter :projektname
 	filter :prio
   filter :projekt_email_adresse
-	filter :projektname
-	filter :satz_deadline
 
   show do
     render partial: "show_view"

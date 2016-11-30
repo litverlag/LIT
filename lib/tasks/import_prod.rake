@@ -577,6 +577,12 @@ namespace :gapi do
 
 			frei_date = check_date_entry(table[i,h['grün fertig']], logger) rescue nil
 			gprod.externer_druck_finished = frei_date unless frei_date.nil?
+
+			##
+			# What is status condition in extern table? Ask Meessen.
+			#gprod.statusexternerdruck = color_from(i, h, '', 
+
+			gprod.save!
 		end
 	end
 
@@ -638,7 +644,7 @@ namespace :gapi do
 		table = spreadsheet.worksheet_by_title('Tit')
 		rake_tit_table(table)
 	end
-	# Another one..
+	# Another one.. for externer_druck
 	desc "ExternerDruck table import test"
 	task import_extd: :environment do
 		session = GoogleDrive.saved_session( ".credentials/client_secret.json" )

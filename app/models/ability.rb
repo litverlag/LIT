@@ -60,7 +60,7 @@ class Ability
     end
     if @departName.include?'ExternerDruck'
       can [:read, :update], ExternerDruck
-      can [:read, :update], Druck
+      can [:update], Druck
     end
     if @departName.include?'Binderei'
       can [:read, :update], Bi
