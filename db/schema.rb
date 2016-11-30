@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161102133034) do
+ActiveRecord::Schema.define(version: 20161125094808) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -240,6 +240,9 @@ ActiveRecord::Schema.define(version: 20161102133034) do
     t.datetime "created_at",                                         null: false
     t.datetime "updated_at",                                         null: false
     t.string   "bilder"
+    t.date     "externer_druck_deadline"
+    t.date     "externer_druck_finished"
+    t.text     "externer_druck_bemerkungen"
   end
 
   create_table "lektoren", force: :cascade do |t|
@@ -274,6 +277,13 @@ ActiveRecord::Schema.define(version: 20161102133034) do
   end
 
   create_table "status_druck", force: :cascade do |t|
+    t.integer "gprod_id"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updated_at"
+  end
+
+  create_table "status_externer_druck", force: :cascade do |t|
     t.integer "gprod_id"
     t.string  "status"
     t.string  "updated_by"

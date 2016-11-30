@@ -83,7 +83,10 @@ de:
     externer_druck_verschickt: "Ist an extern verschickt?"
     externer_druck_verschickt_von: "An extern verschickt von?"
     externer_druck: "extern"
-    final_deadline: "SollF gesamt"
+    externer_druck_deadline: "SollF externer Druck"
+    externer_druck_finished: "Externer Druck fertig"
+    externer_druck_bemerkungen: "Externer Druck Bemerkungen"
+    final_deadline: "SollF"
     gesicherte_abnahme: "Abnahme"
     kommentar_public: "öffentlicher Kommentar"
     lektor_bemerkungen_private: "Private Bemerkungen"
@@ -150,7 +153,7 @@ de:
     gewicht: "Gewicht"
     volumen: "Volumen"
     format_bezeichnung: "Format Bezeichnung"
-    umschlag_bezeichnung:  "Umschlag Bezeichnung"
+    umschlag_bezeichnung:  "Umschlag Bez."
     papier_bezeichnung: "Papier Bezeichnung"
     bindung_bezeichnung: "Bindung Bezeichnung"
     vier_farb: "Vierfarb"
@@ -166,6 +169,8 @@ de:
     nstatusbinderei: 'not statusbinderei'
     statusdruck: 'Druck'
     nstatusdruck: 'not statusdruck'
+    statusexternerdruck: 'Externer Druck'
+    nstatusexternerdruck: 'not Externer Druck'
     statusfinal: 'Final'
     statusoffsch: 'Offsch'
     statuspreps: 'Preps'

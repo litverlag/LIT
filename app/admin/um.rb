@@ -115,7 +115,7 @@ ActiveAdmin.register Um do
 			link_to(p.buch.reihen.first.r_code, "/admin/reihen/#{p.buch.reihen.first.id}") rescue "-"
 		end
 		column I18n.t("search_labels.lektor") do |p|
-			p.buch.lektor.name unless p.buch.lektor.nil? unless p.buch.nil?
+			p.buch.lektor.name rescue '-'
 		end
 		column I18n.t("gprod_names.projekt_email_adresse") do |p|
 			p.projekt_email_adresse

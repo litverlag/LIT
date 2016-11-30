@@ -183,6 +183,9 @@ ActiveAdmin.register_page "Dashboard" do
 				table do
 					pod = Projekt.ransack(final_deadline_gt: Date.yesterday).result.map
 					pod = pod.sort_by { |v| v.final_deadline }
+					pod.delete_if { |p| 
+						p.buch.bindung_bezeichnung != I18n.t('bi_names.k') rescue false 
+					}
 					pod.sort! &z_top_prio
 					th I18n.t('buecher_names.isbn')
 					th I18n.t('gprod_names.projektname')
@@ -194,7 +197,38 @@ ActiveAdmin.register_page "Dashboard" do
 					pod.each do |p|
 						next if p.statusdruck.status.eql? I18n.t('scopes_names.fertig_filter')
 						tr ''
-						td link_to(p.buch.isbn, "/admin/s_reifs/#{p.id}") rescue td "<empty>"
+						td link_to(p.buch.isbn, "/admin/druck/#{p.id}") rescue td "<empty>"
+						td p.projektname
+						td tagged_prio(p)
+						td status_tag(p.statusdruck.status)
+						td p.final_deadline
+						td p.druck_deadline
+						td p.buch.lektor.name rescue td "<empty>"
+					end
+				end
+			end
+		end
+
+		if dep.include? 'ExternerDruck' or dep.include? 'Superadmin'
+			panel 'Aktuelle Externe Werke zum Druck' do
+				table do
+					pod = Projekt.ransack(final_deadline_gt: Date.yesterday).result.map
+					pod = pod.sort_by { |v| v.final_deadline }
+					pod.delete_if { |p| 
+						p.buch.bindung_bezeichnung == I18n.t('bi_names.k') rescue false 
+					}
+					pod.sort! &z_top_prio
+					th I18n.t('buecher_names.isbn')
+					th I18n.t('gprod_names.projektname')
+					th I18n.t('gprod_names.prio')
+					th I18n.t('status_names.statusdruck')
+					th I18n.t('gprod_names.final_deadline')
+					th I18n.t('gprod_names.druck_deadline')
+					th I18n.t('search_labels.lektor')
+					pod.each do |p|
+						next if p.statusdruck.status.eql? I18n.t('scopes_names.fertig_filter')
+						tr ''
+						td link_to(p.buch.isbn, "/admin/druck/#{p.id}") rescue td "<empty>"
 						td p.projektname
 						td tagged_prio(p)
 						td status_tag(p.statusdruck.status)

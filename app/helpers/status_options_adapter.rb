@@ -28,6 +28,8 @@ class StatusOptionsAdapter
         $TITELEI_STATUS
       when :statusumschl
         $UMSCHL_STATUS
+      when :statusexternerdruck
+        $EXTERNER_DRUCK_STATUS
     end
   end
 end
