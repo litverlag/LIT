@@ -48,10 +48,12 @@
     <% used_url = (admin_um_path(@projekt.id)) %>
 <% when "druck" %>
     <% used_url = (admin_druck_path(@projekt.id)) %>
+<% when /Externer_?Druck/i # whatever crap we get, we match it %>
+		<% used_url = admin_externer_druck_path(@projekt.id) %>
 <% when "rechnung" %>
     <% used_url = (admin_rechnung_path(@projekt.id)) %>
 <% when "projekt" %>
-    <% used_url = admin_projekt_path(@projekt.id)%>
+    <% used_url = admin_projekt_path(@projekt.id) %>
     <!-- Projeckt view buttons -->
 	<nav>
       <ul>

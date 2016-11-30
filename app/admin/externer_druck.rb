@@ -11,27 +11,27 @@ ActiveAdmin.register ExternerDruck do
   scope (I18n.t("scopes_names.problem_filter")), :problem_filter
 
 	controller do
-    include StatusLogic
+    include StatusLogic, PrintReport
 
     def permitted_params
       params.permit!
     end
 
     def show
-      @projekt = Gprod.find(permitted_params[:id])
       @department = "ExternerDruck"
+      @projekt = Gprod.find(permitted_params[:id])
     end
 
     def edit
-      @projekt = Gprod.find(permitted_params[:id])
       @department = "ExternerDruck"
+      @projekt = Gprod.find(permitted_params[:id])
     end
 
     def update
       @projekt = Gprod.find(permitted_params[:id])
 			begin
 				@projekt.update!(permitted_params[:gprod]) if permitted_params[:gprod]
-				@projekt.update!(permitted_params[:buch]) if permitted_params[:buch]
+				#@projekt.update!(permitted_params[:buch]) if permitted_params[:buch]
 			rescue ActiveRecord::RecordInvalid
 				redirect_to "/admin/externer_druck/#{@projekt.id}/edit"
 				flash[:alert] = I18n.t 'flash_notice.revised_failure.new_project_invalid'
@@ -49,6 +49,10 @@ ActiveAdmin.register ExternerDruck do
         }
       end
     end
+
+		def index
+			super { |format| format.odt {print_report("ext_druck_report", method(:externer_druck))} }
+		end
   end
 
   index do
