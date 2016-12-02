@@ -57,24 +57,50 @@ class DepartmentInputSetting < ActiveRecord::Base
 	def self.option_attrs
 		self.attribute_names.clone.delete_if { |m| not m =~ /_options$/ }
 	end
+#	def self.save_persistent(fname)
+#		File.open("#{Rails.root}/config/#{fname}.yml", 'w') do |file|
+#			InputSettings.instance.all('gprods')
+#			file.write DepartmentInputSetting.all.map { |s|
+#				DepartmentInputSetting.option_attrs.map { |opt|
+#					{opt.to_sym => s.send(opt)}
+#				}
+#			}.to_yaml
+#		end
+#	end
+#	def self.load_persistent(fname)
+#		yml = YAML.load_file("#{Rails.root}/config/#{fname}.yml")
+#		yml.each do |dep|
+#			dep.each do |dict|
+#				if dict.keys.count != 1 # Cannot happen.
+#					raise LoadError, "DepartmentInputSetting id:#{yml.index(dep) + 1}" 
+#				end
+#				dep_settings = self.where(id: yml.index(dep) + 1).first
+#				dep_settings.send("#{dict.keys[0]}=", dict.values[0])
+#				dep_settings.save!
+#			end
+#		end
+#	end
+
 	def self.save_persistent(fname)
 		File.open("#{Rails.root}/config/#{fname}.yml", 'w') do |file|
-			InputSettings.instance.all('gprods')
 			file.write DepartmentInputSetting.all.map { |s|
-				DepartmentInputSetting.option_attrs.map { |opt|
-					{opt.to_sym => s.send(opt)}
+				{ Department.where(id: s.department_id).first.name =>
+					DepartmentInputSetting.option_attrs.map { |opt|
+						{opt.to_sym => s.send(opt)}
+					}
 				}
 			}.to_yaml
 		end
 	end
 	def self.load_persistent(fname)
 		yml = YAML.load_file("#{Rails.root}/config/#{fname}.yml")
-		yml.each do |dep|
-			dep.each do |dict|
+		yml.each do |entry|
+			dep = Department.where(name: entry.keys[0]).first
+			entry.values[0].each do |dict|
 				if dict.keys.count != 1 # Cannot happen.
-					raise LoadError, "DepartmentInputSetting id:#{yml.index(dep) + 1}" 
+					raise LoadError, "DepartmentInputSetting in Deparment: #{dep.id}" 
 				end
-				dep_settings = self.where(id: yml.index(dep) + 1).first
+				dep_settings = dep.department_input_setting
 				dep_settings.send("#{dict.keys[0]}=", dict.values[0])
 				dep_settings.save!
 			end

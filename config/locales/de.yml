@@ -80,7 +80,7 @@ de:
     druck_bemerkungen: "Bemerkungen Druck"
     druck_deadline:  "SollF Druck"
     erscheinungsjahr: "Erscheinungsjahr"
-    externer_druck_verschickt: "Ist an extern verschickt?"
+    externer_druck_verschickt: "An extern verschickt am"
     externer_druck_verschickt_von: "An extern verschickt von?"
     externer_druck: "extern"
     externer_druck_deadline: "SollF externer Druck"

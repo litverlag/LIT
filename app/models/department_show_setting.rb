@@ -61,24 +61,27 @@ class DepartmentShowSetting < ActiveRecord::Base
 	def self.option_attrs
 		self.attribute_names.clone.delete_if { |m| not m =~ /_options$/ }
 	end
+
 	def self.save_persistent(fname)
 		File.open("#{Rails.root}/config/#{fname}.yml", 'w') do |file|
-			ShowSettings.instance.all('gprods')
 			file.write DepartmentShowSetting.all.map { |s|
-				DepartmentShowSetting.option_attrs.map { |opt|
-					{opt.to_sym => s.send(opt)}
+				{ Department.where(id: s.department_id).first.name =>
+					DepartmentShowSetting.option_attrs.map { |opt|
+						{opt.to_sym => s.send(opt)}
+					}
 				}
 			}.to_yaml
 		end
 	end
 	def self.load_persistent(fname)
 		yml = YAML.load_file("#{Rails.root}/config/#{fname}.yml")
-		yml.each do |dep|
-			dep.each do |dict|
+		yml.each do |entry|
+			dep = Department.where(name: entry.keys[0]).first
+			entry.values[0].each do |dict|
 				if dict.keys.count != 1 # Cannot happen.
-					raise LoadError, "DepartmentShowSetting id:#{yml.index(dep) + 1}" 
+					raise LoadError, "DepartmentShowSetting in Deparment: #{dep.id}" 
 				end
-				dep_settings = self.where(id: yml.index(dep) + 1).first
+				dep_settings = dep.department_show_setting
 				dep_settings.send("#{dict.keys[0]}=", dict.values[0])
 				dep_settings.save!
 			end
