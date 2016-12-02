@@ -57,11 +57,8 @@ ActiveAdmin.register ExternerDruck do
 
   index do
     column('Status') {|druck| status_tag(druck.statusexternerdruck.status)}
-		column I18n.t("status_names.statuspreps") do |p|
-			status_tag(p.statuspreps.status) rescue '-'
-		end
 		column I18n.t("status_names.statusumschl") do |p|
-			status_tag(p.statusumschl.status)
+			status_tag(p.statusumschl.status) rescue '-'
 		end
 		column I18n.t("buecher_names.umschlag_bezeichnung") do |p|
 			p.buch.umschlag_bezeichnung rescue '-'
@@ -84,25 +81,29 @@ ActiveAdmin.register ExternerDruck do
 		column I18n.t("search_labels.lektor") do |p|
 			p.buch.lektor.name rescue '-'
 		end
+		column I18n.t("gprod_names.externer_druck_bemerkungen") do |p|
+			p.externer_druck_bemerkungen
+		end
+		column I18n.t("gprod_names.externer_druck_verschickt"), sortable: :externer_druck_verschickt do |p|
+			p.externer_druck_verschickt
+		end
+		column I18n.t("gprod_names.externer_druck_finished"), sortable: :externer_druck_finished do |p|
+			raw "<div class='deadline'>#{p.externer_druck_finished}</div>"
+		end
+		column I18n.t("gprod_names.externer_druck_deadline"), sortable: :externer_druck_deadline do |p|
+			raw "<div class='deadline'>#{p.externer_druck_deadline}</div>"
+		end
 		column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
 			raw "<div class='deadline'>#{p.final_deadline}</div>"
 		end
-		column I18n.t("gprod_names.externer_druck_deadline"), sortable: :final_deadline do |p|
-			raw "<div class='deadline'>#{p.externer_druck_deadline}</div>"
-		end
-		column I18n.t("gprod_names.externer_druck_finished"), sortable: :final_deadline do |p|
-			raw "<div class='deadline'>#{p.externer_druck_finished}</div>"
-		end
-		column I18n.t("gprod_names.externer_druck_bemerkungen"), sortable: :final_deadline do |p|
-			raw "<div class='deadline'>#{p.externer_druck_bemerkungen}</div>"
-		end
   end
 
+	filter :externer_druck
 	filter :final_deadline
 	filter :externer_druck_deadline
-	filter :buch_bindung_bezeichnung, as: :select, 
+	filter :buch_bindung_bezeichnung_not_eq, as: :select, 
 		collection: proc{ChoosableOption.instance.bindung_bezeichnung :all}, 
-		label: I18n.t('buecher_names.bindung_bezeichnung')
+		label: "Not #{I18n.t('buecher_names.bindung_bezeichnung')}"
 	filter :statusumschl_status_eq, as: :select, 
 		collection: proc {$UMSCHL_STATUS}, label: I18n.t('status_names.statusumschl')
 	filter :statusumschl_status_not_eq, as: :select, 

@@ -210,7 +210,7 @@ ActiveAdmin.register_page "Dashboard" do
 		end
 
 		if dep.include? 'ExternerDruck' or dep.include? 'Superadmin'
-			panel 'Aktuelle Externe Werke zum Druck' do
+			panel 'Aktuelle Externe Werke zum ExternenDruck' do
 				table do
 					pod = Projekt.ransack(final_deadline_gt: Date.yesterday).result.map
 					pod = pod.sort_by { |v| v.final_deadline }
@@ -221,20 +221,22 @@ ActiveAdmin.register_page "Dashboard" do
 					th I18n.t('buecher_names.isbn')
 					th I18n.t('gprod_names.projektname')
 					th I18n.t('gprod_names.prio')
-					th I18n.t('status_names.statusdruck')
+					th I18n.t('status_names.statusexternerdruck')
+					th I18n.t("gprod_names.externer_druck_verschickt")
+					th I18n.t("gprod_names.externer_druck_finished")
+					th I18n.t("gprod_names.externer_druck_deadline")
 					th I18n.t('gprod_names.final_deadline')
-					th I18n.t('gprod_names.druck_deadline')
-					th I18n.t('search_labels.lektor')
 					pod.each do |p|
-						next if p.statusdruck.status.eql? I18n.t('scopes_names.fertig_filter')
+						next if p.statusexternerdruck.status.eql? I18n.t('scopes_names.fertig_filter')
 						tr ''
 						td link_to(p.buch.isbn, "/admin/druck/#{p.id}") rescue td "<empty>"
 						td p.projektname
 						td tagged_prio(p)
-						td status_tag(p.statusdruck.status)
+						td status_tag(p.statusexternerdruck.status)
+						td p.externer_druck_verschickt
+						td p.externer_druck_finished
+						td p.externer_druck_deadline
 						td p.final_deadline
-						td p.druck_deadline
-						td p.buch.lektor.name rescue td "<empty>"
 					end
 				end
 			end

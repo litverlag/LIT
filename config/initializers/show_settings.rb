@@ -194,7 +194,7 @@ class ShowSettings
 			end
 
 			ActiveRecord::Base.connection.columns(table).each { |c|
-				return c.type.to_s if c.name.to_s =~ /#{field.to_s}/
+				return c.type.to_s if c.name.to_s == field.to_s
 			}
 		end
 	end

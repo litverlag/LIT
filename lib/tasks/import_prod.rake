@@ -209,6 +209,12 @@ namespace :gapi do
 		return Buch.where( "isbn like '%#{isbn}'" ).first
 	end
 
+	##
+	# Note that you must initialize COLOR_D, which is usually done with the
+	# "lib/tasks/gapi_get_color_vals.rb" script.
+	#
+	# Note also that no error is generated if you dont initialize this global
+	# variable.
 	def color_from(row, dict, rowname, abteil, status, table, logger)
 		color = $COLOR_D[ $COLORS[row-1][dict[rowname]-1]] rescue nil
 
@@ -560,6 +566,17 @@ namespace :gapi do
 	def rake_ext_druck_table(table)
 		logger = Logger.new('log/development_rake.log')
 		h = get_col_from_title(table)
+
+		# Needed for color_from function.
+		$COLORS = nil
+		$COLOR_D = nil
+		load 'lib/tasks/gapi_get_color_vals.rb'
+		if $COLORS.nil? or $COLOR_D.nil?
+			puts "Fatal error, could not get Color values from the ./gapi_get_color_vals.rb script."
+			puts "Exiting, this makes no sense without status information."
+			exit
+		end
+
 		(2..table.num_rows).each do |i| #skip first line: headers
 			buch = find_buch_by_shortisbn(table[i,h['ISBN']], logger) rescue nil
 			next if buch.nil?
@@ -579,8 +596,26 @@ namespace :gapi do
 			gprod.externer_druck_finished = frei_date unless frei_date.nil?
 
 			##
-			# What is status condition in extern table? Ask Meessen.
-			#gprod.statusexternerdruck = color_from(i, h, '', 
+			# Special color table returns nil if field is white
+			extdruck_color_table = {
+				'yellow'			=> I18n.t('scopes_names.verschickt_filter'),
+				'green'				=> I18n.t('scopes_names.fertig_filter'),}
+			stat = color_from(
+				i, h, 'grün fertig', StatusExternerDruck, gprod.statusexternerdruck,
+				extdruck_color_table, logger
+			)
+
+			if stat.status == I18n.t('scopes_names.fertig_filter')
+				gprod.statusexternerdruck = stat
+			else
+				stat = color_from(
+					i, h, 'an Extern', StatusExternerDruck, gprod.statusexternerdruck,
+					extdruck_color_table, logger
+				)
+				if stat.status == I18n.t('scopes_names.verschickt_filter')
+					gprod.statusexternerdruck = stat
+				end
+			end
 
 			gprod.save!
 		end
