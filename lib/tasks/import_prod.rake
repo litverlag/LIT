@@ -209,6 +209,12 @@ namespace :gapi do
 		return Buch.where( "isbn like '%#{isbn}'" ).first
 	end
 
+	##
+	# Note that you must initialize COLOR_D, which is usually done with the
+	# "lib/tasks/gapi_get_color_vals.rb" script.
+	#
+	# Note also that no error is generated if you dont initialize this global
+	# variable.
 	def color_from(row, dict, rowname, abteil, status, table, logger)
 		color = $COLOR_D[ $COLORS[row-1][dict[rowname]-1]] rescue nil
 
@@ -260,31 +266,31 @@ namespace :gapi do
 		lektorname = {
 			'hf'			=> 'Hopf',
 			'whf'			=> 'Hopf',
-			'ch'			=> 'Unknown_ch',
-			'hfch'		=> 'wtf_hfch',
+			'hfch'		=> 'Hopf',
 			'rai'			=> 'Rainer',
 			'rainer'  => 'Rainer',
-			'berlin'  => 'Berlin',
 			'rit'			=> 'Richter',
 			'bel'			=> 'Bellman',
-			'opa'			=> 'Unknown_opa',
+			'berlin'  => 'Lit Berlin',
 			'litb'		=> 'Lit Berlin',
-			'wien'		=> 'Wien',
+			'wien'		=> 'Lit Wien',
 			'wla'			=> 'Lit Wien',
+			'opa'			=> 'Unknown_opa',
+			'ch'			=> 'Unknown_ch',
 			'web'			=> 'Unknown_web' }
 		lektoremailkuerzel = {
 			'hf'  => 'hopf@lit-verlag.de',
 			'whf' => 'hopf@lit-verlag.de',
-			'ch'	=> 'ch@unknown.com',
 			'hfch'=> 'hopf@lit-verlag.de',
 			'rai' => 'rainer@lit-verlag.de',
 			'rit' => 'richter@lit-verlag.de',
 			'bel' => 'bellmann@lit-verlag.de',
-			'opa' => 'opa@unknown.com',
 			'litb'=> 'berlin@lit-verlag.de',
 			'wla' => 'wien@lit-verlag.de',
 			'wien'=> 'wien@lit-verlag.de',
-			'web' => 'web@unknown.com' }
+			'ch'	=> 'unknown_ch@invalid.com',
+			'opa' => 'unknown_opa@invalid.com',
+			'web' => 'unknown_web@invalid.com' }
 
 		(2..table.num_rows).each do |i| #skip first line: headers
 			begin
@@ -363,9 +369,9 @@ namespace :gapi do
 				logger.error "Could not undertstand 'Seiten' entry: col[#{i}]"
 			end
 
-			##															 ##
-			# Better Code layout beginns here #
-			##															 ##
+			##																 ##
+			# 'Better' Code layout beginns here #
+			##																 ##
 
 			bindung, extern = check_bindung_entry( table[i,h['Bi']], logger ) rescue nil
 			buch[:bindung_bezeichnung] = bindung unless bindung.nil?
@@ -526,6 +532,96 @@ namespace :gapi do
 	end # end rake_bi_table
 
 	##
+	# Rake task for the tit table.
+	def rake_tit_table(table)
+		logger = Logger.new('log/development_rake.log')
+		h = get_col_from_title(table)
+		(2..table.num_rows).each do |i| #skip first line: headers
+			buch = find_buch_by_shortisbn(table[i,h['ISBN']], logger) rescue nil
+			next if buch.nil?
+			gprod = buch.gprod
+			if gprod.nil?
+				logger.fatal "Buch without gprod -- isbn[#{buch['isbn']}]"
+				next
+			end
+
+			vers_date = check_date_entry(table[i,h['Versand']], logger) rescue nil
+			gprod.titelei_versand_datum_fuer_ueberpr = vers_date unless vers_date.nil?
+
+			korr_date = check_date_entry(table[i,h['Korrektur']], logger) rescue nil
+			gprod.titelei_korrektur_date = korr_date unless korr_date.nil?
+
+			frei_date = check_date_entry(table[i,h['Freigabe']], logger) rescue nil
+			gprod.titelei_freigabe_date = frei_date unless frei_date.nil?
+
+			gprod.titelei_bemerkungen = table[i,h['Bemerkungen II']] rescue nil
+
+			gprod.save!
+			buch.save!
+		end
+	end
+
+	##
+	# Rake task for mr. ExternerDruck
+	def rake_ext_druck_table(table)
+		logger = Logger.new('log/development_rake.log')
+		h = get_col_from_title(table)
+
+		# Needed for color_from function.
+		$COLORS = nil
+		$COLOR_D = nil
+		load 'lib/tasks/gapi_get_color_vals.rb'
+		if $COLORS.nil? or $COLOR_D.nil?
+			puts "Fatal error, could not get Color values from the ./gapi_get_color_vals.rb script."
+			puts "Exiting, this makes no sense without status information."
+			exit
+		end
+
+		(2..table.num_rows).each do |i| #skip first line: headers
+			buch = find_buch_by_shortisbn(table[i,h['ISBN']], logger) rescue nil
+			next if buch.nil?
+			gprod = buch.gprod
+			if gprod.nil?
+				logger.fatal "Buch without gprod -- isbn[#{buch['isbn']}]"
+				next
+			end
+
+			vers_date = check_date_entry(table[i,h['an Extern']], logger) rescue nil
+			gprod.externer_druck_verschickt = vers_date unless vers_date.nil?
+
+			korr_date = check_date_entry(table[i,h['fertig soll']], logger) rescue nil
+			gprod.externer_druck_deadline = korr_date unless korr_date.nil?
+
+			frei_date = check_date_entry(table[i,h['grün fertig']], logger) rescue nil
+			gprod.externer_druck_finished = frei_date unless frei_date.nil?
+
+			##
+			# Special color table returns nil if field is white
+			extdruck_color_table = {
+				'yellow'			=> I18n.t('scopes_names.verschickt_filter'),
+				'green'				=> I18n.t('scopes_names.fertig_filter'),}
+			stat = color_from(
+				i, h, 'grün fertig', StatusExternerDruck, gprod.statusexternerdruck,
+				extdruck_color_table, logger
+			)
+
+			if stat.status == I18n.t('scopes_names.fertig_filter')
+				gprod.statusexternerdruck = stat
+			else
+				stat = color_from(
+					i, h, 'an Extern', StatusExternerDruck, gprod.statusexternerdruck,
+					extdruck_color_table, logger
+				)
+				if stat.status == I18n.t('scopes_names.verschickt_filter')
+					gprod.statusexternerdruck = stat
+				end
+			end
+
+			gprod.save!
+		end
+	end
+
+	##
 	# A task importing ALL data from the google 'Prod' tables.
 	desc "Import GoogleSpreadsheet-'Produktionstabellen'-data."
 	task import: :environment do
@@ -560,7 +656,40 @@ namespace :gapi do
 		table = spreadsheet.worksheet_by_title('Bi')
 		rake_bi_table(table)
 
+		logger.fatal "--- Tit rake beginns ---"
+		$TABLE = 'Tit'
+		table = spreadsheet.worksheet_by_title('Tit')
+		rake_tit_table(table)
+
+		logger.fatal "--- ExternerDruck rake beginns ---"
+		$TABLE = 'Extern'
+		table = spreadsheet.worksheet_by_title('Extern')
+		rake_ext_druck_table(table)
+
 	end # end import-task
+
+	# Small task only for tit import.
+	desc "Tit table import test"
+	task import_tit: :environment do
+		session = GoogleDrive.saved_session( ".credentials/client_secret.json" )
+		spreadsheet = session.spreadsheet_by_key( "1YWWcaEzdkBLidiXkO-_3fWtne2kMgXuEnw6vcICboRc" )
+		logger = Logger.new('log/development_rake.log')
+		logger.fatal "--- Tit rake beginns ---"
+		$TABLE = 'Tit'
+		table = spreadsheet.worksheet_by_title('Tit')
+		rake_tit_table(table)
+	end
+	# Another one.. for externer_druck
+	desc "ExternerDruck table import test"
+	task import_extd: :environment do
+		session = GoogleDrive.saved_session( ".credentials/client_secret.json" )
+		spreadsheet = session.spreadsheet_by_key( "1YWWcaEzdkBLidiXkO-_3fWtne2kMgXuEnw6vcICboRc" )
+		logger = Logger.new('log/development_rake.log')
+		logger.fatal "--- ExternerDruck rake beginns ---"
+		$TABLE = 'Extern'
+		table = spreadsheet.worksheet_by_title('Extern')
+		rake_ext_druck_table(table)
+	end
 
 	# Unit-testing task.
 	desc "Import GoogleSpreadsheet-'Produktionstabellen'-data."

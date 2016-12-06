@@ -28,6 +28,12 @@ class Projekt < Gprod
 			@projekt = Gprod.find(id)
 		end
 
+		if @projekt.buch.nil?
+			@projekt.buch = Buch.create!
+		end
+
+		@projekt
+
 	end
 
 end

@@ -193,7 +193,11 @@ ActiveAdmin.setup do |config|
   #       menu.add label: "My Great Website", url: "http://www.mygreatwebsite.com", html_options: { target: :blank }
   #     end
   #   end
-
+	# config.namespace :admin do |admin|
+	# 	admin.build_menu :default do |menu|
+	# 		menu.add label: "Reihen", url: "/admin/reihen", html_options: { target: :blank }
+	# 	end
+	# end
   # == Download Links
   #
   # You can disable download links on resource listing pages,

@@ -76,15 +76,12 @@ module StatusLogic
     ################################
     # Satzproduktion true
     ################################
-
     if projekt.satzproduktion
 
       ################################
       # Changes concerning freigabe
       ################################
-
       if changedTo == true
-
         ##
         # If freigabe for project is set, project get visible for Satz
         if locationOfChange == "StatusFinal"
@@ -94,24 +91,20 @@ module StatusLogic
       ################################
       # Changes concerning freigabe
       ################################
-
       elsif changedTo.class == String
-
         # TODO
-
+				# ?? What to do??
       end
 
 
     ################################
     # Satzproduktion false
     ################################
-
     elsif not projekt.satzproduktion
 
       ################################
       # Changes concerning freigabe
       ################################
-
       if changedTo == true
 
         ##
@@ -135,96 +128,73 @@ module StatusLogic
         # If statusumschl freigabe is set, make project visible for Umschlag
         elsif locationOfChange == "StatusUmschl"
           changeStatusByLogic(projekt.statusumschl, $UMSCHL_STATUS[0])
-
         end
 
 
       ################################
       # Changes concerning status
       ################################
-
       elsif changedTo.class == String
 
         if locationOfChange == "StatusTitelei"
-
           # Nothing special happens, but Preps should see that Titelei finished
 
         elsif locationOfChange == "StatusPreps"
-
-          if projekt.muster_art == $MUSTER_ART[1]
-
+          if projekt.muster_art == $MUSTER_ART[1] # digital muster
             ##
             # If Preps started working on the project and a muster needs to be printed
             # project get visible for Druck with status that refers to the muster
             if changedTo == "bearbeitung"
               changeStatusByLogic(projekt.statusdruck, $DRUCK_STATUS[0])
-
             end
-
-          else
-
+          else # papier muster
             ##
             # If Preps started working on the project and no muster needs to be printed
             # poject gets visible for Druck
             if changedTo == "bearbeitung"
               changeStatusByLogic(projekt.statusdruck, $DRUCK_STATUS[1])
-
             end
           end
 
           ##
-          # If Preps finished, project is going to be a new task for Druck
+					# If Preps finished, project is going to be a new task for
+					# Druck/ExternerDruck
           if changedTo == "fertig"
             changeStatusByLogic(projekt.statusdruck, $DRUCK_STATUS[2])
-
+            changeStatusByLogic(projekt.statusexternerdruck, $EXTERNER_DRUCK_STATUS[0])
           end
 
         elsif locationOfChange == "StatusUmschl"
-
           ##
           # If Umschlag finished, project is going to be a new task for Druck
+					##
+					# XXX Isn't this change the same as the one above just to a later
+					# point in time? If so, thats bad.
           if changedTo == "fertig"
             changeStatusByLogic(projekt.statusdruck, $DRUCK_STATUS[0])
-
+            changeStatusByLogic(projekt.statusexternerdruck, $EXTERNER_DRUCK_STATUS[0])
           end
 
-
-        ########################
-
-        elsif locationOfChange == "StatusDruck"
-
+        elsif locationOfChange == "StatusDruck" or locationOfChange == "StatusExternerDruck"
           ##
           # If Druck finished, project is going to be a new task for Binderei
           if changedTo == "fertig"
             changeStatusByLogic(projekt.statusbinderei, $BINDEREI_STATUS[0])
-
-
           end
 
-        #########################
-
         elsif locationOfChange == "StatusBinderei"
-
           ##
           # If Binderei finished, project is done and is going to be a new task for Buchhaltung
           if changedTo == "fertig"
             changeStatusByLogic(projekt.statusfinal, $FINAL_STATUS[2])
             projekt.buchistfertig = true
-
             changeStatusByLogic(projekt.statusrg, $RG_STATUS[0])
-
-
           end
-        
 
         end
 
-      end
-
-    end
-    
-
-
+			end # end status change == String
+		end # end not projekt.satzproduktion
   end
 
 
@@ -286,29 +256,22 @@ module StatusLogic
   # Method used to instantiate all relevant project status
   
   def createStatus(projekt)
-    if not projekt.statusfinal = StatusFinal.create()
+		begin
+			projekt.statusfinal = StatusFinal.create!()
+			projekt.statusdruck = StatusDruck.create!()
+			projekt.statusexternerdruck = StatusExternerDruck.create!()
+			projekt.statustitelei = StatusTitelei.create!()
+			projekt.statussatz = StatusSatz.create!()
+			projekt.statuspreps = StatusPreps.create!()
+			projekt.statusoffsch = StatusOffsch.create!()
+			projekt.statusumschl = StatusUmschl.create!()
+			projekt.statusrg = StatusRg.create!()
+			projekt.statusbildpr = StatusBildpr.create!()
+			projekt.statusbinderei = StatusBinderei.create!()
+		rescue
       return false
-    elsif not projekt.statusdruck = StatusDruck.create()
-      return false
-    elsif not projekt.statustitelei = StatusTitelei.create()
-      return false
-    elsif not projekt.statussatz = StatusSatz.create()
-      return false
-    elsif not projekt.statuspreps = StatusPreps.create()
-      return false
-    elsif not projekt.statusoffsch = StatusOffsch.create()
-      return false
-    elsif not projekt.statusumschl = StatusUmschl.create()
-      return false
-    elsif not projekt.statusrg = StatusRg.create()
-      return false
-    elsif not projekt.statusbildpr = StatusBildpr.create()
-      return false
-    elsif not projekt.statusbinderei = StatusBinderei.create()
-      return false
-    else
-      return true
     end
+		return true
   end
 
 end

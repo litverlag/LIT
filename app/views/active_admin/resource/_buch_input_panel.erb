@@ -62,7 +62,9 @@
             </li>
             <li>
                 <%= buch_fields.label :r_code, "Reihe"%>
-                <%= buch_fields.text_field :r_code %>
+                <%# buch_fields.text_field :r_code %>
+								<%= select_tag("buch[#{:r_code}]",  
+										options_for_select(Reihe.rcodes),include_blank: true ) %>
             </li>
             <li>
                 <%= buch_fields.label :sw, "SW"%>

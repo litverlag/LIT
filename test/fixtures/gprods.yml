@@ -71,3 +71,9 @@ one:
   lektor_bemerkungen_public: Uninteressant, lol.
   lektor_bemerkungen_private: Oh hmh, ja.
   dateibue: 
+
+two:
+  id: 3334
+  projektname: Haifisch2
+  projekt_email_adresse: test2@somewhere.at
+  externer_druck: f
