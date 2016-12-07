@@ -50,6 +50,7 @@ class ApplicationController < ActionController::Base
 		# Another helper to determine if our data includes entry.
 		def need_to_update?(entry, data)
 			need = false
+			return false if data.nil?
 			data.flatten.each { |i| 
 				if i.class != String and not i.nil?
 					i.keys.each { |ii| 

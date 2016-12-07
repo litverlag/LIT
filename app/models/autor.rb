@@ -21,6 +21,10 @@ class Autor < ActiveRecord::Base
     "#{self.anrede} #{self.vorname} #{self.name}"
   end
 
+	def select_string
+		"#{name}, #{vorname} (#{anrede})"
+	end
+
 	##
 	# Validations..
 	validates :email, format: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i, 

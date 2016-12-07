@@ -56,11 +56,12 @@ de:
       user_create: "Benutzer erfolgreich erstellt"
       user_update: "Benutzer erfolgreich überarbeitet"
       new_project: "Projekt erfolgreich erstellt"
+      author_create: 'Autor erfolgreich erstellt.'
+      author_update: 'Autor erfolgreich überarbeitet.'
     revised_failure:
       new_project_error: "Nur Lektoren können neue Projekte erstellen"
       user_update: "Überarbeiten des Users gescheitert"
       new_project_invalid: 'Einige eingaben sind falsch, überprüfen sie ihre Eingaben.'
-
     is_not_a_number: "Bitte tragen Sie eine Zahl ein"
 
   gprod_names:

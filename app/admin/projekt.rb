@@ -76,7 +76,7 @@ ActiveAdmin.register Projekt do
 				i == I18n.t('um_names.reihe')
 			}
 			@array_of_papier_bezeichungen = I18n.t('paper_names').values
-			@array_of_vier_farb = ChoosableOption.instance.vier_farb :all # wtf is vier_farb anyway
+			@array_of_vier_farb = ChoosableOption.instance.vier_farb :all # wtf is vier_farb
 
 
 			@button_text_add = I18n.t 'buttons.author_new'
