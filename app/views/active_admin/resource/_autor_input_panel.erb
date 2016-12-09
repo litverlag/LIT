@@ -10,8 +10,10 @@
 	<ul>
 		<%= form_for @projekt, url: used_url, remote: true do |projekt_form| %>
 
+			<p>Aktueller Autor des Projektes</p>
+			<%= @projekt.autor.fullname rescue '-' %>
 			<%= projekt_form.label :autor_id, "Link Autor"%>
-			<%= projekt_form.select :autor_id, Autor.all.collect{|a| [a.name, a.id]}, include_blank: true %>
+			<%= projekt_form.select :autor_id, Autor.sorted_name_mapping, include_blank: true %>
 
 <!--
 			<%= fields_for :autor, @projekt.autor do |autor_fields| %>
@@ -83,12 +85,13 @@
 -->
 
 
-			<% if not @projekt.autor %>
+			<%# if not @projekt.autor %>
 					<% #projekt_form.submit "#{@button_text_asso}" %>
-					<%= projekt_form.submit "#{@button_text_add}" %>
-			<% else %>
-					<%= projekt_form.submit "#{@button_text_edit}" %>
-			<% end %>
+					<%# projekt_form.submit "#{@button_text_add}" %>
+			<%# else %>
+					<%# projekt_form.submit "#{@button_text_edit}" %>
+			<%# end %>
+			<%= projekt_form.submit "#{@button_text_edit}" %>
 
 
 		<% end %>

@@ -25,6 +25,12 @@ class Autor < ActiveRecord::Base
 		"#{name}, #{vorname} (#{anrede})"
 	end
 
+	def self.sorted_name_mapping
+		self.all.select{|a| a if not (a.name.nil? or a.vorname.nil?)}\
+			.sort_by{|a| a.name}\
+				.collect{|a| [a.select_string, a.id]}
+	end
+
 	##
 	# Validations..
 	validates :email, format: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i, 
