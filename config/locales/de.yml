@@ -135,6 +135,7 @@ de:
     umschlag_schutzumschlag: "Schutzumschlag?"
     umschlag_umschlagsbild: "Umschlagsbild?"
     zum_druck: "zum Druck"
+    klappentextinfo: 'Klappentextinfo'
 
   buecher_names:
     name: "Name"

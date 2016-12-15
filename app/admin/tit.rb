@@ -85,9 +85,11 @@ ActiveAdmin.register Tit do
 		column I18n.t("status_names.statustitelei") do |p|
 			status_tag(p.statustitelei.status)
 		end
-    column :projektname
+		column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
+			link_to(p.projektname, "/admin/tits/#{p.id}")
+		end
 		column I18n.t("buecher_names.isbn") do |p|
-			p.buch.isbn unless p.buch.nil?
+			raw "#{p.buch.isbn.gsub('-', '&#8209;')}" rescue '-'
 		end
 		column I18n.t("search_labels.lektor") do |p|
 			p.buch.lektor.name unless p.buch.lektor.nil? unless p.buch.nil?
@@ -116,14 +118,10 @@ ActiveAdmin.register Tit do
 		column I18n.t("gprod_names.titelei_bemerkungen") do |p|
 			p.titelei_bemerkungen
 		end
-		column I18n.t("gprod_names.lektor_bemerkungen_public") do |p|
-			p.lektor_bemerkungen_public
-		end
 		column I18n.t("gprod_names.projekt_email_adresse"), 
 		 sortable: :projekt_email_adresse	do |p|
 			p.projekt_email_adresse
 		end
-    actions
   end
 
 	filter :buch_isbn_cont, as: :string, label: I18n.t('buecher_names.isbn')

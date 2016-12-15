@@ -419,13 +419,21 @@ namespace :gapi do
 																			 gprod.statustitelei,
 																			 general_color_table, logger)
 
-			# TODO: Oh my.. there is no class/status/anything for 'klappentexte'
-			#				Need to add this soon..
 			format_color = $COLOR_D[ $COLORS[i-1][h['Format']-1]] rescue nil
 			if ['green','brown','pink'].include? format_color
 				buch[:klappentext] = true
 			elsif ['dark green'].include? format_color
 				buch[:klappentext] = false
+			end
+			case format_color
+			when 'green', 'dark green'
+				gprod.klappentextinfo = 'fertig'
+			when 'brown'
+				gprod.klappentextinfo = 'in bearbeitung'
+			when 'pink'
+				gprod.klappentextinfo = 'verschickt'
+			when 'white', nil
+				gprod.klappentextinfo = 'unknown state'
 			end
 
 			#	TODO:	Same here ^
@@ -621,6 +629,24 @@ namespace :gapi do
 		end
 	end
 
+	def rake_klapptex_table(table)
+		logger = Logger.new('log/development_rake.log')
+		h = get_col_from_title(table)
+		(2..table.num_rows).each do |i| #skip first line: headers
+			buch = find_buch_by_shortisbn(table[i,h['ISBN']], logger) rescue nil
+			next if buch.nil?
+			gprod = buch.gprod
+			if gprod.nil?
+				logger.fatal "Buch without gprod -- isbn[#{buch['isbn']}]"
+				next
+			end
+
+			['angefordert', 'Eingang', 'Bemerkungen'].each do |headline|
+				gprod.klappentextinfo += "#{headline}: #{table[i,h[headline]].to_s}\n"
+			end
+		end
+	end
+
 	##
 	# A task importing ALL data from the google 'Prod' tables.
 	desc "Import GoogleSpreadsheet-'Produktionstabellen'-data."
@@ -665,6 +691,10 @@ namespace :gapi do
 		$TABLE = 'Extern'
 		table = spreadsheet.worksheet_by_title('Extern')
 		rake_ext_druck_table(table)
+
+		logger.fatal "--- Klappentexte rake beginns ---"
+		table = spreadsheet.worksheet_by_title('Klappentexte')
+		rake_klapptex_table(table)
 
 	end # end import-task
 

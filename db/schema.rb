@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161125094808) do
+ActiveRecord::Schema.define(version: 20161215124742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -243,6 +243,7 @@ ActiveRecord::Schema.define(version: 20161125094808) do
     t.date     "externer_druck_deadline"
     t.date     "externer_druck_finished"
     t.text     "externer_druck_bemerkungen"
+    t.text     "klappentextinfo"
   end
 
   create_table "lektoren", force: :cascade do |t|
