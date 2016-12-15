@@ -8,6 +8,9 @@ gem 'dbf'
 gem 'google_drive'
 gem 'rubyXL'
 
+# Onix, xml std for book information exchange
+gem 'onix'
+
 # ODT Report
 gem 'odf-report'
 
