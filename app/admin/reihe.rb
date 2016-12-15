@@ -105,7 +105,7 @@ ActiveAdmin.register Reihe do
 			#end
 
 			f.collection_select :autor_ids, 
-				Autor.all.select{|a| not a.name.empty?}.sort_by{|i| i.name}, 
+				Autor.all.select{|a| not a.name.empty? rescue false}.sort_by{|i| i.name}, 
 				:id, :select_string, {}, multiple: true, size: "50x10"
 
 			f.actions

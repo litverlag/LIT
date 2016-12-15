@@ -5,14 +5,12 @@
 	autocomplete_names();
 </script> 
 %>
-	<p>Erstellen sie einen neuen Autor oder fügen sie einen schon bestehenden Autor zu der Datenbank hinzu.</p>
-	<%# That ^ sounds wrong. %>
+	<%#<p>Erstellen sie einen neuen Autor oder fügen sie einen schon bestehenden Autor zu der Datenbank hinzu.</p> %>
+	<%# That ^ sounds wrong. It is wrong. Surprise.. %>
 	<ul>
 		<%= form_for @projekt, url: used_url, remote: true do |projekt_form| %>
 
-			<p>Aktueller Autor des Projektes</p>
-			<%= @projekt.autor.fullname rescue '-' %>
-			<%= projekt_form.label :autor_id, "Link Autor"%>
+			<%= projekt_form.label :autor_id, "Aktueller Autor des Projektes"%>
 			<%= projekt_form.select :autor_id, Autor.sorted_name_mapping, include_blank: true %>
 
 <!--
