@@ -66,8 +66,9 @@ de:
 
   gprod_names:
     auflage: "Auflage"
-    auflage_chef: "Auflage durch Chef"
-    auflage_lektor: "Auflage durch Lektors"
+    auflage_chef: "Freiexemplare"
+    auflage_lektor: "Verkaufsexemplare"
+    #auflage_hrsg: "Herrausgeberexemplare"
     bilder: "Bilder"
     bildpr_bemerkungen: "Bemerkungen Bildprüfung"
     bildpr_deadline: "SollF Bildpr"

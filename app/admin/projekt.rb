@@ -231,6 +231,16 @@ ActiveAdmin.register Projekt do
 		column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
 			link_to(p.projektname, "/admin/projekte/#{p.id}")
 		end
+		column I18n.t("buecher_names.isbn") do |p|
+			raw "#{p.buch.isbn.gsub('-', '&#8209;')}" rescue '-'
+		end
+		column I18n.t("gprod_names.auflage"), sortable: :auflage do |p|
+			if p.gesicherte_abnahme
+				raw "#{p.auflage} (#{p.gesicherte_abnahme})"
+			else
+				p.auflage
+			end
+		end
 		column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
 			##
 			# the raw method is used to surround the data with a div element of class='deadline'
@@ -239,6 +249,10 @@ ActiveAdmin.register Projekt do
 		end
 		column I18n.t("gprod_names.prio"), sortable: :prio do |p|
 			p.prio
+		end
+		column I18n.t("gprod_names.manusskript_eingang_date"), sortable:
+			:manusskript_eingang_date do |p|
+			p.manusskript_eingang_date
 		end
 		column I18n.t("buecher_names.r_code") do |p|
 			link_to(p.buch.reihen.first.r_code, "/admin/reihen/#{p.buch.reihen.first.id}") rescue "-"

@@ -131,6 +131,7 @@ namespace :gapi do
 		return tok
 	end
 
+	# Could have made those regexpressions less verbose..
 	def check_auflage_entry( entry, logger=nil )
 		return entry, nil if entry.class == Fixnum
 		match = /\s*?(\d+)\s*?\((\d+)\)/.match(entry)
@@ -138,8 +139,13 @@ namespace :gapi do
 			auflage = match[1].to_i
 			abnahme = match[2].to_i
 		else
-			match = /.*?(\d+)/.match(entry)
-			auflage = match[1].to_i unless match.nil?
+			match = /\s*\((\d+)\)\s*/.match(entry)
+			if match.nil?
+				match = /.*?(\d+)/.match(entry)
+				auflage = match[1].to_i unless match.nil?
+			else
+				abnahme = match[1].to_i unless match.nil?
+			end
 		end
 		if auflage.nil? and abnahme.nil?
 			logger.error "Unknown 'auflage': '#{entry}'" unless logger.nil?
@@ -377,7 +383,7 @@ namespace :gapi do
 			buch[:bindung_bezeichnung] = bindung unless bindung.nil?
 			gprod[:externer_druck] = extern unless extern.nil?
 
-			auflage, abnahme = check_auflage_entry( table[i,h['Auflage']].to_i, logger ) rescue nil
+			auflage, abnahme = check_auflage_entry( table[i,h['Auflage']], logger ) rescue nil
 			gprod[:auflage] = auflage unless auflage.nil?
 			gprod[:gesicherte_abnahme] = abnahme unless abnahme.nil?
 
@@ -788,7 +794,9 @@ namespace :gapi do
 				table = {
 					'123(32)'	=> [123,32],
 					'103(60)' => [103,60],
+					'103 (60)' => [103,60],
 					'100'			=> [100,nil],
+					'(100)'			=> [nil,100],
 					'149(1)'	=> [149,1],
 				}
 				table.to_enum.each do |key, value|
