@@ -39,14 +39,15 @@ end
 class Translator
 	attr_accessor :cols
 	def initialize
-		# if we use a column from buecher, we need to say '@projekt.buch.column'
+		# If we use a column from buecher, we need to say '@projekt.buch.column',
+		# thus we need to remember where we found the (hopefully correct) method.
 		self.cols = ['gprods', 'buecher'].map{|name|
 			[name, ActiveRecord::Base.connection.columns(name)]
 		}
 	end
 
 	def translate(code)
-		# find '=' signs that are used in if(conditions)
+		# Find '=' signs that are used in prg's if(conditions) --> '=='
 		m = /<<iif\((.*?),.*\)/.match code
 		code.gsub! m[1], m[1].gsub(/\=/, ' == ') unless m.nil?
 
