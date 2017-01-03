@@ -62,6 +62,9 @@ class Ability
       can [:read, :update], ExternerDruck
       can [:update], Druck
     end
+    if @departName.include?'BiblioErf'
+      can [:read, :update], BiblioErf
+    end
     if @departName.include?'Binderei'
       can [:read, :update], Bi
     end

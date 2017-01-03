@@ -30,6 +30,8 @@ class StatusOptionsAdapter
         $UMSCHL_STATUS
       when :statusexternerdruck
         $EXTERNER_DRUCK_STATUS
+			when :statusbiblioerf
+				$BIBLIO_ERF_STATUS
     end
   end
 end

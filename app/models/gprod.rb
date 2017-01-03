@@ -64,6 +64,8 @@ class Gprod < ActiveRecord::Base
   accepts_nested_attributes_for :statusdruck
   has_one :statusexternerdruck, class_name: StatusExternerDruck
   accepts_nested_attributes_for :statusexternerdruck
+  has_one :statusbiblioerf, class_name: StatusBiblioErf
+  accepts_nested_attributes_for :statusbiblioerf
   has_one :statustitelei, class_name: StatusTitelei
   accepts_nested_attributes_for :statustitelei
   has_one :statussatz, class_name: StatusSatz

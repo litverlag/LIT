@@ -88,6 +88,7 @@ de:
     externer_druck_deadline: "SollF externer Druck"
     externer_druck_finished: "Externer Druck fertig"
     externer_druck_bemerkungen: "Externer Druck Bemerkungen"
+    biblio_erf: "Bibliographische Erfassung"
     final_deadline: "SollF"
     gesicherte_abnahme: "Abnahme"
     kommentar_public: "öffentlicher Kommentar"
@@ -174,6 +175,8 @@ de:
     nstatusdruck: 'not statusdruck'
     statusexternerdruck: 'Externer Druck'
     nstatusexternerdruck: 'not Externer Druck'
+    statusbiblioerf: 'Bibliographische Erfassung'
+    nstatusbiblioerf: 'not Bibliographische Erfassung'
     statusfinal: 'Final'
     statusoffsch: 'Offsch'
     statuspreps: 'Preps'
