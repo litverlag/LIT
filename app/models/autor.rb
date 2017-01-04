@@ -33,8 +33,10 @@ class Autor < ActiveRecord::Base
 
 	##
 	# Validations..
-	validates :email, format: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i, 
-										allow_nil: true,
-										allow_blank: true
+	validates :email, format: {
+		with: /\A([\w+\-.]+@[a-z\d\-.]+(\.[a-z]+)*\.[a-z]+\s*)+\z/i,
+		message: "'%{value}' does not match our regexp",
+		allow_nil: true, allow_blank: true
+	}
 
  end
