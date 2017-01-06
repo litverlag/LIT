@@ -73,8 +73,9 @@ class Translator
     # call to the parser, when we encounter foxpro code
     m = /<%=(.*)%>/.match code
     unless m.nil?
-      fox_code = m[1]
-      code.gsub! fox_code parse(fox_code)
+      fox_code = m[1].dup
+      puts "[+] found codeblock: '''\n#{m[1]}\n'''"
+      code.gsub!(m[1], parse(fox_code))
     end
 
     code
@@ -90,43 +91,90 @@ class Translator
 
   def parse(s)
     tokens = fox_tokenize(s)
+
+    puts "[+] got token stream:"
+    tokens.each{|t|
+      puts " #{format("%10s", t.type)}\t->\t'#{t.str[0]}'"
+    }
+
     r = ''
     tokens.each {|t|
-      r += 
+      if t.type == :function
+        r += Fox.send t.str
+      end
     }
     r
   end
 
   # Produce usefully tokenized output for foxpro code.
+  # Returns a token stream (array).
   def fox_tokenize(s)
-    token = []
+    token_stream = []
+    offset = 0
     patterns = [
+      /(?<whitespace>\s+)/,
       /(?<keyword>iif)/,
-      /(?<id>[a-zA-Z_.]+(?!\())/,
+      /(?<string>".*?")/,
       /(?<function>[a-z]+(?=\())/,
-      /(?<separator>,)/,
+      /(?<id>[a-zA-Z_.]+(?!\())/,
+      /(?<operator>[-+*!\/])/,
+      /(?<separator>[,()])/,
       /(?<number>[0-9.]+)/,
     ]
+
+    while true do
+      token_string = nil
+
+      patterns.each{ |pat|
+        token_string = nil
+        match = pat.match s[offset .. -1]
+
+        # If group is not defined we didnt match and try the next pattern.
+        token_string = match[pat.names[0]] rescue next
+
+        # If we didnt match the immediately following token in the code..
+        next if match.offset(0)[0] != 0
+
+        # Get the Token and advance offset in the input string.
+        tok = Token.new
+        tok.str = token_string,
+        tok.type = pat.names[0]
+        token_stream << tok unless tok.type == 'whitespace'
+        break
+      }
+
+      break if offset == s.length
+      if token_string.nil?
+        raise RuntimeError,
+          "Could not tokenize whole expression: '#{s}'\n" + 
+          "\tfailed at offset/strlen #{offset}/#{s.length}\n" +
+          "\tlast tokens were: #{token_stream[-3..-1]}"
+      end
+      offset += token_string.length
+    end
+
+
+    token_stream
   end
 
   ##
-  # This class contains implementations of foxpro functions we need to
-  # translate.
+  # This class contains only translations of foxpro functions.
   class Fox
-  class << self
-    def iif(cond, opta, optb)
-      'if' + cond + 'then' + opta + 'else' + optb + 'end'
+    class << self
+      def iif(cond, opta, optb)
+        'if' + cond + 'then' + opta + 'else' + optb + 'end'
+      end
+      def str(s,len,wtf) ; '(' + s + ').to_s' end
+      def strtran(s,a,b) ; s.sub a,b end
+      def trim(s) ; s end # might be used to fix foxpro quirks
     end
-    def str(s,len,wtf) '(' + s + ').to_s' end
-    def strtran(s,a,b) s.sub a,b end
-    def trim(s) s end # might be used to fix foxpro quirks
-  end
-  end
-end
+  end # class Fox
+
+end # class Translator
 
 # Mini token class.
 class Token
   attr_accessor \
     :str,
-    :type,
+    :type
 end
