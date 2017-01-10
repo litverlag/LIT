@@ -35,24 +35,31 @@ task prg_to_erb: :environment do | t, args |
     code.each{ |line| fd.write line.chop + "\n" if line != "" }
   end
 
-end
+end # task end
 
 ##
 # The PrgToErb class translates Foxpro's .prg-templates to erb templates. We
 # use some db lookups to guess unknown columns.
 class PrgToErb
   attr_accessor :cols
+
   def initialize
+		## Why you ask?
     # If we use a column from buecher, we need to say '@projekt.buch.column',
     # thus we need to remember where we found the (hopefully correct) db entry.
     self.cols = {
       ''      => ActiveRecord::Base.connection.columns('gprods'),
       'buch.' =>  ActiveRecord::Base.connection.columns('buecher')
     }
-    # Token stream, will be filled with one foxpro-code-line.
-    self.tokens = []
+
+		# Token stream, will be filled with the tokens of one foxpro-code-line at a
+		# time, so no need to initialize.
+		@tokens = nil
   end
 
+	##
+	# Public API, call this with your foxpro-template-string as argument.
+	##
   def translate(code)
     # Find '=' signs that are used in prg's if(conditions) --> '=='
     m = /<<iif\((.*?),.*\)/.match code
@@ -77,57 +84,78 @@ class PrgToErb
     unless m.nil?
       fox_code = m[1].dup
       puts "[+] found codeblock: '''\n#{m[1]}\n'''"
-      self.tokens = fox_tokenize(fox_code)
+      @tokens = tokenize(fox_code)
       code.gsub!(m[1], parse())
     end
 
     code
   end
 
-  # Trying to find the equivalent entry in the new db to the old db entry.
-  # Note: hint should be e{cip, zeit, autoren, reihen}.
-  def find_id(hint, id)
-    # XXX some db entries dont exist yet.. lets get them first..
-    cols.each{ |prefix, entries|
-    }
-  end
-
-  # Depth first recursive parsing.
+  # Depth first recursive parsing. Uses the token-stream @tokens.
   def parse
     puts "[+] got token stream:"
 
     result = ''
-    i = 0
-    while i < tokens.length
-      t = tokens[i..i+3]
-      puts " #{format "%10s", t.type}\t->\t'#{t.str[0]}'"
+		curr = @tokens[0]
+    while curr
+			lookahead = @tokens[1]
+      puts " #{format "%10s", curr.type}\t->\t'#{curr.str[0]}'" # TODO why str[0] not str
 
-      case t.type
+      case curr.type
       when 'function'
-        # Get argument count.
-        argc = Fox.method(t.str[0]).arity
-        case argc
-        when 1 ; Fox.send(t.str[0], expr)
-        when 2 ; Fox.send(t.str[0], expr, expr)
-        when 3 ; Fox.send(t.str[0], expr, expr, expr)
+        # Get argument count, and pass accoring amount of foxpro expression.
+        case Fox.method(curr.str[0]).arity
+        when 1 then Fox.send(curr.str[0], expr)
+        when 2 then Fox.send(curr.str[0], expr, expr)
+        when 3 then Fox.send(curr.str[0], expr, expr, expr)
+				end
 
       when 'keyword'
         result += 'if'
 
       else
-        result += t.str[0]
-      end # case t.type
+        result += curr.str[0]
+      end # case curr.type
 
-      i += 1
-      next
+      curr = @tokens.next_tok
     end
 
     result
   end
 
+	##
+	# Get tokens from @tokens until get have a full foxpro expression
+	# Returns a string translated by the parse method.
+	def expr
+	end
+
+	##
+  # Trying to find the equivalent entry in the new db to the old db entry.
+  # Note: hint should be e{cip, zeit, autoren, reihen}.
+  def find_id(hint, id)
+    # XXX some db entries dont exist yet.. lets get them first..
+
+		# First try to be smart about that hint
+		case hint
+		when 'cip', 'zeit'
+		when 'autoren'
+		when 'reihen'
+		end
+
+		# Last resort is to iterate though our db entries and check for similar
+		# names
+		unless result
+			cols.each{ |prefix, entries|
+			}
+		end
+
+		result
+  end
+
+	##
   # Produce usefully tokenized output for foxpro code.
   # Returns a token stream (array).
-  def fox_tokenize(s)
+  def tokenize(s)
     token_stream = []
     offset = 0
     patterns = [
@@ -137,7 +165,8 @@ class PrgToErb
       /(?<function>[a-z]+(?=\())/,
       /(?<id>[a-zA-Z_.]+(?!\())/,
       /(?<operator>[-+*!\/])/,
-      /(?<separator>[,()])/,
+      /(?<separator>[,])/,
+      /(?<group>[()])/,
       /(?<number>[0-9.]+)/,
     ]
 
@@ -167,15 +196,15 @@ class PrgToErb
         raise RuntimeError,
           "Could not tokenize whole expression: '#{s}'\n" + 
           "\tfailed at offset/strlen #{offset}/#{s.length}\n" +
-          "\tlast tokens were: #{token_stream[-3..-1]}"
+          "\tlast @tokens were: #{token_stream[-3..-1]}"
       end
 
       # .. and advance offset in the input string.
       offset += token_string.length
     end
 
-
-    token_stream
+		# Return token array as stream object.
+    TokenStream.new(token_stream)
   end
 
   ##
@@ -214,3 +243,34 @@ class Token
     :str,
     :type
 end
+
+# Mini token stream class.
+class TokenStream
+	def initialize(array)
+		@data = array
+		@offset = 0
+	end
+
+	# istream
+	def <<(tok)
+		@data << tok
+	end
+	# ostream, alias to next_tok
+	def >>(tok)
+		tok = next_tok
+	end
+
+	# get next token
+	def next_tok
+		@offset += 1
+		#raise IndexError, "end of token stream" if @offset == @data.length
+		return nil if @offset == @data.length
+		@data[@offset-1]
+	end
+
+	# pass some methods on to the data array..
+	def length; @data.length end
+	# Note: no range checking
+	def [](n); @data[@offset+n] end
+end
+
