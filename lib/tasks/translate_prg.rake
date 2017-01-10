@@ -26,7 +26,7 @@ task prg_to_erb: :environment do | t, args |
   # TODO: some header, declaring the current @projekt
   header = "<% @projekt = .... %>\n"
 
-  t = Translator.new
+  t = PrgToErb.new
   code = code.map{|c| t.translate c }
 
   File.open("#{Rails.root}/#{ofile}", 'w') do |fd|
@@ -38,9 +38,9 @@ task prg_to_erb: :environment do | t, args |
 end
 
 ##
-# The Translator translates Foxpro's .prg-templates to erb templates.
-# We use some db lookups to guess unknown columns.
-class Translator
+# The PrgToErb class translates Foxpro's .prg-templates to erb templates. We
+# use some db lookups to guess unknown columns.
+class PrgToErb
   attr_accessor :cols
   def initialize
     # If we use a column from buecher, we need to say '@projekt.buch.column',
@@ -49,6 +49,8 @@ class Translator
       ''      => ActiveRecord::Base.connection.columns('gprods'),
       'buch.' =>  ActiveRecord::Base.connection.columns('buecher')
     }
+    # Token stream, will be filled with one foxpro-code-line.
+    self.tokens = []
   end
 
   def translate(code)
@@ -75,7 +77,8 @@ class Translator
     unless m.nil?
       fox_code = m[1].dup
       puts "[+] found codeblock: '''\n#{m[1]}\n'''"
-      code.gsub!(m[1], parse(fox_code))
+      self.tokens = fox_tokenize(fox_code)
+      code.gsub!(m[1], parse())
     end
 
     code
@@ -89,21 +92,37 @@ class Translator
     }
   end
 
-  def parse(s)
-    tokens = fox_tokenize(s)
-
+  # Depth first recursive parsing.
+  def parse
     puts "[+] got token stream:"
-    tokens.each{|t|
-      puts " #{format("%10s", t.type)}\t->\t'#{t.str[0]}'"
-    }
 
-    r = ''
-    tokens.each {|t|
-      if t.type == :function
-        r += Fox.send t.str
-      end
-    }
-    r
+    result = ''
+    i = 0
+    while i < tokens.length
+      t = tokens[i..i+3]
+      puts " #{format "%10s", t.type}\t->\t'#{t.str[0]}'"
+
+      case t.type
+      when 'function'
+        # Get argument count.
+        argc = Fox.method(t.str[0]).arity
+        case argc
+        when 1 ; Fox.send(t.str[0], expr)
+        when 2 ; Fox.send(t.str[0], expr, expr)
+        when 3 ; Fox.send(t.str[0], expr, expr, expr)
+
+      when 'keyword'
+        result += 'if'
+
+      else
+        result += t.str[0]
+      end # case t.type
+
+      i += 1
+      next
+    end
+
+    result
   end
 
   # Produce usefully tokenized output for foxpro code.
@@ -135,7 +154,7 @@ class Translator
         # If we didnt match the immediately following token in the code..
         next if match.offset(0)[0] != 0
 
-        # Get the Token and advance offset in the input string.
+        # Get the Token ..
         tok = Token.new
         tok.str = token_string,
         tok.type = pat.names[0]
@@ -150,6 +169,8 @@ class Translator
           "\tfailed at offset/strlen #{offset}/#{s.length}\n" +
           "\tlast tokens were: #{token_stream[-3..-1]}"
       end
+
+      # .. and advance offset in the input string.
       offset += token_string.length
     end
 
@@ -164,13 +185,28 @@ class Translator
       def iif(cond, opta, optb)
         'if' + cond + 'then' + opta + 'else' + optb + 'end'
       end
-      def str(s,len,wtf) ; '(' + s + ').to_s' end
-      def strtran(s,a,b) ; s.sub a,b end
-      def trim(s) ; s end # might be used to fix foxpro quirks
+      def str(s,len,wtf) 
+        '(' + s + ').to_s'
+      end
+      def strtran(s,a,b) 
+        s.sub a,b
+      end
+      def empty(s)
+        s + ".empty?"
+      end
+
+      # dummys
+      def trim(s)
+        s
+      end
+      def uc(s)
+        s
+      end
+
     end
   end # class Fox
 
-end # class Translator
+end # class PrgToErb
 
 # Mini token class.
 class Token
