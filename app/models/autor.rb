@@ -12,14 +12,24 @@ class Autor < ActiveRecord::Base
   has_and_belongs_to_many :buecher
   accepts_nested_attributes_for :buecher
 
-  has_one :gprods
-  accepts_nested_attributes_for :gprods
+  has_one :gprod
+  accepts_nested_attributes_for :gprod
 
 ##
 # Returns the title, surname and name of the author as one string.
   def fullname
     "#{self.anrede} #{self.vorname} #{self.name}"
   end
+
+	def select_string
+		"#{name}, #{vorname} (#{anrede})"
+	end
+
+	def self.sorted_name_mapping
+		self.all.select{|a| a if not (a.name.nil? or a.vorname.nil?)}\
+			.sort_by{|a| a.name}\
+				.collect{|a| [a.select_string, a.id]}
+	end
 
 	##
 	# Validations..

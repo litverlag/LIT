@@ -4,22 +4,28 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: 
-    email: 'admin@example.com'
-    encrypted_password: '$2a$10$51JG9rOQhw57YQoyAHsxQOT8eExBD6BSgLEUcP/P1W3vj6mip3k9i'
-
-two: 
-    email: 'bellmann@lit-verlag.de'
-    #encrypted_password: <%= Devise::Encryptor.digest(AdminUser, 'ilikewine1') %>
-    encrypted_password: "$2a$04$5oqMHePrUx8qR6ubdJiQRuufZGWQRYwMYrvg05LCrfyUMWGM2FKQi"
-    vorname: Bellissimo
-    nachname: Bellum
-    sign_in_count: 1
 ---
-admin_users_002:
-  id: 980190959
-  email: admin2@example.com
-  encrypted_password: "$2a$10$51JG9rOQhw57YQoyAHsxQOT8eExBD6BSgLEUcP/P1W3vj6mip3k9i"
+bellmann:
+  id: 298486374
+  email: bellmann@lit-verlag.de
+  encrypted_password: "$2a$04$J3VsqAn8K//XQ8sqXa3Rku4PJmZPAiLobuur4jW.nV63Gq7lM2WFy"
+  vorname: Bellissimo
+  nachname: Bellum
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 1
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  lektor_id: 123
+  created_at: '2016-10-18 11:27:57'
+  updated_at: '2016-10-18 11:27:57'
+admin:
+  id: 980190962
+  email: admin@example.com
+  encrypted_password: "$2a$04$J3VsqAn8K//XQ8sqXa3Rku4PJmZPAiLobuur4jW.nV63Gq7lM2WFy"
   vorname: ''
   nachname: ''
   reset_password_token: 
@@ -31,23 +37,12 @@ admin_users_002:
   current_sign_in_ip: 
   last_sign_in_ip: 
   lektor_id: 
-  created_at: '2016-09-02 12:53:17'
-  updated_at: '2016-09-02 12:53:17'
-
-admin_users_001:
-  id: 298486377
-  email: bellmann2@lit-verlag.de
-  encrypted_password: "$2a$04$C1lFZUSOStk9Kb6x4Hv7nO8J0En23z.3/Djzs/NiLSFzWxGg3vVvW"
-  vorname: Bellissimo
-  nachname: Bellum
-  reset_password_token: 
-  reset_password_sent_at: 
-  remember_created_at: 
-  sign_in_count: 1
-  current_sign_in_at: 
-  last_sign_in_at: 
-  current_sign_in_ip: 
-  last_sign_in_ip: 
-  lektor_id: 
-  created_at: '2016-09-02 12:53:17'
-  updated_at: '2016-09-02 12:53:17'
+  created_at: '2016-10-18 11:27:57'
+  updated_at: '2016-10-18 11:27:57'
+richter:
+  id: 312
+  email: "richter@lit-verlag.de"
+  vorname: Richter
+  nachname: Extrem
+  encrypted_password: <%= AdminUser.new.send(:password_digest, 'password') %>
+  sign_in_count: 541

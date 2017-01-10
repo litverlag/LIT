@@ -59,13 +59,14 @@ function datepicker_format(){
 
 
 //Autocomplete für die Autorennamen beim Erstellen von Projekten
-function autocomplete_names(){$( "#name_autocomplete" ).autocomplete({
-  <% autor_name_list = []%>
-  <% Autor.all.each do |autor| %>
-  <% autor_name_list.append autor.name %>
-  <%end%>
-  source: <%= raw autor_name_list.as_json %>
-});
+function autocomplete_names(){
+	<% autor_name_list = [] %>
+	<% Autor.all.each do |autor| %>
+	<% autor_name_list.append autor.name %>
+	<% end %>
+	$("#name_autocomplete").autocomplete({
+		source: <%= raw autor_name_list.as_json %>
+	});
 };
 
 

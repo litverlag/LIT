@@ -67,8 +67,15 @@ group :development do
   
   #used to generate graphic model documentation
   gem 'railroady'
-
 end
+
+#group :production do
+  #gem 'byebug'
+  #gem 'spring', '~> 1.4.0'
+  #gem 'cancan'
+  #gem 'cancancan'
+  #gem 'railroady'
+#end
 
 group :test do
   gem 'byebug'

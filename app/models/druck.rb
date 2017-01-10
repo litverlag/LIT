@@ -4,7 +4,7 @@
 class Druck < Gprod
   
   def self.default_scope
-    Preps.joins("INNER JOIN status_druck on status_druck.gprod_id = gprods.id")\
+    Druck.joins("INNER JOIN status_druck on status_druck.gprod_id = gprods.id")\
     .where("status_druck.status IS NOT NULL")
   end
   

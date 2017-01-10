@@ -1,10 +1,8 @@
 ActiveAdmin.register Reihe do
+  menu label: 'Reihen'
+  menu priority:99
   filter :name
   filter :r_code
-
-  menu false
-  #menu priority:99
-  menu
   
  
   
@@ -37,6 +35,11 @@ ActiveAdmin.register Reihe do
 
       send_data report.generate, type: 'application/vnd.oasis.opendocument.text', disposition: 'attachment', filename: 'report.odt'
     end
+
+		#def edit
+		#	@reihe = Reihe.where(id: permitted_params[:id]).first
+		#end
+
   end
   
   show do
@@ -52,7 +55,11 @@ ActiveAdmin.register Reihe do
           b.name
         end
         column "Titel" do |b|
-          link_to b.titel1, admin_buch_path(b)
+					unless b.gprod_id.nil?
+						link_to(b.titel1, "/admin/projekte/#{b.gprod_id}")
+					else
+						b.titel1
+					end
         end
         column "ISBN" do |b|
           b.isbn
@@ -76,18 +83,32 @@ ActiveAdmin.register Reihe do
         f.input :r_code
       end
       
-      f.inputs 'Bände' do
-        f.has_many :reihen_zuordnungen, heading: nil, allow_destroy: true, new_record: 'Band hinzufügen' do |a|
-          a.input :buch_id, :label => 'Titel', :input_html => { :class => 'buch-input'}
-        end
-      end
-      
-      f.inputs 'Herausgeber' do
-        f.has_many :reihen_hg_zuordnungen, heading: nil, allow_destroy: true, new_record: 'Herausgeber hinzufügen' do |a|
-          a.input :autor_id, :label => 'Name', :input_html => { :class => 'autor-input'}
-        end
-      end
-      f.actions
+			#f.inputs 'Bände' do
+			#  f.has_many :buecher, heading: nil, allow_destroy: true, new_record: 'Band hinzufügen' do |a|
+			#    a.input :titel1, :label => 'Titel', :input_html => { :class => 'buch-input'}
+			#  end
+			#end
+				
+			#f.inputs 'Herausgeber' do
+			#  f.has_many :autoren, heading: nil, allow_destroy: true, new_record: 'Herausgeber hinzufügen' do |a|
+			#		a.input :id, :label => 'id', as: :select, 
+			#			collection: Autor.all.select{|a| not a.name.empty?}.map{|a| "#{a.id}: #{a.name}"}.sort, 
+			#			:input_html => { :class => 'autor-input'}
+			#  end
+			#end
+			#f.actions
+
+			#f.inputs 'hrsgs' do
+			#	f.has_many :autoren, allow_destroy: true, new_record: 'hrst hinzfg' do |a|
+			#		a.input :name
+			#	end
+			#end
+
+			f.collection_select :autor_ids, 
+				Autor.all.select{|a| not a.name.empty? rescue false}.sort_by{|i| i.name}, 
+				:id, :select_string, {}, multiple: true, size: "50x10"
+
+			f.actions
     end
 
 end

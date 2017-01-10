@@ -44,7 +44,13 @@ ActiveAdmin.register Bi do
       respond_to do |format|
         format.js{
 
-          @projekt.update permitted_params[:gprod]
+					begin
+						@projekt.update! permitted_params[:gprod]
+					rescue ActiveRecord::RecordInvalid
+						redirect_to "/admin/bis/#{@projekt.id}/edit"
+						flash[:alert] = I18n.t 'flash_notice.revised_failure.new_project_invalid'
+						return
+					end
 
           #Part to update the status
           if permitted_params[:status]
@@ -66,8 +72,9 @@ ActiveAdmin.register Bi do
 
   index title: 'Binderei' do
     column('Status') {|bi| status_tag(bi.statusbinderei.status)}
-    column :projektname
-    actions
+		column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
+			link_to(p.projektname, "/admin/bis/#{p.id}")
+		end
   end
 
   show do

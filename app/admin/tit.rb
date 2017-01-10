@@ -1,7 +1,7 @@
 ActiveAdmin.register Tit do
   menu label: 'Titelei'
   #menu priority: 6
-  config.filters = false
+  config.filters = true
   actions :index, :show, :edit, :update
 
   #scopes -> filter the viewable project in the table
@@ -46,11 +46,17 @@ ActiveAdmin.register Tit do
     def update
       puts "______________TITLEI______UPDATE___________________-"
       @projekt = Gprod.find(permitted_params[:id])
+			begin
+				@projekt.update!(permitted_params[:gprod])
+			rescue ActiveRecord::RecordInvalid
+				redirect_to "/admin/tits/#{@projekt.id}/edit"
+				flash[:alert] = I18n.t 'flash_notice.revised_failure.new_project_invalid'
+				return
+			end
 
       respond_to do |format|
         format.js{
 
-          @projekt.update(permitted_params[:gprod])
           #Part to update the status
           if permitted_params[:status]
             permitted_params[:status].each do  |status_key,status_value|
@@ -75,11 +81,58 @@ ActiveAdmin.register Tit do
   end
 
 
-  index title: 'Titelei', download_links: [:odt] do
-    column('Status') {|tit| status_tag tit.statustitelei.status}
-    column :projektname
-    actions
+  index title: I18n.t("gprod_names.titelei_titelei"), download_links: [:odt, :csv] do
+		column I18n.t("status_names.statustitelei") do |p|
+			status_tag(p.statustitelei.status)
+		end
+		column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
+			link_to(p.projektname, "/admin/tits/#{p.id}")
+		end
+		column I18n.t("buecher_names.isbn") do |p|
+			raw "#{p.buch.isbn.gsub('-', '&#8209;')}" rescue '-'
+		end
+		column I18n.t("search_labels.lektor") do |p|
+			p.buch.lektor.name unless p.buch.lektor.nil? unless p.buch.nil?
+		end
+		column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
+			raw "<div class='deadline'>#{p.final_deadline}</div>"
+		end
+		column I18n.t("gprod_names.titelei_deadline"), sortable: :titelei_deadline do |p|
+			raw "<div class='deadline'>#{p.titelei_deadline}</div>"
+		end
+		column I18n.t("gprod_names.titelei_versand_datum_fuer_ueberpr"), 
+			sortable: :titelei_versand_datum_fuer_ueberpr do |p|
+			p.titelei_versand_datum_fuer_ueberpr
+		end
+		column I18n.t("gprod_names.titelei_korrektur_date"), 
+		 sortable: :titelei_korrektur_date	do |p|
+			p.titelei_korrektur_date
+		end
+		column I18n.t("gprod_names.titelei_freigabe_date"), 
+		 sortable: :titelei_freigabe_date	do |p|
+			p.titelei_freigabe_date
+		end
+		column I18n.t("gprod_names.titelei_zusaetze") do |p|
+			p.titelei_zusaetze
+		end
+		column I18n.t("gprod_names.titelei_bemerkungen") do |p|
+			p.titelei_bemerkungen
+		end
+		column I18n.t("gprod_names.projekt_email_adresse"), 
+		 sortable: :projekt_email_adresse	do |p|
+			p.projekt_email_adresse
+		end
   end
+
+	filter :buch_isbn_cont, as: :string, label: I18n.t('buecher_names.isbn')
+  filter :projekt_email_adresse
+	filter :projektname
+	filter :titelei_bemerkungen
+	filter :lektor_bemerkungen_public
+	filter :final_deadline
+	filter :titelei_deadline
+	filter :satz_deadline
+	filter :final_deadline_not_null, as: :string, label: 'sollf present'
 
   show do
     render partial: "show_view"

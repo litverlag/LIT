@@ -16,6 +16,13 @@ module GlobalVariables
 					  I18n.t("scopes_names.bearbeitung_filter"), 
 					  I18n.t("scopes_names.fertig_filter"), 
 					  I18n.t("scopes_names.problem_filter")]
+		#Externer Druck
+    	$EXTERNER_DRUCK_STATUS = [
+						I18n.t("scopes_names.neu_filter"), 
+					  I18n.t("scopes_names.bearbeitung_filter"), 
+						I18n.t("scopes_names.verschickt_filter"), 
+					  I18n.t("scopes_names.fertig_filter"), 
+					  I18n.t("scopes_names.problem_filter")]
     #Titelei
     	$TITELEI_STATUS = [I18n.t("scopes_names.neu_filter"), 
 						I18n.t("scopes_names.bearbeitung_filter"), 

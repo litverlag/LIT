@@ -31,10 +31,9 @@ class Gprod < ActiveRecord::Base
     scope :alle_filter, -> {}
     status_names.length.times do |i|
       scope (status_names[i]), -> {
-				#this SQL interrogation is possible only using the INNER JOIN in
-				#default scope (in every Abteilung)
-
-        Gprod.where("#{table}.status = ?", status_strings[i])
+				# This SQL interrogation is possible only using the INNER JOIN in
+				# default scope (in every Abteilung).
+				Gprod.where("#{table}.status = ?", status_strings[i])
       }
     end
   end
@@ -45,11 +44,10 @@ class Gprod < ActiveRecord::Base
   scope_maker([:neu_filter, :bearbeitung_filter, :fertig_filter, :problem_filter], "status_final", StatusOptionsAdapter.option(:statusfinal))
 
 
-
   #validates :projektname, :projekt_email_adresse, presence: true
 	validates :projekt_email_adresse, format: { 
-		with: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i, 
-		message: "'%{value}' does not match; %{attribute}; %{model}", 
+		with: /\A([\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\s*)+\z/i, 
+		message: "'%{value}' does not match",
 		allow_nil: true, allow_blank: true 
 	}
 	validates :projektname, 
@@ -64,6 +62,8 @@ class Gprod < ActiveRecord::Base
   accepts_nested_attributes_for :statusfinal
   has_one :statusdruck, class_name: StatusDruck
   accepts_nested_attributes_for :statusdruck
+  has_one :statusexternerdruck, class_name: StatusExternerDruck
+  accepts_nested_attributes_for :statusexternerdruck
   has_one :statustitelei, class_name: StatusTitelei
   accepts_nested_attributes_for :statustitelei
   has_one :statussatz, class_name: StatusSatz
@@ -80,7 +80,6 @@ class Gprod < ActiveRecord::Base
   accepts_nested_attributes_for :statusrg
   has_one :statusbinderei, class_name: StatusBinderei
   accepts_nested_attributes_for :statusbinderei
-
 
 
 end

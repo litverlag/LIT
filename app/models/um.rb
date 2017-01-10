@@ -12,5 +12,4 @@ class Um < Gprod
   # array (see models/concerns/global_variables) + table name + symbol for
   # StatusOptionsAdapter
   scope_maker([:neu_filter, :bearbeitung_filter, :verschickt_filter, :fertig_filter, :problem_filter], "status_umschl", StatusOptionsAdapter.option(:statusumschl)) 
-
 end

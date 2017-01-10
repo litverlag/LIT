@@ -86,12 +86,13 @@ bower.json
 # ctags
 tags
 
-# 
+#
 .credentials
 .credentials/*
-db/development.sqlite
-*.swo
-Gemfile.lock
-db/dbfs
+db/development.sqlite3
 config/database.yml
 database.yml
+development.sqlite3
+Gemfile.lock
+db/dbfs
+*.swo

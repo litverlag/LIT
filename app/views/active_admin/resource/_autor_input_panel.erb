@@ -1,86 +1,99 @@
 <%@fields_for_autor = [:name,:vorname,:anrede,:email,:str,:ort,:plz,:tel,:fax,:institut,:demail,:dstr,:dort,:dplz,:dtel,:dfax]  %>
 <fieldset class="autor"><legend><span><%= "Autor zu #{@projekt.projektname} bearbeiten"%></span></legend>
-  <p>Erstellen sie einen neuen Autor oder fügen sie einen schon bestehenden Autor zu der Datenbank hinzu.</p>
-  <ul>
-    <%= form_for @projekt, url: used_url, remote: true do |projekt_form| %>
+<%# Well it does what it says, but not dynamically, thus its crap.
+<script type="text/javascript">
+	autocomplete_names();
+</script> 
+%>
+	<%#<p>Erstellen sie einen neuen Autor oder fügen sie einen schon bestehenden Autor zu der Datenbank hinzu.</p> %>
+	<%# That ^ sounds wrong. It is wrong. Surprise.. %>
+	<ul>
+		<%= form_for @projekt, url: used_url, remote: true do |projekt_form| %>
 
-        <%= fields_for :autor, @projekt.autor do |autor_fields| %>
-            <li>
-              <%= autor_fields.label :name, "Nachname"%>
-              <%= autor_fields.text_field :name, id: 'name_autocomplete' %>
-            </li>
-            <li>
-              <%= autor_fields.label :vorname, "Vorname"%>
-              <%= autor_fields.text_field :vorname %>
-            </li>
-            <li>
-              <%= autor_fields.label :anrede, "Anrede"%>
-              <%= autor_fields.text_field :anrede %>
-            </li>
-            <li>
-              <%= autor_fields.label :email, "email"%>
-              <%= autor_fields.text_field :email %>
-            </li>
-            <li>
-              <%= autor_fields.label :str, "str"%>
-              <%= autor_fields.text_field :str %>
-            </li>
-            <li>
-              <%= autor_fields.label :ort, "ort"%>
-              <%= autor_fields.text_field :ort %>
-            </li>
-            <li>
-              <%= autor_fields.label :plz, "plz"%>
-              <%= autor_fields.text_field :plz %>
-            </li>
-            <li>
-              <%= autor_fields.label :tel, "tel"%>
-              <%= autor_fields.text_field :tel %>
-            </li>
-            <li>
-              <%= autor_fields.label :fax, "fax"%>
-              <%= autor_fields.text_field :fax %>
-            </li>
-            <li>
-              <%= autor_fields.label :institut, "institut"%>
-              <%= autor_fields.text_field :institut %>
-            </li>
-            <li>
-              <%= autor_fields.label :demail, "demail"%>
-              <%= autor_fields.text_field :demail %>
-            </li>
-            <li>
-              <%= autor_fields.label :dstr, "dstr"%>
-              <%= autor_fields.text_field :dstr %>
-            </li>
-            <li>
-              <%= autor_fields.label :dort, "dort"%>
-              <%= autor_fields.text_field :dort %>
-            </li>
-            <li>
-              <%= autor_fields.label :dplz, "dplz"%>
-              <%= autor_fields.text_field :dplz %>
-            </li>
-            <li>
-              <%= autor_fields.label :dtel, "dtel"%>
-              <%= autor_fields.text_field :dtel %>
-            </li>
-            <li>
-              <%= autor_fields.label :dfax, "dfax"%>
-              <%= autor_fields.text_field :dfax %>
-            </li>
-        <% end %>
+			<%= projekt_form.label :autor_id, "Aktueller Autor des Projektes"%>
+			<%= projekt_form.select :autor_id, Autor.sorted_name_mapping, include_blank: true %>
 
-        <% if not @projekt.autor %>
-            <% #projekt_form.submit "#{@button_text_asso}" %>
-            <%= projekt_form.submit "#{@button_text_add}" %>
-        <% else %>
-            <%= projekt_form.submit "#{@button_text_edit}" %>
-        <% end %>
+<!--
+			<%= fields_for :autor, @projekt.autor do |autor_fields| %>
+					<li>
+						<%= autor_fields.label :name, "Nachname"%>
+						<%= autor_fields.text_field :name, id: 'name_autocomplete' %>
+					</li>
+					<li>
+						<%= autor_fields.label :vorname, "Vorname"%>
+						<%= autor_fields.text_field :vorname %>
+					</li>
+					<li>
+						<%= autor_fields.label :anrede, "Anrede"%>
+						<%= autor_fields.text_field :anrede %>
+					</li>
+					<li>
+						<%= autor_fields.label :email, "email"%>
+						<%= autor_fields.text_field :email %>
+					</li>
+					<li>
+						<%= autor_fields.label :str, "str"%>
+						<%= autor_fields.text_field :str %>
+					</li>
+					<li>
+						<%= autor_fields.label :ort, "ort"%>
+						<%= autor_fields.text_field :ort %>
+					</li>
+					<li>
+						<%= autor_fields.label :plz, "plz"%>
+						<%= autor_fields.text_field :plz %>
+					</li>
+					<li>
+						<%= autor_fields.label :tel, "tel"%>
+						<%= autor_fields.text_field :tel %>
+					</li>
+					<li>
+						<%= autor_fields.label :fax, "fax"%>
+						<%= autor_fields.text_field :fax %>
+					</li>
+					<li>
+						<%= autor_fields.label :institut, "institut"%>
+						<%= autor_fields.text_field :institut %>
+					</li>
+					<li>
+						<%= autor_fields.label :demail, "demail"%>
+						<%= autor_fields.text_field :demail %>
+					</li>
+					<li>
+						<%= autor_fields.label :dstr, "dstr"%>
+						<%= autor_fields.text_field :dstr %>
+					</li>
+					<li>
+						<%= autor_fields.label :dort, "dort"%>
+						<%= autor_fields.text_field :dort %>
+					</li>
+					<li>
+						<%= autor_fields.label :dplz, "dplz"%>
+						<%= autor_fields.text_field :dplz %>
+					</li>
+					<li>
+						<%= autor_fields.label :dtel, "dtel"%>
+						<%= autor_fields.text_field :dtel %>
+					</li>
+					<li>
+						<%= autor_fields.label :dfax, "dfax"%>
+						<%= autor_fields.text_field :dfax %>
+					</li>
+			<% end %>
+-->
 
 
-    <% end %>
-  </ul>
+			<%# if not @projekt.autor %>
+					<% #projekt_form.submit "#{@button_text_asso}" %>
+					<%# projekt_form.submit "#{@button_text_add}" %>
+			<%# else %>
+					<%# projekt_form.submit "#{@button_text_edit}" %>
+			<%# end %>
+			<%= projekt_form.submit "#{@button_text_edit}" %>
+
+
+		<% end %>
+	</ul>
 
 
 

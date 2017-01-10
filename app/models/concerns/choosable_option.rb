@@ -57,7 +57,8 @@ class ChoosableOption
   end
 
   ##
-  # This method imports the data from an external file it is called once at the initialization of the server
+	# This method imports the data from an external file it is called once at the
+	# initialization of the server
   #
   def import
     yam = YAML.load_file(Rails.root.join('config/options.yml'))
@@ -81,9 +82,9 @@ class ChoosableOption
 
 
   ##
-  # This method takes the type of options like "format" and a symbol like :a4 to return the corresponding value
-  # if you take :all as the symbol argument you get an array of all possible options for this type
-  #
+	# This method takes the type of options like "format" and a symbol like :a4
+	# to return the corresponding value if you take :all as the symbol argument
+	# you get an array of all possible options for this type
   #
   def get_option(type_of_option, symbol)
     options = ALL_OPTIONS[type_of_option]

@@ -4,94 +4,140 @@
   <ul>
     <%= form_for @projekt, url: used_url, remote: true do |projekt_form| %>
         <%= fields_for :buch, @projekt.buch do |buch_fields| %>
+          <% if InputSettings.instance.is_visible?(@department, :format_bezeichnung) %>
             <li>
               <%= buch_fields.label :_format_bezeichnung, "Format"%>
               <%= select_tag("buch[format_bezeichnung]", options_for_select(@array_of_format_bezeichungen,selected: @projekt.buch.format_bezeichnung),include_blank: true ) %>
             </li>
+					<%end%>
+          <% if InputSettings.instance.is_visible?(@department, :papier_bezeichnung) %>
             <li>
               <%= buch_fields.label :_papier_bezeichnung, "Papier"%>
               <%= select_tag "buch[papier_bezeichnung]", options_for_select(@array_of_papier_bezeichungen, selected: @projekt.buch.papier_bezeichnung), include_blank: true %>
             </li>
+					<%end%>
+          <% if InputSettings.instance.is_visible?(@department, :umschlag_bezeichnung) %>
             <li>
               <%= buch_fields.label :_umschlag_bezeichnung, "Umschlag"%>
               <%= select_tag("buch[umschlag_bezeichnung]", options_for_select(@array_of_umschlag_bezeichnungen,selected: @projekt.buch.umschlag_bezeichnung), include_blank: true ) %>
             </li>
+					<%end%>
+          <% if InputSettings.instance.is_visible?(@department, :vier_farb) %>
             <li>
               <%= buch_fields.label :_vier_farb, "Vier Farb"%>
               <%= select_tag("buch[vier_farb]", options_for_select(@array_of_vier_farb,selected: @projekt.buch.vier_farb), include_blank: true ) %>
             </li>
+					<%end%>
+          <% if InputSettings.instance.is_visible?(@department, :name) %>
             <li>
               <%= buch_fields.label :name, "Name"%>
               <%= buch_fields.text_field :name %>
             </li>
+					<%end%>
+          <% if InputSettings.instance.is_visible?(@department, :titel1) %>
             <li>
                 <%= buch_fields.label :titel1, "Titel 1 "%>
                 <%= buch_fields.text_field :titel1 %>
             </li>
+					<%end%>
+          <% if InputSettings.instance.is_visible?(@department, :titel2) %>
             <li>
                 <%= buch_fields.label :titel2, "Titel 2 "%>
                 <%= buch_fields.text_field :titel2 %>
             </li>
+					<%end%>
+          <% if InputSettings.instance.is_visible?(@department, :titel3) %>
             <li>
                 <%= buch_fields.label :titel3, "Titel 3"%>
                 <%= buch_fields.text_field :titel3 %>
             </li>
+					<%end%>
+          <% if InputSettings.instance.is_visible?(@department, :isbn) %>
             <li>
                 <%= buch_fields.label :isbn, "ISBN "%>
                 <%= buch_fields.text_field :isbn %>
             </li>
+					<%end%>
+          <% if InputSettings.instance.is_visible?(@department, :issn) %>
             <li>
                 <%= buch_fields.label :issn, "ISSN"%>
                 <%= buch_fields.text_field :issn%>
             </li>
+					<%end%>
+          <% if InputSettings.instance.is_visible?(@department, :utitel1) %>
             <li>
                 <%= buch_fields.label :utitel1, "Untertitel 1"%>
                 <%= buch_fields.text_field :utitel1 %>
             </li>
+					<%end%>
+          <% if InputSettings.instance.is_visible?(@department, :utitel2) %>
             <li>
                 <%= buch_fields.label :utitel2, "Untertitel 2"%>
                 <%= buch_fields.text_field :utitel2 %>
             </li>
+					<%end%>
+          <% if InputSettings.instance.is_visible?(@department, :utitel3) %>
             <li>
                 <%= buch_fields.label :utitel3, "Untertitel 3"%>
                 <%= buch_fields.text_field :utitel3 %>
             </li>
+					<%end%>
+          <% if InputSettings.instance.is_visible?(@department, :seiten) %>
             <li>
                 <%= buch_fields.label :seiten, "Seitenanzahl"%>
                 <%= buch_fields.text_field :seiten %>
             </li>
+					<%end%>
+          <% if InputSettings.instance.is_visible?(@department, :r_code) %>
             <li>
                 <%= buch_fields.label :r_code, "Reihe"%>
-                <%= buch_fields.text_field :r_code %>
+                <%# buch_fields.text_field :r_code %>
+								<%= select_tag("buch[#{:r_code}]",  
+										options_for_select(Reihe.rcodes),include_blank: true ) %>
             </li>
+					<%end%>
+          <% if InputSettings.instance.is_visible?(@department, :sw) %>
             <li>
                 <%= buch_fields.label :sw, "SW"%>
                 <%= buch_fields.text_field :sw %>
             </li>
+					<%end%>
+          <% if InputSettings.instance.is_visible?(@department, :preis) %>
             <li>
                 <%= buch_fields.label :preis, "Preis in €"%>
                 <%= buch_fields.text_field :preis %>
             </li>
+					<%end%>
+          <% if InputSettings.instance.is_visible?(@department, :spreis) %>
             <li>
                 <%= buch_fields.label :spreis, "Sparpreis in €"%>
                 <%= buch_fields.text_field :spreis %>
             </li>
+					<%end%>
+          <% if InputSettings.instance.is_visible?(@department, :gewicht) %>
             <li>
                 <%= buch_fields.label :gewicht, "Gewicht in g"%>
                 <%= buch_fields.text_field :gewicht %>
             </li>
+					<%end%>
+          <% if InputSettings.instance.is_visible?(@department, :volumen) %>
             <li>
                 <%= buch_fields.label :volumen, "Volumen in l"%>
                 <%= buch_fields.text_field :volumen%>
             </li>
+					<%end%>
+          <% if InputSettings.instance.is_visible?(@department, :sammelband) %>
             <li class="one_size_42px">
                 <%= buch_fields.label :sammelband, "Ist Sammelband"%>
                 <%= buch_fields.check_box :sammelband%>
             </li>
+					<%end%>
+          <% if InputSettings.instance.is_visible?(@department, :erscheinungsjahr) %>
             <li>
                 <%= buch_fields.label :erscheinungsjahr, "Erscheinungsjahr"%>
                 <input class="datepicker" data-date-format="mm/dd/yyyy" name="buch[erscheinungsjahr]" value="<%="#{@projekt.buch.erscheinungsjahr}" %>">
             </li>
+					<%end%>
         <% end %>
         <%= projekt_form.submit "Buchinformationen bearbeiten" %>
     <% end %>

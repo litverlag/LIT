@@ -36,7 +36,7 @@
 
 
 
-        <% puts InputSettings.instance.is_visible?(@department, @gprodsAtt[5])%>
+				<% puts "#inps: #{InputSettings.instance.is_visible?(@department, @gprodsAtt[5])}"%>
         <% @gprodsAtt.each do |field| %>
             <% if InputSettings.instance.is_visible?(@department, field)%>
                 <% @fieldType = InputSettings.instance.which_type(field)%>
