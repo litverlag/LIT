@@ -86,7 +86,7 @@ ActiveAdmin.register Preps do
 			link_to(p.projektname, "/admin/preps/#{p.id}")
 		end
 		column I18n.t("buecher_names.isbn") do |p|
-			raw p.buch.isbn.gsub('-', '&#8209;') unless p.buch.nil?
+			raw p.buch.isbn.gsub('-', '&#8209;') rescue '-'
 		end
 		column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
 			raw "<div class='deadline'>#{p.final_deadline}</div>"
@@ -98,7 +98,7 @@ ActiveAdmin.register Preps do
 			p.muster_art
 		end
 		column I18n.t("search_labels.lektor") do |p|
-			p.buch.lektor.name unless p.buch.lektor.nil? unless p.buch.nil?
+			p.lektor.fox_name rescue '-'
 		end
 		column I18n.t("gprod_names.preps_bemerkungen") do |p|
 			p.preps_bemerkungen
@@ -111,6 +111,7 @@ ActiveAdmin.register Preps do
 	filter :final_deadline
 	filter :preps_deadline
 	filter :satzproduktion
+	filter :lektor_id_eq, as: :select, collection: proc {Lektor.all}, label: 'Lektoren'
 	filter :buch_isbn_cont, as: :string, label: I18n.t('buecher_names.isbn')
 	filter :statussatz_status, as: :select, 
 		collection: proc {$SATZ_STATUS}, label: I18n.t('status_names.statussatz')

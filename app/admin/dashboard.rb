@@ -54,6 +54,7 @@ ActiveAdmin.register_page "Dashboard" do
 					end
 					th I18n.t('gprod_names.projektname')
 					th I18n.t('gprod_names.prio')
+					th I18n.t('gprod_names.final_deadline')
 					th I18n.t("status_names.statusbinderei")
 					th I18n.t("status_names.statusdruck")
 					th I18n.t("gprod_names.externer_druck")
@@ -65,6 +66,7 @@ ActiveAdmin.register_page "Dashboard" do
 						tr ''
 						td link_to(p.projektname, "/admin/projekte/#{p.id}") rescue td "-"
 						td tagged_prio(p)
+						td p.final_deadline
 						td status_tag(p.statusbinderei.status)
 						td status_tag(p.statusdruck.status)
 						if p.externer_druck

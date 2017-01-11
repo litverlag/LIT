@@ -93,7 +93,7 @@ de:
     kommentar_public: "öffentlicher Kommentar"
     lektor_bemerkungen_private: "Private Bemerkungen"
     lektor_bemerkungen_public: "Lektor Bemerkungen"
-    manusskript_eingang_date: "Manuskript Eingangsdatum"
+    manusskript_eingang_date: "ms-ein"
     muster_art: "Art des Musters"
     muster_gedruckt: "Muster gedruck?"
     offsch_an_autor: "Offsch an Autor?"

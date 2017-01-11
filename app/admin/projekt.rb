@@ -220,9 +220,8 @@ ActiveAdmin.register Projekt do
 
 	end
 
-
-	index download_links: [:odt] do
-		# We dont not need those actions if we link_to(admin/projekte/id) see below
+	index download_links: [:odt, :csv] do
+		# We dont need those actions if we link_to(admin/projekte/id) see below.
 		#actions
 		@department = "projekt"
 		puts "______________PROJEKT______INDEX__________________-"
@@ -241,11 +240,18 @@ ActiveAdmin.register Projekt do
 				p.auflage
 			end
 		end
+		column I18n.t("search_labels.lektor") do |p|
+			p.lektor.fox_name rescue '-'
+		end
 		column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
 			##
 			# the raw method is used to surround the data with a div element of class='deadline'
 			# this is used by the js function deadline_colorcode defined in for_show.js.erb
+			# Note: This js function is disabled for whatever reason.
 			raw "<div class='deadline'>#{p.final_deadline}</div>"
+		end
+		column I18n.t("status_names.statusfinal") do |p|
+			status_tag(p.statusfinal.status)
 		end
 		column I18n.t("gprod_names.prio"), sortable: :prio do |p|
 			p.prio

@@ -4,6 +4,11 @@ namespace :gapi do
   require 'logger'
   require 'date'
 
+	# If projekt's sollf is more in the past than this amount of days, then its
+	# final_status will be set to 'fertig', cause we clearly missed that
+	# information.
+	$DAYS_SET_PJ_DONE = 60
+
   # Map the header of each column to the column number.
   def get_col_from_title( table )
     index = ( 1..table.max_cols ).drop(0)
@@ -450,13 +455,13 @@ namespace :gapi do
       end
       case format_color
       when 'green', 'dark green'
-        gprod.klappentextinfo = 'fertig'
+        gprod.klappentextinfo = I18n.t('scopes_names.fertig_filter')
       when 'brown'
-        gprod.klappentextinfo = 'in bearbeitung'
+        gprod.klappentextinfo = I18n.t('scopes_names.bearbeitung_filter')
       when 'pink'
-        gprod.klappentextinfo = 'verschickt'
+        gprod.klappentextinfo = I18n.t('scopes_names.verschickt_filter')
       when 'white', nil
-        gprod.klappentextinfo = 'unknown state'
+        gprod.klappentextinfo = I18n.t('scopes_names.neu_filter')
       end
 
       # TODO: Same here ^
@@ -479,17 +484,24 @@ namespace :gapi do
                                      gprod.statusdruck, general_color_table,
                                      logger)
 
+			# All projekts with a final_deadline (that is sollf) older than
+			# $DAYS_SET_PJ_DONE days MUST be 'fertig'.
       unless gprod.final_deadline.nil?
-        if gprod.final_deadline.compare_with_coercion(Date.today) == -1
+        if gprod.final_deadline.compare_with_coercion(Date.today - $DAYS_SET_PJ_DONE) == -1
           status = true
+					status_name = I18n.t('scopes_names.fertig_filter')
         else
           status = false
         end
 
         unless gprod.statusfinal.nil?
           gprod.statusfinal['freigabe'] = status
+          gprod.statusfinal['status'] = status_name
         else
-          gprod.statusfinal = StatusFinal.create!(freigabe: status)
+          gprod.statusfinal = StatusFinal.create!(
+						freigabe: status,
+						status: status_name
+					)
         end
       end
 

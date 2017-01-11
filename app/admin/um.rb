@@ -89,15 +89,14 @@ ActiveAdmin.register Um do
 		column I18n.t("status_names.statusumschl") do |p|
 			status_tag(p.statusumschl.status)
 		end
-		column I18n.t("status_names.statussatz") do |p|
-			if p.satzproduktion
-				status_tag(p.statussatz.status)
-			else
-				"-"
-			end
+		column I18n.t("status_names.statuspreps") do |p|
+			status_tag(p.statuspreps.status)
 		end
 		column I18n.t("status_names.statustitelei") do |p|
 			status_tag(p.statustitelei.status)
+		end
+		column I18n.t("gprod_names.klappentextinfo") do |p|
+			status_tag(p.klappentextinfo)
 		end
 		column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
 			link_to(p.projektname, "/admin/ums/#{p.id}")
