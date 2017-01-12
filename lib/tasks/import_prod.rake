@@ -179,6 +179,28 @@ namespace :gapi do
     return m[1]
   end
 
+	## Satz status must follow those rules:
+	# '0_F'  =>  Datei zum Satz Freigegeben
+	# '0_K'  =>  Konvertiert, in Bearbeitung
+	# 'n_F'  =>  n-te Fahne
+	# 'n_FA' =>  n-te Fahne zurück
+	# 'F_p'  =>  Druckfreigabe für Prepser
+	# '0'    =>  siehe Kommentar
+	def check_st_satz_entry(entry, logger=nil)
+		tok = nil
+		if    entry =~ /^\s*0.*f\s*$/i;				tok = nil #neu
+		elsif entry =~ /^\s*0.*k\s*$/i;				tok = nil #bearbeitung
+		elsif entry =~ /^\s*[1-9].*f\s*$/i;		tok = nil #verschickt
+		elsif entry =~ /^\s*[1-9].*fa\s*$/i;	tok = nil #bearbeitung
+		elsif entry =~ /^\s*f/i;							tok = nil #fertig
+		elsif entry =~ /_p/i;									tok = nil #problem
+		else
+			logger.error "Unknown 'st_satz': '#{entry}'" unless logger.nil?
+		end
+		return tok
+	end
+
+
   ## EMPTY PROTOTYPE, replace xxx with column name.
 # def check_xxx_entry( entry, logger=nil )
 #   tok = nil
@@ -664,6 +686,49 @@ namespace :gapi do
     end
   end
 
+	## TODO finish this
+	# Rake task for the HIDDEN satz table
+	def rake_satz_table(table)
+    logger = Logger.new('log/development_rake.log')
+    h = get_col_from_title(table)
+    # Needed for color_from() function.
+    $COLORS = nil
+    $COLOR_D = nil
+    load 'lib/tasks/gapi_get_color_vals.rb'
+    if $COLORS.nil? or $COLOR_D.nil?
+      puts "Fatal error, could not get Color values from the ./gapi_get_color_vals.rb script."
+      puts "Exiting, this makes no sense without status information."
+      exit
+    end
+
+    (2..table.num_rows).each do |i| #skip first line: headers
+      buch = find_buch_by_shortisbn(table[i,h['ISBN']], logger) rescue nil
+      next if buch.nil?
+      gprod = buch.gprod
+      if gprod.nil?
+        logger.fatal "Buch without gprod -- isbn[#{buch['isbn']}]"
+        next
+      end
+
+			comment = table[i,h['Kommentar']] rescue nil
+			gprod.satz_bemerkungen = comment unless comment.nil?
+
+			status = check_st_satz_entry(table[i,h['st']], logger) rescue nil
+			unless gprod.statussatz.nil?
+				gprod.statussatz.status = status unless status.nil?
+			else
+				gprod.statussatz = StatusSatz.new(status: status)
+			end
+
+			gprod.save!
+		end # end row iteration
+	end
+	## TODO and this..
+	# Rake task for the HIDDEN SF table
+	def rake_sf_table(table)
+	end
+
+	# Get klapptext info from that tiny table
   def rake_klapptex_table(table)
     logger = Logger.new('log/development_rake.log')
     h = get_col_from_title(table)
@@ -688,6 +753,7 @@ namespace :gapi do
   task import: :environment do
     session = GoogleDrive.saved_session( ".credentials/client_secret.json" )
     spreadsheet = session.spreadsheet_by_key( "1YWWcaEzdkBLidiXkO-_3fWtne2kMgXuEnw6vcICboRc" )
+		satz_speadsheet = session.spreadsheet_by_key( "1JWUKZDldb2E6RGaEbEKDLppj5sh04J-YmPRpb0Toe7E" )
 
     ##
     # We need to set $TABLE which is used as argument for the javascript
@@ -695,7 +761,7 @@ namespace :gapi do
     # (No, there is not one 'script' too much.)
 
     logger = Logger.new('log/development_rake.log')
-    logger.fatal "\n=== A new rake task Beginns ===\n"
+    logger.fatal "\n\n=== A new rake task Beginns ==="
     logger.fatal "--- Archiv rake beginns ---"
     $TABLE = 'Archiv'
     table = spreadsheet.worksheet_by_title('Archiv')
@@ -732,8 +798,32 @@ namespace :gapi do
     table = spreadsheet.worksheet_by_title('Klappentexte')
     rake_klapptex_table(table)
 
+    logger.fatal "--- Satz rake beginns ---"
+    $TABLE = 'Satz'
+		rake_satz_table(satz_speadsheet.worksheet_by_title $TABLE)
+    logger.fatal "--- SF rake beginns ---"
+    $TABLE = 'SF'
+		rake_sf_table(satz_speadsheet.worksheet_by_title $TABLE)
+
   end # end import-task
 
+	##
+	# It follow some of the above bundled tasks separated.
+	##
+
+	# Small task only for satz import from their own table, that NO ONE TOLD ME ABOUT.
+  desc "Tit table import test"
+  task import_satz: :environment do
+		session = GoogleDrive.saved_session ".credentials/client_secret.json"
+		satz_speadsheet = session.spreadsheet_by_key "1JWUKZDldb2E6RGaEbEKDLppj5sh04J-YmPRpb0Toe7E"
+    logger = Logger.new('log/development_rake.log')
+    logger.fatal "--- Satz rake beginns ---"
+    $TABLE = 'Satz'
+		rake_satz_table(satz_speadsheet.worksheet_by_title $TABLE)
+    logger.fatal "--- SF rake beginns ---"
+    $TABLE = 'SF'
+		rake_sf_table(satz_speadsheet.worksheet_by_title $TABLE)
+	end
   # Small task only for tit import.
   desc "Tit table import test"
   task import_tit: :environment do

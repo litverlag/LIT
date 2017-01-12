@@ -257,7 +257,11 @@ module StatusLogic
   
   def createStatus(projekt)
 		begin
-			projekt.statusfinal = StatusFinal.create!()
+			# So we have usefull sorting capabilities as Lektor. (otherwise this
+			# projekt would not be able to .. count as projekt?).
+			projekt.statusfinal = StatusFinal.create!(
+				status: I18n.t('scopes_names.neu_filter')
+			)
 			projekt.statusdruck = StatusDruck.create!()
 			projekt.statusexternerdruck = StatusExternerDruck.create!()
 			projekt.statustitelei = StatusTitelei.create!()
