@@ -85,7 +85,12 @@ ActiveAdmin.register Um do
 
   end
 
+	batch_action :umschlagkarte do |id|
+		print_report "umschlagkarte", method(:umschlagkarte), id
+	end
+
   index title: I18n.t("headlines.umschlag_umschlag"), download_links: [:odt, :csv] do
+		selectable_column
 		column I18n.t("status_names.statusumschl") do |p|
 			status_tag(p.statusumschl.status)
 		end

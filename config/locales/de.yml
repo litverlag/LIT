@@ -137,6 +137,9 @@ de:
     umschlag_umschlagsbild: "Umschlagsbild?"
     zum_druck: "zum Druck"
     klappentextinfo: 'Klappentextinfo'
+    satz_korrektur: 'Korrekt'
+    satz_bearbeiter: 'Bearbeiter'
+    satz_pfad: 'Pfad'
 
   buecher_names:
     name: "Name"

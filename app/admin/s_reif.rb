@@ -84,6 +84,15 @@ ActiveAdmin.register SReif do
 		column I18n.t("gprod_names.satz_deadline"), sortable: :satz_deadline do |p|
 			raw "<div class='deadline'>#{p.satz_deadline}</div>"
 		end
+		column I18n.t("gprod_names.satz_korrektur") do |p|
+			p.satz_korrektur.strftime "%H:%M" rescue ""
+		end
+		column I18n.t("gprod_names.satz_bearbeiter"), sortable: :satz_bearbeiter do |p|
+			p.satz_bearbeiter
+		end
+		column I18n.t("gprod_names.satz_bemerkungen") do |p|
+			p.satz_bemerkungen
+		end
 		column I18n.t("search_labels.lektor") do |p|
 			p.buch.lektor.name rescue '-'
 		end

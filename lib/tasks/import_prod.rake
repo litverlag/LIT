@@ -687,19 +687,19 @@ namespace :gapi do
   end
 
 	## TODO finish this
-	# Rake task for the HIDDEN satz table
+	# Rake task for the HIDDEN Satz table
 	def rake_satz_table(table)
     logger = Logger.new('log/development_rake.log')
     h = get_col_from_title(table)
     # Needed for color_from() function.
-    $COLORS = nil
-    $COLOR_D = nil
-    load 'lib/tasks/gapi_get_color_vals.rb'
-    if $COLORS.nil? or $COLOR_D.nil?
-      puts "Fatal error, could not get Color values from the ./gapi_get_color_vals.rb script."
-      puts "Exiting, this makes no sense without status information."
-      exit
-    end
+    #$COLORS = nil
+    #$COLOR_D = nil
+    #load 'lib/tasks/gapi_get_color_vals.rb'
+    #if $COLORS.nil? or $COLOR_D.nil?
+    #  puts "Fatal error, could not get Color values from the ./gapi_get_color_vals.rb script."
+    #  puts "Exiting, this makes no sense without status information."
+    #  exit
+    #end
 
     (2..table.num_rows).each do |i| #skip first line: headers
       buch = find_buch_by_shortisbn(table[i,h['ISBN']], logger) rescue nil
@@ -720,12 +720,51 @@ namespace :gapi do
 				gprod.statussatz = StatusSatz.new(status: status)
 			end
 
+			gprod.satz_bemerkungen = table[i,h['Kommentar']] rescue nil
+
+			gprod.satz_bearbeiter = table[i,h['Bearbeiter']] rescue nil
+
+      sollf = check_date_entry(table[i,h['Fertig_soll']], logger) rescue nil
+			gprod.satz_deadline = sollf unless sollf.nil?
+
+			# dauer der korrektur eines werkes
+			time = Time.parse table[i,h['Korrekturzeit Autor']] rescue nil
+			unless time.nil?
+				# not sure why we need that hour..
+				gprod.satz_korrektur = time + 1.hour
+			end
+
 			gprod.save!
 		end # end row iteration
 	end
+
 	## TODO and this..
 	# Rake task for the HIDDEN SF table
 	def rake_sf_table(table)
+    logger = Logger.new('log/development_rake.log')
+    h = get_col_from_title(table)
+
+    (2..table.num_rows).each do |i| #skip first line: headers
+      buch = find_buch_by_shortisbn(table[i,h['ISBN']], logger) rescue nil
+      next if buch.nil?
+      gprod = buch.gprod
+      if gprod.nil?
+        logger.fatal "Buch without gprod -- isbn[#{buch['isbn']}]"
+        next
+      end
+
+			# get only page information, no other garbage from that field..
+			vier_farb_pages = table[i,h['vier_farb']] rescue nil
+			m = /([0-9 \-,]+)/.match vier_farb_pages
+			vier_farb_pages = m[1].strip rescue nil
+			buch.vier_farb = vier_farb_pages unless vier_farb_pages.nil?
+
+			pfad = table[i,h['Pfad']] rescue nil
+			gprod.satz_pfad = pfad unless pfad.nil?
+
+			gprod.save!
+			buch.save!
+		end
 	end
 
 	# Get klapptext info from that tiny table
@@ -744,6 +783,8 @@ namespace :gapi do
       ['angefordert', 'Eingang', 'Bemerkungen'].each do |headline|
         gprod.klappentextinfo += "#{headline}: #{table[i,h[headline]].to_s}\n"
       end
+			# Whoops we dont save here.. but .. hm.. seems to be working anyway,
+			# strange.
     end
   end
 
