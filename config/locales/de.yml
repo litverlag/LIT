@@ -64,6 +64,12 @@ de:
       new_project_invalid: 'Einige eingaben sind falsch, überprüfen sie ihre Eingaben.'
     is_not_a_number: "Bitte tragen Sie eine Zahl ein"
 
+  errors:
+    external:
+      nobuch: 'dem aktuellen Projekt ist kein Buch verlinkt'
+      noautor: 'dem aktuellen Projekt ist kein Autor verlinkt'
+    internal:
+
   gprod_names:
     auflage: "Auflage"
     auflage_chef: "Freiexemplare"

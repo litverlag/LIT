@@ -140,20 +140,54 @@ module PrintReport
 
   # The used template is a dummy file, but the design, that is passing the
   # gprod id to this function via a batch_action, seems reasonable. Like this
-  # we be able to print a selection of an actions.
+  # we should be able to print a selection of an actions.
   def umschlagkarte(report, id)
     report.add_field(:title, 'Umschlagkarte')
+    gprod, buch, autor = get_gprod_buch_autor id
+
+    begin
+      report.add_field(:autor, autor.name)
+      report.add_field(:titel, buch.titel1)
+      report.add_field(:pages, buch.seiten)
+      report.add_field(:rm, buch.rueckenstaerke)
+      report.add_field(:sollf, gprod.final_deadline)
+      report.add_field(:format, buch.format_bezeichnung)
+    rescue NoMethodError => e
+      Rails.logger.fatal "Failed to create the 'Umschlagkarte'" + e.to_s
+    end
+  end
+
+  # Helper for error checking before template substitutions.
+  # In case of a missing link, we return an ErrorReport object.
+  def get_gprod_buch_autor(id)
     gprod = Gprod.where(id: id).first
     raise Exception, "Cannot happen, cuz we get the id from a gprod." if gprod.nil?
-    begin
-      report.add_field(:autor, gprod.autor.name)
-      report.add_field(:titel, gprod.buch.titel1)
-      report.add_field(:pages, gprod.buch.seiten)
-      report.add_field(:rm, gprod.buch.rueckenstaerke)
-      report.add_field(:sollf, gprod.final_deadline)
-      report.add_field(:format, gprod.buch.format_bezeichnung)
-    rescue NoMethodError
-      Rails.logger.fatal "Failed to create the 'Umschlagkarte'"
+
+    buch = gprod.buch
+    autor = gprod.autor
+
+    # Replace nil's with ErrorReport objects.
+    if buch.nil?
+      buch = ErrorReport.new 'Error: ' + I18n.t('errors.external.nobuch')
+    end
+    if autor.nil?
+      autor = ErrorReport.new 'Error: ' + I18n.t('errors.external.noautor')
+    end
+
+    return gprod, buch, autor
+  end
+
+  # Creates an object, that returns the initial message as string, whatever
+  # method you call on it.
+  class ErrorReport
+    def initialize(msg)
+      @error = msg
+    end
+    def respond_to?(sym, include_private=false)
+      true
+    end
+    def method_missing(sym, *args, &block)
+      @error
     end
   end
 
