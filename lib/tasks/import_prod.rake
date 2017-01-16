@@ -125,8 +125,6 @@ namespace :gapi do
     return ext, tok, bild
   end
 
-  ##
-  # TODO: finish this
   def check_korrektorat_entry( entry, logger=nil )
     tok = nil
     if    entry =~ /0/i;      tok = 'Fertig'
@@ -486,9 +484,6 @@ namespace :gapi do
         gprod.klappentextinfo = I18n.t('scopes_names.neu_filter')
       end
 
-      # TODO: Same here ^
-      #seiten_color = $COLOR_D[ $COLORS[i-1][h['Seiten']-1]]
-
       gprod.statusumschl = color_from(i, h, 'Umschlag', StatusUmschl,
                                       gprod.statusumschl, umschlag_color_table,
                                       logger)
@@ -686,11 +681,18 @@ namespace :gapi do
     end
   end
 
-	## TODO finish this
+	##
 	# Rake task for the HIDDEN Satz table
 	def rake_satz_table(table)
     logger = Logger.new('log/development_rake.log')
     h = get_col_from_title(table)
+		# NOTE: If you want to get the color values (the same way we get the color
+		# values for the other tables), you need to merge the GoogleScript API
+		# projects, or authorize with another key, to the 'Satz' GoogleScript API
+		# project, because google says so: 
+		#		https://developers.google.com/apps-script/guides/rest/api -> #Limitations
+		# Have fun.
+		#
     # Needed for color_from() function.
     #$COLORS = nil
     #$COLOR_D = nil
@@ -738,7 +740,6 @@ namespace :gapi do
 		end # end row iteration
 	end
 
-	## TODO and this..
 	# Rake task for the HIDDEN SF table
 	def rake_sf_table(table)
     logger = Logger.new('log/development_rake.log')

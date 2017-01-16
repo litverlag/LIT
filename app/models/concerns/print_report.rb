@@ -140,7 +140,7 @@ module PrintReport
 
   # The used template is a dummy file, but the design, that is passing the
   # gprod id to this function via a batch_action, seems reasonable. Like this
-  # we can even print a selection of 'Umschlagkarten'.
+  # we be able to print a selection of an actions.
   def umschlagkarte(report, id)
     report.add_field(:title, 'Umschlagkarte')
     gprod = Gprod.where(id: id).first

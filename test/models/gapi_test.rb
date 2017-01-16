@@ -1,5 +1,6 @@
 require 'test_helper'
 
+# TODO More test cases would be convenient.
 class GapiTest < ActiveSupport::TestCase
 	test "raking something" do
 		session = GoogleDrive.saved_session(".credentials/client_secret.json")
