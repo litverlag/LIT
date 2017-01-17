@@ -24,6 +24,7 @@ class Ability
 
 		can :read, Reihe
 		#can :read, Buch
+    can :read, Uebersicht
 
     if @departName.include?'Superadmin'
       can :manage, :all
