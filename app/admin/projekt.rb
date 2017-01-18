@@ -1,5 +1,5 @@
 ActiveAdmin.register Projekt do
-	menu label: "Meine Projekte"
+	menu label: "Terminplanung"
 	config.sort_order = 'final_deadline_asc'
 	config.filters = true
 

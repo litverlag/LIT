@@ -18,6 +18,11 @@ ActiveAdmin.register Preps do
     #from models/concerns
     include StatusLogic
 
+    # inlcude external stuff for sorting in the index view
+		def scoped_collection
+      super.includes [ :statussatz, :lektor ]
+		end
+
     def permitted_params
       params.permit!
     end
@@ -79,7 +84,7 @@ ActiveAdmin.register Preps do
   end
 
   index title: I18n.t("headlines.preps_preps"), download_links: [:odt, :csv] do
-		column I18n.t("status_names.statuspreps") do |p|
+		column I18n.t("status_names.statuspreps"), sortable: 'status_preps.status' do |p|
 			status_tag(p.statuspreps.status)
 		end
 		column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
@@ -97,7 +102,7 @@ ActiveAdmin.register Preps do
 		column I18n.t('gprod_names.muster_art') do |p|
 			p.muster_art
 		end
-		column I18n.t("search_labels.lektor") do |p|
+		column I18n.t("search_labels.lektor"), sortable: 'lektoren.name' do |p|
 			p.lektor.fox_name rescue '-'
 		end
 		column I18n.t("gprod_names.preps_bemerkungen") do |p|

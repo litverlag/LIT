@@ -26,6 +26,7 @@ violation is
 '''.
 
 # Usefull rake stuff.
+ For more info check out the corresponding rake task information.
 rake notes
 rake db:save_settings
 rake db:load_settings
