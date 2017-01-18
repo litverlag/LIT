@@ -64,6 +64,12 @@ de:
       new_project_invalid: 'Einige eingaben sind falsch, überprüfen sie ihre Eingaben.'
     is_not_a_number: "Bitte tragen Sie eine Zahl ein"
 
+  errors:
+    external:
+      nobuch: 'dem aktuellen Projekt ist kein Buch verlinkt'
+      noautor: 'dem aktuellen Projekt ist kein Autor verlinkt'
+    internal:
+
   gprod_names:
     auflage: "Auflage"
     auflage_chef: "Freiexemplare"
@@ -93,7 +99,7 @@ de:
     kommentar_public: "öffentlicher Kommentar"
     lektor_bemerkungen_private: "Private Bemerkungen"
     lektor_bemerkungen_public: "Lektor Bemerkungen"
-    manusskript_eingang_date: "Manuskript Eingangsdatum"
+    manusskript_eingang_date: "ms-ein"
     muster_art: "Art des Musters"
     muster_gedruckt: "Muster gedruck?"
     offsch_an_autor: "Offsch an Autor?"
@@ -137,6 +143,9 @@ de:
     umschlag_umschlagsbild: "Umschlagsbild?"
     zum_druck: "zum Druck"
     klappentextinfo: 'Klappentextinfo'
+    satz_korrektur: 'Korrekt'
+    satz_bearbeiter: 'Bearbeiter'
+    satz_pfad: 'Pfad'
 
   buecher_names:
     name: "Name"
@@ -169,9 +178,9 @@ de:
   status_names:
     statusbildpr: 'Bildpr'
     statusbinderei: 'Binderei'
-    nstatusbinderei: 'not statusbinderei'
+    nstatusbinderei: 'not Binderei'
     statusdruck: 'Druck'
-    nstatusdruck: 'not statusdruck'
+    nstatusdruck: 'not Druck'
     statusexternerdruck: 'Externer Druck'
     nstatusexternerdruck: 'not Externer Druck'
     statusfinal: 'Final'
@@ -179,10 +188,11 @@ de:
     statuspreps: 'Preps'
     statusrg: 'Rg'
     statussatz: 'Satz'
-    nstatussatz: 'not statussatz'
+    nstatussatz: 'not Satz'
     statustitelei: 'Titelei'
+    nstatustitelei: 'not Titelei'
     statusumschl: 'Umschl'
-    nstatusumschl: 'not statusumschl'
+    nstatusumschl: 'not Umschl'
     
   scopes_names:
     neu_filter: "neu"
@@ -193,6 +203,7 @@ de:
     nächsterAuftrag_filter: "nächsterAuftrag"
     verschickt_filter: "verschickt"
     alle_filter: "alle"
+    unfertig_filter: "unfertig"
 
   bi_names:
     fhc: 'faden_hardcover'

@@ -25,7 +25,6 @@ module StatusLogic
 
     elsif newStatus.class == TrueClass or newStatus.class == FalseClass
       # TODO: can freigabe be unsetted if it was setted?
-      # TODO: check if setting freigabe is legal
       statusToChange.freigabe = newStatus
       statusToChange.freigabe_at = Time.now()
       statusToChange.save
@@ -92,8 +91,7 @@ module StatusLogic
       # Changes concerning freigabe
       ################################
       elsif changedTo.class == String
-        # TODO
-				# ?? What to do??
+        # ?? What to do ??
       end
 
 
@@ -257,7 +255,11 @@ module StatusLogic
   
   def createStatus(projekt)
 		begin
-			projekt.statusfinal = StatusFinal.create!()
+			# So we have usefull sorting capabilities as Lektor. (otherwise this
+			# projekt would not be able to .. count as projekt?).
+			projekt.statusfinal = StatusFinal.create!(
+				status: I18n.t('scopes_names.neu_filter')
+			)
 			projekt.statusdruck = StatusDruck.create!()
 			projekt.statusexternerdruck = StatusExternerDruck.create!()
 			projekt.statustitelei = StatusTitelei.create!()

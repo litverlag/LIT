@@ -24,7 +24,7 @@ ActiveAdmin.register Reihe do
       end
     end
 
-    def odt #TODO: selection
+    def odt #TODO: delete me, i'm only for testing purposes
       report = ODFReport::Report.new("#{Rails.root}/app/reports/test.odt") do |r|
         r.add_field(:test, 'foobar')
         r.add_table("Tabelle1", Reihe.select("id,name"), :header=>true) do |t|

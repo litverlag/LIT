@@ -51,6 +51,11 @@ end
 service = Google::Apis::ScriptV1::ScriptService.new
 service.client_options.application_name = $APPLICATION_NAME
 service.authorization = authorize
+
+# Ok, so the SciptAPI can only access stuff in the same 'Developers
+# Console-Projekt', but the Satz table is in another one.. thus we would have
+# to check here every time if we need to call another script. But its not worth
+# it, there is not much color-encoded data in those Satz tables.
 $SCRIPT_ID = 'M9BEz7TKhFSreJFaUhoqlQzuvAMBXjVEc'
 
 # Create an execution request object.

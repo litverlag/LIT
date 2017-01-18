@@ -38,15 +38,16 @@ class Gprod < ActiveRecord::Base
     end
   end
   
-	#status_names array must be written in the same order of the status_strings
-	#array (see models/concerns/global_variables) + table name + symbol for
-	#StatusOptionsAdapter
+  ##
+  # status_names array must be written in the same order of the status_strings
+  # array (see app/models/concerns/global_variables.rb) + table name + symbol
+  # for StatusOptionsAdapter
   scope_maker([:neu_filter, :bearbeitung_filter, :fertig_filter, :problem_filter], "status_final", StatusOptionsAdapter.option(:statusfinal))
 
 
   #validates :projektname, :projekt_email_adresse, presence: true
 	validates :projekt_email_adresse, format: { 
-		with: /\A([\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\s*)+\z/i, 
+		with: /\A([\w+\-.]+@[a-z\d\-.]+(\.[a-z]+)*\.[a-z]+\s*)+\z/i, 
 		message: "'%{value}' does not match",
 		allow_nil: true, allow_blank: true 
 	}

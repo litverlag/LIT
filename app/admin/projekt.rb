@@ -31,7 +31,21 @@ ActiveAdmin.register Projekt do
 				super.where(lektor: current_admin_user.lektor)
 			else
 				super.all
+
 			end
+
+      ##
+      # Note that this super.includes overrides the above super-calls. Buts its
+      # fine cuz we have a filter for lektoren.
+      #
+      # Note also that we need to inlcude all non-local tables (including all
+      # stati, except final_status) that we want to be 'sortable'.
+      # See 'index' block below.
+      # This also prevents N+1 queries to the db when sorting.
+      super.includes [
+        :statusdruck, :statusumschl, :statuspreps, :statusbinderei,
+        :statustitelei, :lektor
+      ]
 		end
 
 
@@ -56,7 +70,8 @@ ActiveAdmin.register Projekt do
 				end
 				@projekt.lektor = current_admin_user.lektor
 				@projekt.save
-				redirect_to collection_path, notice: (I18n.t("flash_notice.revised_success.new_project"))
+				redirect_to  "/admin/projekte/#{@projekt.id}",
+          notice: (I18n.t("flash_notice.revised_success.new_project"))
 			else
 				#raise StandardError, "A project can only be created by a lektor"
 			end
@@ -220,9 +235,8 @@ ActiveAdmin.register Projekt do
 
 	end
 
-
-	index download_links: [:odt] do
-		# We dont not need those actions if we link_to(admin/projekte/id) see below
+	index download_links: [:odt, :csv] do
+		# We dont need those actions if we link_to(admin/projekte/id) see below.
 		#actions
 		@department = "projekt"
 		puts "______________PROJEKT______INDEX__________________-"
@@ -241,11 +255,18 @@ ActiveAdmin.register Projekt do
 				p.auflage
 			end
 		end
+		column I18n.t("search_labels.lektor"), sortable: 'lektoren.name' do |p|
+			p.lektor.fox_name rescue '-'
+		end
 		column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
 			##
 			# the raw method is used to surround the data with a div element of class='deadline'
 			# this is used by the js function deadline_colorcode defined in for_show.js.erb
+			# Note: This js function is disabled for whatever reason.
 			raw "<div class='deadline'>#{p.final_deadline}</div>"
+		end
+		column I18n.t("status_names.statusfinal"), sortable: 'status_final.status' do |p|
+			status_tag(p.statusfinal.status)
 		end
 		column I18n.t("gprod_names.prio"), sortable: :prio do |p|
 			p.prio
@@ -257,23 +278,23 @@ ActiveAdmin.register Projekt do
 		column I18n.t("buecher_names.r_code") do |p|
 			link_to(p.buch.reihen.first.r_code, "/admin/reihen/#{p.buch.reihen.first.id}") rescue "-"
 		end
-		column I18n.t("status_names.statusbinderei") do |p|
+		column I18n.t("status_names.statusbinderei"), sortable: 'status_binderei.status' do |p|
 			status_tag(p.statusbinderei.status)
 		end
-		column I18n.t("status_names.statusdruck") do |p|
+		column I18n.t("status_names.statusdruck"), sortable: 'status_druck.status' do |p|
 			status_tag(p.statusdruck.status)
 		end
-		column I18n.t("status_names.statusumschl") do |p|
+		column I18n.t("status_names.statusumschl"), sortable: 'status_umschl.status' do |p|
 			status_tag(p.statusumschl.status)
 		end
-		column I18n.t("status_names.statussatz") do |p|
+		column I18n.t("status_names.statussatz"), sortable: 'status_satz.status' do |p|
 			if p.satzproduktion
 				status_tag(p.statussatz.status)
 			else
 				"-"
 			end
 		end
-		column I18n.t("status_names.statustitelei") do |p|
+		column I18n.t("status_names.statustitelei"), sortable: 'status_titelei.status' do |p|
 			status_tag(p.statustitelei.status)
 		end
 	end
@@ -286,6 +307,8 @@ ActiveAdmin.register Projekt do
 		collection: proc {$DRUCK_STATUS}, label: I18n.t('status_names.nstatusdruck')
 	filter :statusumschl_status_not_eq, as: :select, 
 		collection: proc {$UMSCHL_STATUS}, label: I18n.t('status_names.nstatusumschl')
+	filter :statustitelei_status_not_eq, as: :select, 
+		collection: proc {$TITELEI_STATUS}, label: I18n.t('status_names.nstatustitelei')
 
 	filter :lektor_id_eq, as: :select, collection: proc {Lektor.all}, label: 'Lektoren'
 	filter :autor_id_eq, as: :select, collection: proc {Autor.all}, label: 'Autoren'

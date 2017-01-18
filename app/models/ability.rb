@@ -24,8 +24,8 @@ class Ability
 
 		can :read, Reihe
 		#can :read, Buch
+    can :read, Uebersicht
 
-    #TODO Rechte für alle Benutzergruppen eintragen
     if @departName.include?'Superadmin'
       can :manage, :all
     else

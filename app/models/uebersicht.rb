@@ -1,0 +1,2 @@
+class Uebersicht < Projekt
+end

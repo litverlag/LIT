@@ -64,7 +64,7 @@ class CreateGprods < ActiveRecord::Migration
         t.boolean "titelei_extern", default: false
         t.date "titelei_letzte_korrektur"
         t.date "titelei_versand_datum_fuer_ueberpr"
-        t.string   "titelei_versand_an_zur_ueberpf" #TODO Falls hier nichts eingetragen wird soll Automatisch der Autor eingetragen werden
+        t.string   "titelei_versand_an_zur_ueberpf" #Falls hier nichts eingetragen wird soll Automatisch der Autor eingetragen werden
         t.date  "titelei_korrektur_date"
         t.date "titelei_freigabe_date"
 

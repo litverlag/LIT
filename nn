@@ -1,7 +1,7 @@
 #!/home/developer/.rvm/rubies/ruby-2.2.2/bin/ruby
+# I have no idea who wrote this, and why.
 
 n=ARGV[0]
-
 `rails generate active_admin:resource #{n}`
 
 File.open "app/models/#{n}.rb", "w" do |f|
@@ -9,15 +9,7 @@ f.puts "class #{n.capitalize} < EinListe"
 f.puts "end"
 end
 
-
 # ActiveAdmin.register n do
-
 # File.open "app/admin/foo.rb", "w" do
-  
 #   ARGV[1..ARGV.length].each do |n|
-
 # end
-
-
-  
-

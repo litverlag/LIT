@@ -1,9 +1,12 @@
 require 'test_helper'
 
+# TODO More test cases would be convenient.
 class GapiTest < ActiveSupport::TestCase
 	test "raking something" do
 		session = GoogleDrive.saved_session(".credentials/client_secret.json")
 		spreadsheet = session.spreadsheet_by_key("1YWWcaEzdkBLidiXkO-_3fWtne2kMgXuEnw6vcICboRc")
+		#$SPREADSHEET = "1YWWcaEzdkBLidiXkO-_3fWtne2kMgXuEnw6vcICboRc" 
+		#...
 
 		logger = Logger.new($stdout)
 		$TABLE = 'Unittests'

@@ -1,5 +1,6 @@
 require 'test_helper'
 
+# FIXME Hash changes all the time, cannot login *sadface*.
 class BasicsTest < ActionDispatch::IntegrationTest
 	fixtures :all
 	#include ActiveAdmin::Devise::Controllers::SignInOut

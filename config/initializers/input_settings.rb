@@ -47,8 +47,7 @@ class InputSettings
 	##
 	# replace initialize
 	## 
-	# Todo: Maybe we should put it to class and not instance initialization
-	# We did that ^.
+	# DONE: Maybe we should put it to class and not instance initialization
 	def initialize
 	end
 
@@ -79,7 +78,7 @@ class InputSettings
 	# replace which_type
 	##
 	# Thoughts: This may result in a lot.. a lot of db lookups..
-	#	Todo:			We have to cache these values.
+	#	TODO:			We have to cache these values.
 	def which_type(field)
 		return 'selectable' if field =~ /^status.*/i
 		field = field.to_sym
