@@ -178,9 +178,9 @@ de:
   status_names:
     statusbildpr: 'Bildpr'
     statusbinderei: 'Binderei'
-    nstatusbinderei: 'not statusbinderei'
+    nstatusbinderei: 'not Binderei'
     statusdruck: 'Druck'
-    nstatusdruck: 'not statusdruck'
+    nstatusdruck: 'not Druck'
     statusexternerdruck: 'Externer Druck'
     nstatusexternerdruck: 'not Externer Druck'
     statusfinal: 'Final'
@@ -188,10 +188,11 @@ de:
     statuspreps: 'Preps'
     statusrg: 'Rg'
     statussatz: 'Satz'
-    nstatussatz: 'not statussatz'
+    nstatussatz: 'not Satz'
     statustitelei: 'Titelei'
+    nstatustitelei: 'not Titelei'
     statusumschl: 'Umschl'
-    nstatusumschl: 'not statusumschl'
+    nstatusumschl: 'not Umschl'
     
   scopes_names:
     neu_filter: "neu"
@@ -202,6 +203,7 @@ de:
     nächsterAuftrag_filter: "nächsterAuftrag"
     verschickt_filter: "verschickt"
     alle_filter: "alle"
+    unfertig_filter: "unfertig"
 
   bi_names:
     fhc: 'faden_hardcover'

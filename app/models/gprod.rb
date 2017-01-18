@@ -38,9 +38,10 @@ class Gprod < ActiveRecord::Base
     end
   end
   
-	#status_names array must be written in the same order of the status_strings
-	#array (see models/concerns/global_variables) + table name + symbol for
-	#StatusOptionsAdapter
+  ##
+  # status_names array must be written in the same order of the status_strings
+  # array (see app/models/concerns/global_variables.rb) + table name + symbol
+  # for StatusOptionsAdapter
   scope_maker([:neu_filter, :bearbeitung_filter, :fertig_filter, :problem_filter], "status_final", StatusOptionsAdapter.option(:statusfinal))
 
 

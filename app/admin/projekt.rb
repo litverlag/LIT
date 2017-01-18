@@ -307,6 +307,8 @@ ActiveAdmin.register Projekt do
 		collection: proc {$DRUCK_STATUS}, label: I18n.t('status_names.nstatusdruck')
 	filter :statusumschl_status_not_eq, as: :select, 
 		collection: proc {$UMSCHL_STATUS}, label: I18n.t('status_names.nstatusumschl')
+	filter :statustitelei_status_not_eq, as: :select, 
+		collection: proc {$TITELEI_STATUS}, label: I18n.t('status_names.nstatustitelei')
 
 	filter :lektor_id_eq, as: :select, collection: proc {Lektor.all}, label: 'Lektoren'
 	filter :autor_id_eq, as: :select, collection: proc {Autor.all}, label: 'Autoren'
