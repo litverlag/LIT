@@ -262,39 +262,23 @@ ActiveAdmin.register Projekt do
 		column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
 			link_to(p.projektname, "/admin/projekte/#{p.id}")
 		end
+
 		column I18n.t("buecher_names.isbn") do |p|
 			raw "#{p.buch.isbn.gsub('-', '&#8209;')}" rescue '-'
 		end
-		column I18n.t("gprod_names.auflage"), sortable: :auflage do |p|
-			if p.gesicherte_abnahme
-				raw "#{p.auflage} (#{p.gesicherte_abnahme})"
-			else
-				p.auflage
-			end
-		end
-		column I18n.t("search_labels.lektor"), sortable: 'lektoren.name' do |p|
-			p.lektor.fox_name rescue '-'
-		end
-		column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
-			##
-			# the raw method is used to surround the data with a div element of class='deadline'
-			# this is used by the js function deadline_colorcode defined in for_show.js.erb
-			# Note: This js function is disabled for whatever reason.
-			raw "<div class='deadline'>#{p.final_deadline}</div>"
-		end
+
 		column I18n.t("status_names.statusfinal"), sortable: 'status_final.status' do |p|
 			status_tag(p.statusfinal.status)
 		end
+
 		column I18n.t("gprod_names.prio"), sortable: :prio do |p|
 			p.prio
 		end
-		column I18n.t("gprod_names.manusskript_eingang_date"), sortable:
-			:manusskript_eingang_date do |p|
-			p.manusskript_eingang_date
-		end
+
 		column I18n.t("buecher_names.r_code") do |p|
 			link_to(p.buch.reihen.first.r_code, "/admin/reihen/#{p.buch.reihen.first.id}") rescue "-"
 		end
+
 		column I18n.t("status_names.statusbinderei"), sortable: 'status_binderei.status' do |p|
 			status_tag(p.statusbinderei.status)
 		end
@@ -311,9 +295,10 @@ ActiveAdmin.register Projekt do
       end
 		end
 
-		column I18n.t("status_names.statusumschl"), sortable: 'status_umschl.status' do |p|
-			status_tag(p.statusumschl.status)
+		column I18n.t("status_names.statustitelei"), sortable: 'status_titelei.status' do |p|
+			status_tag(p.statustitelei.status)
 		end
+
 		column I18n.t("status_names.statussatz"), sortable: 'status_satz.status' do |p|
 			if p.satzproduktion
 				status_tag(p.statussatz.status)
@@ -321,9 +306,32 @@ ActiveAdmin.register Projekt do
 				"-"
 			end
 		end
-		column I18n.t("status_names.statustitelei"), sortable: 'status_titelei.status' do |p|
-			status_tag(p.statustitelei.status)
+
+		column I18n.t("status_names.statusumschl"), sortable: 'status_umschl.status' do |p|
+			status_tag(p.statusumschl.status)
 		end
+
+    column I18n.t('buecher_names.bindung_bezeichnung'), sortable: 'buecher.bindung_bezeichnung' do |p|
+      p.buch.bindung_bezeichnung rescue '-'
+    end
+
+		column I18n.t("gprod_names.manusskript_eingang_date"), sortable:
+			:manusskript_eingang_date do |p|
+			p.manusskript_eingang_date
+		end
+
+		column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
+			##
+			# the raw method is used to surround the data with a div element of class='deadline'
+			# this is used by the js function deadline_colorcode defined in for_show.js.erb
+			# Note: This js function is disabled for whatever reason.
+			raw "<div class='deadline'>#{p.final_deadline}</div>"
+		end
+
+		column I18n.t("search_labels.lektor"), sortable: 'lektoren.name' do |p|
+			p.lektor.fox_name rescue '-'
+		end
+
 	end
 
 	filter :final_deadline
