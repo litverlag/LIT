@@ -4,7 +4,7 @@
 <% if @department.nil? %>
 	<% used_url = admin_projekte_path%>
     	<fieldset class="projekt"><legend><span>Ein neues Projekt erstellen</span></legend>
-      	<p>In diesem Bereich können Sie Projekte erstellen, dazu geben Sie dem Projekt vorerst nur einen die folgenden </p>
+      	<p>In diesem Bereich können Sie Projekte erstellen, dazu geben Sie dem Projekt vorerst nur einen Namen und eine korrespondez Email Adresse. </p>
       	<ul>
         	<%= form_for @projekt, url: used_url do |projekt_form| %>
             <li>
@@ -12,7 +12,7 @@
               <%= projekt_form.text_field :projektname %>
             </li>
             <li>
-              <%= projekt_form.label :projekt_email_adresse, "Email des Projektes" %>
+              <%= projekt_form.label :projekt_email_adresse, "Korrespondenz Email Adresse" %>
               <%= projekt_form.text_field :projekt_email_adresse %>
             </li>
             <li>

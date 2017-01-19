@@ -44,10 +44,9 @@ class Gprod < ActiveRecord::Base
   # for StatusOptionsAdapter
   scope_maker([:neu_filter, :bearbeitung_filter, :fertig_filter, :problem_filter], "status_final", StatusOptionsAdapter.option(:statusfinal))
 
-
   #validates :projektname, :projekt_email_adresse, presence: true
 	validates :projekt_email_adresse, format: { 
-		with: /\A([\w+\-.]+@[a-z\d\-.]+(\.[a-z]+)*\.[a-z]+\s*)+\z/i, 
+		with: /\A([\w+\-.]+@[a-zA-Z\d\-.]+(\.[a-zA-Z]+)*\.[a-zA-Z]+\s*)+\z/i, 
 		message: "'%{value}' does not match",
 		allow_nil: true, allow_blank: true 
 	}

@@ -30,8 +30,9 @@ ActiveAdmin.register Um do
       @department = "umschlag"
       @projekt = Gprod.find(permitted_params[:id])
 
-			# Computing the backsize. Should probably be moved to projekt change
-			# submission, to be called less often. TODO
+			# Computing the backsize.
+      # TODO Should probably be moved to projekt change submission, to be
+      # called less often.
 			unless @projekt.buch.nil?
 				bz = @projekt.buch.backsize()
 				@projekt.buch.update({:rueckenstaerke => bz}) unless bz.nil?

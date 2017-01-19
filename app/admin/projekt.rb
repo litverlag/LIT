@@ -10,6 +10,21 @@ ActiveAdmin.register Projekt do
 	scope (I18n.t("scopes_names.neu_filter")), :neu_filter
 	scope (I18n.t("scopes_names.problem_filter")), :problem_filter
 
+  # Automatically generated scopes from app/models/projekt.rb
+  scope (I18n.t("scopes_names.im_verzug_hf")), :im_verzug_hf, :if => proc{current_admin_user.departments.where("name = ?", 'Superadmin').any?}
+  scope (I18n.t("scopes_names.im_verzug_bel")), :im_verzug_bel, :if => proc{current_admin_user.departments.where("name = ?", 'Superadmin').any?}
+  scope (I18n.t("scopes_names.im_verzug_rit")), :im_verzug_rit, :if => proc{current_admin_user.departments.where("name = ?", 'Superadmin').any?}
+  scope (I18n.t("scopes_names.im_verzug_litb")), :im_verzug_litb, :if => proc{current_admin_user.departments.where("name = ?", 'Superadmin').any?}
+  scope (I18n.t("scopes_names.im_verzug_rai")), :im_verzug_rai, :if => proc{current_admin_user.departments.where("name = ?", 'Superadmin').any?}
+  scope (I18n.t("scopes_names.im_verzug_wien")), :im_verzug_wien, :if => proc{current_admin_user.departments.where("name = ?", 'Superadmin').any?}
+
+  # Department im_verzug scopes.
+  Department.all.map{|d| d.name[0..2].downcase}.each do |dep|
+    next if ['sup', 'lek'].include? dep
+    scope (I18n.t("scopes_names.im_verzug_#{dep}")),
+      ("im_verzug_#{dep}").to_sym,
+      :if => proc{current_admin_user.departments.where("name = ?", 'Superadmin').any?}
+  end
 
 	controller do
 		
@@ -41,11 +56,13 @@ ActiveAdmin.register Projekt do
       # Note also that we need to inlcude all non-local tables (including all
       # stati, except final_status) that we want to be 'sortable'.
       # See 'index' block below.
-      # This also prevents N+1 queries to the db when sorting.
+      # This also prevents N+1 queries to the db when sorting.(?)
       super.includes [
         :statusdruck, :statusumschl, :statuspreps, :statusbinderei,
         :statustitelei, :lektor
       ]
+
+      # Note also that this will be overridden by a click on a scope button.
 		end
 
 
@@ -281,9 +298,19 @@ ActiveAdmin.register Projekt do
 		column I18n.t("status_names.statusbinderei"), sortable: 'status_binderei.status' do |p|
 			status_tag(p.statusbinderei.status)
 		end
+
 		column I18n.t("status_names.statusdruck"), sortable: 'status_druck.status' do |p|
-			status_tag(p.statusdruck.status)
+      begin
+        if not p.externer_druck
+          status_tag(p.statusdruck.status)
+        else
+          status_tag(p.statusexternerdruck.status)
+        end
+      rescue
+        '-'
+      end
 		end
+
 		column I18n.t("status_names.statusumschl"), sortable: 'status_umschl.status' do |p|
 			status_tag(p.statusumschl.status)
 		end

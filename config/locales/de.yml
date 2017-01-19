@@ -193,7 +193,7 @@ de:
     nstatustitelei: 'not Titelei'
     statusumschl: 'Umschl'
     nstatusumschl: 'not Umschl'
-    
+
   scopes_names:
     neu_filter: "neu"
     bearbeitung_filter: "in bearbeitung"
@@ -204,6 +204,21 @@ de:
     verschickt_filter: "verschickt"
     alle_filter: "alle"
     unfertig_filter: "unfertig"
+    im_verzug_bel: 'IV Bellmann'
+    im_verzug_rit: 'IV Richter'
+    im_verzug_litb: 'IV Lit Berlin'
+    im_verzug_hf: 'IV Hopf'
+    im_verzug_rai: 'IV Rainer'
+    im_verzug_wien: 'IV Lit Wien'
+    im_verzug_ums: 'IV Umschlag'
+    im_verzug_sat: 'IV Satz'
+    im_verzug_tit: 'IV Titelei'
+    im_verzug_pre: 'IV Preps'
+    im_verzug_rec: 'IV Rechnung'
+    im_verzug_bil: 'IV Bildpr'
+    im_verzug_pod: 'IV Druck'
+    im_verzug_bin: 'IV Binderei'
+    im_verzug_ext: 'IV Externer Druck'
 
   bi_names:
     fhc: 'fhc'
