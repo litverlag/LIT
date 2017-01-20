@@ -123,6 +123,7 @@ ActiveAdmin.register Preps do
   filter :projekt_email_adresse
 	filter :projektname
 	filter :buch_reihen_name_cont, as: :string, label: I18n.t('buecher_names.r_code')
+  filter :preps_muster_date
 
   show do
     render partial: "show_view"

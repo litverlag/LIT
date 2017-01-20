@@ -1,7 +1,7 @@
 ActiveAdmin.register Uebersicht do
   menu label: 'Produktions Details'
-  menu priority:100
-	config.filters = false
+  menu priority:100 # pretty much right
+  config.clear_action_items!
 
 	scope I18n.t("scopes_names.alle_filter"), :alle_filter
   scope(I18n.t("scopes_names.unfertig_filter")){|s|
@@ -21,7 +21,7 @@ ActiveAdmin.register Uebersicht do
     # Need to join book and stuff, so we can easily sort that.
     def scoped_collection
       super.includes [
-        :buch,
+        :buch, :lektor
       ]
     end
   end
@@ -29,8 +29,12 @@ ActiveAdmin.register Uebersicht do
   index download_links: [:odt, :csv] do
 
     column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
-      link_to(raw("#{p.projektname} (#{p.buch.short_isbn.gsub('-', '&#8209;')})"),
-              "/admin/projekte/#{p.id}") rescue '-'
+      begin
+        link_to(raw("#{p.projektname} (#{p.buch.short_isbn.gsub('-', '&#8209;')})"),
+              "/admin/projekte/#{p.id}")
+      rescue
+        link_to(p.projektname, "/admin/projekte/#{p.id}")
+      end
     end
 
 		column I18n.t("buecher_names.isbn") do |p|
@@ -87,4 +91,10 @@ ActiveAdmin.register Uebersicht do
 		end
 
   end
+
+	filter :final_deadline
+	filter :projekt_email_adresse
+	filter :projektname
+	filter :prio, as: :select
+
 end
