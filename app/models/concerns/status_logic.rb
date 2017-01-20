@@ -85,6 +85,8 @@ module StatusLogic
         # If freigabe for project is set, project get visible for Satz
         if locationOfChange == "StatusFinal"
           changeStatusByLogic(projekt.statussatz, $SATZ_STATUS[0])
+          # and ..
+          changeStatusByLogic(projekt.statusfinal, $FINAL_STATUS[1])
         end
 
       ################################
@@ -111,6 +113,8 @@ module StatusLogic
           changeStatusByLogic(projekt.statustitelei, $TITELEI_STATUS[0])
           changeStatusByLogic(projekt.statuspreps, $PREPS_STATUS[0])
           changeStatusByLogic(projekt.statusumschl, $UMSCHL_STATUS[0])
+          # And make it be work-in-progress: 'in_bearbeitung'.
+          changeStatusByLogic(projekt.statusfinal, $FINAL_STATUS[1])
 
         ##
         # If statustitelei freigabe is set, make project visible for Titelei
@@ -155,8 +159,8 @@ module StatusLogic
           end
 
           ##
-					# If Preps finished, project is going to be a new task for
-					# Druck/ExternerDruck
+          # If Preps finished, project is going to be a new task for
+          # Druck/ExternerDruck
           if changedTo == "fertig"
             changeStatusByLogic(projekt.statusdruck, $DRUCK_STATUS[2])
             changeStatusByLogic(projekt.statusexternerdruck, $EXTERNER_DRUCK_STATUS[0])
@@ -165,9 +169,9 @@ module StatusLogic
         elsif locationOfChange == "StatusUmschl"
           ##
           # If Umschlag finished, project is going to be a new task for Druck
-					##
-					# XXX Isn't this change the same as the one above just to a later
-					# point in time? If so, thats bad.
+          ##
+          # XXX Isn't this change the same as the one above just to a later
+          # point in time? If so, thats bad.
           if changedTo == "fertig"
             changeStatusByLogic(projekt.statusdruck, $DRUCK_STATUS[0])
             changeStatusByLogic(projekt.statusexternerdruck, $EXTERNER_DRUCK_STATUS[0])
@@ -191,8 +195,8 @@ module StatusLogic
 
         end
 
-			end # end status change == String
-		end # end not projekt.satzproduktion
+      end # end status change == String
+    end # end not projekt.satzproduktion
   end
 
 
@@ -254,26 +258,26 @@ module StatusLogic
   # Method used to instantiate all relevant project status
   
   def createStatus(projekt)
-		begin
-			# So we have usefull sorting capabilities as Lektor. (otherwise this
-			# projekt would not be able to .. count as projekt?).
-			projekt.statusfinal = StatusFinal.create!(
-				status: I18n.t('scopes_names.neu_filter')
-			)
-			projekt.statusdruck = StatusDruck.create!()
-			projekt.statusexternerdruck = StatusExternerDruck.create!()
-			projekt.statustitelei = StatusTitelei.create!()
-			projekt.statussatz = StatusSatz.create!()
-			projekt.statuspreps = StatusPreps.create!()
-			projekt.statusoffsch = StatusOffsch.create!()
-			projekt.statusumschl = StatusUmschl.create!()
-			projekt.statusrg = StatusRg.create!()
-			projekt.statusbildpr = StatusBildpr.create!()
-			projekt.statusbinderei = StatusBinderei.create!()
-		rescue
+    begin
+      # So we have usefull sorting capabilities as Lektor. (otherwise this
+      # projekt would not be able to .. count as projekt?).
+      projekt.statusfinal = StatusFinal.create!(
+        status: I18n.t('scopes_names.neu_filter')
+      )
+      projekt.statusdruck = StatusDruck.create!()
+      projekt.statusexternerdruck = StatusExternerDruck.create!()
+      projekt.statustitelei = StatusTitelei.create!()
+      projekt.statussatz = StatusSatz.create!()
+      projekt.statuspreps = StatusPreps.create!()
+      projekt.statusoffsch = StatusOffsch.create!()
+      projekt.statusumschl = StatusUmschl.create!()
+      projekt.statusrg = StatusRg.create!()
+      projekt.statusbildpr = StatusBildpr.create!()
+      projekt.statusbinderei = StatusBinderei.create!()
+    rescue
       return false
     end
-		return true
+    return true
   end
 
 end

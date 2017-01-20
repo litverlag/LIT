@@ -261,3 +261,4 @@ de:
     lek_pod: 'Aktuelle Projekte'
     tit_pod: 'Aktuelle Titeleien'
     sollf_diff: 'Heute bis SollF'
+    lek_nach_einliste: 'Projekt freigeben (equivalent zu dem früheren verschieben nach EinListe)'

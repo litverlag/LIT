@@ -1,5 +1,5 @@
 ActiveAdmin.register Uebersicht do
-  menu label: 'Uebersicht'
+  menu label: 'Produktions Details'
   menu priority:100
 	config.filters = false
 

@@ -17,14 +17,15 @@
 
 			<% if @projekt.statusfinal.freigabe? %>
                 <div class = "freigabe_final" style="display: inline;">
-                    <input type="checkbox" name="status[freigabe_final]" value="True" disabled="disabled" checked>Gesamtfreigabe
+                  <input type="checkbox" name="status[freigabe_final]" value="True" disabled="disabled" checked><%= I18n.t('headlines.lek_nach_einliste') %>
                 </div>
             <% else %>
             	<div class = "freigabe_final" style="display: inline;">
-                    <input type="checkbox" name="status[freigabe_final]" value="True">Gesamtfreigabe
+                    <input type="checkbox" name="status[freigabe_final]" value="True"><%= I18n.t('headlines.lek_nach_einliste') %>
                 </div>
             <% end %>
 
+<!-- Ya, I know..
 			<% if @projekt.statustitelei.freigabe? %>
                 <div class = "freigabe_titelei" style="display: inline;">
                     <input type="checkbox" name="status[freigabe_titelei]" value="True" disabled="disabled" checked>Titeleifreigabe
@@ -57,6 +58,7 @@
             <% end %>
           </div>
         </li>
+-->
 
 
 
