@@ -146,6 +146,14 @@ de:
     satz_korrektur: 'Korrekt'
     satz_bearbeiter: 'Bearbeiter'
     satz_pfad: 'Pfad'
+    beitraegerbriefversand: 'Beiträgerbriefversand'
+    diss: 'Diss'
+    pflichtexemplare: 'Pflichtexemplare'
+    sonderdruck: 'Sonderdruck'
+    sonderdrucke: 'Sonderdrucke'
+    kaschierung: 'Kaschierung'
+    gesperrt: 'Gesperrt'
+    gesperrt_ende: 'Gesperrt Ende'
 
   buecher_names:
     name: "Name"

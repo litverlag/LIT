@@ -7,6 +7,8 @@ class Projekt < Gprod
 
 	belongs_to :lektor
 
+  #deadline_offset_from_today = 7
+
   def self.default_scope
     Gprod.joins("INNER JOIN status_final on status_final.gprod_id = gprods.id")
   end
@@ -29,7 +31,7 @@ class Projekt < Gprod
 
   ##
   # Now we generate :im_verzug_#{department} scopes.
-  Department.all.map{|d| d.name.downcase}.each do |dep|
+  Department.all.map{|d| d.name}.each do |dep|
     next if ['superadmin', 'lektor'].include? dep
     base_name = 'im_verzug_'
     department_short = dep[0..2]
@@ -72,7 +74,7 @@ class Projekt < Gprod
       #g.merge Projekt.includes [ :statusdruck, :statusumschl, :statuspreps, :statusbinderei, :statustitelei, :lektor ]
       g.merge Projekt.includes [:lektor, ]
     }
-  end
+  end rescue nil
 
 	##
 	# This method is used to find a Grod if there is a current_admin_user associated with a Lektor
