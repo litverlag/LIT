@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161215124742) do
+ActiveRecord::Schema.define(version: 20170123172052) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -244,6 +244,17 @@ ActiveRecord::Schema.define(version: 20161215124742) do
     t.date     "externer_druck_finished"
     t.text     "externer_druck_bemerkungen"
     t.text     "klappentextinfo"
+    t.time     "satz_korrektur"
+    t.string   "satz_bearbeiter"
+    t.string   "satz_pfad"
+    t.boolean  "beitraegerbriefversand"
+    t.boolean  "diss"
+    t.integer  "pflichtexemplare"
+    t.boolean  "sonderdruck"
+    t.integer  "sonderdrucke"
+    t.string   "kaschierung"
+    t.boolean  "gesperrt"
+    t.date     "gesperrt_ende"
   end
 
   create_table "lektoren", force: :cascade do |t|
@@ -261,6 +272,15 @@ ActiveRecord::Schema.define(version: 20161215124742) do
     t.string   "r_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "status_biblio_erf", force: :cascade do |t|
+    t.integer "gprod_id"
+    t.boolean "freigabe",    default: false
+    t.date    "freigabe_at"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updated_at"
   end
 
   create_table "status_bildpr", force: :cascade do |t|
