@@ -1,5 +1,6 @@
 /**
  * Initialization when Document is loaded
+ * FIXME Nothing is loaded. Need to load explicitly per view.
  */
 
 $(document).on('ready page:load',

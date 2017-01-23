@@ -1,5 +1,5 @@
 ActiveAdmin.register Projekt do
-	menu label: "Meine Projekte"
+	menu label: "Terminplanung"
 	config.sort_order = 'final_deadline_asc'
 	config.filters = true
 
@@ -10,6 +10,21 @@ ActiveAdmin.register Projekt do
 	scope (I18n.t("scopes_names.neu_filter")), :neu_filter
 	scope (I18n.t("scopes_names.problem_filter")), :problem_filter
 
+  # Automatically generated scopes from app/models/projekt.rb
+  scope (I18n.t("scopes_names.im_verzug_hf")), :im_verzug_hf, :if => proc{current_admin_user.departments.where("name = ?", 'Superadmin').any?}
+  scope (I18n.t("scopes_names.im_verzug_bel")), :im_verzug_bel, :if => proc{current_admin_user.departments.where("name = ?", 'Superadmin').any?}
+  scope (I18n.t("scopes_names.im_verzug_rit")), :im_verzug_rit, :if => proc{current_admin_user.departments.where("name = ?", 'Superadmin').any?}
+  scope (I18n.t("scopes_names.im_verzug_litb")), :im_verzug_litb, :if => proc{current_admin_user.departments.where("name = ?", 'Superadmin').any?}
+  scope (I18n.t("scopes_names.im_verzug_rai")), :im_verzug_rai, :if => proc{current_admin_user.departments.where("name = ?", 'Superadmin').any?}
+  scope (I18n.t("scopes_names.im_verzug_wien")), :im_verzug_wien, :if => proc{current_admin_user.departments.where("name = ?", 'Superadmin').any?}
+
+  # Department im_verzug scopes.
+  Department.all.map{|d| d.name[0..2].downcase}.each do |dep|
+    next if ['sup', 'lek'].include? dep
+    scope (I18n.t("scopes_names.im_verzug_#{dep}")),
+      ("im_verzug_#{dep}").to_sym,
+      :if => proc{current_admin_user.departments.where("name = ?", 'Superadmin').any?}
+  end
 
 	controller do
 		
@@ -41,11 +56,13 @@ ActiveAdmin.register Projekt do
       # Note also that we need to inlcude all non-local tables (including all
       # stati, except final_status) that we want to be 'sortable'.
       # See 'index' block below.
-      # This also prevents N+1 queries to the db when sorting.
+      # This also prevents N+1 queries to the db when sorting.(?)
       super.includes [
         :statusdruck, :statusumschl, :statuspreps, :statusbinderei,
         :statustitelei, :lektor
       ]
+
+      # Note also that this will be overridden by a click on a scope button.
 		end
 
 
@@ -245,48 +262,43 @@ ActiveAdmin.register Projekt do
 		column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
 			link_to(p.projektname, "/admin/projekte/#{p.id}")
 		end
+
 		column I18n.t("buecher_names.isbn") do |p|
 			raw "#{p.buch.isbn.gsub('-', '&#8209;')}" rescue '-'
 		end
-		column I18n.t("gprod_names.auflage"), sortable: :auflage do |p|
-			if p.gesicherte_abnahme
-				raw "#{p.auflage} (#{p.gesicherte_abnahme})"
-			else
-				p.auflage
-			end
-		end
-		column I18n.t("search_labels.lektor"), sortable: 'lektoren.name' do |p|
-			p.lektor.fox_name rescue '-'
-		end
-		column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
-			##
-			# the raw method is used to surround the data with a div element of class='deadline'
-			# this is used by the js function deadline_colorcode defined in for_show.js.erb
-			# Note: This js function is disabled for whatever reason.
-			raw "<div class='deadline'>#{p.final_deadline}</div>"
-		end
+
 		column I18n.t("status_names.statusfinal"), sortable: 'status_final.status' do |p|
 			status_tag(p.statusfinal.status)
 		end
+
 		column I18n.t("gprod_names.prio"), sortable: :prio do |p|
 			p.prio
 		end
-		column I18n.t("gprod_names.manusskript_eingang_date"), sortable:
-			:manusskript_eingang_date do |p|
-			p.manusskript_eingang_date
-		end
+
 		column I18n.t("buecher_names.r_code") do |p|
 			link_to(p.buch.reihen.first.r_code, "/admin/reihen/#{p.buch.reihen.first.id}") rescue "-"
 		end
+
 		column I18n.t("status_names.statusbinderei"), sortable: 'status_binderei.status' do |p|
 			status_tag(p.statusbinderei.status)
 		end
+
 		column I18n.t("status_names.statusdruck"), sortable: 'status_druck.status' do |p|
-			status_tag(p.statusdruck.status)
+      begin
+        if not p.externer_druck
+          status_tag(p.statusdruck.status)
+        else
+          status_tag(p.statusexternerdruck.status)
+        end
+      rescue
+        '-'
+      end
 		end
-		column I18n.t("status_names.statusumschl"), sortable: 'status_umschl.status' do |p|
-			status_tag(p.statusumschl.status)
+
+		column I18n.t("status_names.statustitelei"), sortable: 'status_titelei.status' do |p|
+			status_tag(p.statustitelei.status)
 		end
+
 		column I18n.t("status_names.statussatz"), sortable: 'status_satz.status' do |p|
 			if p.satzproduktion
 				status_tag(p.statussatz.status)
@@ -294,9 +306,32 @@ ActiveAdmin.register Projekt do
 				"-"
 			end
 		end
-		column I18n.t("status_names.statustitelei"), sortable: 'status_titelei.status' do |p|
-			status_tag(p.statustitelei.status)
+
+		column I18n.t("status_names.statusumschl"), sortable: 'status_umschl.status' do |p|
+			status_tag(p.statusumschl.status)
 		end
+
+    column I18n.t('buecher_names.bindung_bezeichnung'), sortable: 'buecher.bindung_bezeichnung' do |p|
+      p.buch.bindung_bezeichnung rescue '-'
+    end
+
+		column I18n.t("gprod_names.manusskript_eingang_date"), sortable:
+			:manusskript_eingang_date do |p|
+			p.manusskript_eingang_date
+		end
+
+		column I18n.t("gprod_names.final_deadline"), sortable: :final_deadline do |p|
+			##
+			# the raw method is used to surround the data with a div element of class='deadline'
+			# this is used by the js function deadline_colorcode defined in for_show.js.erb
+			# Note: This js function is disabled for whatever reason.
+			raw "<div class='deadline'>#{p.final_deadline}</div>"
+		end
+
+		column I18n.t("search_labels.lektor"), sortable: 'lektoren.name' do |p|
+			p.lektor.fox_name rescue '-'
+		end
+
 	end
 
 	filter :final_deadline

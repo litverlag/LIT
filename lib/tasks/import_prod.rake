@@ -1001,7 +1001,7 @@ namespace :gapi do
         table = {
           'f' => [I18n.t('bi_names.f'),true],
           'K' => [I18n.t('bi_names.k'),false],
-          'fhc' => ['faden_hardcover',true],
+          'fhc' => [I18n.t('bi_names.fhc'),true],
           'k' => [I18n.t('bi_names.k'),false],
         }
         table.to_enum.each do |key, value|

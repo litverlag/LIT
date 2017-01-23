@@ -1,6 +1,6 @@
 #Usage:
-#	bin/rake test:fixture_generator["select * from users","users"]
-namespace :test do
+#	bin/rake db:fixture_generator["select * from users","users"]
+namespace :db do
   desc "generate fixtures for a given sql query from the current development database"
 
   task :fixture_generator, [:sql, :file_name] => :environment do |t, args|

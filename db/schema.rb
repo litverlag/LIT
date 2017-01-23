@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170113152608) do
+ActiveRecord::Schema.define(version: 20170123155641) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -247,6 +247,14 @@ ActiveRecord::Schema.define(version: 20170113152608) do
     t.time     "satz_korrektur"
     t.string   "satz_bearbeiter"
     t.string   "satz_pfad"
+    t.boolean  "beitraegerbriefversand"
+    t.boolean  "diss"
+    t.integer  "pflichtexemplare"
+    t.boolean  "sonderdruck"
+    t.integer  "sonderdrucke"
+    t.string   "kaschierung"
+    t.boolean  "gesperrt"
+    t.date     "gesperrt_ende"
   end
 
   create_table "lektoren", force: :cascade do |t|

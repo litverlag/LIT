@@ -68,7 +68,9 @@ ActiveAdmin.register Autor do
   end
 
   index do
-    column 'Vollständiger Name', :fullname
+    column :name
+    column :vorname
+    column :anrede
     column :institut
 
     actions
@@ -76,8 +78,8 @@ ActiveAdmin.register Autor do
 
 	filter :name
 	filter :email
-	#filter :str
-	#filter :ort
+  filter :anrede
+  filter :institut
 
   show do
     render "autorShow"

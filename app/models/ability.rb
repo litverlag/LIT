@@ -39,6 +39,7 @@ class Ability
     end
     if @departName.include?'Titelei'
       can [:read, :update], Tit
+      can :read, Preps
     end
     if @departName.include?'PrePs'
       can [:read, :update], Preps
