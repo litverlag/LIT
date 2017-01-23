@@ -24,7 +24,7 @@ ActiveAdmin.register Projekt do
     scope (I18n.t("scopes_names.im_verzug_#{dep}")),
       ("im_verzug_#{dep}").to_sym,
       :if => proc{current_admin_user.departments.where("name = ?", 'Superadmin').any?}
-  end rescue nil
+  end
 
 	controller do
 		
