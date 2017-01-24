@@ -49,7 +49,7 @@ ActiveAdmin.register_page "Dashboard" do
 					unless /admin/.match(current_admin_user.email)
 						pod.delete_if { |p|
 							not /#{current_admin_user.email.sub(/@.*/, '')}/i.match(p.lektor.name) \
-								rescue false
+								or not p.statusfinal.freigabe rescue false
 						}
 					end
 					th I18n.t('gprod_names.projektname')
@@ -94,7 +94,8 @@ ActiveAdmin.register_page "Dashboard" do
 					pod.sort! &z_top_prio
 					if /(tex|umschlag)/.match(current_admin_user.email) or /admin/.match(current_admin_user.email)
 						pod.delete_if { |p|
-							p.buch.umschlag_bezeichnung == I18n.t('um_names.indesign') rescue true
+							p.buch.umschlag_bezeichnung == I18n.t('um_names.indesign') \
+                or p.statusumschl.freigabe rescue true
 						}
 					elsif /i?n?design/.match(current_admin_user.email)
 						pod.delete_if { |p|
@@ -157,7 +158,7 @@ ActiveAdmin.register_page "Dashboard" do
 					pod = Projekt.ransack(final_deadline_gt: Date.yesterday).result.map
 					pod = pod.sort_by { |v| v.final_deadline }
 					pod.sort! &z_top_prio
-					pod.delete_if { |p| p.satzproduktion == false }
+					pod.delete_if { |p| p.satzproduktion == false or not p.statussatz.freigabe }
 					th I18n.t('buecher_names.isbn')
 					th I18n.t('gprod_names.projektname')
 					th I18n.t('gprod_names.prio')
@@ -181,12 +182,13 @@ ActiveAdmin.register_page "Dashboard" do
 		end
 
 		if dep.include? 'Pod' or dep.include? 'Superadmin'
-			panel I18n.t('headlines.lek_pod') do
+			panel I18n.t('headlines.druck_pod') do
 				table do
 					pod = Projekt.ransack(final_deadline_gt: Date.yesterday).result.map
 					pod = pod.sort_by { |v| v.final_deadline }
 					pod.delete_if { |p| 
-						p.buch.bindung_bezeichnung != I18n.t('bi_names.k') rescue false 
+						p.buch.bindung_bezeichnung != I18n.t('bi_names.k') \
+              or p.externer_druck rescue false 
 					}
 					pod.sort! &z_top_prio
 					th I18n.t('buecher_names.isbn')

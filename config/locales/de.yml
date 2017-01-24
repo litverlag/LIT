@@ -268,5 +268,6 @@ de:
     um_pod: 'Aktuelle Umschläge'
     lek_pod: 'Aktuelle Projekte'
     tit_pod: 'Aktuelle Titeleien'
+    druck_pod: 'Aktuelle Druckaufträge'
     sollf_diff: 'Heute bis SollF'
     lek_nach_einliste: 'Projekt freigeben (equivalent zu dem früheren verschieben nach EinListe)'
