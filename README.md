@@ -27,11 +27,21 @@ violation is
 
 # Usefull rake stuff.
  For more info check out the corresponding rake task information.
-rake notes
-rake db:save_settings
-rake db:load_settings
-rake db:stati
-rake db:accounts
-rake dbf:import
-rake gapi:import
-rake gapi:test
+<script>
+	rake notes
+	rake db:save_settings
+	rake db:load_settings
+	rake db:stati
+	rake db:accounts
+	rake dbf:import
+	rake gapi:import
+	rake gapi:test
+</script>
+
+# Creating a new department.
+ This is a journey. And I'm not talking about the nice kind of journey, where
+ you learn some interesting stuff.
+ A list of all places, that need change in case you need to add a department
+ can be found here: <b>../add_new_department.madness</b>.
+
+ vim: ft=markdown
