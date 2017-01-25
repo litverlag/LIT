@@ -84,7 +84,7 @@ ActiveAdmin.register Um do
 			super { |format| format.odt {print_report("umschlag_report", method(:umschlag))} }
     end
 
-  end
+  end # End controller
 
 	batch_action :umschlagkarte do |id|
 		print_report "umschlagkarte", method(:umschlagkarte), id

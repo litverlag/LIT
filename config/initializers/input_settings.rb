@@ -35,7 +35,8 @@ class InputSettings
 		:papier_bezeichnung=>"selectable",
 		:bindung_bezeichnung=>"selectable",
 		:umschlag_bezeichnung=>"selectable",
-		:format_bezeichnung=>"selectable",
+    # Commented out, because we need special ones...
+		#:format_bezeichnung=>"selectable",
 		:prio=>"selectable",
 		:bilder=>"selectable",
 	}

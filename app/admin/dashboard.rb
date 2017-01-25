@@ -5,8 +5,17 @@ ActiveAdmin.register_page "Dashboard" do
   content title: proc{ I18n.t("active_admin.dashboard") } do
 
 		##
+    # The argument here was, if this view is nice, we dont need to print those
+    # lists for everyone, as tey see anyway what they have to do.
 		# I expected to need more diversity for the different departments, thus
-		# this is pretty verbose.
+		# this is very verbose.
+    #
+    ##
+    # Note that we filter the Lektor list by the email address, as the Lektoren
+    # have their name in it.
+    #
+    # Note also that we do the same for the Umschlag-Leute.
+    # (design@.. umschlag@..)
 
 		dep = current_admin_user.departments.first.name
 		z_top_prio = Proc.new { |a,b|
@@ -92,6 +101,7 @@ ActiveAdmin.register_page "Dashboard" do
 					pod = Projekt.ransack(final_deadline_gt: Date.yesterday).result.map
 					pod = pod.sort_by { |v| v.final_deadline }
 					pod.sort! &z_top_prio
+          # Here it is.
 					if /(tex|umschlag)/.match(current_admin_user.email) or /admin/.match(current_admin_user.email)
 						pod.delete_if { |p|
 							p.buch.umschlag_bezeichnung == I18n.t('um_names.indesign') \
@@ -104,6 +114,7 @@ ActiveAdmin.register_page "Dashboard" do
 					end
 					th I18n.t('buecher_names.isbn')
 					th I18n.t('gprod_names.projektname')
+          th I18n.t('buecher_names.umschlag_bezeichnung')
 					th I18n.t('gprod_names.prio')
 					th I18n.t('status_names.statusumschl')
 					th I18n.t('gprod_names.final_deadline')
@@ -114,11 +125,12 @@ ActiveAdmin.register_page "Dashboard" do
 						tr ''
 						td link_to(p.buch.isbn, "/admin/ums/#{p.id}") rescue td "<empty>"
 						td p.projektname
+            td p.buch.umschlag_bezeichnung rescue '<kein Buch verlinkt>'
 						td tagged_prio(p)
 						td status_tag(p.statusumschl.status)
 						td p.final_deadline
 						td p.umschlag_deadline
-						td p.buch.lektor.name rescue td "<empty>"
+						td p.lektor.name rescue td "<kein Lektor verlinkt>"
 					end
 				end
 			end
@@ -262,7 +274,7 @@ ActiveAdmin.register_page "Dashboard" do
 					pod.each do |p|
 						next if p.statuspreps.status.eql? I18n.t('scopes_names.fertig_filter')
 						tr ''
-						td link_to(p.buch.isbn, "/admin/s_reifs/#{p.id}") rescue td "<empty>"
+						td link_to(p.buch.isbn, "/admin/preps/#{p.id}") rescue td "<empty>"
 						td p.projektname
 						td tagged_prio(p)
 						td status_tag(p.statuspreps.status)

@@ -440,6 +440,9 @@ namespace :gapi do
       format = check_umformat_entry( table[i,h['Format']], logger ) rescue nil
       buch[:format_bezeichnung] = format unless format.nil?
 
+      vier_farb_pages = table[i,h['4f']] rescue nil
+      buch.vier_farb = vier_farb_pages unless vier_farb_pages.nil?
+
       prio, sonder = check_prio_entry( table[i,h['Prio/Sond']], logger ) rescue nil
       gprod[:prio] = prio unless prio.nil?
       gprod[:lektor_bemerkungen_public] = sonder unless sonder.nil?

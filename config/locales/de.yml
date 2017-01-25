@@ -66,6 +66,7 @@ de:
 
   errors:
     external:
+    # We didn't do it.
       nobuch: 'dem aktuellen Projekt ist kein Buch verlinkt'
       noautor: 'dem aktuellen Projekt ist kein Autor verlinkt'
     internal:
@@ -186,21 +187,21 @@ de:
   status_names:
     statusbildpr: 'Bildpr'
     statusbinderei: 'Binderei'
-    nstatusbinderei: 'not Binderei'
+    nstatusbinderei: 'Binderei ist nicht'
     statusdruck: 'Druck'
-    nstatusdruck: 'not Druck'
+    nstatusdruck: 'Druck ist nicht'
     statusexternerdruck: 'Externer Druck'
-    nstatusexternerdruck: 'not Externer Druck'
+    nstatusexternerdruck: 'Externer Druck ist nicht'
     statusfinal: 'Final'
     statusoffsch: 'Offsch'
     statuspreps: 'Preps'
     statusrg: 'Rg'
     statussatz: 'Satz'
-    nstatussatz: 'not Satz'
+    nstatussatz: 'Satz ist nicht'
     statustitelei: 'Titelei'
-    nstatustitelei: 'not Titelei'
+    nstatustitelei: 'Titelei ist nicht'
     statusumschl: 'Umschl'
-    nstatusumschl: 'not Umschl'
+    nstatusumschl: 'Umschl ist nicht'
 
   scopes_names:
     neu_filter: "neu"
@@ -233,6 +234,7 @@ de:
     k: 'k'
     hc: 'hc'
     f: 'f'
+    h: 'hc'
 
   paper_names:
     offset80: 'o80'  #'Offset 80g'

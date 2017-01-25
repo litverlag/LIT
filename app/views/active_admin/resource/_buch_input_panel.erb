@@ -6,8 +6,8 @@
         <%= fields_for :buch, @projekt.buch do |buch_fields| %>
           <% if InputSettings.instance.is_visible?(@department, :format_bezeichnung) %>
             <li>
-              <%= buch_fields.label :_format_bezeichnung, "Format"%>
-              <%= select_tag("buch[format_bezeichnung]", options_for_select(@array_of_format_bezeichungen,selected: @projekt.buch.format_bezeichnung),include_blank: true ) %>
+              <%= buch_fields.label :format_bezeichnung, "Format" %>
+              <%= buch_fields.text_field :format_bezeichnung  %>
             </li>
 					<%end%>
           <% if InputSettings.instance.is_visible?(@department, :papier_bezeichnung) %>

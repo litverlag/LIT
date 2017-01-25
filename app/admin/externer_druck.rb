@@ -13,6 +13,10 @@ ActiveAdmin.register ExternerDruck do
 	controller do
     include StatusLogic, PrintReport
 
+    def scoped_collection
+      super.includes [ :lektor, ]
+    end
+
     def permitted_params
       params.permit!
     end
@@ -72,14 +76,29 @@ ActiveAdmin.register ExternerDruck do
 		column I18n.t("gprod_names.auflage") do |p|
 			p.auflage
 		end
+		column I18n.t("buecher_names.format_bezeichnung") do |p|
+			p.buch.format_bezeichnung rescue '-'
+		end
 		column I18n.t("buecher_names.bindung_bezeichnung") do |p|
 			p.buch.bindung_bezeichnung rescue '-'
+		end
+		column I18n.t("buecher_names.papier_bezeichnung") do |p|
+			p.buch.papier_bezeichnung rescue '-'
+		end
+		column I18n.t("buecher_names.umschlag_bezeichnung") do |p|
+			p.buch.umschlag_bezeichnung rescue '-'
+		end
+		column I18n.t("buecher_names.seiten") do |p|
+			p.buch.seiten rescue '-'
+		end
+		column I18n.t("buecher_names.vier_farb") do |p|
+			p.buch.vier_farb rescue '-'
 		end
 		column I18n.t("gprod_names.prio"), sortable: :prio do |p|
 			p.prio
 		end
-		column I18n.t("search_labels.lektor") do |p|
-			p.buch.lektor.name rescue '-'
+		column I18n.t("search_labels.lektor"), sortable: 'lektoren.name' do |p|
+			p.buch.lektor.fox_name rescue '-'
 		end
 		column I18n.t("gprod_names.externer_druck_bemerkungen") do |p|
 			p.externer_druck_bemerkungen

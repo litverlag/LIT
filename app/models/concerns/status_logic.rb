@@ -142,6 +142,10 @@ module StatusLogic
           # Nothing special happens, but Preps should see that Titelei finished
 
         elsif locationOfChange == "StatusPreps"
+
+          # WTF: This never happens, because 'muster_art' is a text field, why
+          # would anyone write excactly 'digital'. Furthermore $MUSTER_ART[1]
+          # is 'papier' and not 'digital'.
           if projekt.muster_art == $MUSTER_ART[1] # digital muster
             ##
             # If Preps started working on the project and a muster needs to be printed
@@ -154,7 +158,7 @@ module StatusLogic
             # If Preps started working on the project and no muster needs to be printed
             # poject gets visible for Druck
             if changedTo == "bearbeitung"
-              changeStatusByLogic(projekt.statusdruck, $DRUCK_STATUS[1])
+              changeStatusByLogic(projekt.statusdruck, $DRUCK_STATUS[0])
             end
           end
 
@@ -162,7 +166,7 @@ module StatusLogic
           # If Preps finished, project is going to be a new task for
           # Druck/ExternerDruck
           if changedTo == "fertig"
-            changeStatusByLogic(projekt.statusdruck, $DRUCK_STATUS[2])
+            changeStatusByLogic(projekt.statusdruck, $DRUCK_STATUS[1])
             changeStatusByLogic(projekt.statusexternerdruck, $EXTERNER_DRUCK_STATUS[0])
           end
 

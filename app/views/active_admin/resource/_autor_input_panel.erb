@@ -1,10 +1,5 @@
 <%@fields_for_autor = [:name,:vorname,:anrede,:email,:str,:ort,:plz,:tel,:fax,:institut,:demail,:dstr,:dort,:dplz,:dtel,:dfax]  %>
 <fieldset class="autor"><legend><span><%= "Autor zu #{@projekt.projektname} bearbeiten"%></span></legend>
-<%# Well it does what it says, but not dynamically, thus its crap.
-<script type="text/javascript">
-	autocomplete_names();
-</script> 
-%>
 	<%#<p>Erstellen sie einen neuen Autor oder fügen sie einen schon bestehenden Autor zu der Datenbank hinzu.</p> %>
 	<%# That ^ sounds wrong. It is wrong. Surprise.. %>
 	<ul>

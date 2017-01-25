@@ -1,5 +1,5 @@
 ActiveAdmin.register SReif do
-  menu label: 'SReif'
+  menu label: 'Satz'
   menu priority: 4
   #config.filters = true
   config.filters = true

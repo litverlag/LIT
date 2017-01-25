@@ -10,12 +10,17 @@ module GlobalVariables
 				   I18n.t("scopes_names.fertig_filter"), 
 				   I18n.t("scopes_names.problem_filter")]
     #Druck
-    	$DRUCK_STATUS = [I18n.t("scopes_names.musterdrucken_filter"), 
-					  I18n.t("scopes_names.nächsterAuftrag_filter"), 
-					  I18n.t("scopes_names.neu_filter"), 
-					  I18n.t("scopes_names.bearbeitung_filter"), 
-					  I18n.t("scopes_names.fertig_filter"), 
-					  I18n.t("scopes_names.problem_filter")]
+      #$DRUCK_STATUS = [I18n.t("scopes_names.musterdrucken_filter"), 
+		  #		  I18n.t("scopes_names.nächsterAuftrag_filter"), 
+		  #		  I18n.t("scopes_names.neu_filter"), 
+		  #		  I18n.t("scopes_names.bearbeitung_filter"), 
+		  #		  I18n.t("scopes_names.fertig_filter"), 
+		  #		  I18n.t("scopes_names.problem_filter")]
+      $DRUCK_STATUS = [
+		  		  I18n.t("scopes_names.neu_filter"), 
+		  		  I18n.t("scopes_names.bearbeitung_filter"), 
+		  		  I18n.t("scopes_names.fertig_filter"), 
+      ]
 		#Externer Druck
     	$EXTERNER_DRUCK_STATUS = [
 						I18n.t("scopes_names.neu_filter"), 
