@@ -4,8 +4,6 @@
 #
 class StatusOptionsAdapter
 
-
-
   def self.option(status)
     case status
       when :statusbildpr
