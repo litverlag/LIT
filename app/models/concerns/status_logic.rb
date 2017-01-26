@@ -217,20 +217,21 @@ module StatusLogic
     ################################
 
     if projekt.satzproduktion
-
       ##
       # If freigabe for statusfinal is set, department satz freigabe status will be set
       if projekt.statusfinal.freigabe
         changeStatusByLogic(projekt.statussatz, true)
       end
-
-
+    end
 
     ################################
     # Satzproduktion false
     ################################
 
-    elsif not projekt.satzproduktion
+    ##
+    # We need to set those anyway, or no production happens!
+    #
+    #if not projekt.satzproduktion
 
       ##
       # If freigabe for statusfinal is set, all deparments freigabe status are set
