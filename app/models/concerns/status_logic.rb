@@ -233,25 +233,26 @@ module StatusLogic
     #
     #if not projekt.satzproduktion
 
-      ##
-      # If freigabe for statusfinal is set, all deparments freigabe status are set
-      if projekt.statusfinal.freigabe
-        changeStatusByLogic(projekt.statustitelei, true)
-        changeStatusByLogic(projekt.statuspreps, true)
-        changeStatusByLogic(projekt.statusumschl, true)
+    ##
+    # If freigabe for statusfinal is set, all deparments freigabe status are set
+    if projekt.statusfinal.freigabe
+      changeStatusByLogic(projekt.statustitelei, true)
+      changeStatusByLogic(projekt.statuspreps, true)
+      changeStatusByLogic(projekt.statusumschl, true)
 
-      ##
-      # If all departments freigabe status are set and statusfinal freigabe is not set
-      # statusfinal freigabe will be set
-      elsif not projekt.statusfinal.freigabe \
-        and projekt.statustitelei.freigabe \
-        and projekt.statuspreps.freigabe \
-        and projekt.statusumschl.freigabe
+    ##
+    # If all departments freigabe status are set and statusfinal freigabe is not set
+    # statusfinal freigabe will be set
+    elsif not projekt.statusfinal.freigabe \
+      and projekt.statustitelei.freigabe \
+      and projekt.statuspreps.freigabe \
+      and projekt.statusumschl.freigabe
 
-        changeStatusByLogic(projekt.statusfinal, true)
-      end
-
+      changeStatusByLogic(projekt.statusfinal, true)
     end
+
+    #end
+
 
 
   end
