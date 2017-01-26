@@ -71,6 +71,7 @@ ActiveAdmin.register Bi do
   end
 
   index title: 'Binderei' do
+		selectable_column
     column('Status') {|bi| status_tag(bi.statusbinderei.status)}
 		column I18n.t("gprod_names.projektname"), sortable: :projektname do |p|
 			link_to(p.projektname, "/admin/bis/#{p.id}")

@@ -16,9 +16,7 @@ ActiveAdmin.register SReif do
   scope (I18n.t("scopes_names.problem_filter")), :problem_filter
 
   controller do
-
     #from models/concerns
-    #ACHTUNG: SATZ IS FOR NOW NOT IMPLEMENTED IN THE STATUS LOGIC
     include StatusLogic
 
     def permitted_params

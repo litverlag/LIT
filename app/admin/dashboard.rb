@@ -6,15 +6,16 @@ ActiveAdmin.register_page "Dashboard" do
 
 		##
     # The argument here was, if this view is nice, we dont need to print those
-    # lists for everyone, as tey see anyway what they have to do.
-		# I expected to need more diversity for the different departments, thus
-		# this is very verbose.
+    # lists for everyone (ask Michael if you don't know what i'm talking
+    # about), as people see what they have to do without klicking anything. I
+    # expected to need more diversity for the different departments, thus this
+    # is very verbose.
     #
     ##
     # Note that we filter the Lektor list by the email address, as the Lektoren
     # have their name in it.
     #
-    # Note also that we do the same for the Umschlag-Leute.
+    # Note that we do the same for the Umschlag-Leute.
     # (design@.. umschlag@..)
 
 		dep = current_admin_user.departments.first.name

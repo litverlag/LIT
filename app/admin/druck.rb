@@ -89,6 +89,7 @@ ActiveAdmin.register Druck do
   end
 
   index do
+		selectable_column
     column('Status') {|druck| status_tag(druck.statusdruck.status)}
 		column I18n.t("status_names.statusumschl") do |p|
 			status_tag(p.statusumschl.status)
@@ -129,10 +130,6 @@ ActiveAdmin.register Druck do
 		collection: proc {$UMSCHL_STATUS}, label: I18n.t('status_names.statusumschl')
 	filter :statusumschl_status_not_eq, as: :select, 
 		collection: proc {$UMSCHL_STATUS}, label: I18n.t('status_names.nstatusumschl')
-	#filter :statusdruck_status_eq, as: :select, 
-		#collection: proc {$DRUCK_STATUS}, label: I18n.t('status_names.statusdruck')
-	#filter :statusdruck_status_not_eq, as: :select, 
-		#collection: proc {$DRUCK_STATUS}, label: I18n.t('status_names.nstatusdruck')
 	filter :statuspreps_status_eq, as: :select, 
 		collection: proc {$PREPS_STATUS}, label: I18n.t('status_names.statuspreps')
 

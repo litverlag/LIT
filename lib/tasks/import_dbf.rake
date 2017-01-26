@@ -203,6 +203,7 @@ namespace :dbf do
         end
       end
       
+      # reihe suchen
       unless record.r_code.empty? or record.r_code == 'ohne'
         r = Reihe.where(["lower(r_code) = ?", record.r_code.downcase]).first
         if r
@@ -221,11 +222,11 @@ namespace :dbf do
               buch[key] = record.send(value) if buch[key].nil? or buch[key].empty?
             end
           else
-            puts "Found invalid Buch, isbn is: '#{buch.isbn}'"
+            progressbar.log "Found invalid Buch, isbn is: '#{buch.isbn}'"
           end
         end
       rescue NoMethodError => e
-        puts "'#{e}', but i dont care"
+        progressbar.log "'#{e}', but i dont care"
       end
 
       buch.save

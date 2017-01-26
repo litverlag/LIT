@@ -60,6 +60,7 @@ ActiveAdmin.register ExternerDruck do
   end
 
   index do
+		selectable_column
     column('Status') {|druck| status_tag(druck.statusexternerdruck.status)}
 		column I18n.t("status_names.statusumschl") do |p|
 			status_tag(p.statusumschl.status) rescue '-'

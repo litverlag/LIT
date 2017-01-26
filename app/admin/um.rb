@@ -91,7 +91,9 @@ ActiveAdmin.register Um do
 	end
 
   index title: I18n.t("headlines.umschlag_umschlag"), download_links: [:odt, :csv] do
+    # Activate "Stapelverarbeitung".
 		selectable_column
+
 		column I18n.t("status_names.statusumschl") do |p|
 			status_tag(p.statusumschl.status)
 		end

@@ -146,8 +146,8 @@ module PrintReport
     gprod, buch, autor = get_gprod_buch_autor id
 
     begin
-      report.add_field(:autor, autor.name)
-      report.add_field(:titel, buch.titel1)
+      report.add_field(:autor, autor.name) # [AUTOR] 
+      report.add_field(:titel, buch.titel1) # [TITEL] ..
       report.add_field(:pages, buch.seiten)
       report.add_field(:rm, buch.rueckenstaerke)
       report.add_field(:sollf, gprod.final_deadline)

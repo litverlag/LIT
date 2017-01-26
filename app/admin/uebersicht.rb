@@ -1,6 +1,6 @@
 ActiveAdmin.register Uebersicht do
   menu label: 'Produktions Details'
-  menu priority:100 # pretty much right
+  menu priority:100 # pretty much on the right side
   config.clear_action_items!
 
 	scope I18n.t("scopes_names.alle_filter"), :alle_filter

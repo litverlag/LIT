@@ -18,6 +18,9 @@ ActiveAdmin.register Tit do
     #from models/concerns
     include StatusLogic, PrintReport
 
+    def scoped_collection
+      super.includes [ :statusfinal ]
+    end
 
     def permitted_params
          params.permit!
@@ -122,6 +125,9 @@ ActiveAdmin.register Tit do
 		 sortable: :projekt_email_adresse	do |p|
 			p.projekt_email_adresse
 		end
+    column "Angstfeld", sortable: 'status_final.freigabe_at' do |p|
+      p.statusfinal.freigabe_at
+    end
   end
 
 	filter :buch_isbn_cont, as: :string, label: I18n.t('buecher_names.isbn')

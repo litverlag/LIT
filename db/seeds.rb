@@ -29,9 +29,10 @@ Department.all.each do |d|
 	d.department_input_setting = di
 end
 
-# Try load default settings from file if existent
-DepartmentShowSetting.load_persistent 'default_show_settings' rescue nil
-DepartmentInputSetting.load_persistent 'default_input_settings' rescue nil
+# Try load default settings from file if existent.
+# Are loaded using the cron_rake task in '../cron_rake.sh'.
+#DepartmentShowSetting.load_persistent 'default_show_settings' rescue nil
+#DepartmentInputSetting.load_persistent 'default_input_settings' rescue nil
 
 admin = AdminUser.create!(email: 'admin@example.com',
 													password: 'cibcibcib', password_confirmation: 'cibcibcib')

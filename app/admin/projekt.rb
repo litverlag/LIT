@@ -10,7 +10,9 @@ ActiveAdmin.register Projekt do
   scope (I18n.t("scopes_names.neu_filter")), :neu_filter
   scope (I18n.t("scopes_names.problem_filter")), :problem_filter
 
+  ##
   # Automatically generated scopes from app/models/projekt.rb
+  #
   #scope (I18n.t("scopes_names.im_verzug_hf")), :im_verzug_hf, :if => proc{current_admin_user.departments.where("name = ?", 'Superadmin').any?}
   #scope (I18n.t("scopes_names.im_verzug_bel")), :im_verzug_bel, :if => proc{current_admin_user.departments.where("name = ?", 'Superadmin').any?}
   #scope (I18n.t("scopes_names.im_verzug_rit")), :im_verzug_rit, :if => proc{current_admin_user.departments.where("name = ?", 'Superadmin').any?}
@@ -345,6 +347,10 @@ ActiveAdmin.register Projekt do
   filter :statustitelei_status_not_eq, as: :select, 
     collection: proc {$TITELEI_STATUS}, label: I18n.t('status_names.nstatustitelei')
 
+  filter :satzproduktion
+  filter :statussatz_status_not_eq, as: :select, 
+    collection: proc {$SATZ_STATUS}, label: I18n.t('status_names.nstatussatz')
+
   filter :lektor_id_eq, as: :select, collection: proc {Lektor.all}, label: 'Lektoren'
   filter :autor_id_eq, as: :select, collection: proc {Autor.all}, label: 'Autoren'
 
@@ -352,6 +358,8 @@ ActiveAdmin.register Projekt do
   filter :projekt_email_adresse
   filter :projektname
   filter :prio, as: :select
+
+  filter :auflage
 
   show do
     render partial: "show_view"

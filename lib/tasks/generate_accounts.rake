@@ -1,3 +1,4 @@
+# This should be in db/seeds.rb
 namespace :db do
 	desc "Goes through departments and creates an account if non exists"
 	task accounts: :environment do
@@ -33,6 +34,16 @@ namespace :db do
 			new.department_ids = id
 			new.save!
 			puts "Creating #{d.name.downcase}@lit-verlag.de without associated Lektor."
+
+      # While we r at it: Create second umschlag department (that is InDesign).
+      if d.name.downcase == 'umschlag'
+        new = AdminUser.create!(email: "design@lit-verlag.de",
+                          password: "password1",
+                          password_confirmation: "password1")
+        new.department_ids = id
+        new.save!
+        puts "Creating #{d.name.downcase}@lit-verlag.de without associated Lektor."
+      end
 		end
 
 	end

@@ -44,4 +44,9 @@ violation is
  A list of all places, that need change in case you need to add a department
  can be found here: <b>../add_new_department.madness</b>.
 
+# ODT Printing
+  app/models/concerns/print_report.rb
+
+ Activation via app/admin/....rb -> selectable_column
+
  vim: ft=markdown
