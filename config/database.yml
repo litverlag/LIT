@@ -12,7 +12,7 @@ development:
   database: postgres
   port: 5434
   username: production
-  password: <%= ENV['PROD_DATABASE_PASSWORD'] %>
+  password: barfoo #<%= ENV['PROD_DATABASE_PASSWORD'] %>
 
 test:
   <<: *default
