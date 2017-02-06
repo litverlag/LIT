@@ -1,0 +1,38 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Lit Verwaltung</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <% if ["chef", "lektor", "titelei", "umschlag", "druck"].include? controller_name %>
+          <li <%= 'class=active' if action_name == "index" %> >
+            <a href="<%= url_for(action: 'index', controller: controller_name) %>">Terminplanung</a>
+          </li>
+          <li <%= 'class=active' if action_name == "produktion" %> >
+            <a href="<%= url_for(action: 'produktion', controller: controller_name) %>">Produktion</a>
+          </li>
+        <% else %>
+        <li <%= 'class=active' if action_name == controller_name %> >
+          <% name = controller_name.slice(0,1).capitalize + controller_name.slice(1..-1) %>
+          <a href="<%= url_for(action: 'index', controller: controller_name) %>"><%= name %></a>
+        </li>
+        <% end %>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li <%= 'class=active' if controller_name == "terminplanung" %> >
+          <p class="navbar-text">Eingeloggt als <%= current_user.email %> </p>
+        </li>
+        <li>
+          <a href="<%= destroy_user_session_path %>" data-method="delete">Abmelden</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

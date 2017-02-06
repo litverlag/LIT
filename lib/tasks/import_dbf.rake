@@ -1,23 +1,33 @@
 namespace :dbf do
-
   # path = ARGV.last
   # Should be fine like this.
   path = 'db/dbfs'
 
   #status vars for logging
   empty_records = {
-    :autoren => 0,
-    :reihen => 0,
-    :buch => 0,
+    autoren: 0,
+    reihen: 0,
+    buch: 0,
   }
   association_error = {
-    :reiheUnknownAuthor => 0,
-    :reiheMultiAuthor => 0,
-    :buchUnknownAutor => 0,
-    :buchUnknownReihe => 0,
-    :buchMultiAutor => 0,
-    :buchMultiReihe => 0,
+    reiheUnknownAuthor: 0,
+    reiheMultiAuthor: 0,
+    buchUnknownAutor: 0,
+    buchUnknownReihe: 0,
+    buchNoAuthorOrHerausgeber: 0,
+    buchMultiAutor: 0,
+    buchMultiReihe: 0,
   }
+  other_warning = {
+    leereReihe: 0,
+    leererAutor: 0,
+  }
+
+  success = {
+    buchMitAutor: 0,
+  }
+
+  removable_reihen_dubletten = ["FSS", "UPH", "ssfi", "e-wi", "e-ger", "funo", "syom"]
 
   # Some 'global' lookup tables.
   buch_d = {
@@ -118,39 +128,48 @@ namespace :dbf do
     cip = DBF::Table.new(cip_path)
     progressbar.total = autoren.record_count + reihen.record_count + cip.record_count
     progressbar.log "[LOG][DONE] reading dbf files"
-
+=begin
     progressbar.log "[LOG][BEGIN] deleting Autor db"
-    Autor.delete_all() #delete_all ist much faster, and appropiate here because no relations are stored in author db
+    #Autor.destroy_all() truncate is faster
+    ActiveRecord::Base.connection.execute("TRUNCATE TABLE Autoren RESTART IDENTITY")
     progressbar.log "[LOG][DONE] deleting Autor db"
 
     progressbar.log "[LOG][BEGIN] import Authors"
+
     autoren.each do |record|
       if record
-        faecher.push(record.fach.downcase)
-        faecher.push(record.fach2.downcase)
-        faecher.push(record.fach3.downcase)
-        laender.push(record.land)
-        laender.push(record.dland)
+        faecher.push(record.fach.downcase.strip!)
+        faecher.push(record.fach2.downcase.strip!)
+        faecher.push(record.fach3.downcase.strip!)
+        laender.push(record.land.strip!)
+        laender.push(record.dland.strip!)
+
+        #[mpd][TODO] leere autoren löschen?
+
+
         Autor.create(
-          :fox_id => record.adrnr,
-          :anrede => record.anrede,
-          :vorname => record.vorname,
-          :name => record.name,
-          :email => record.email,
-          :str => record.str,
-          :plz => record.plz,
-          :ort => record.ort,
-          :tel => record.tel,
-          :fax => record.fax,
-          :institut => record.institut,
+          :fox_id => record.adrnr.strip!,
+          :anrede => record.anrede.strip!,
+          :vorname => record.vorname.strip!,
+          :name => record.name.strip!,
+          :email => record.email.strip!,
+          :str => record.str.strip!,
+          :plz => record.plz.strip!,
+          :ort => record.ort.strip!,
+          :tel => record.tel.strip!,
+          :fax => record.fax.strip!,
+          :institut => record.institut.strip!,
           :dienstadresse => (record.dienstadr == 2 ? true : false),
-          :demail => record.demail,
-          :dstr => record.dstr,
-          :dplz => record.dplz,
-          :dort => record.dort,
-          :dtel => record.dtel,
-          :dfax => record.dfax
+          :demail => record.demail.strip!,
+          :dstr => record.dstr.strip!,
+          :dplz => record.dplz.strip!,
+          :dort => record.dort.strip!,
+          :dtel => record.dtel.strip!,
+          :dfax => record.dfax.strip!
         )
+
+
+
       else
         empty_records[:autoren] += 1
       end
@@ -159,7 +178,7 @@ namespace :dbf do
     progressbar.log "[LOG][DONE] import Authors - #{empty_records[:autoren]} Records where empty"
 
     progressbar.log "[LOG][BEGIN] import Reihen into db"
-    Reihe.delete_all() #delete_all is fine to be used here, associated authors are already deleted
+    ActiveRecord::Base.connection.execute("TRUNCATE TABLE Reihen RESTART IDENTITY")
     reihen.each do |record|
       if record
         faecher.push(record.fach.downcase)
@@ -167,6 +186,22 @@ namespace :dbf do
         faecher.push(record.fach3.downcase)
         lektoren.push(record.lektor.downcase)
         schriften.push(record.schrift.downcase)
+
+        if record.r_code.to_s.empty?
+          progressbar.log "[LOG]Leere Reihe übersprungen"
+          other_warning[:leereReihe]+=1
+          next
+        end
+
+        #Dublettenprüfung
+        reihe_dub = Reihe.where(r_code: record.r_code)
+        if reihe_dub.count > 0
+          if removable_reihen_dubletten.include? record.r_code
+              progressbar.log "[LOG][MULTIPLE] For Reihe - r_code: #{record.r_code} - ignored multiple"
+            next
+          end
+          progressbar.log "[WARNING][MULTIPLE] For Reihe - r_code: #{record.r_code} - #{reihe_count} dubletten gefunden"
+        end
 
         #[mpd] why the zip if it's not used later?
         hgs = record.attributes.values[96...116].zip(record.attributes.values[116...136])#0 -> adrnr, 1 -> exemp
@@ -182,7 +217,7 @@ namespace :dbf do
             a = Autor.where(["lower(fox_id) = ?", hg[0].downcase])
 
             if a.count > 1
-              progressbar.log "[WARNING] For Reihe - r_code: #{record.r_code} - #{a.count} Authors for fox_id: #{hg[0]}"
+              progressbar.log "[WARNING][MULTIPLE] For Reihe - r_code: #{record.r_code} - #{a.count} Authors for fox_id: #{hg[0]}"
             end
 
             a = a.first
@@ -201,9 +236,9 @@ namespace :dbf do
       progressbar.increment
     end
     progressbar.log "[LOG][DONE] import Reihen into db - #{empty_records[:reihen]} Records where empty"
-
+=end
     progressbar.log "[LOG][BEGIN] deleting Buch db"
-    Buch.delete_all()
+    ActiveRecord::Base.connection.execute("TRUNCATE TABLE Buecher RESTART IDENTITY")
     progressbar.log "[LOG][DONE] deleting Buch db"
 
     progressbar.log "[LOG][BEGIN] import Buch"
@@ -214,6 +249,7 @@ namespace :dbf do
         next
       end
       autoren = []
+      herausgeber = []
       lektoren.push(record.lektor.downcase)
       faecher.push(record.fach.downcase)
 
@@ -237,38 +273,45 @@ namespace :dbf do
       vorname = record.verf2
       nachname = record.verf1
       unless vorname.empty? or nachname.empty?
-        autoren.push([vorname,nachname])
+        autoren.push([vorname, nachname])
       end
+      #herausgeber suchen
+      #record.hrsg1.split(",").each do |hrg|
+      #bemerkungen entfernen, z.b. (HRsg.)
+      #hrg.map {|x| "" if (x.include? "(" or  x.include? ")") else x }
+      #end
+        #progressbar.log "[WARNING]For Buch - ISBN: #{record.isbn}, NO VERFASSER: #{record.hrsg1} : #{record.hrsg2}"
 
-      #[mpd][status] half of the books half currently no author relation
+      #end
+
       #[mpd][TODO] maybe add boolean to indicate whether that relation has been confirmed by a human.
-      #[mpd] why a loop if there is only one entry in it?
       autoren.each do |autor|
         #[mpd][bug] what if multiple authors with the same name exist??? -> then incorrect relation
         a = Autor.where(["lower(vorname) = ? and lower(name) = ?", autor[0].downcase, autor[1].downcase])
 
         if a.count > 1
-          progressbar.log "[WARNING]For Buch - ISBN: #{record.isbn}, ERSCHIENEN: #{record.erschienen} - #{a.count} Authors found: #{autor[0]}, #{autor[1]}"
+          progressbar.log "[WARNING][MULTIPLE]For Buch - ISBN: #{record.isbn}, ERSCHIENEN: #{record.erschienen} - #{a.count} Authors found: #{autor[0]}, #{autor[1]}"
           association_error[:buchMultiAutor] +=1
         end
 
         a = a.first
         if a
           buch.autoren.push(a)
+          success[:buchMitAutor] += 1
         else
           progressbar.log "[ERROR]For Buch - ISBN: #{record.isbn}, ERSCHIENEN: #{record.erschienen} - Author: #{autor[0]}, #{autor[1]} not found in Author db"
           association_error[:buchUnknownAutor] +=1
         end
         #[mpd][TODO] save at least the name if not be able to link with an authors record
       end
-
+####################################################################################################################
       # reihe suchen
       unless record.r_code.empty? or record.r_code.to_s == 'ohne'
         #[mpd][TODO] print error if not unique and handle in some way
         r = Reihe.where(["lower(r_code) = ?", record.r_code.downcase])
 
         if r.count > 1
-          progressbar.log "[WARNING] For Buch - ISBN: #{record.isbn}, ERSCHIENEN: #{record.erschienen} - #{r.count} Reihen for r_code: #{record.r_code}"
+          progressbar.log "[WARNING][MULTIPLE] For Buch - ISBN: #{record.isbn}, ERSCHIENEN: #{record.erschienen} - #{r.count} Reihen for r_code: #{record.r_code}"
           association_error[:buchMultiReihe] +=1
         end
 
@@ -306,7 +349,7 @@ namespace :dbf do
     progressbar.log "[LOG][DONE] import Buch - #{empty_records[:buch]} Records where empty"
 
     progressbar.log "[LOG][BEGIN] deleting Lektor"
-    Lektor.destroy_all()
+    ActiveRecord::Base.connection.execute("TRUNCATE TABLE Lektoren RESTART IDENTITY")
     progressbar.log "[LOG][DONE] deleting Lektor"
 
     progressbar.log "[LOG][BEGIN] import Lektor"
@@ -326,7 +369,7 @@ namespace :dbf do
 
     #[mpd][status] seems mostly ok
     progressbar.log "[LOG][BEGIN] import Fach"
-    Fach.destroy_all()
+    ActiveRecord::Base.connection.execute("TRUNCATE TABLE Faecher RESTART IDENTITY")
     faecher.uniq.each do |fach|
       Fach.create(
         :fox_name => fach,
@@ -335,7 +378,7 @@ namespace :dbf do
     end
     progressbar.log "[LOG][DONE] import Fach"
 
-    progressbar.log "STATUS: #{association_error.to_s}"
+    progressbar.log "STATUS: #{association_error.to_s} \n #{other_warning.to_s} \n #{success}"
 
     task path.to_sym do ; end
   end

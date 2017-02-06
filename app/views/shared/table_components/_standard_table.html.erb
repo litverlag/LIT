@@ -1,0 +1,43 @@
+<!--BEGIN table component -->
+<table  id="<%= setTableId %>"
+        data-toggle="table"
+        data-classes="table table-hover table-condensed table-striped data-table"
+        data-striped="false"
+        data-url="<%= request.path %>"
+        data-side-pagination="server"
+        data-pagination="true"
+        data-page-size=25
+        data-page-list="[10,25, 50, 100]"
+        data-query-params=tableGetDataQueryParams
+
+        >
+  <script>
+      function tableGetDataQueryParams(params){
+        return tableGetFilterParams("<%= reactToFilterId %>", params);
+      }
+      $("#<%= setTableId %>").on('post-body.bs.table', activateInlineEditingofStatusFields);
+  </script>
+  <thead>
+      <tr>
+          <% index = -1 %>
+          <% displayedColumns.each do |column| %>
+            <th data-field="<%= index+=1 %>"
+                data-sortable="true"
+            <%= "data-formatter=statusCellFormat#{'Editable' if !local_assigns[:statusColumnsEditable].nil? and statusColumnsEditable.include? index}
+                data-cell-style=statusCellStyle" if !local_assigns[:statusColumns].nil? and statusColumns.include? index %>
+            >
+            <%= columnHeader[index] %></th>
+          <% end %>
+
+          <!-- only allow editing or viewing , when viewing is allowed -->
+          <% if !notViewable or editable %>
+            <th data-align="center"
+                data-formatter=tableFormatActions
+                data-field="links"
+                data-cell-style=actionCellStyle>
+            </th>
+          <% end %>
+      </tr>
+  </thead>
+</table>
+<!--END table component -->

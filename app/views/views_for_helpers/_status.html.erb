@@ -1,9 +1,0 @@
-
-<p class="label"><%= name %></p>
-  <% if status.nil?%>
-      <span d="<%= name %>"class="status_tag">Leer</span>
-  <% else%>
-      <span id="<%= name %>" class="<%="status_tag #{status.gsub(/\s+/, "")}"%>"><%= status %></span>
-  <%end %>
-
-

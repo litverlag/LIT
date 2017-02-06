@@ -1,0 +1,23 @@
+<div class="container-fluid" role="main">
+  <div class="row">
+    <div class="col-md-3 col-md-push-9">
+      <%= render partial: "shared/table_components/standard_filter",
+                  locals: { columnHeader: columnHeader,
+                            setFilterId: filterId,
+                            filterForTableId: tableId,
+                            filterableColumns: filterableColumns} %>
+    </div>
+    <div class="col-md-9 col-md-pull-3">
+      <%= render  partial: "shared/table_components/standard_table",
+                  locals: { columnHeader: columnHeader,
+                            setTableId: tableId,
+                            reactToFilterId: filterId,
+                            displayedColumns: displayedColumns,
+                            statusColumns: statusColumns,
+                            statusColumnsEditable: statusColumnsEditable,
+                            notViewable: notViewable,
+                            editable: editable
+                            } %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+<div class="panel panel-default">
+  <div class="panel-heading">Filter</div>
+  <div class="panel-body">
+    <div class="container-fluid filter-container">
+      <form id="<%= setFilterId %>">
+        <% filterableColumns.each do |field| %>
+        <!-- class filter-row and name are necessary for table-filter.js to read the corresponding input values -->
+        <div class="form-group">
+          <label for="exampleInputEmail1"><%= columnHeader[field] %></label>
+          <div class="row filter-row" name="<%= field %>">
+            <div class="col-lg-4 col-md-5 col-sm-2">
+              <select class="form-control input-sm">
+                <!-- table-filter.js needs this values to work properly. When changed here also adjust table-filter.js -->
+                <option value="contains">Enthält</option>
+                <option value="equals">Entspricht</option>
+                <option value="begins">Beginnt</option>
+                <option value="ends">Endet</option>
+              </select>
+            </div>
+            <div class="col-lg-8 col-md-7 col-sm-10">
+              <input type="text" class="form-control input-sm" placeholder="<%= columnHeader[field] %>">
+            </div>
+          </div>
+        </div>
+        <% end %>
+        <div class="row">
+          <div class="col-md-12">
+            <button type="submit" onclick="tableRefresh(event, '<%= filterForTableId %>')" class="btn btn-default pull-right">Suchen</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,73 +1,32 @@
-## /app/models/ability.rb
-# This class is used to set the abilities for the users, for instance you can give the users
-# the ability ro read, update or update certain models. Each user belongs to a department from the department table in
-# database. If you want to change the attributes just change the part in the ability in the control statement with the can method
-
-# Here the User can do everything
-#       can :manage, :all
-# Here the User can change the Um model (Umschlag)
-#       can [:read, :update], , Um
-#
 class Ability
   include CanCan::Ability
 
   def initialize(user)
-    #abort("Message goes here")
-    user ||= User.new # guest user
-    #abort('some user')
-
-    @departName = []
-    #depart = user.departments.to_a
-    user.departments.to_a.each do |a|
-        @departName.append a.name
-    end
-
-		can :read, Reihe
-		#can :read, Buch
-    can :read, Uebersicht
-
-    if @departName.include?'Superadmin'
-      can :manage, :all
-    else
-      can [:read, :update], AdminUser.find(user.id)
-    end
-    if @departName.include?'Umschlag'
-      can [:read, :update], Um
-    end
-    if @departName.include?'Satz'
-      can [:read, :update], SReif
-    end
-    if @departName.include?'Titelei'
-      can [:read, :update], Tit
-      can :read, Preps
-    end
-    if @departName.include?'PrePs'
-      can [:read, :update], Preps
-    end
-    if @departName.include?'Rechnung'
-      # can :manage, :all
-    end
-    if @departName.include?'Bildprüfung'
-      # can :manage, :all
-    end
-    if @departName.include?'Lektor'
-      can :update, Gprod
-      can :manage, Projekt
-			can :manage, Autor
-      can :manage, Reihe
-    end
-    if @departName.include?'Pod'
-      can [:read, :update], Druck
-    end
-    if @departName.include?'ExternerDruck'
-      can [:read, :update], ExternerDruck
-      can [:update], Druck
-    end
-    if @departName.include?'Binderei'
-      can [:read, :update], Bi
-    end
-
-    can :read, ActiveAdmin::Page, :name => "Dashboard"
-    can :read, ActiveAdmin::Page, :name => "Access_denied"
+    # Define abilities for the passed in user here. For example:
+    #
+    #   user ||= User.new # guest user (not logged in)
+    #   if user.admin?
+    #     can :manage, :all
+    #   else
+    #     can :read, :all
+    #   end
+    #
+    # The first argument to `can` is the action you are giving the user
+    # permission to do.
+    # If you pass :manage it will apply to every action. Other common actions
+    # here are :read, :create, :update and :destroy.
+    #
+    # The second argument is the resource the user can perform the action on.
+    # If you pass :all it will apply to every resource. Otherwise pass a Ruby
+    # class of the resource.
+    #
+    # The third argument is an optional hash of conditions to further filter the
+    # objects.
+    # For example, here the user can only update published articles.
+    #
+    #   can :update, Article, :published => true
+    #
+    # See the wiki for details:
+    # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
   end
 end

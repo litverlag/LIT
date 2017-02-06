@@ -1,11 +1,11 @@
 ##
 # app/models/Lektor.rb
 # Represents a Lektor with his personal Information
+class Lektor < ApplicationRecord
+	self.table_name = 'lektoren'
 
-class Lektor < ActiveRecord::Base
-
-  has_one :admin_user
-  accepts_nested_attributes_for :admin_user
+  #has_one :admin_user
+  #accepts_nested_attributes_for :admin_user
 
   has_many :gprod
   accepts_nested_attributes_for :gprod

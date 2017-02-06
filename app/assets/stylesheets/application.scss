@@ -1,0 +1,39 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ */
+ @import "bootstrap-sprockets";
+ @import "bootstrap";
+ @import "bootstrap-table.min";
+@import "bootstrap-editable";
+ @import "roboto";
+ @import "devise";
+
+ @import "table-filter-components";
+ @import "standard-show-page";
+
+//no overlapping with top nav
+ body {
+     padding-top: 65px;
+     background-color: white;
+ }
+
+
+  .truncate {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    button{
+      position: absolute;
+      right: 30px;
+    }
+  }

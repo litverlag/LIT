@@ -1,0 +1,39 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  fox_id: MyString
+  anrede: MyString
+  vorname: MyString
+  name: MyString
+  email: MyString
+  str: MyString
+  plz: MyString
+  ort: MyString
+  tel: MyString
+  fax: MyString
+  institut: MyString
+  dienstadresse: MyString
+  demail: MyString
+  dstr: MyString
+  dort: MyString
+  dtel: MyString
+  dfax: MyString
+
+two:
+  fox_id: MyString
+  anrede: MyString
+  vorname: MyString
+  name: MyString
+  email: MyString
+  str: MyString
+  plz: MyString
+  ort: MyString
+  tel: MyString
+  fax: MyString
+  institut: MyString
+  dienstadresse: MyString
+  demail: MyString
+  dstr: MyString
+  dort: MyString
+  dtel: MyString
+  dfax: MyString

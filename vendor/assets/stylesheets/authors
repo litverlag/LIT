@@ -1,0 +1,17 @@
+{
+  "total": 3,
+  "rows":[
+    {
+      "name": "Werner",
+      "vorname": "Hans",
+      "anrede": "",
+      "institut": "WWU"
+    },
+    {
+      "name": "Worthley",
+      "vorname": "Regan",
+      "anrede": "",
+      "institut": ""
+    }
+  ]
+}

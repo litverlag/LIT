@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170123155641) do
+ActiveRecord::Schema.define(version: 20170206165019) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,11 +24,10 @@ ActiveRecord::Schema.define(version: 20170123155641) do
     t.string   "author_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id", using: :btree
+    t.index ["namespace"], name: "index_active_admin_comments_on_namespace", using: :btree
+    t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id", using: :btree
   end
-
-  add_index "active_admin_comments", ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id", using: :btree
-  add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace", using: :btree
-  add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id", using: :btree
 
   create_table "admin_users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -47,10 +45,9 @@ ActiveRecord::Schema.define(version: 20170123155641) do
     t.integer  "lektor_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
+    t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
   end
-
-  add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
-  add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "admin_users_departments", id: false, force: :cascade do |t|
     t.integer "admin_user_id", null: false
@@ -88,6 +85,28 @@ ActiveRecord::Schema.define(version: 20170123155641) do
   create_table "autoren_reihen", id: false, force: :cascade do |t|
     t.integer "autor_id", null: false
     t.integer "reihe_id", null: false
+  end
+
+  create_table "autors", force: :cascade do |t|
+    t.string   "fox_id"
+    t.string   "anrede"
+    t.string   "vorname"
+    t.string   "name"
+    t.string   "email"
+    t.string   "str"
+    t.string   "plz"
+    t.string   "ort"
+    t.string   "tel"
+    t.string   "fax"
+    t.string   "institut"
+    t.string   "dienstadresse"
+    t.string   "demail"
+    t.string   "dstr"
+    t.string   "dort"
+    t.string   "dtel"
+    t.string   "dfax"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "buecher", force: :cascade do |t|
@@ -136,9 +155,8 @@ ActiveRecord::Schema.define(version: 20170123155641) do
     t.boolean  "gprods_options",  default: [],              array: true
     t.boolean  "buecher_options", default: [],              array: true
     t.boolean  "status_options",  default: [],              array: true
+    t.index ["department_id"], name: "index_department_input_settings_on_department_id", using: :btree
   end
-
-  add_index "department_input_settings", ["department_id"], name: "index_department_input_settings_on_department_id", using: :btree
 
   create_table "department_show_settings", force: :cascade do |t|
     t.integer  "department_id"
@@ -147,9 +165,8 @@ ActiveRecord::Schema.define(version: 20170123155641) do
     t.boolean  "gprods_options",  default: [],              array: true
     t.boolean  "buecher_options", default: [],              array: true
     t.boolean  "status_options",  default: [],              array: true
+    t.index ["department_id"], name: "index_department_show_settings_on_department_id", using: :btree
   end
-
-  add_index "department_show_settings", ["department_id"], name: "index_department_show_settings_on_department_id", using: :btree
 
   create_table "departments", force: :cascade do |t|
     t.string   "name"
@@ -157,10 +174,9 @@ ActiveRecord::Schema.define(version: 20170123155641) do
     t.datetime "updated_at",                   null: false
     t.integer  "department_show_settings_id"
     t.integer  "department_input_settings_id"
+    t.index ["department_input_settings_id"], name: "index_departments_on_department_input_settings_id", using: :btree
+    t.index ["department_show_settings_id"], name: "index_departments_on_department_show_settings_id", using: :btree
   end
-
-  add_index "departments", ["department_input_settings_id"], name: "index_departments_on_department_input_settings_id", using: :btree
-  add_index "departments", ["department_show_settings_id"], name: "index_departments_on_department_show_settings_id", using: :btree
 
   create_table "faecher", force: :cascade do |t|
     t.string   "name"
@@ -257,6 +273,13 @@ ActiveRecord::Schema.define(version: 20170123155641) do
     t.date     "gesperrt_ende"
   end
 
+  create_table "herausgaben_herausgeber", id: false, force: :cascade do |t|
+    t.integer "buch_id"
+    t.integer "autor_id"
+    t.index ["autor_id"], name: "index_herausgaben_herausgeber_on_autor_id", using: :btree
+    t.index ["buch_id"], name: "index_herausgaben_herausgeber_on_buch_id", using: :btree
+  end
+
   create_table "lektoren", force: :cascade do |t|
     t.string   "name"
     t.string   "titel"
@@ -272,6 +295,15 @@ ActiveRecord::Schema.define(version: 20170123155641) do
     t.string   "r_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "status_biblio_erf", force: :cascade do |t|
+    t.integer "gprod_id"
+    t.boolean "freigabe",    default: false
+    t.date    "freigabe_at"
+    t.string  "status"
+    t.string  "updated_by"
+    t.date    "updated_at"
   end
 
   create_table "status_bildpr", force: :cascade do |t|
@@ -359,6 +391,27 @@ ActiveRecord::Schema.define(version: 20170123155641) do
     t.string  "status"
     t.string  "updated_by"
     t.date    "updated_at"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "vorname",                default: "", null: false
+    t.string   "nachname",               default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.inet     "current_sign_in_ip"
+    t.inet     "last_sign_in_ip"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.string   "department"
+    t.integer  "lektor_id"
+    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
 end

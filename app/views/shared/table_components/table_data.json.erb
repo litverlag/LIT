@@ -1,0 +1,28 @@
+{
+  "total": <%= @count %>,
+  "rows": [
+          <% @dataset.each do |entry| %>
+            {
+            <% if !@notViewable or @editable %>
+              "links":[
+              <%= "\"show:#{@showPath.call entry[(@tableId.gsub ".", "_").downcase]}\"".html_safe if !@notViewable %>
+              <%= "," if !@notViewable and @editable %>
+              <%= "\"edit:#{@editPath.call entry[(@tableId.gsub ".", "_").downcase]}\"".html_safe if @editable %>
+              ],
+            <% end %>
+
+            <% index = -1 %>
+            <% @displayedColumns.each do |column| %>
+            <% index+=1 %>
+              <% if @statusColumnsEditable and @statusColumnsEditable.include? index %>
+                "<%= index %>":"<%= "#{entry[(column.gsub ".", "_").downcase]}:#{entry[(@tableId.gsub ".", "_").downcase]}:#{url_for controller: controller_name, action: :stati}:#{url_for controller: controller_name, action: :editStatus}:#{index}".strip %>"
+              <% else %>
+                "<%= index %>":"<%= "#{entry[(column.gsub ".", "_").downcase]}".strip %>"
+              <% end %>
+                <%= "," unless column == @displayedColumns.last %>
+            <% end %>
+            }
+            <%= "," unless entry == @dataset.last %>
+          <% end %>
+          ]
+}

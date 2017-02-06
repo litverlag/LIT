@@ -1,65 +1,38 @@
 Rails.application.routes.draw do
-  #get 'exception/buch'
 
-  devise_for :admin_users, ActiveAdmin::Devise.config
+  devise_for :users
 
+  get '/chef/produktion', to: 'chef#produktion'
+  get '/chef/terminplanung', to: 'chef#index'
 
-  ActiveAdmin.routes(self)
-  #get 'admin/projekte/new', :to => 'projekte#new'
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
+  get '/preps', to: 'preps#index'
+  get '/preps/stati', to: 'preps#stati'
+  post '/preps/editStatus', to: 'preps#editStatus'
 
-  # You can have the root of your site routed with "root"
-  # root 'admin#login'
-  root to: "admin/dashboard#index"
+  get '/binderei', to: 'bindung#index'
+  get '/binderei/stati', to: 'bindung#stati'
+  post '/binderei/editStatus', to: 'bindung#editStatus'
 
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
+  get '/druck/produktion', to: 'druck#produktion'
+  get '/druck/terminplanung', to: 'druck#index'
+  get '/druck/stati', to: 'druck#stati'
+  post '/druck/editStatus', to: 'druck#editStatus'
 
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
+  get '/umschlag/produktion', to: 'umschlag#produktion'
+  get '/umschlag/terminplanung', to: 'umschlag#index'
+  get '/umschlag/stati', to: 'umschlag#stati'
+  post '/umschlag/editStatus', to: 'umschlag#editStatus'
 
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
+  get '/titelei/produktion', to: 'titelei#produktion'
+  get '/titelei/produktion/edit/:id', to: 'titelei#editProduktion'
+  get '/titelei/terminplanung', to: 'titelei#index'
+  get '/titelei/stati', to: 'titelei#stati'
+  post '/titelei/editStatus', to: 'titelei#editStatus'
 
-  resources :gprod, only: [:new, :create, :destroy, :edit]
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
+  get '/lektor/produktion', to: 'lektor#produktion'
+  get '/lektor/terminplanung', to: 'lektor#index'
 
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
-
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
-
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
+  root "application#index"
+  match '*', to: "application#index", via: :all
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

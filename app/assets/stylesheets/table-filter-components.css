@@ -1,0 +1,38 @@
+.data-table th {
+    background-color: #F5F5F5;
+}
+
+//lighter color for stripping seemed to make it more readable
+.data-table > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+  background-color: #FDFDFD;
+}
+
+
+.data-table.table-hover>tbody>tr:hover {
+  td, th {
+    background-color: #ecf3f8;
+  }
+}
+
+.filter-container {
+    padding-left: 5px;
+    padding-right: 5px;
+
+    div[class^="col-"] {
+      &:first-child{
+        padding-right: 5px;
+      }
+
+      &:last-child{
+        padding-left: 5px;
+      }
+    }
+
+}
+
+.label-custom-size{
+  font-size: 0.8em;
+   font-family: 'Roboto', sans-serif;
+   text-transform: uppercase;
+   letter-spacing: 0.18em
+ }

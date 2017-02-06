@@ -1,0 +1,68 @@
+<form class="form-horizontal">
+  <div class="container" role="main">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="page-header">
+          <h1>Projekt: <%= @gprod.projektname %><small> Isbn: <%= @gprod.buch.isbn %></small></h1>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-1">
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="inputProjektname">Projektname</label>
+          <input type="text" class="form-control" id="inputProjektname" placeholder="Projektname" value="<%= @gprod.projektname %>" />
+        </div>
+        <div class="form-group">
+          <label for="inputIsbn">Isbn</label>
+          <input type="text" class="form-control" id="inputIsbn" placeholder="Isbn" value="<%= @gprod.buch.isbn %>" />
+        </div>
+        <div class="form-group">
+          <label for="inputAuflage">Auflage</label>
+          <input type="number" class="form-control" id="inputAuflage" placeholder="Auflage" value="<%= @gprod.auflage %>" />
+        </div>
+        <div class="form-group">
+          <label for="inputPrio">Priorität</label>
+          <input type="text" class="form-control" id="inputPrio" placeholder="Priorität" value="<%= @gprod.prio %>" />
+        </div>
+      </div>
+      <div class="col-md-1">
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="inputPapier">Papier</label>
+          <input type="text" class="form-control" id="inputPapier" placeholder="Papier" value="<%= @gprod.buch.papier_bezeichnung %>" />
+        </div>
+        <div class="form-group">
+          <label for="inputFormat">Format</label>
+          <input type="text" class="form-control" id="inputFormat" placeholder="Format" value="<%= @gprod.buch.format_bezeichnung %>" />
+        </div>
+        <div class="form-group">
+          <label for="inputUmschlag">Umschlag</label>
+          <input type="text" class="form-control" id="inputUmschlag" placeholder="Umschlag" value="<%= @gprod.buch.umschlag_bezeichnung %>" />
+        </div>
+        <div class="form-group">
+          <label for="inputBindung">Bindung</label>
+          <input type="text" class="form-control" id="inputBindung" placeholder="Bindung" value="<%= @gprod.buch.bindung_bezeichnung %>" />
+        </div>
+        <div class="form-group">
+          <label for="inputSeiten">Seiten</label>
+          <input type="number" class="form-control" id="inputSeiten" placeholder="Seiten" value="<%= @gprod.buch.seiten %>" />
+        </div>
+      </div>
+      <div class="col-md-2">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-10">
+        <div class="form-group">
+          <button class="btn btn-default pull-right">Speichern</button>
+        </div>
+      </div>
+      <div class="col-md-2">
+      </div>
+    </div>
+  </div>
+</form>

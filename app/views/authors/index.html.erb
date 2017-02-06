@@ -1,0 +1,14 @@
+<div class="container-fluid" role="main">
+  <div class="row">
+    <div class="col-md-12">
+      <%= render  partial: "shared/table_components/standard_table",
+                  locals: { columnHeader: columnHeader,
+                            setTableId: "table1",
+                            reactToFilterId: "table1form",
+                            displayedColumns: displayedColumns,
+                            notViewable: notViewable,
+                            editable: editable
+                            } %>
+    </div>
+  </div>
+</div>
