@@ -4,6 +4,6 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-         belongs_to :lektor
+         has_one :lektor
          accepts_nested_attributes_for :lektor
 end

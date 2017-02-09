@@ -1,0 +1,275 @@
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t 'hello'
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t('hello') %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :de
+#
+# This would use the information in config/locales/es.yml.
+#
+# To learn more, please read the Rails Internationalization guide
+# available at http://guides.rubyonrails.org/i18n.html.
+
+de:
+  application_name: "Lit Veraltung"
+  
+
+#alt
+  empty: "Leer"
+  hello: "Hallo Welt"
+  date:
+    formats:
+      default: "%d/%m/%Y"
+      long: '%d.%m.%Y'
+
+## Rails is complaining, but what format does it want?
+  time:
+    formats:
+      long: '%d.%m.%Y %H:%M:%S'
+
+  buttons:
+    author_edit: "Autor bearbeiten"
+    author_asso: "Autor hinzufügen"
+    author_new: "Neuen Autor erstellen"
+
+  number:
+    currency:
+      format:
+        unit: '€'
+        delimiter: ','
+        separator: '.'
+        precision: 2
+        format: '%u%n'
+
+  flash_notice:
+    revised_success:
+      project_update: "Projekt erfolgreich überarbeitet"
+      user_create: "Benutzer erfolgreich erstellt"
+      user_update: "Benutzer erfolgreich überarbeitet"
+      new_project: "Projekt erfolgreich erstellt"
+      author_create: 'Autor erfolgreich erstellt.'
+      author_update: 'Autor erfolgreich überarbeitet.'
+    revised_failure:
+      new_project_error: "Nur Lektoren können neue Projekte erstellen"
+      user_update: "Überarbeiten des Users gescheitert"
+      new_project_invalid: 'Einige eingaben sind falsch, überprüfen sie ihre Eingaben.'
+    is_not_a_number: "Bitte tragen Sie eine Zahl ein"
+
+  errors:
+    external:
+    # We didn't do it.
+      nobuch: 'dem aktuellen Projekt ist kein Buch verlinkt'
+      noautor: 'dem aktuellen Projekt ist kein Autor verlinkt'
+    internal:
+
+  gprod_names:
+    auflage: "Auflage"
+    auflage_chef: "Freiexemplare"
+    auflage_lektor: "Verkaufsexemplare"
+    #auflage_hrsg: "Herrausgeberexemplare"
+    bilder: "Bilder"
+    bildpr_bemerkungen: "Bemerkungen Bildprüfung"
+    bildpr_deadline: "SollF Bildpr"
+    binderei_bemerkungen: "Bemerkungen Binderei"
+    binderei_deadline: "SollF Binderei"
+    binderei_eingang_datum: "Binderei Eingang"
+    buchgedruckt: "Buch ist gedruckt?"
+    buchistfertig: "Ist Buch fertig?"
+    dateibue: "Datei Bue"
+    druck_art: "Art des Drucks"
+    druck_bemerkungen: "Bemerkungen Druck"
+    druck_deadline:  "SollF Druck"
+    erscheinungsjahr: "Erscheinungsjahr"
+    externer_druck_verschickt: "An extern verschickt am"
+    externer_druck_verschickt_von: "An extern verschickt von?"
+    externer_druck: "extern"
+    externer_druck_deadline: "SollF externer Druck"
+    externer_druck_finished: "Externer Druck fertig"
+    externer_druck_bemerkungen: "Externer Druck Bemerkungen"
+    final_deadline: "SollF"
+    gesicherte_abnahme: "Abnahme"
+    kommentar_public: "öffentlicher Kommentar"
+    lektor_bemerkungen_private: "Private Bemerkungen"
+    lektor_bemerkungen_public: "Lektor Bemerkungen"
+    manusskript_eingang_date: "ms-ein"
+    muster_art: "Art des Musters"
+    muster_gedruckt: "Muster gedruck?"
+    offsch_an_autor: "Offsch an Autor?"
+    offsch_an_sch_mit_u: "Offsch an Autor mit U?"
+    offsch_bemerkungen: "OffSch Bemerkungen"
+    offsch_deadline: "SollF Offsch"
+    pod_meldung: "Druck Meldung"
+    pod_verschickt: "Druck verschickt?"
+    preps_bemerkungen: "Bemerkungen Preps"
+    preps_betreuer: "Preps Betreuer"
+    preps_deadline: "SollF Preps"
+    preps_muster_bemerkungen: "Preps Muster Bemerkungen"
+    preps_muster_date: "Preps Muster Date"
+    prio: "Priorität"
+    projekt_abgeschlossen: "Ist Projekt fetig?"
+    projekt_email_adresse: "Projekt Email"
+    projektname: "Name"
+    rg_bemerkungen: "Bemerkungen Rechnung"
+    rg_bezahlt: "Rechunug bezahlt?"
+    rg_deadline: "SollF Rechnung"
+    rg_rg_mail: "Rechnung versand?"
+    rg_versand_1: "Rechnung versand 1?"
+    rg_versand_2: "Rechnung versand 3?"
+    rg_vf: "Rechung vf?"
+    satz_bemerkungen: "Bemerkungen Satz"
+    satz_deadline: "SollF Satz"
+    satzproduktion: "Satzproduktion"
+    titelei_bemerkungen: "Bemerkungen Titelei"
+    titelei_deadline: "SollF Titelei"
+    titelei_extern: "Titelei extern?"
+    titelei_freigabe_date: "Titelei Freigabe?"
+    titelei_korrektur_date: "Titelei letzte Korrektur"
+    titelei_letzte_korrektur: "Titelei letzte Korrektur"
+    titelei_versand_an_zur_ueberpf: "Versand zur Überprüfung?"
+    titelei_versand_datum_fuer_ueberpr: "Versand zur Überpr. am?"
+    titelei_zusaetze: "Titelei Zusätze"
+    titelei_titelei: "Titelei"
+    umschlag_bemerkungen: "Bemerkungen Umschlag"
+    umschlag_deadline: "SollF Umschlag"
+    umschlag_schutzumschlag: "Schutzumschlag?"
+    umschlag_umschlagsbild: "Umschlagsbild?"
+    zum_druck: "zum Druck"
+    klappentextinfo: 'Klappentextinfo'
+    satz_korrektur: 'Korrekt'
+    satz_bearbeiter: 'Bearbeiter'
+    satz_pfad: 'Pfad'
+    beitraegerbriefversand: 'Beiträgerbriefversand'
+    diss: 'Diss'
+    pflichtexemplare: 'Pflichtexemplare'
+    sonderdruck: 'Sonderdruck'
+    sonderdrucke: 'Sonderdrucke'
+    kaschierung: 'Kaschierung'
+    gesperrt: 'Gesperrt'
+    gesperrt_ende: 'Gesperrt Ende'
+
+  buecher_names:
+    name: "Name"
+    isbn: "ISBN"
+    issn: "ISSN"
+    titel1: "Titel 1"
+    titel2: "Titel 2"
+    titel3: "Titel 3"
+    utitel1: "Untertitel 1"
+    utitel2: "Untertitel 2"
+    utitel3: "Untertitel 3"
+    seiten: "Seiten"
+    preis: "Preis"
+    spreis: "Sparpreis"
+    sammelband: "Ist Sammelband?"
+    erscheinungsjahr: "Erscheinungsjahr"
+    gewicht: "Gewicht"
+    volumen: "Volumen"
+    format_bezeichnung: "Format"
+    umschlag_bezeichnung: "Umschlag"
+    papier_bezeichnung: "Papier"
+    bindung_bezeichnung: "Bi"
+    vier_farb: "Vierfarb"
+    rueckenstaerke: "Rückenstärke"
+    klappentext: "Klappenext"
+    eintrag_cip_seite: "Eintrag CIP Seite"
+    sw: "SW"
+    r_code: "Reihe"
+
+  status_names:
+    statusbildpr: 'Bildpr'
+    statusbinderei: 'Binderei'
+    nstatusbinderei: 'Binderei ist nicht'
+    statusdruck: 'Druck'
+    nstatusdruck: 'Druck ist nicht'
+    statusexternerdruck: 'Externer Druck'
+    nstatusexternerdruck: 'Externer Druck ist nicht'
+    statusfinal: 'Final'
+    statusoffsch: 'Offsch'
+    statuspreps: 'Preps'
+    statusrg: 'Rg'
+    statussatz: 'Satz'
+    nstatussatz: 'Satz ist nicht'
+    statustitelei: 'Titelei'
+    nstatustitelei: 'Titelei ist nicht'
+    statusumschl: 'Umschl'
+    nstatusumschl: 'Umschl ist nicht'
+
+  scopes_names:
+    neu_filter: "neu"
+    bearbeitung_filter: "in bearbeitung"
+    fertig_filter: "fertig"
+    problem_filter: "problem"
+    musterdrucken_filter: "musterdrucken"
+    nächsterAuftrag_filter: "nächsterAuftrag"
+    verschickt_filter: "verschickt"
+    alle_filter: "alle"
+    unfertig_filter: "unfertig"
+    im_verzug_bel: 'IV Bellmann'
+    im_verzug_rit: 'IV Richter'
+    im_verzug_litb: 'IV Lit Berlin'
+    im_verzug_hf: 'IV Hopf'
+    im_verzug_rai: 'IV Rainer'
+    im_verzug_wien: 'IV Lit Wien'
+    im_verzug_ums: 'IV Umschlag'
+    im_verzug_sat: 'IV Satz'
+    im_verzug_tit: 'IV Titelei'
+    im_verzug_pre: 'IV Preps'
+    im_verzug_rec: 'IV Rechnung'
+    im_verzug_bil: 'IV Bildpr'
+    im_verzug_pod: 'IV Druck'
+    im_verzug_bin: 'IV Binderei'
+    im_verzug_ext: 'IV Externer Druck'
+
+  bi_names:
+    fhc: 'fhc'
+    k: 'k'
+    hc: 'hc'
+    f: 'f'
+    h: 'hc'
+
+  paper_names:
+    offset80: 'o80'  #'Offset 80g'
+    offset90: 'o90'  #'Offset 90g'
+    werk90g:  'wg90' #'Werkdruck 90g gelb'
+    werk90b:  'w90'  #'Werkdruck 90g blau'
+    werk100:  'w100' #'Werkdruck 100g'
+
+  um_names:
+    tex: 'tx'
+    indesign: 'in'
+    neu: 'neue Reihe'
+    reihe: 'wie Reihe'
+    unknown: 'wie Reihe'
+    extern: 'extern'
+
+  format_names:
+    a3: 'A3'
+    a4: 'A4'
+    a5: 'A5'
+    a6: 'A6'
+    sonder24: '240x170'
+    sonder23: '230x162'
+    sonder22: '220x160'
+    sonder: 'sonder'
+
+  search_labels:
+    lektor: 'Lektor'
+
+  headlines:
+    umschlag_umschlag: "Umschlag"
+    preps_preps: "Preps"
+    um_pod: 'Aktuelle Umschläge'
+    lek_pod: 'Aktuelle Projekte'
+    tit_pod: 'Aktuelle Titeleien'
+    druck_pod: 'Aktuelle Druckaufträge'
+    sollf_diff: 'Heute bis SollF'
+    lek_nach_einliste: 'Projekt freigeben (equivalent zu dem früheren verschieben nach EinListe)'

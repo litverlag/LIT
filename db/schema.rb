@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170206211256) do
+ActiveRecord::Schema.define(version: 20170209183737) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -328,12 +328,19 @@ ActiveRecord::Schema.define(version: 20170206211256) do
   end
 
   create_table "status_satz", force: :cascade do |t|
-    t.integer "gprod_id"
-    t.boolean "freigabe",    default: false
-    t.date    "freigabe_at"
-    t.string  "status"
-    t.string  "updated_by"
-    t.date    "updated_at"
+    t.integer  "gprod_id"
+    t.boolean  "freigabe",           default: false
+    t.date     "freigabe_at"
+    t.string   "status"
+    t.string   "updated_by"
+    t.date     "updated_at"
+    t.datetime "eingang_at"
+    t.datetime "deadline_soll"
+    t.datetime "deadline_ist"
+    t.datetime "statusaenderung_at"
+    t.text     "kommentar"
+    t.string   "pfad"
+    t.integer  "bearbeiter_id"
   end
 
   create_table "status_titelei", force: :cascade do |t|

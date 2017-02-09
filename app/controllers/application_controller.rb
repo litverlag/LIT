@@ -14,5 +14,6 @@ class ApplicationController < ActionController::Base
 
   def index
     redirect_to controller: current_user.department != "admin" ? current_user.department : "chef", action: "index"
+    puts "jaaaahaaa"
   end
 end

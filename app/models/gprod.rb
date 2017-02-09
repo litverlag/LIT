@@ -11,6 +11,7 @@ class Gprod < ApplicationRecord
   has_one :umschlag
   has_one :druck
   has_one :binderei
+  has_one :satz
   has_one :final
 =begin
   belongs_to :autor

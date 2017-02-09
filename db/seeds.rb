@@ -15,9 +15,13 @@ Userlist = [{name: 'admin', mail: 'admin@lit-verlag.de', department: "admin"},
             {name: 'Preps', mail: 'preps@lit-verlag.de', department: "preps"},
             {name: 'Druck', mail: 'druck@lit-verlag.de', department: "druck"},
             {name: 'Bindung', mail: 'bindung@lit-verlag.de', department: "bindung"},
-            {name: 'Bindung', mail: 'bindung@lit-verlag.de', department: "umschlag"},
+            {name: 'Satz', mail: 'satz@lit-verlag.de', department: "satz"},
+            {name: 'Umschlag', mail: 'Umschlag@lit-verlag.de', department: "umschlag"},
           ]
+
+puts "Create demo Users:"
+
 Userlist.each do |user|
-  user = User.new({email: user[:mail], department: user[:department], nachname: user[:name], password: 'password', password_confirmation: 'password'})
-  user.save
+  userdb = User.new({email: user[:mail], department: user[:department], nachname: user[:name], password: 'password', password_confirmation: 'password'})
+  puts "#{user[:name]}: #{userdb.save} - #{userdb.errors.full_messages}"
 end

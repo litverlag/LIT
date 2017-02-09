@@ -9,6 +9,10 @@ Rails.application.routes.draw do
   get '/preps/stati', to: 'preps#stati'
   post '/preps/editStatus', to: 'preps#editStatus'
 
+  get '/satz', to: 'satz#index'
+  get '/satz/stati', to: 'satz#stati'
+  post '/satz/editStatus', to: 'satz#editStatus'
+
   get '/binderei', to: 'bindung#index'
   get '/binderei/stati', to: 'bindung#stati'
   post '/binderei/editStatus', to: 'bindung#editStatus'
