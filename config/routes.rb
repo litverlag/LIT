@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   post '/binderei/editStatus', to: 'bindung#editStatus'
 
   get '/druck/produktion', to: 'druck#produktion'
+  get '/druck/produktion/edit/:id', to: 'druck#editProduktion'
+  post '/druck/produktion/update', to: 'druck#updateProduktion'
   get '/druck/terminplanung', to: 'druck#index'
   get '/druck/stati', to: 'druck#stati'
   post '/druck/editStatus', to: 'druck#editStatus'
@@ -31,6 +33,10 @@ Rails.application.routes.draw do
   post '/titelei/editStatus', to: 'titelei#editStatus'
 
   get '/lektor/produktion', to: 'lektor#produktion'
+  get '/lektor/produktion/new', to: 'lektor#newProduktion'
+  post '/lektor/produktion/create', to: 'lektor#createProduktion'
+  get '/lektor/produktion/edit/:id', to: 'lektor#editProduktion'
+  post '/lektor/produktion/update', to: 'lektor#updateProduktion'
   get '/lektor/terminplanung', to: 'lektor#index'
 
   root "application#index"

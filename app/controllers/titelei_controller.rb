@@ -22,7 +22,7 @@ class TiteleiController < TableController
 
     respond_to do |format|
       format.html {render template: "titelei/terminplanung", locals: {columnHeader: columnHeader, displayedColumns: displayedColumns, filterableColumns: filterableColumns, statusColumns: statusColumns, statusColumnsEditable: @statusColumnsEditable, notViewable: notViewable, editable: editable}}
-      format.json {serve_table_data(Gprod.joins(:buch, :lektor, :titelei), displayedColumns, filterableColumns, editable, notViewable, "Gprods.id", @statusColumnsEditable)}
+      format.json {serve_table_data(Gprod.left_outer_joins(:buch, :lektor, :titelei), displayedColumns, filterableColumns, editable, notViewable, "Gprods.id", @statusColumnsEditable)}
     end
   end
 
@@ -41,7 +41,7 @@ class TiteleiController < TableController
 
     respond_to do |format|
       format.html {render template: "titelei/produktion", locals: {columnHeader: columnHeader, displayedColumns: displayedColumns, filterableColumns: filterableColumns, notViewable: notViewable, editable: editable}}
-      format.json {serve_table_data(Gprod.joins(:buch, :lektor), displayedColumns, filterableColumns, editable, notViewable, "Gprods.id", [], lambda{|id| url_for controller: controller_name, action: :editProduktion, id: id })}
+      format.json {serve_table_data(Gprod.left_outer_joins(:buch, :lektor), displayedColumns, filterableColumns, editable, notViewable, "Gprods.id", [], lambda{|id| url_for controller: controller_name, action: :editProduktion, id: id })}
     end
   end
 
@@ -86,7 +86,10 @@ class TiteleiController < TableController
     @gprod.buch.bindung_bezeichnung = params[:inputBindung]
     @gprod.buch.seiten = params[:inputSeiten]
 
-    @gprod.save
+    unless @gprod.save
+      render html: "Datensatz konnte nicht gespeichert werden", status: 400
+      return
+    end
 
     redirect_to action: :produktion
   end

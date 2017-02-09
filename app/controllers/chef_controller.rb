@@ -19,7 +19,7 @@ class ChefController < TableController
 
     respond_to do |format|
       format.html {render template: "chef/terminplanung", locals: {columnHeader: columnHeader, displayedColumns: displayedColumns, statusColumns: statusColumns, filterableColumns: filterableColumns, notViewable: notViewable, editable: editable}}
-      format.json {serve_table_data(Gprod.joins(:buch, :lektor, :titelei, :preps, :umschlag, :druck, :binderei, :final), displayedColumns, filterableColumns, editable, notViewable, "Gprods.id")}
+      format.json {serve_table_data(Gprod.left_outer_joins(:buch, :lektor, :titelei, :preps, :umschlag, :druck, :binderei, :final), displayedColumns, filterableColumns, editable, notViewable, "Gprods.id")}
     end
   end
 
@@ -38,7 +38,7 @@ class ChefController < TableController
 
     respond_to do |format|
       format.html {render template: "chef/produktion", locals: {columnHeader: columnHeader, displayedColumns: displayedColumns, filterableColumns: filterableColumns, notViewable: notViewable, editable: editable}}
-      format.json {serve_table_data(Gprod.joins(:buch, :lektor), displayedColumns, filterableColumns, editable, notViewable, "Gprods.id")}
+      format.json {serve_table_data(Gprod.left_outer_joins(:buch, :lektor), displayedColumns, filterableColumns, editable, notViewable, "Gprods.id")}
     end
   end
 

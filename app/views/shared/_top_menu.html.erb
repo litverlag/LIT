@@ -10,6 +10,9 @@
       <a class="navbar-brand" href="#">Lit Verwaltung</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
+
+      <!-- Abteilungen mit mehr rechten haben 2 Menüpunkte, wobei
+           action: index = Terminplanung,produktion = Produkion -->
       <ul class="nav navbar-nav">
         <% if ["chef", "lektor", "titelei", "umschlag", "druck"].include? controller_name %>
           <li <%= 'class=active' if action_name == "index" %> >
@@ -19,10 +22,20 @@
             <a href="<%= url_for(action: 'produktion', controller: controller_name) %>">Produktion</a>
           </li>
         <% else %>
-        <li <%= 'class=active' if action_name == controller_name %> >
-          <% name = controller_name.slice(0,1).capitalize + controller_name.slice(1..-1) %>
-          <a href="<%= url_for(action: 'index', controller: controller_name) %>"><%= name %></a>
-        </li>
+
+          <!-- Abteilungen mit weniger rechten haben vorerst nur einen Menuepunkt
+               dieser heißt wie die wie die Abteilung. Also wie der controller,
+               jedoch mit Großbuchstaben am Beginn -->
+          <li 'class=active'>
+            <% name = controller_name.slice(0,1).capitalize + controller_name.slice(1..-1) %>
+            <a href="<%= url_for(action: 'index', controller: controller_name) %>"><%= name %></a>
+          </li>
+        <% end %>
+
+        <% if ["lektor"].include? controller_name %>
+          <li <%= 'class=active' if action_name == "newProduktion" %> >
+            <a href="<%= url_for(action: 'newProduktion', controller: controller_name) %>">Neues Projekt</a>
+          </li>
         <% end %>
       </ul>
       <ul class="nav navbar-nav navbar-right">
