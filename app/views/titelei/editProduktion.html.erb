@@ -1,4 +1,5 @@
-<form class="form-horizontal">
+<%= form_tag (url_for controller: controller_name, action: "updateProduktion") do %>
+  <input type="hidden" name="id" value="<%= @gprod.id %>">
   <div class="container" role="main">
     <div class="row">
       <div class="col-xs-12">
@@ -13,19 +14,19 @@
       <div class="col-md-4">
         <div class="form-group">
           <label for="inputProjektname">Projektname</label>
-          <input type="text" class="form-control" id="inputProjektname" placeholder="Projektname" value="<%= @gprod.projektname %>" />
+          <input type="text" class="form-control" id="inputProjektname" name="inputProjektname" placeholder="Projektname" value="<%= @gprod.projektname %>" />
         </div>
         <div class="form-group">
-          <label for="inputIsbn">Isbn</label>
-          <input type="text" class="form-control" id="inputIsbn" placeholder="Isbn" value="<%= @gprod.buch.isbn %>" />
+          <label for="inputIsbn">ISBN</label>
+          <input type="text" class="form-control" id="inputIsbn" name="inputIsbn" placeholder="Isbn" value="<%= @gprod.buch.isbn %>" />
         </div>
         <div class="form-group">
           <label for="inputAuflage">Auflage</label>
-          <input type="number" class="form-control" id="inputAuflage" placeholder="Auflage" value="<%= @gprod.auflage %>" />
+          <input type="text" class="form-control" id="inputAuflage" name="inputAuflage" name="inputAuflage" placeholder="Auflage" value="<%= @gprod.auflage %>" />
         </div>
         <div class="form-group">
           <label for="inputPrio">Priorität</label>
-          <input type="text" class="form-control" id="inputPrio" placeholder="Priorität" value="<%= @gprod.prio %>" />
+          <input type="text" class="form-control" id="inputPrio" name="inputPrio" name="inputPrio" placeholder="Priorität" value="<%= @gprod.prio %>" />
         </div>
       </div>
       <div class="col-md-1">
@@ -33,23 +34,23 @@
       <div class="col-md-4">
         <div class="form-group">
           <label for="inputPapier">Papier</label>
-          <input type="text" class="form-control" id="inputPapier" placeholder="Papier" value="<%= @gprod.buch.papier_bezeichnung %>" />
+          <input type="text" class="form-control" id="inputPapier" name="inputPapier" name="inputPapier" placeholder="Papier" value="<%= @gprod.buch.papier_bezeichnung %>" />
         </div>
         <div class="form-group">
           <label for="inputFormat">Format</label>
-          <input type="text" class="form-control" id="inputFormat" placeholder="Format" value="<%= @gprod.buch.format_bezeichnung %>" />
+          <input type="text" class="form-control" id="inputFormat" name="inputFormat" name="inputFormat" placeholder="Format" value="<%= @gprod.buch.format_bezeichnung %>" />
         </div>
         <div class="form-group">
           <label for="inputUmschlag">Umschlag</label>
-          <input type="text" class="form-control" id="inputUmschlag" placeholder="Umschlag" value="<%= @gprod.buch.umschlag_bezeichnung %>" />
+          <input type="text" class="form-control" id="inputUmschlag" name="inputUmschlag" name="inputUmschlag" placeholder="Umschlag" value="<%= @gprod.buch.umschlag_bezeichnung %>" />
         </div>
         <div class="form-group">
           <label for="inputBindung">Bindung</label>
-          <input type="text" class="form-control" id="inputBindung" placeholder="Bindung" value="<%= @gprod.buch.bindung_bezeichnung %>" />
+          <input type="text" class="form-control" id="inputBindung" name="inputBindung" name="inputBindung" placeholder="Bindung" value="<%= @gprod.buch.bindung_bezeichnung %>" />
         </div>
         <div class="form-group">
           <label for="inputSeiten">Seiten</label>
-          <input type="number" class="form-control" id="inputSeiten" placeholder="Seiten" value="<%= @gprod.buch.seiten %>" />
+          <input type="text" class="form-control" id="inputSeiten" name="inputSeiten" name="inputSeiten" placeholder="Seiten" value="<%= @gprod.buch.seiten %>" />
         </div>
       </div>
       <div class="col-md-2">
@@ -65,4 +66,4 @@
       </div>
     </div>
   </div>
-</form>
+<% end %>

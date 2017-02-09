@@ -25,6 +25,7 @@ Rails.application.routes.draw do
 
   get '/titelei/produktion', to: 'titelei#produktion'
   get '/titelei/produktion/edit/:id', to: 'titelei#editProduktion'
+  post '/titelei/produktion/update', to: 'titelei#updateProduktion'
   get '/titelei/terminplanung', to: 'titelei#index'
   get '/titelei/stati', to: 'titelei#stati'
   post '/titelei/editStatus', to: 'titelei#editStatus'

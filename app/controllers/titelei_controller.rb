@@ -3,7 +3,7 @@ class TiteleiController < TableController
 
   private
   def init
-    @stati = ["Neu", "In Bearbeitung", "Verschickt", "Fertig"]
+    @stati = ["Neu", "In Bearbeitung", "Verschickt", "Fertig", "Problem"]
     @statusColumnsEditable = [6]
   end
 
@@ -59,6 +59,36 @@ class TiteleiController < TableController
       render html: "Projekt nicht gefunden", status: 404
       return
     end
+  end
+
+  def updateProduktion
+    begin
+      id = Integer(params[:id])
+    rescue
+      render html: "Id ist keine Zahl", status: 404
+      return
+    end
+
+    begin
+      @gprod = Gprod.find(id)
+    rescue ActiveRecord::RecordNotFound
+      render html: "Projekt nicht gefunden", status: 404
+      return
+    end
+
+    @gprod.projektname = params[:inputProjektname]
+    @gprod.buch.isbn = params[:inputIsbn]
+    @gprod.auflage = params[:inputAuflage]
+    @gprod.prio = params[:inputPrio]
+    @gprod.buch.papier_bezeichnung = params[:inputPapier]
+    @gprod.buch.format_bezeichnung = params[:inputFormat]
+    @gprod.buch.umschlag_bezeichnung  = params[:inputUmschlag]
+    @gprod.buch.bindung_bezeichnung = params[:inputBindung]
+    @gprod.buch.seiten = params[:inputSeiten]
+
+    @gprod.save
+
+    redirect_to action: :produktion
   end
 
   def stati
