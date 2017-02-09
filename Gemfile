@@ -18,13 +18,17 @@ gem 'uglifier', '>= 1.3.0' # Use Uglifier as compressor for JavaScript assets
 gem 'coffee-rails', '~> 4.2' # Use CoffeeScript for .coffee assets and views
 
 gem 'devise' #Authentication
-gem 'cancancan'
 
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder EVTL entfernen
 gem 'turbolinks', '~> 5' #vermutlich entfernen, macht probleme,a ktuell ungenutzt
 
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'bootstrap-sass', '~> 3.3.6' #Twitter bootstrap for gui
+
+#for import script
+gem 'progressbar'
+gem 'dbf'
+gem 'google_drive'
 
 
 group :development, :test do
